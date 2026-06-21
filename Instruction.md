@@ -151,34 +151,34 @@ Never use primitive hex values directly. Never use Tailwind`s built-in colour cl
 | Token | Light | Dark |
 |-------|-------|------|
 | `bg-primary` | `var(--colour-gray-light-50)` | `var(--colour-gray-dark-950)` |
+| `bg-light` | `var(--colour-gray-light-50)` | `var(--colour-base-black)` |
+| `bg-transparency` | `var(--colour-gray-light-50-00)` | `var(--colour-base-black-transparent)` |
+| `bg-white` | `var(--colour-base-white)` | `var(--colour-base-white)` |
+| `bg-inverse` | `var(--colour-gray-light-500)` | `var(--colour-gray-dark-800)` |
+| `bg-highlight` | `var(--colour-blue-200)` | `var(--colour-blue-950)` |
 | `text-primary` | `var(--colour-gray-light-700)` | `var(--colour-gray-light-100)` |
+| `text-primary-hover` | `var(--colour-gray-light-600)` | `var(--colour-gray-dark-300)` |
+| `text-primary-pressed` | `var(--colour-gray-light-500)` | `var(--colour-gray-dark-400)` |
+| `text-primary-overlay` | `var(--colour-gray-light-950-50)` | `var(--colour-gray-dark-50-60)` |
+| `text-primary-highight` | `var(--colour-gray-light-950)` | `var(--colour-base-white)` |
 | `text-secondary` | `var(--colour-gray-light-600)` | `var(--colour-gray-dark-200)` |
+| `text-tertiary` | `var(--colour-gray-light-400)` | `var(--colour-gray-dark-400)` |
+| `text-quaternary` | `var(--colour-gray-light-300)` | `var(--colour-gray-dark-500)` |
+| `text-inverted` | `var(--colour-base-white)` | `var(--colour-blue-950)` |
+| `text-decorative` | `var(--colour-gray-light-200)` | `var(--colour-gray-dark-700)` |
 | `text-highlight` | `var(--colour-red-light-600)` | `var(--colour-blue-500)` |
+| `text-highlight-subtle` | `var(--utility-gray-950)` | `var(--colour-blue-300)` |
+| `text-highlight-dark` | `var(--colour-red-light-600)` | `var(--colour-blue-300)` |
 | `border-border-primary` | `var(--colour-gray-dark-300)` | `var(--colour-gray-dark-700)` |
 | `border-border-secondary` | `var(--colour-gray-dark-200)` | `var(--colour-gray-dark-900)` |
-| `text-inverted` | `var(--colour-base-white)` | `var(--colour-blue-950)` |
+| `border-border-overlay` | `var(--colour-gray-light-950-10)` | `var(--colour-gray-light-50-30)` |
+| `border-border-highlight` | `var(--colour-gray-light-600)` | `var(--colour-gray-dark-100)` |
 | `component-bg-button-primary` | `var(--colour-gray-light-950)` | `var(--colour-base-white)` |
 | `component-bg-button-hover` | `var(--colour-gray-light-900)` | `var(--colour-blue-100)` |
 | `component-bg-button-pressed` | `var(--colour-gray-light-800)` | `var(--colour-blue-200)` |
-| `text-primary-hover` | `var(--colour-gray-light-600)` | `var(--colour-gray-dark-300)` |
-| `text-primary-pressed` | `var(--colour-gray-light-500)` | `var(--colour-gray-dark-400)` |
-| `bg-light` | `var(--colour-gray-light-50)` | `var(--colour-base-black)` |
-| `text-primary-overlay` | `var(--colour-gray-light-950-50)` | `var(--colour-gray-dark-50-60)` |
-| `text-tertiary` | `var(--colour-gray-light-400)` | `var(--colour-gray-dark-400)` |
-| `border-border-highlight` | `var(--colour-gray-light-600)` | `var(--colour-gray-dark-100)` |
-| `bg-transparency` | `var(--colour-gray-light-50-00)` | `var(--colour-base-black-transparent)` |
-| `bg-white` | `var(--colour-base-white)` | `var(--colour-base-white)` |
-| `text-primary-highight` | `var(--colour-gray-light-950)` | `var(--colour-base-white)` |
-| `border-border-overlay` | `var(--colour-gray-light-950-10)` | `var(--colour-gray-light-50-30)` |
-| `text-quaternary` | `var(--colour-gray-light-300)` | `var(--colour-gray-dark-500)` |
-| `text-decorative` | `var(--colour-gray-light-200)` | `var(--colour-gray-dark-700)` |
-| `bg-inverse` | `var(--colour-gray-light-500)` | `var(--colour-gray-dark-800)` |
 | `shadows-shadow-01` | `var(--colour-gray-light-950-50)` | `var(--colour-blue-200-50)` |
 | `shadows-shadow-02` | `var(--colour-gray-light-950-10)` | `var(--colour-blue-100-10)` |
 | `shadows-glow-01` | `var(--colour-gray-light-50-30)` | `var(--colour-blue-100)` |
-| `text-highlight-dark` | `var(--colour-red-light-600)` | `var(--colour-blue-300)` |
-| `bg-highlight` | `var(--colour-blue-200)` | `var(--colour-blue-950)` |
-| `text-highlight-subtle` | `var(--utility-gray-950)` | `var(--colour-blue-300)` |
 
 **Utility colour scales** — use when you need a specific step in a colour ramp.
 Utility scales auto-invert in dark mode (/50 light = /950 dark, etc.).
@@ -331,8 +331,8 @@ Never mix font families outside their intended roles.
 | `m-lg` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-md` (24px) | `line-height-mono-lg` (36px) | `font-weight-regular` (400) |
 | `m-md` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-sm` (20px) | `line-height-mono-md` (32px) | `font-weight-medium` (500) |
 | `m-sm` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-xs` (16px) | `line-height-mono-sm` (28px) | `font-weight-medium` (500) |
-| `m-xs` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-2xs` (14px) | `line-height-mono-xs` (22px) | `font-weight-medium` (500) |
-| `m-2xs` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-3xs` (12px) | `line-height-mono-2xs` (17px) | `font-weight-medium` (500) |
+| `m-xs` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-2xs` (14px) | `line-height-mono-xs` (24px) | `font-weight-medium` (500) |
+| `m-2xs` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-3xs` (12px) | `line-height-mono-2xs` (20px) | `font-weight-medium` (500) |
 
 **Body styles**
 | `b-xl` | `font-family-font-family-body` (Geist) | `font-size-text-2xl` (44px) | `line-height-body-xl` (56px) | `font-weight-regular` (400) |

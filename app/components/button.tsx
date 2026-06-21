@@ -48,12 +48,21 @@ export function Button({
       className={`relative inline-flex items-center gap-xs overflow-hidden rounded-full pl-xl pr-md py-sm b-xs text-text-inverted md:gap-sm md:pl-2xl md:pr-lg md:py-lg md:b-sm lg:pl-3xl lg:pr-xl lg:b-md ${className}`}
       style={{
         boxShadow:
-          "0 10px 10px -10px var(--shadows-shadow-01), 0 10px 30px 1px var(--shadows-shadow-02), inset 0 -4px 15px 0 var(--shadows-glow-01), inset 0 2px 15px 2px var(--shadows-glow-01)",
+          "0 10px 10px -10px var(--shadows-shadow-01), 0 10px 30px 1px var(--shadows-shadow-02)",
       }}
     >
       <span aria-hidden className="absolute inset-0 rounded-full bg-component-bg-button-primary" />
       <span className="relative whitespace-nowrap">{label}</span>
       <ArrowUpRight className="relative size-xl shrink-0 lg:size-2xl" />
+      {/* Glow overlay — must be last child so it paints above the bg span */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-[inherit]"
+        style={{
+          boxShadow:
+            "inset 0 -4px 15px 0 var(--shadows-glow-01), inset 0 2px 15px 2px var(--shadows-glow-01)",
+        }}
+      />
     </Link>
   );
 }

@@ -27,9 +27,10 @@ export function SiteFooter() {
         <p className="m-xs uppercase text-text-tertiary md:m-md lg:m-lg">©2026_Maryna_Babych</p>
       </div>
 
-      {/* Wordmark — 60 (mobile) / 170 medium (tablet) / 314 (desktop) */}
+      {/* Wordmark — fluid vw sizing so text fills full viewport width at every breakpoint.
+          Negative margin + w-screen breaks out of the page's horizontal padding. */}
       <p
-        className="col-start-1 col-span-4 row-start-4 self-start whitespace-nowrap font-normal leading-[1.15] lowercase text-text-highlight text-[60px] md:col-span-3 md:font-medium md:text-[170px] lg:col-span-6 lg:row-start-3 lg:font-normal lg:tracking-[-12.56px] lg:text-[314px]"
+        className="col-start-1 col-span-4 row-start-4 -ml-md w-screen self-start whitespace-nowrap font-medium leading-[1.15] lowercase tracking-[-0.05em] text-text-highlight text-[18vw] pl-md md:-ml-3xl md:col-span-3 md:pl-3xl lg:-ml-5xl lg:col-span-6 lg:row-start-3 lg:pl-5xl"
       >
         get in touch
       </p>

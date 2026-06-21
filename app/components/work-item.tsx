@@ -24,19 +24,21 @@ export function WorkItem({
   return (
     <article className="flex w-full flex-col items-center gap-lg md:gap-2xl lg:gap-4xl">
       {/* Text container: stack (mobile) → 9-col grid (tablet) → 12-col grid (desktop) */}
-      <div className="flex w-full flex-col gap-lg md:grid md:grid-cols-9 md:items-start md:gap-lg lg:grid-cols-12">
+      <div className="flex w-full flex-col gap-xs md:grid md:grid-cols-9 md:items-start md:gap-lg lg:grid-cols-12">
         {/* number + name — one row on mobile; individual grid cells on md+ (via contents) */}
         <div className="flex items-center gap-xl md:contents">
-          <p className="b-xs text-text-primary md:col-start-1 md:b-sm lg:b-md">{number}</p>
-          <p className="flex-1 b-xs text-text-primary md:col-start-2 md:col-span-2 md:whitespace-nowrap md:b-sm lg:col-start-3 lg:whitespace-normal lg:b-md">
+          <p className="b-xs text-text-primary md:col-start-1 md:b-xs lg:b-sm">{number}</p>
+          <p className="flex-1 b-xs text-text-primary md:col-start-2 md:col-span-2 md:whitespace-nowrap md:b-xs lg:col-start-3 lg:whitespace-normal lg:b-sm">
             {name}
           </p>
         </div>
 
         {/* description block — holds desc + roles, and the View link on mobile/tablet */}
-        <div className="flex flex-col gap-lg md:col-start-5 md:col-span-5 lg:col-start-6 lg:col-span-6 lg:gap-md">
-          <p className="m-xs uppercase text-text-primary md:m-sm lg:m-md">{description}</p>
-          <p className="m-xs uppercase text-text-tertiary text-right md:m-sm md:text-left lg:m-md">{roles}</p>
+        <div className="flex flex-col gap-sm md:col-start-5 md:col-span-5 md:gap-xs lg:col-start-6 lg:col-span-6 lg:gap-md">
+          <div className="flex flex-col gap-xs md:gap-xs lg:gap-md">
+            <p className="m-xs uppercase text-text-primary md:m-sm lg:m-md">{description}</p>
+            <p className="m-xs uppercase text-text-tertiary md:m-sm lg:m-md">{roles}</p>
+          </div>
           {/* View — wrapper controls visibility so it doesn't fight Button's display */}
           <div className="w-full lg:hidden">
             <Button variant="view" label="View" href={href} />

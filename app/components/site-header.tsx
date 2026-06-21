@@ -8,14 +8,14 @@ import { ThemeToggle } from "./theme-toggle";
 export function SiteHeader() {
   return (
     <header
-      className="fixed inset-x-0 top-0 z-50 px-0 pt-xs pb-2xl md:pt-lg md:pb-3xl lg:px-5xl"
+      className="fixed inset-x-0 top-0 z-50 px-md pt-xs pb-2xl md:px-3xl md:pt-lg md:pb-3xl lg:px-5xl"
       style={{ background: "linear-gradient(to bottom, var(--bg-primary) 0%, var(--bg-transparency) 100%)" }}
     >
       <nav className="grid grid-cols-4 items-center gap-lg md:grid-cols-8 lg:grid-cols-12">
-        <p className="col-start-1 col-span-2 b-3xs text-text-primary md:col-span-1 lg:col-span-2 lg:b-2xs">
+        <p className="col-start-1 col-span-2 b-3xs text-text-primary md:col-span-2 lg:col-span-2 lg:b-2xs">
           Maryna Babych
         </p>
-        <p className="hidden b-3xs text-text-primary md:col-start-2 md:col-span-2 md:block lg:col-start-3 lg:b-2xs">
+        <p className="hidden b-3xs text-text-primary md:col-start-3 md:col-span-2 md:block lg:col-start-3 lg:b-2xs">
           Lead Product Designer
         </p>
         <a

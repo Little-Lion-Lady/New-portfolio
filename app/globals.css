@@ -186,8 +186,8 @@
   --line-height-mono-lg:  36px;
   --line-height-mono-md:  32px;
   --line-height-mono-sm:  28px;
-  --line-height-mono-xs:  22px;
-  --line-height-mono-2xs: 17px;
+  --line-height-mono-xs:  24px;
+  --line-height-mono-2xs: 20px;
 
   /* Typography — display line heights (percent values, no Figma token) */
   --line-height-display-2xl: 1.15;
@@ -760,36 +760,42 @@
 
 /* Mono — Geist Mono */
 @utility m-xl {
+  margin: 0 !important;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-text-xl);
   line-height: var(--line-height-mono-xl);
   font-weight: var(--font-weight-regular);
 }
 @utility m-lg {
+  margin: 0 !important;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-text-md);
   line-height: var(--line-height-mono-lg);
   font-weight: var(--font-weight-regular);
 }
 @utility m-md {
+  margin: 0 !important;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-text-sm);
   line-height: var(--line-height-mono-md);
   font-weight: var(--font-weight-medium);
 }
 @utility m-sm {
+  margin: 0 !important;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-text-xs);
   line-height: var(--line-height-mono-sm);
   font-weight: var(--font-weight-medium);
 }
 @utility m-xs {
+  margin: 0 !important;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-text-2xs);
   line-height: var(--line-height-mono-xs);
   font-weight: var(--font-weight-medium);
 }
 @utility m-2xs {
+  margin: 0 !important;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-text-3xs);
   line-height: var(--line-height-mono-2xs);
@@ -853,6 +859,8 @@ body {
   color: var(--text-primary);
   font-family: var(--font-family-body);
   overflow-x: hidden;
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
 }
 
 @media (prefers-reduced-motion: no-preference) {

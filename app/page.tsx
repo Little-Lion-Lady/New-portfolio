@@ -18,7 +18,7 @@ const HL = { color: "var(--text-primary-highlight)" };
 export default function Home() {
   return (
     // Full-bleed on tablet/mobile (no page padding); desktop keeps px-5xl/py-3xl. Section gap = --2xl.
-    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-0 py-0 text-text-primary lg:px-5xl lg:py-3xl">
+    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md py-0 text-text-primary md:px-3xl lg:px-5xl lg:py-3xl">
       <GradientBg />
       <SiteHeader />
 
@@ -94,13 +94,13 @@ export default function Home() {
           <div className="flex flex-col gap-r-xl md:col-start-1 md:col-span-6 lg:col-span-7">
             {/* Key paragraph — B-sm → B-md → B-lg */}
             <p className="b-sm text-text-secondary md:b-md lg:b-lg">
-              I’m a <span className="text-text-highlight">passionate</span>,{" "}
-              <span className="text-text-highlight">strategic</span>, and{" "}
-              <span className="text-text-highlight">creative thinker</span>, blending human-centred
+              I’m a <span className="text-text-highlight-dark">passionate</span>,{" "}
+              <span className="text-text-highlight-dark">strategic</span>, and{" "}
+              <span className="text-text-highlight-dark">creative thinker</span>, blending human-centred
               design with technology to create experiences that positively impact lives. With{" "}
-              <span className="text-text-highlight">9 years</span> of experience in product design,
-              I’ve delivered <span className="text-text-highlight">award-winning</span>,{" "}
-              <span className="text-text-highlight">impactful</span> designs across a variety of
+              <span className="text-text-highlight-dark">9 years</span> of experience in product design,
+              I’ve delivered <span className="text-text-highlight-dark">award-winning</span>,{" "}
+              <span className="text-text-highlight-dark">impactful</span> designs across a variety of
               industries and environments, including agencies, startups, and established product
               companies.
             </p>
