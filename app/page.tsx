@@ -1,219 +1,136 @@
-/*
-  Token foundation proof page — full reference.
-  Temporary: exists only to verify every token in Instruction.md loads and
-  resolves in both light and dark. Colour swatches read `var(--token)` directly
-  (the truest proof a token exists); typography uses the named display, mono and
-  body utility classes so we also verify they override Tailwind defaults.
-*/
+import { GradientBg } from "./components/gradient-bg";
+import { SiteHeader } from "./components/site-header";
+import { SiteFooter } from "./components/site-footer";
+import { SectionHeader } from "./components/section-header";
+import { WorkItem } from "./components/work-item";
+import { Button } from "./components/button";
+import { SectionReveal } from "./components/section-reveal-context";
+import { Reveal } from "./components/reveal";
 
-import type { CSSProperties } from "react";
-
-const STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-
-// --- Primitive ramps (mode-independent) ---
-const PRIMITIVE_RAMPS: Array<[string, string]> = [
-  ["gray-dark", "--colour-gray-dark-"],
-  ["gray-light", "--colour-gray-light-"],
-  ["orange", "--colour-orange-"],
-  ["red-light", "--colour-red-light-"],
-  ["red-dark", "--colour-red-dark-"],
-  ["blue", "--colour-blue-"],
-];
-
-// --- Semantic tokens (light/dark via the token itself) ---
-const SEMANTIC_GROUPS: Array<{ title: string; tokens: string[] }> = [
-  { title: "Background", tokens: ["bg-primary", "bg-light", "bg-white", "bg-highlight", "bg-inverse", "bg-transparency"] },
-  {
-    title: "Text",
-    tokens: [
-      "text-primary", "text-secondary", "text-tertiary", "text-quaternary", "text-decorative",
-      "text-highlight", "text-highlight-dark", "text-highlight-subtle", "text-inverted",
-      "text-primary-hover", "text-primary-pressed", "text-primary-overlay", "text-primary-highlight",
-    ],
-  },
-  { title: "Border", tokens: ["border-primary", "border-secondary", "border-highlight", "border-overlay"] },
-  { title: "Component", tokens: ["component-bg-button-primary", "component-bg-button-hover", "component-bg-button-pressed"] },
-  { title: "Shadow / Glow", tokens: ["shadows-shadow-01", "shadows-shadow-02", "shadows-glow-01"] },
-];
-
-// --- Utility ramps (auto-invert per Instruction.md) ---
-const UTILITY_RAMPS: Array<[string, string]> = [
-  ["gray", "--utility-gray-"],
-  ["beige", "--utility-beige-"],
-  ["blue", "--utility-blue-"],
-  ["red", "--utility-red-"],
-  ["orange", "--utility-orange-"],
-];
-
-const GRADIENT_TOKENS = [
-  "utility-gradient-red", "utility-gradient-orange", "utility-gradient-blue1", "utility-gradient-blue2",
-  "utility-gradient-yellow1", "utility-gradient-yellow2", "utility-gradient-green1", "utility-gradient-green2",
-  "utility-gradient-transparent",
-];
-
-const DISPLAY_STYLES: Array<[string, string]> = [
-  ["d-2xl", "224"], ["d-xl", "142"], ["d-lg", "124"], ["d-md", "80"], ["d-sm", "60"], ["d-xs", "44"], ["d-2xs", "32"],
-];
-const MONO_STYLES: Array<[string, string]> = [
-  ["m-xl", "32"], ["m-lg", "24"], ["m-md", "20"], ["m-sm", "16"], ["m-xs", "14"], ["m-2xs", "12"],
-];
-const BODY_STYLES: Array<[string, string]> = [
-  ["b-xl", "44"], ["b-lg", "32"], ["b-md", "24"], ["b-sm", "20"], ["b-xs", "16"], ["b-2xs", "14"], ["b-3xs", "12"],
-];
-
-function Label({ children }: { children: string }) {
-  return (
-    <span className="m-2xs text-text-tertiary" style={{ wordBreak: "break-word" }}>
-      {children}
-    </span>
-  );
+function Divider() {
+  return <div className="h-px w-full bg-border-primary" />;
 }
 
-function SectionTitle({ children }: { children: string }) {
-  return <h2 className="m-sm uppercase tracking-widest text-text-tertiary">{children}</h2>;
-}
+// Hero copy is style-less in Figma — it scales fluidly with the viewport.
+// clamp() is tuned to hit the Figma frame sizes: 32px (mobile) / 60px (tablet) / 92px (desktop).
+const HL = { color: "var(--text-primary-highlight)" };
 
-function Swatch({ token, css }: { token: string; css?: CSSProperties }) {
+export default function Home() {
   return (
-    <div className="flex flex-col gap-3xs">
-      <div
-        className="h-5xl rounded-[var(--size-3)] border border-border-primary"
-        style={{ backgroundColor: `var(--${token})`, ...css }}
-      />
-      <Label>{token}</Label>
-    </div>
-  );
-}
+    // Full-bleed on tablet/mobile (no page padding); desktop keeps px-5xl/py-3xl. Section gap = --2xl.
+    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-0 py-0 text-text-primary lg:px-5xl lg:py-3xl">
+      <GradientBg />
+      <SiteHeader />
 
-function Ramp({ name, prefix }: { name: string; prefix: string }) {
-  return (
-    <div className="flex flex-col gap-3xs">
-      <div className="flex gap-3xs">
-        {STEPS.map((s) => (
-          <div key={s} className="flex flex-1 flex-col gap-3xs">
-            <div
-              className="h-3xl rounded-[var(--size-1)] border border-border-overlay"
-              style={{ backgroundColor: `var(${prefix}${s})` }}
+      {/* Hero — 70vh (mobile/tablet) / 100vh (desktop), min 700px. No top padding:
+          content is bottom-anchored to the real viewport height. Inner gap = spacing-3xl. */}
+      <section className="relative z-10 flex min-h-[max(700px,70svh)] w-full flex-col justify-end lg:min-h-[max(700px,100svh)] lg:pb-3xl">
+        <div className="flex w-full flex-col items-end gap-3xl">
+          <Reveal
+            as="p"
+            blur
+            className="w-full lg:pb-3xl"
+            style={{
+              fontFamily: "var(--font-family-body)",
+              fontWeight: "var(--font-weight-medium)",
+              fontSize: "clamp(32px, 5.85vw, 92px)",
+              lineHeight: 1.2,
+              letterSpacing: "-0.02em",
+              color: "var(--text-primary-overlay)",
+            }}
+          >
+            I&apos;m an <span style={HL}>IC Product Designer</span> specialising in{" "}
+            <span style={HL}>product growth</span> and optimisation with a track record of shipping{" "}
+            <span style={HL}>highly crafted interfaces</span> and dynamic interactions that elevate
+            user experience. Currently <span style={HL}>leading design</span> at First Table.
+          </Reveal>
+          {/* Hero image sits on the divider line, below the text — never overlaps it. */}
+          <div className="flex w-full flex-col items-end">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/home/hero-image.png"
+              alt="Illustration of a designer working at a laptop"
+              className="w-[80%] max-w-[296px] object-contain md:w-[67%] md:max-w-[636px] lg:w-[636px] lg:max-w-[42vw]"
             />
-            <span className="m-2xs text-text-quaternary text-center">{s}</span>
+            <div className="h-px w-full bg-border-primary" />
           </div>
-        ))}
-      </div>
-      <Label>{`utility-${name}`}</Label>
-    </div>
-  );
-}
+        </div>
+      </section>
 
-export default function TokenProof() {
-  return (
-    <main className="bg-bg-primary text-text-primary min-h-screen px-2xl py-3xl flex flex-col gap-5xl">
-      <header className="flex flex-col gap-2xs">
-        <p className="m-xs uppercase tracking-widest text-text-highlight">Token foundation</p>
-        <h1 className="d-md text-text-primary">Refined design system</h1>
-        <p className="b-md text-text-secondary max-w-[var(--size-80)]">
-          Every swatch and type sample below is wired to a token in Instruction.md.
-          Toggle OS dark mode to confirm the semantic and utility layers invert correctly.
-        </p>
-      </header>
+      {/* 01 — Selected works. gap = --xl, pb-3xl. Reveals on scroll, staggered. */}
+      <SectionReveal as="section" id="work" className="relative z-10 flex w-full flex-col gap-r-xl pb-3xl">
+        <Reveal index={0} className="w-full">
+          <SectionHeader number="01" name="Selected works" />
+        </Reveal>
+        <div className="flex w-full flex-col gap-r-3xl">
+          <Reveal index={1} className="w-full">
+            <WorkItem
+              number="SW/01"
+              name="Basis home app"
+              description="Defining and designing the world’s first Smart Electrical Panel companion app to redefine user’s relationship with energy."
+              roles="UX/UI, Research, Product strategy"
+            />
+          </Reveal>
+          <Reveal index={2} className="w-full">
+            <WorkItem
+              number="SW/02"
+              name="NZ COVID Tracer app"
+              description="Working on a nation-wide COVID-19 pandemic response to support contact tracing efforts and protect New Zealand from the spread of COVID-19."
+              roles="UX/UI, Research, Product strategy"
+            />
+          </Reveal>
+        </div>
+      </SectionReveal>
 
-      {/* PRIMITIVES */}
-      <section className="flex flex-col gap-lg">
-        <SectionTitle>Primitives — colour ramps</SectionTitle>
-        <div className="flex flex-col gap-md">
-          {PRIMITIVE_RAMPS.map(([name, prefix]) => (
-            <div key={name} className="flex flex-col gap-3xs">
-              <Label>{name}</Label>
-              <div className="flex gap-3xs">
-                {STEPS.map((s) => (
-                  <div key={s} className="flex flex-1 flex-col gap-3xs">
-                    <div
-                      className="h-3xl rounded-[var(--size-1)] border border-border-overlay"
-                      style={{ backgroundColor: `var(${prefix}${s})` }}
-                    />
-                    <span className="m-2xs text-text-quaternary text-center">{s}</span>
-                  </div>
+      <Divider />
+
+      {/* 02 — Backstory. gap = --xl, py-lg (tablet/desktop), 0 (mobile). Reveals on scroll. */}
+      <SectionReveal as="section" id="about" className="relative z-10 flex w-full flex-col gap-r-xl md:py-lg">
+        <Reveal index={0} className="w-full">
+          <SectionHeader number="02" name="Backstory" />
+        </Reveal>
+        {/* Content: mobile stack (desc → cat below); tablet 8-col; desktop 12-col */}
+        <Reveal index={1} className="flex flex-col gap-lg md:grid md:grid-cols-8 md:items-start lg:grid-cols-12">
+          <div className="flex flex-col gap-r-xl md:col-start-1 md:col-span-6 lg:col-span-7">
+            {/* Key paragraph — B-sm → B-md → B-lg */}
+            <p className="b-sm text-text-secondary md:b-md lg:b-lg">
+              I’m a <span className="text-text-highlight">passionate</span>,{" "}
+              <span className="text-text-highlight">strategic</span>, and{" "}
+              <span className="text-text-highlight">creative thinker</span>, blending human-centred
+              design with technology to create experiences that positively impact lives. With{" "}
+              <span className="text-text-highlight">9 years</span> of experience in product design,
+              I’ve delivered <span className="text-text-highlight">award-winning</span>,{" "}
+              <span className="text-text-highlight">impactful</span> designs across a variety of
+              industries and environments, including agencies, startups, and established product
+              companies.
+            </p>
+            {/* Button + awards — col on mobile, row md+, spread on desktop */}
+            <div className="flex flex-col items-start gap-md md:flex-row md:items-center md:gap-6xl lg:justify-between lg:gap-0">
+              <Button variant="primary" label="About me" href="#about" />
+              <div className="flex items-center gap-md pr-3xl">
+                {[1, 2, 3, 4].map((n) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={n} src={`/home/award-${n}.png`} alt="" className="size-[44px] object-contain md:size-[60px]" />
                 ))}
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SEMANTIC */}
-      <section className="flex flex-col gap-lg">
-        <SectionTitle>Semantic</SectionTitle>
-        {SEMANTIC_GROUPS.map((group) => (
-          <div key={group.title} className="flex flex-col gap-sm">
-            <Label>{group.title}</Label>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-md">
-              {group.tokens.map((t) => (
-                <Swatch key={t} token={t} />
-              ))}
-            </div>
           </div>
-        ))}
-      </section>
+          <div className="flex justify-end self-end md:col-start-7 md:col-span-2 md:justify-center lg:col-start-10 lg:col-span-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/home/magic-cat.png"
+              alt=""
+              className="w-[233px] max-w-full object-contain md:w-full lg:w-[412px]"
+            />
+          </div>
+        </Reveal>
+      </SectionReveal>
 
-      {/* UTILITY RAMPS */}
-      <section className="flex flex-col gap-lg">
-        <SectionTitle>Utility ramps</SectionTitle>
-        <p className="b-xs text-text-secondary max-w-[var(--size-80)]">
-          These invert in dark mode per Instruction.md — e.g. gray 50↔950, and red
-          switches from the red-light family to red-dark. Toggle dark mode to verify.
-        </p>
-        <div className="flex flex-col gap-lg">
-          {UTILITY_RAMPS.map(([name, prefix]) => (
-            <Ramp key={name} name={name} prefix={prefix} />
-          ))}
-        </div>
-      </section>
+      <Divider />
 
-      {/* GRADIENTS */}
-      <section className="flex flex-col gap-lg">
-        <SectionTitle>Gradient tokens</SectionTitle>
-        <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-md">
-          {GRADIENT_TOKENS.map((t) => (
-            <Swatch key={t} token={t} />
-          ))}
-        </div>
-      </section>
-
-      {/* TYPOGRAPHY */}
-      <section className="flex flex-col gap-lg">
-        <SectionTitle>Typography — display (Geist)</SectionTitle>
-        <div className="flex flex-col gap-md overflow-x-hidden">
-          {DISPLAY_STYLES.map(([cls, px]) => (
-            <div key={cls} className="flex items-baseline gap-md border-b border-border-overlay pb-2xs">
-              <span className="m-2xs text-text-tertiary w-[var(--size-40)] shrink-0">{`${cls} · ${px}px`}</span>
-              <span className={`${cls} truncate`}>Refined</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-lg">
-        <SectionTitle>Typography — body (Geist)</SectionTitle>
-        <div className="flex flex-col gap-md">
-          {BODY_STYLES.map(([cls, px]) => (
-            <div key={cls} className="flex items-baseline gap-md border-b border-border-overlay pb-2xs">
-              <span className="m-2xs text-text-tertiary w-[var(--size-40)] shrink-0">{`${cls} · ${px}px`}</span>
-              <span className={cls}>The quick brown fox jumps over the lazy dog</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-lg">
-        <SectionTitle>Typography — mono (Geist Mono)</SectionTitle>
-        <div className="flex flex-col gap-md">
-          {MONO_STYLES.map(([cls, px]) => (
-            <div key={cls} className="flex items-baseline gap-md border-b border-border-overlay pb-2xs">
-              <span className="m-2xs text-text-tertiary w-[var(--size-40)] shrink-0">{`${cls} · ${px}px`}</span>
-              <span className={cls}>const tokens = source.of.truth;</span>
-            </div>
-          ))}
-        </div>
-      </section>
+      <Reveal className="w-full">
+        <SiteFooter />
+      </Reveal>
     </main>
   );
 }

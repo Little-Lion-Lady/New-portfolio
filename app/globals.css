@@ -336,6 +336,18 @@
   --spacing-7xl:  var(--size-18);
   --spacing-8xl:  var(--size-32);
   --spacing-9xl:  var(--size-40);
+
+  /* Responsive spacing scale (Instruction.md "Responsive spaces").
+     ONE token that changes value per breakpoint — mobile values here are the
+     base; the md/lg overrides live in the media queries near the end of file.
+     Used for section gaps/padding so layout rhythm adapts automatically. */
+  --rspace-xs:  var(--spacing-xs);   /* mobile 8  */
+  --rspace-sm:  var(--spacing-md);   /* mobile 16 */
+  --rspace-md:  var(--spacing-xl);   /* mobile 24 */
+  --rspace-lg:  var(--spacing-3xl);  /* mobile 40 */
+  --rspace-xl:  var(--spacing-3xl);  /* mobile 40 (Figma) */
+  --rspace-2xl: var(--spacing-4xl);  /* mobile 64 */
+  --rspace-3xl: var(--spacing-5xl);  /* mobile 72 */
 }
 
 /* ============================================================
@@ -683,6 +695,16 @@
   --spacing-7xl:  var(--size-18);
   --spacing-8xl:  var(--size-32);
   --spacing-9xl:  var(--size-40);
+
+  /* Responsive spacing — utilities like gap-r-2xl / py-r-md that resolve to the
+     breakpoint-aware --rspace-* vars (auto-adjust at md/lg, no prefixes needed). */
+  --spacing-r-xs:  var(--rspace-xs);
+  --spacing-r-sm:  var(--rspace-sm);
+  --spacing-r-md:  var(--rspace-md);
+  --spacing-r-lg:  var(--rspace-lg);
+  --spacing-r-xl:  var(--rspace-xl);
+  --spacing-r-2xl: var(--rspace-2xl);
+  --spacing-r-3xl: var(--rspace-3xl);
 }
 
 /* ============================================================
@@ -852,4 +874,61 @@ body {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* ============================================================
+   HERO GRADIENT BACKDROP (static stand-in for rebuild-prompt #4).
+   Light = red→blue ramp; dark = blue ramp (new system: dark highlight is blue).
+   ============================================================ */
+.hero-gradient-bg {
+  filter: blur(50px);
+  background-image: radial-gradient(
+    140% 95% at 50% -8%,
+    #ff0000 0%, #e22a40 6%, #d13f60 13%, #b668a0 22%,
+    #8aa7ff 37%, rgba(197, 211, 255, 0.5) 64%, rgba(242, 244, 248, 0) 88%
+  );
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hero-gradient-bg {
+    background-image: radial-gradient(
+      140% 95% at 50% -8%,
+      #1a15ff 0%, #3744ff 16%, #5c75ff 34%,
+      rgba(138, 167, 255, 0.4) 62%, rgba(10, 9, 10, 0) 88%
+    );
+  }
+}
+[data-theme="dark"] .hero-gradient-bg {
+  background-image: radial-gradient(
+    140% 95% at 50% -8%,
+    #1a15ff 0%, #3744ff 16%, #5c75ff 34%,
+    rgba(138, 167, 255, 0.4) 62%, rgba(10, 9, 10, 0) 88%
+  );
+}
+
+/* ============================================================
+   RESPONSIVE SPACING — breakpoint overrides for --rspace-*
+   Base (mobile) values are set in :root. Tablet = md (≥768),
+   Desktop = lg (≥1024), matching the three Figma frames.
+   ============================================================ */
+@media (min-width: 768px) {
+  :root {
+    --rspace-xs:  var(--spacing-xs);   /* 8   */
+    --rspace-sm:  var(--spacing-md);   /* 16  */
+    --rspace-md:  var(--spacing-2xl);  /* 32  */
+    --rspace-lg:  var(--spacing-4xl);  /* 64  */
+    --rspace-xl:  var(--spacing-5xl);  /* 72 (Figma) */
+    --rspace-2xl: var(--spacing-6xl);  /* 80  */
+    --rspace-3xl: var(--spacing-7xl);  /* 96  */
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --rspace-xs:  var(--spacing-sm);   /* 12  */
+    --rspace-sm:  var(--spacing-lg);   /* 20  */
+    --rspace-md:  var(--spacing-3xl);  /* 40  */
+    --rspace-lg:  var(--spacing-4xl);  /* 64  */
+    --rspace-xl:  var(--spacing-6xl);  /* 80  */
+    --rspace-2xl: var(--spacing-8xl);  /* 128 */
+    --rspace-3xl: var(--spacing-9xl);  /* 160 */
+  }
 }
