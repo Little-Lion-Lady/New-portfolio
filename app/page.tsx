@@ -6,6 +6,7 @@ import { WorkItem } from "./components/work-item";
 import { Button } from "./components/button";
 import { SectionReveal } from "./components/section-reveal-context";
 import { Reveal, RevealWords } from "./components/reveal";
+import { HeroCat } from "./components/hero-cat";
 
 function Divider({ className }: { className?: string }) {
   return <div className={`h-px bg-border-primary ${className ?? "w-full"}`} />;
@@ -18,7 +19,7 @@ const HL = { color: "var(--text-primary-highlight)" };
 export default function Home() {
   return (
     // Full-bleed on tablet/mobile (no page padding); desktop keeps px-5xl/py-3xl. Section gap = --2xl.
-    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-xl md:pt-[80px] lg:px-5xl lg:pb-3xl lg:pt-[80px]">
+    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-xl md:pt-[64px] lg:px-5xl lg:pb-3xl lg:pt-[72px]">
       <GradientBg />
       <SiteHeader />
 
@@ -46,16 +47,17 @@ export default function Home() {
             user experience. Currently <span style={HL}>leading design</span> at First Table.
           </RevealWords>
         </div>
-        {/* Image + divider — bottom 1/4.5. Divider is absolute (z-0) so the image (z-10) sits in front. */}
-        <div className="relative flex h-[calc(100%/4.5)] items-end justify-end">
-          <Divider className="absolute top-3/4 -translate-y-1/2 left-md md:left-xl lg:left-5xl w-[70%] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/home/hero-image.png"
-            alt="Illustration of a designer working at a laptop"
-            className="relative z-10 max-h-full w-auto object-contain object-bottom md:max-w-[636px] lg:max-w-[42vw]"
-          />
-        </div>
+        {/* Image + divider — bottom 1/4.5.
+            Divider is flex-1 so it stretches from the left page edge.
+            Image pulls left with a negative margin to overlap the divider
+            by exactly 5% of the image's max-width per breakpoint:
+              mobile  296px → -ml-[15px]
+              tablet  636px → -ml-[32px]
+              desktop 42vw  → -ml-[2.1vw] */}
+        <Reveal as="div" delay={2} noY className="flex h-[calc(100%/4.5)] items-end">
+          <Divider className="flex-1 self-end mb-[calc(100svh/4.5*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
+          <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[15px] max-w-[296px] md:-ml-[32px] md:max-w-[636px] lg:-ml-[2.1vw] lg:max-w-[42vw]" />
+        </Reveal>
       </section>
 
       {/* 01 — Selected works. gap = --xl, pb-3xl. Reveals on scroll, staggered. */}

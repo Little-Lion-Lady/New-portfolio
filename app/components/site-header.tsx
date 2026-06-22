@@ -8,7 +8,7 @@ import { ThemeToggle } from "./theme-toggle";
 // fades to zero at the bottom edge. Background gradient paints above the blur layers.
 export function SiteHeader() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 overflow-hidden px-md pt-xs pb-2xl md:px-xl md:pt-lg md:pb-3xl lg:px-5xl">
+    <header className="fixed inset-x-0 top-0 z-50 overflow-hidden px-md pt-md pb-lg md:px-xl md:pt-lg md:pb-xl lg:px-5xl lg:pb-2xl">
       {/* Progressive blur — full-height layers stacked in place (NOT flex/margin overlap:
           percentage margins resolve against width, which collapses on a short header).
           Cumulative model: every layer is solid black at the very top and only differs in

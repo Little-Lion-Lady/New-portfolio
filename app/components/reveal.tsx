@@ -25,14 +25,28 @@ import { motion, useInView, useReducedMotion, type Variants } from "framer-motio
 import { useSectionActive } from "./section-reveal-context";
 
 const variants: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: (i: number = 0) => ({
+  hidden: { opacity: 0, y: 16, filter: "blur(20px)" },
+  visible: (custom: { i?: number; delay?: number } = {}) => ({
     opacity: 1,
     y: 0,
+    filter: "blur(0px)",
     transition: {
-      duration: 0.4,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-      delay: i * 0.06,
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+      delay: (custom.i ?? 0) * 0.06 + (custom.delay ?? 0),
+    },
+  }),
+};
+
+const variantsNoY: Variants = {
+  hidden: { opacity: 0, filter: "blur(20px)" },
+  visible: (custom: { i?: number; delay?: number } = {}) => ({
+    opacity: 1,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+      delay: (custom.i ?? 0) * 0.06 + (custom.delay ?? 0),
     },
   }),
 };
@@ -72,15 +86,19 @@ type Tag = "div" | "p" | "span" | "li" | "h1" | "h2" | "h3";
 export function Reveal({
   children,
   index = 0,
+  delay = 0,
   as = "div",
   blur = false,
+  noY = false,
   className,
   style,
 }: {
   children: ReactNode;
   index?: number;
+  delay?: number;
   as?: Tag;
   blur?: boolean;
+  noY?: boolean;
   className?: string;
   style?: CSSProperties;
 }) {
@@ -97,10 +115,10 @@ export function Reveal({
       ref={ref as unknown as React.RefObject<HTMLDivElement>}
       className={className}
       style={style}
-      custom={index}
+      custom={{ i: index, delay }}
       initial="hidden"
       animate={shouldAnimate ? "visible" : "hidden"}
-      variants={reducedMotion ? reducedVariants : blur ? blurVariants : variants}
+      variants={reducedMotion ? reducedVariants : blur ? blurVariants : noY ? variantsNoY : variants}
     >
       {children}
     </Component>
