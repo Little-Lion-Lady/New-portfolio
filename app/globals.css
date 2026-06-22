@@ -148,6 +148,10 @@
   --size-72: 300px;
   --size-80: 320px;
 
+  /* Award image sizes — Figma-sourced, not in numeric size scale */
+  --size-award-sm: var(--size-12); /* 44px — mobile/tablet awards */
+  --size-award-lg: 60px;           /* 60px — desktop awards (between size-14:56 and size-15:64) */
+
   /* Typography — families */
   --font-family-body: var(--font-geist-sans), "Geist", sans-serif;
   --font-family-mono: var(--font-geist-mono), "Geist Mono", monospace;
@@ -705,6 +709,19 @@
   --spacing-r-xl:  var(--rspace-xl);
   --spacing-r-2xl: var(--rspace-2xl);
   --spacing-r-3xl: var(--rspace-3xl);
+
+  /* Award image spacing — used in page.tsx backstory section */
+  --spacing-award-sm: var(--size-award-sm); /* 44px */
+  --spacing-award-lg: var(--size-award-lg); /* 60px */
+
+  /* Radius — @theme inline outputs these as --radius-* CSS vars AND generates
+     rounded-* / rounded-tl-* etc. utilities. Reference size primitives directly
+     (not via :root aliases) to avoid circular var() references. */
+  --radius-sm:   var(--size-6);   /* 12px — carousel cards */
+  --radius-md:   var(--size-7);   /* 16px — divider mobile */
+  --radius-lg:   var(--size-8);   /* 20px — divider tablet */
+  --radius-xl:   var(--size-9);   /* 24px — divider desktop */
+  --radius-full: 9999px;
 }
 
 /* ============================================================

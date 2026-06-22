@@ -12,7 +12,7 @@
 */
 
 import { motion, useInView, useReducedMotion, type Variants } from "framer-motion";
-import { useRef, type CSSProperties, type ReactNode } from "react";
+import React, { useRef, type CSSProperties, type ReactNode } from "react";
 import { useSectionActive } from "./section-reveal-context";
 
 const variants: Variants = {
@@ -60,7 +60,7 @@ export function Reveal({
   style?: CSSProperties;
 }) {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px 0px" });
+  const inView = useInView(ref, { once: true, amount: 0.2 });
   const reducedMotion = useReducedMotion();
   // When wrapped in <SectionReveal>, defer animation until the parent section
   // has been triggered. Outside any SectionReveal the context default is true,
@@ -72,8 +72,7 @@ export function Reveal({
 
   return (
     <Component
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ref={ref as any}
+      ref={ref as unknown as React.RefObject<HTMLDivElement>}
       className={className}
       style={style}
       custom={index}

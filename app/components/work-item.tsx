@@ -55,9 +55,9 @@ export function WorkItem({
           fixed 1936px strip that bleeds past the content width (a peek/scroll
           carousel); implement that with the real images + scroll interaction. */}
       <div className="flex w-full items-start gap-xs">
-        <div className="h-[400px] flex-1 rounded-[var(--size-6)] bg-bg-inverse" />
-        <div className="h-[400px] flex-1 rounded-[var(--size-6)] bg-bg-inverse" />
-        <div className="h-[400px] flex-1 rounded-[var(--size-6)] bg-bg-inverse" />
+        <div className="h-[400px] flex-1 rounded-sm bg-bg-inverse" />
+        <div className="h-[400px] flex-1 rounded-sm bg-bg-inverse" />
+        <div className="h-[400px] flex-1 rounded-sm bg-bg-inverse" />
       </div>
     </article>
   );

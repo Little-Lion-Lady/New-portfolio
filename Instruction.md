@@ -307,6 +307,21 @@ For responsive elements, use **Responsive spaces** tokens
 
 ---
 
+### Border Radius Tokens
+Never hardcode `border-radius` values. Use the radius tokens below, which are backed by the size primitive scale.
+
+| Token | Value | Primitive | Usage |
+|-------|-------|-----------|-------|
+| `radius-sm` | 12px | `var(--size-6)` | Carousel cards, small surfaces |
+| `radius-md` | 16px | `var(--size-7)` | Divider top corners (mobile) |
+| `radius-lg` | 20px | `var(--size-8)` | Divider top corners (tablet) |
+| `radius-xl` | 24px | `var(--size-9)` | Divider top corners (desktop) |
+| `radius-full` | 9999px | — | Pills, fully-rounded elements |
+
+These map to Tailwind utilities: `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-full`, plus directional variants (`rounded-tl-md`, `rounded-tr-lg`, etc.).
+
+---
+
 ### Typography Tokens
 
 Three font families — use the correct one for the correct role|

@@ -41,7 +41,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       suppressHydrationWarning
       className={`inline-flex h-[20px] w-[24px] items-center justify-center rounded-full border-[1.2px] border-border-highlight p-[4px] text-text-primary transition-colors ${className}`}
     >
-      {isDark ? <SunIcon className="size-[16px]" /> : <MoonIcon className="size-[16px]" />}
+      {isDark ? <SunIcon className="size-md" /> : <MoonIcon className="size-md" />}
     </button>
   );
 }

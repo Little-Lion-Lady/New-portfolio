@@ -5,7 +5,7 @@ import { SectionHeader } from "./components/section-header";
 import { WorkItem } from "./components/work-item";
 import { Button } from "./components/button";
 import { SectionReveal } from "./components/section-reveal-context";
-import { Reveal } from "./components/reveal";
+import { Reveal, RevealWords } from "./components/reveal";
 
 function Divider({ className }: { className?: string }) {
   return <div className={`h-px bg-border-primary ${className ?? "w-full"}`} />;
@@ -28,9 +28,8 @@ export default function Home() {
       <section className="relative z-10 flex h-[clamp(640px,100svh,1500px)] w-full flex-col lg:h-[clamp(640px,calc(100svh-80px),1500px)]">
         {/* Text — top 4/5, content vertically centered with responsive y-padding */}
         <div className="flex h-[calc(100%-100%/4.5)] w-full items-center py-3xs md:py-2xl lg:py-4xl">
-          <Reveal
+          <RevealWords
             as="p"
-            blur
             className="w-full"
             style={{
               fontFamily: "var(--font-family-body)",
@@ -45,11 +44,11 @@ export default function Home() {
             <span style={HL}>product growth</span> and optimisation with a track record of shipping{" "}
             <span style={HL}>highly crafted interfaces</span> and dynamic interactions that elevate
             user experience. Currently <span style={HL}>leading design</span> at First Table.
-          </Reveal>
+          </RevealWords>
         </div>
         {/* Image + divider — bottom 1/4.5. Divider is absolute (z-0) so the image (z-10) sits in front. */}
         <div className="relative flex h-[calc(100%/4.5)] items-end justify-end">
-          <Divider className="absolute top-3/4 -translate-y-1/2 left-md md:left-xl lg:left-5xl w-[70%] backdrop-blur-[20px] rounded-tl-[16px] rounded-tr-[16px] md:rounded-tl-[20px] md:rounded-tr-[20px] lg:rounded-tl-[24px] lg:rounded-tr-[24px]" />
+          <Divider className="absolute top-3/4 -translate-y-1/2 left-md md:left-xl lg:left-5xl w-[70%] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/home/hero-image.png"
@@ -112,7 +111,7 @@ export default function Home() {
               <div className="flex items-center gap-md pr-3xl">
                 {[1, 2, 3, 4].map((n) => (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img key={n} src={`/home/award-${n}.png`} alt="" className="size-[44px] object-contain md:size-[60px]" />
+                  <img key={n} src={`/home/award-${n}.png`} alt="" className="size-award-sm object-contain md:size-award-lg" />
                 ))}
               </div>
             </div>

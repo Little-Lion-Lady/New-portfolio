@@ -8,7 +8,7 @@ import { Button } from "./button";
 // per rebuild-prompt #6 (match each frame, don't interpolate). Clipped to avoid scroll.
 export function SiteFooter() {
   return (
-    <footer className="grid w-full grid-cols-4 gap-x-lg overflow-hidden pt-4xl pb-[2px] md:gap-y-[24px] md:pt-7xl md:pb-2xl lg:grid-cols-6 lg:gap-y-0 lg:pt-0 lg:pb-0">
+    <footer className="grid w-full grid-cols-4 gap-x-lg overflow-hidden pt-4xl pb-4xs md:gap-y-xl md:pt-7xl md:pb-2xl lg:grid-cols-6 lg:gap-y-0 lg:pt-0 lg:pb-0">
       {/* Socials — vertical on mobile, horizontal md+ */}
       <div className="col-start-1 col-span-3 row-start-1 flex flex-col items-start gap-xl md:col-span-2 md:flex-row md:items-center md:gap-6xl md:pt-md lg:pb-2xl lg:pt-5xl">
         <Button variant="link" label="LinkedIn" href="https://www.linkedin.com" />

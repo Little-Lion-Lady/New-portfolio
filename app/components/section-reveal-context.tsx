@@ -15,7 +15,7 @@
 */
 
 import { useReducedMotion } from "framer-motion";
-import {
+import React, {
   createContext,
   useContext,
   useEffect,
@@ -55,32 +55,39 @@ export function SectionReveal({
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
     if (reducedMotion) {
-      setActive(true);
-      return;
+      // Defer to avoid calling setState synchronously in the effect body.
+      timeoutId = window.setTimeout(() => setActive(true), 0);
+      return () => clearTimeout(timeoutId);
     }
+
     const el = ref.current;
     if (!el) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {
           const wait = (notBefore ? Math.max(0, notBefore - Date.now()) : 0) + delay;
-          window.setTimeout(() => setActive(true), wait);
+          timeoutId = window.setTimeout(() => setActive(true), wait);
           observer.disconnect();
         }
       },
       { threshold: 0.15 },
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
   }, [delay, notBefore, reducedMotion]);
 
   const Tag = as;
 
   return (
     <SectionRevealContext.Provider value={active}>
-      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-      <Tag ref={ref as any} className={className} style={style} id={id}>
+      <Tag ref={ref as unknown as React.RefObject<HTMLElement>} className={className} style={style} id={id}>
         {children}
       </Tag>
     </SectionRevealContext.Provider>
