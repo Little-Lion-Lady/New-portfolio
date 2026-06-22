@@ -7,8 +7,8 @@ import { Button } from "./components/button";
 import { SectionReveal } from "./components/section-reveal-context";
 import { Reveal } from "./components/reveal";
 
-function Divider() {
-  return <div className="h-px w-full bg-border-primary" />;
+function Divider({ className }: { className?: string }) {
+  return <div className={`h-px bg-border-primary ${className ?? "w-full"}`} />;
 }
 
 // Hero copy is style-less in Figma — it scales fluidly with the viewport.
@@ -18,22 +18,24 @@ const HL = { color: "var(--text-primary-highlight)" };
 export default function Home() {
   return (
     // Full-bleed on tablet/mobile (no page padding); desktop keeps px-5xl/py-3xl. Section gap = --2xl.
-    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md py-0 text-text-primary md:px-3xl lg:px-5xl lg:py-3xl">
+    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-xl md:pt-[80px] lg:px-5xl lg:pb-3xl lg:pt-[80px]">
       <GradientBg />
       <SiteHeader />
 
-      {/* Hero — 70vh (mobile/tablet) / 100vh (desktop), min 700px. No top padding:
-          content is bottom-anchored to the real viewport height. Inner gap = spacing-3xl. */}
-      <section className="relative z-10 flex min-h-[max(700px,70svh)] w-full flex-col justify-end lg:min-h-[max(700px,100svh)] lg:pb-3xl">
-        <div className="flex w-full flex-col items-end gap-3xl">
+      {/* Hero — fills the viewport (clamped 640px–1500px).
+          Text vertically centered in the top 3/4. Image bottom-aligned in the remaining 1/4. */}
+      {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
+      <section className="relative z-10 flex h-[clamp(640px,100svh,1500px)] w-full flex-col lg:h-[clamp(640px,calc(100svh-80px),1500px)]">
+        {/* Text — top 4/5, content vertically centered with responsive y-padding */}
+        <div className="flex h-[calc(100%-100%/4.5)] w-full items-center py-3xs md:py-2xl lg:py-4xl">
           <Reveal
             as="p"
             blur
-            className="w-full lg:pb-3xl"
+            className="w-full"
             style={{
               fontFamily: "var(--font-family-body)",
               fontWeight: "var(--font-weight-medium)",
-              fontSize: "clamp(32px, 5.85vw, 92px)",
+              fontSize: "clamp(32px, min(5.85vw, 6.5svh), 92px)",
               lineHeight: 1.2,
               letterSpacing: "-0.02em",
               color: "var(--text-primary-overlay)",
@@ -44,16 +46,16 @@ export default function Home() {
             <span style={HL}>highly crafted interfaces</span> and dynamic interactions that elevate
             user experience. Currently <span style={HL}>leading design</span> at First Table.
           </Reveal>
-          {/* Hero image sits on the divider line, below the text — never overlaps it. */}
-          <div className="flex w-full flex-col items-end">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/home/hero-image.png"
-              alt="Illustration of a designer working at a laptop"
-              className="w-[80%] max-w-[296px] object-contain md:w-[67%] md:max-w-[636px] lg:w-[636px] lg:max-w-[42vw]"
-            />
-            <div className="h-px w-full bg-border-primary" />
-          </div>
+        </div>
+        {/* Image + divider — bottom 1/4.5. Divider is absolute (z-0) so the image (z-10) sits in front. */}
+        <div className="relative flex h-[calc(100%/4.5)] items-end justify-end">
+          <Divider className="absolute top-3/4 -translate-y-1/2 left-md md:left-xl lg:left-5xl w-[70%] backdrop-blur-[20px] rounded-tl-[16px] rounded-tr-[16px] md:rounded-tl-[20px] md:rounded-tr-[20px] lg:rounded-tl-[24px] lg:rounded-tr-[24px]" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/home/hero-image.png"
+            alt="Illustration of a designer working at a laptop"
+            className="relative z-10 max-h-full w-auto object-contain object-bottom md:max-w-[636px] lg:max-w-[42vw]"
+          />
         </div>
       </section>
 

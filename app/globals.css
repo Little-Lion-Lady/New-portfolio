@@ -223,7 +223,7 @@
   --text-primary-overlay:   var(--colour-gray-light-950-50);
   --text-primary-highlight: var(--colour-gray-light-950);
 
-  --border-primary:   var(--colour-gray-dark-300);
+  --border-primary:   var(--colour-gray-light-200);
   --border-secondary: var(--colour-gray-dark-200);
   --border-highlight: var(--colour-gray-light-600);
   --border-overlay:   var(--colour-gray-light-950-10);
@@ -889,7 +889,6 @@ body {
    Light = red→blue ramp; dark = blue ramp (new system: dark highlight is blue).
    ============================================================ */
 .hero-gradient-bg {
-  filter: blur(50px);
   background-image: radial-gradient(
     140% 95% at 50% -8%,
     #ff0000 0%, #e22a40 6%, #d13f60 13%, #b668a0 22%,

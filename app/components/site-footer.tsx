@@ -8,7 +8,7 @@ import { Button } from "./button";
 // per rebuild-prompt #6 (match each frame, don't interpolate). Clipped to avoid scroll.
 export function SiteFooter() {
   return (
-    <footer className="grid w-full grid-cols-4 gap-x-lg overflow-hidden pt-4xl pb-[2px] md:gap-y-[24px] md:pt-7xl md:pb-2xl lg:grid-cols-6 lg:gap-y-0 lg:pt-0 lg:pb-4xl">
+    <footer className="grid w-full grid-cols-4 gap-x-lg overflow-hidden pt-4xl pb-[2px] md:gap-y-[24px] md:pt-7xl md:pb-2xl lg:grid-cols-6 lg:gap-y-0 lg:pt-0 lg:pb-0">
       {/* Socials — vertical on mobile, horizontal md+ */}
       <div className="col-start-1 col-span-3 row-start-1 flex flex-col items-start gap-xl md:col-span-2 md:flex-row md:items-center md:gap-6xl md:pt-md lg:pb-2xl lg:pt-5xl">
         <Button variant="link" label="LinkedIn" href="https://www.linkedin.com" />
@@ -30,7 +30,7 @@ export function SiteFooter() {
       {/* Wordmark — fluid vw sizing so text fills full viewport width at every breakpoint.
           Negative margin + w-screen breaks out of the page's horizontal padding. */}
       <p
-        className="col-start-1 col-span-4 row-start-4 -ml-md w-screen self-start whitespace-nowrap font-medium leading-[1.15] lowercase tracking-[-0.05em] text-text-highlight text-[18vw] pl-md md:-ml-3xl md:col-span-3 md:pl-3xl lg:-ml-5xl lg:col-span-6 lg:row-start-3 lg:pl-5xl"
+        className="col-start-1 col-span-4 row-start-4 -ml-md w-screen self-start whitespace-nowrap font-medium leading-[1.15] lowercase tracking-[-0.05em] text-text-highlight text-[18vw] pl-md md:-ml-xl md:col-span-3 md:pl-xl lg:-ml-5xl lg:col-span-6 lg:row-start-3 lg:pl-5xl"
       >
         get in touch
       </p>

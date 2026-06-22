@@ -4,8 +4,8 @@
 // a dark-mode (blue) palette then. For now it validates the hero composition.
 export function GradientBg() {
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[520px] overflow-hidden lg:h-[1000px]">
-      <div className="hero-gradient-bg h-full w-full" />
+    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-[60px] z-0 h-[520px] px-md blur-[20px] md:top-[80px] md:px-xl lg:h-[1000px] lg:px-5xl">
+      <div className="hero-gradient-bg h-full w-full overflow-hidden rounded-t-2xl md:rounded-t-[20px] lg:rounded-t-3xl" />
     </div>
   );
 }

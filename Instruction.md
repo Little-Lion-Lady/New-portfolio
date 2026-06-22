@@ -169,7 +169,7 @@ Never use primitive hex values directly. Never use Tailwind`s built-in colour cl
 | `text-highlight` | `var(--colour-red-light-600)` | `var(--colour-blue-500)` |
 | `text-highlight-subtle` | `var(--utility-gray-950)` | `var(--colour-blue-300)` |
 | `text-highlight-dark` | `var(--colour-red-light-600)` | `var(--colour-blue-300)` |
-| `border-border-primary` | `var(--colour-gray-dark-300)` | `var(--colour-gray-dark-700)` |
+| `border-border-primary` | `var(--colour-gray-light-200)` | `var(--colour-gray-dark-700)` |
 | `border-border-secondary` | `var(--colour-gray-dark-200)` | `var(--colour-gray-dark-900)` |
 | `border-border-overlay` | `var(--colour-gray-light-950-10)` | `var(--colour-gray-light-50-30)` |
 | `border-border-highlight` | `var(--colour-gray-light-600)` | `var(--colour-gray-dark-100)` |
