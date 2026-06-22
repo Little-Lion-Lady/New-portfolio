@@ -1,11 +1,13 @@
-// Static stand-in for the hero gradient backdrop. The colour stops mirror the
-// Figma "Gradient bg" (red → blue → transparent, blurred). This will be replaced
-// by the animated, token-driven Gradient component (rebuild-prompt #4) and gains
-// a dark-mode (blue) palette then. For now it validates the hero composition.
+import { NeatGradientBg } from "./neat-gradient";
+
 export function GradientBg() {
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-[56px] z-0 h-[520px] px-md blur-[20px] md:top-[64px] md:px-xl lg:h-[1000px] lg:px-5xl">
-      <div className="hero-gradient-bg h-full w-full overflow-hidden rounded-t-2xl md:rounded-t-[20px] lg:rounded-t-3xl" />
+    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[520px] overflow-hidden lg:h-[1000px]">
+      <div className="h-full w-full px-xs md:px-sm lg:px-[36px] blur-[35px]">
+        <div className="overflow-hidden rounded-2xl md:rounded-[20px] lg:rounded-3xl h-full w-full mt-6 md:mt-10 lg:mt-16">
+          <NeatGradientBg />
+        </div>
+      </div>
     </div>
   );
 }
