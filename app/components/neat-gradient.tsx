@@ -98,8 +98,8 @@ const defaultConfig: NeatConfig = {
   ribbonFade: 0.05,
   flatShading: false,
   cameraLock: false,
-  cameraX: -0.5,
-  cameraY: -22,
+  cameraX: 0,
+  cameraY: -15,
   cameraZ: 0,
   cameraRotationX: 0.86,
   cameraRotationY: -0.007,
@@ -128,10 +128,18 @@ export function NeatGradientBg({
       ...config,
     });
 
-    // Remove the watermark link the library injects
-    canvasRef.current.parentElement
-      ?.querySelectorAll('a[href*="firecms"]')
-      .forEach((el) => el.remove());
+    // Remove the watermark link the library injects (sync + async via observer)
+    const removeWatermark = (root: Element | null) => {
+      root?.querySelectorAll('a[href*="firecms"], a[href*="neat"]').forEach((el) => el.remove());
+    };
+    removeWatermark(canvasRef.current.parentElement);
+
+    const watermarkObserver = new MutationObserver(() => {
+      removeWatermark(canvasRef.current?.parentElement ?? null);
+    });
+    if (canvasRef.current.parentElement) {
+      watermarkObserver.observe(canvasRef.current.parentElement, { childList: true, subtree: true });
+    }
 
     const applyThemeColors = () => {
       const isDark = document.documentElement.getAttribute("data-theme") === "dark";
@@ -157,6 +165,7 @@ export function NeatGradientBg({
 
     return () => {
       observer.disconnect();
+      watermarkObserver.disconnect();
       if (scrollReactive) window.removeEventListener("scroll", handleScroll);
       gradientRef.current?.destroy();
     };
