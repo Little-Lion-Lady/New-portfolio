@@ -344,10 +344,10 @@ Never mix font families outside their intended roles.
 **Mono styles**
 | `m-xl` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-xl` (32px) | `line-height-mono-xl` (40px) | `font-weight-regular` (400) |
 | `m-lg` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-md` (24px) | `line-height-mono-lg` (36px) | `font-weight-regular` (400) |
-| `m-md` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-sm` (20px) | `line-height-mono-md` (32px) | `font-weight-medium` (500) |
-| `m-sm` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-xs` (16px) | `line-height-mono-sm` (28px) | `font-weight-medium` (500) |
-| `m-xs` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-2xs` (14px) | `line-height-mono-xs` (24px) | `font-weight-medium` (500) |
-| `m-2xs` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-3xs` (12px) | `line-height-mono-2xs` (20px) | `font-weight-medium` (500) |
+| `m-md` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-sm` (20px) | `line-height-mono-md` (32px) | `font-weight-regular` (400) |
+| `m-sm` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-xs` (16px) | `line-height-mono-sm` (28px) | `font-weight-regular` (400) |
+| `m-xs` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-2xs` (14px) | `line-height-mono-xs` (24px) | `font-weight-regular` (400) |
+| `m-2xs` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-3xs` (12px) | `line-height-mono-2xs` (20px) | `font-weight-regular` (400) |
 
 **Body styles**
 | `b-xl` | `font-family-font-family-body` (Geist) | `font-size-text-2xl` (44px) | `line-height-body-xl` (56px) | `font-weight-regular` (400) |

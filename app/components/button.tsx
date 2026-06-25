@@ -1,5 +1,17 @@
-import Link from "next/link";
+"use client";
+
+import { motion } from "framer-motion";
 import { ArrowUpRight } from "./icons";
+
+const arrowVariants = {
+  rest: { x: 0, y: 0, scale: 1 },
+  hover: { x: 3, y: -3, scale: 1.2 },
+};
+
+const arrowVariantsMono = {
+  rest: { x: 0, y: 0 },
+  hover: { x: 3, y: -3 },
+};
 
 // Figma "Button" component. Three variants × three breakpoints (mobile/tablet/desktop):
 //   primary (Type=Button, Size=lg) — filled pill, text-inverted
@@ -21,30 +33,58 @@ export function Button({
 }) {
   if (variant === "link") {
     return (
-      <Link
+      <motion.a
         href={href}
-        className={`inline-flex items-center gap-xs d-2xs text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-sm md:d-xs ${className}`}
+        initial="rest"
+        whileHover="hover"
+        animate="rest"
+        className={`inline-flex items-center gap-2xs d-2xs text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-xs md:d-xs ${className}`}
       >
         <span>{label}</span>
-        <ArrowUpRight className="size-lg shrink-0 md:size-xl lg:size-2xl" />
-      </Link>
+        <motion.span
+          variants={arrowVariants}
+          transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          className="inline-flex shrink-0"
+        >
+          <ArrowUpRight className="size-xl md:size-2xl lg:size-3xl" />
+        </motion.span>
+      </motion.a>
     );
   }
+
   if (variant === "view") {
     return (
-      <Link
+      <motion.a
         href={href}
+        initial="rest"
+        whileHover="hover"
+        animate="rest"
         className={`inline-flex items-center gap-3xs m-xs uppercase text-text-primary transition-colors hover:text-text-primary-hover md:gap-2xs md:m-sm lg:gap-3xs lg:m-md ${className}`}
       >
         <span>{label}</span>
-        <ArrowUpRight className="size-lg shrink-0 md:size-xl" />
-      </Link>
+        <motion.span
+          variants={arrowVariantsMono}
+          transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          className="inline-flex shrink-0"
+        >
+          <ArrowUpRight className="size-md md:size-lg" />
+        </motion.span>
+      </motion.a>
     );
   }
+
   // primary
   return (
-    <Link
+    <motion.a
       href={href}
+      initial="rest"
+      whileHover="hover"
+      animate="rest"
+      variants={{
+        rest: { scale: 1 },
+        hover: { scale: 1.04 },
+      }}
+      transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
       className={`relative inline-flex items-center gap-xs overflow-hidden rounded-full pl-xl pr-md py-sm b-xs text-text-inverted md:gap-sm md:pl-2xl md:pr-lg md:py-lg md:b-sm lg:pl-3xl lg:pr-xl lg:b-md ${className}`}
       style={{
         boxShadow:
@@ -52,17 +92,24 @@ export function Button({
       }}
     >
       <span aria-hidden className="absolute inset-0 rounded-full bg-component-bg-button-primary" />
+      <motion.span
+        aria-hidden
+        className="absolute inset-0 rounded-full bg-white"
+        variants={{ rest: { opacity: 0 }, hover: { opacity: 0.08 } }}
+        transition={{ duration: 0.25 }}
+      />
       <span className="relative whitespace-nowrap">{label}</span>
       <ArrowUpRight className="relative size-xl shrink-0 lg:size-2xl" />
-      {/* Glow overlay — must be last child so it paints above the bg span */}
-      <span
+      {/* Glow overlay — tightens and brightens on hover */}
+      <motion.span
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-[inherit]"
         style={{
           boxShadow:
             "inset 0 -4px 15px 0 var(--shadows-glow-01), inset 0 2px 15px 2px var(--shadows-glow-01)",
         }}
+        transition={{ duration: 0.25 }}
       />
-    </Link>
+    </motion.a>
   );
 }

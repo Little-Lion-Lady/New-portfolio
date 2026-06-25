@@ -722,6 +722,10 @@
   --radius-lg:   var(--size-8);   /* 20px — divider tablet */
   --radius-xl:   var(--size-9);   /* 24px — divider desktop */
   --radius-full: 9999px;
+
+  /* Custom desktop breakpoint — 1350px instead of lg (1024px).
+     Naming it "dt" keeps it distinct from the built-in lg/xl. */
+  --breakpoint-dt: 1350px;
 }
 
 /* ============================================================
@@ -795,28 +799,28 @@
   font-family: var(--font-family-mono);
   font-size: var(--font-size-text-sm);
   line-height: var(--line-height-mono-md);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
 }
 @utility m-sm {
   margin: 0 !important;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-text-xs);
   line-height: var(--line-height-mono-sm);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
 }
 @utility m-xs {
   margin: 0 !important;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-text-2xs);
   line-height: var(--line-height-mono-xs);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
 }
 @utility m-2xs {
   margin: 0 !important;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-text-3xs);
   line-height: var(--line-height-mono-2xs);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
 }
 
 /* Body — Geist */

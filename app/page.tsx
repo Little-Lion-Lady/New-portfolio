@@ -19,14 +19,16 @@ const HL = { color: "var(--text-primary-highlight)" };
 export default function Home() {
   return (
     // Full-bleed on tablet/mobile (no page padding); desktop keeps px-5xl/py-3xl. Section gap = --2xl.
-    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-xl md:pt-[64px] lg:px-5xl lg:pb-3xl lg:pt-[72px]">
-      <GradientBg />
-      <SiteHeader />
+    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
+      {/* Gradient + header + hero share a wrapper so GradientBg auto-sizes to match */}
+      <div className="relative">
+        <GradientBg />
+        <SiteHeader />
 
       {/* Hero — fills the viewport (clamped 640px–1500px).
           Text vertically centered in the top 3/4. Image bottom-aligned in the remaining 1/4. */}
       {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
-      <section className="relative z-10 flex h-[clamp(640px,100svh,1500px)] w-full flex-col lg:h-[clamp(640px,calc(100svh-80px),1500px)]">
+      <section className="relative z-10 flex h-[clamp(640px,calc(100svh-56px),1500px)] w-full flex-col md:h-[clamp(640px,calc(100svh-64px),1500px)] lg:h-[clamp(640px,calc(100svh-80px),1500px)]">
         {/* Text — top 4/5, content vertically centered with responsive y-padding */}
         <div className="flex h-[calc(100%-100%/4.5)] w-full items-center py-3xs md:py-2xl lg:py-4xl">
           <RevealWords
@@ -59,6 +61,7 @@ export default function Home() {
           <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[15px] max-w-[296px] md:-ml-[32px] md:max-w-[636px] lg:-ml-[2.1vw] lg:max-w-[42vw]" />
         </Reveal>
       </section>
+      </div>
 
       {/* 01 — Selected works. gap = --xl, pb-3xl. Reveals on scroll, staggered. */}
       <SectionReveal as="section" id="work" className="relative z-10 flex w-full flex-col gap-r-xl pb-3xl">

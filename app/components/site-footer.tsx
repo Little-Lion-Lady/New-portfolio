@@ -1,4 +1,8 @@
 import { Button } from "./button";
+import { CyclingWord } from "./cycling-word";
+import { FitText } from "./fit-text";
+
+const CYCLING_WORDS = ["love", "hate", "AI", "coffee", "mischief", "claude", "care", "passion"];
 
 // Figma "Footer" component — a responsive grid.
 //   desktop 6-col/3-row: socials(c1-2,r1) · made-with-love(c5,r1) · colophon(c1-2,r2) · wordmark(c1-6,r3)
@@ -8,32 +12,31 @@ import { Button } from "./button";
 // per rebuild-prompt #6 (match each frame, don't interpolate). Clipped to avoid scroll.
 export function SiteFooter() {
   return (
-    <footer className="grid w-full grid-cols-4 gap-x-lg overflow-hidden pt-4xl pb-4xs md:gap-y-xl md:pt-7xl md:pb-2xl lg:grid-cols-6 lg:gap-y-0 lg:pt-0 lg:pb-0">
+    <footer className="grid w-full grid-cols-4 gap-x-lg overflow-x-clip pt-4xl pb-4xs md:gap-y-xl md:pt-7xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-0 dt:pb-0">
       {/* Socials — vertical on mobile, horizontal md+ */}
-      <div className="col-start-1 col-span-3 row-start-1 flex flex-col items-start gap-xl md:col-span-2 md:flex-row md:items-center md:gap-6xl md:pt-md lg:pb-2xl lg:pt-5xl">
+      <div className="col-start-1 col-span-3 row-start-1 flex flex-col items-start gap-xl md:col-span-2 md:flex-row md:items-center md:gap-6xl md:pt-md dt:pb-2xl dt:!pt-5xl">
         <Button variant="link" label="LinkedIn" href="https://www.linkedin.com" />
         <Button variant="link" label="Email" href="mailto:maryna.babych@gmail.com" />
       </div>
 
       {/* Made with love */}
-      <div className="col-start-1 col-span-3 row-start-2 flex items-center pt-4xl md:col-span-2 md:pt-3xl lg:col-start-5 lg:col-span-1 lg:row-start-1 lg:items-end lg:self-end lg:pt-0 lg:pb-xl">
+      <div className="col-start-1 col-span-3 row-start-2 flex items-center pt-4xl md:col-span-2 md:pt-3xl dt:!col-start-5 dt:col-span-2 dt:row-start-1 dt:items-end dt:self-end dt:justify-end dt:!pt-0 dt:pb-2xl">
         <p className="whitespace-nowrap text-[32px] leading-[48px] text-text-tertiary md:text-[44px] md:leading-[1.1]">
-          Made with <span className="text-text-primary-highlight">love</span>
+          Made with <CyclingWord words={CYCLING_WORDS} className="text-text-primary-highlight" />
         </p>
       </div>
 
       {/* Colophon — M-xs → M-md → M-lg */}
-      <div className="col-start-1 col-span-4 row-start-3 flex items-center pt-4xl md:col-span-3 lg:col-span-2 lg:row-start-2 lg:pt-9xl">
-        <p className="m-xs uppercase text-text-tertiary md:m-md lg:m-lg">©2026_Maryna_Babych</p>
+      <div className="col-start-1 col-span-4 row-start-3 flex items-center pt-4xl md:col-span-3 dt:col-span-2 dt:row-start-2 dt:pt-9xl">
+        <p className="m-xs uppercase text-text-tertiary md:m-md dt:m-lg">©2026_Maryna_Babych</p>
       </div>
 
-      {/* Wordmark — fluid vw sizing so text fills full viewport width at every breakpoint.
-          Negative margin + w-screen breaks out of the page's horizontal padding. */}
-      <p
-        className="col-start-1 col-span-4 row-start-4 -ml-md w-screen self-start whitespace-nowrap font-medium leading-[1.15] lowercase tracking-[-0.05em] text-text-highlight text-[18vw] pl-md md:-ml-xl md:col-span-3 md:pl-xl lg:-ml-5xl lg:col-span-6 lg:row-start-3 lg:pl-5xl"
+      {/* Wordmark — FitText measures and scales to exactly fill viewport width. */}
+      <FitText
+        className="col-start-1 col-span-4 row-start-4 -ml-md w-screen self-start font-medium leading-[1.15] lowercase tracking-[-0.12em] text-text-highlight pl-md md:-ml-xl md:col-span-3 md:pl-xl dt:-ml-5xl dt:col-span-6 dt:row-start-3 dt:pl-5xl"
       >
         get in touch
-      </p>
+      </FitText>
     </footer>
   );
 }

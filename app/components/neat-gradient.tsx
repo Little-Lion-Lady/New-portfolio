@@ -99,7 +99,7 @@ const defaultConfig: NeatConfig = {
   flatShading: false,
   cameraLock: false,
   cameraX: 0,
-  cameraY: -15,
+  cameraY: -17,
   cameraZ: 0,
   cameraRotationX: 0.86,
   cameraRotationY: -0.007,
@@ -153,13 +153,17 @@ export function NeatGradientBg({
     const observer = new MutationObserver(applyThemeColors);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
+    const baseYOffset = { ...defaultConfig, ...config }.yOffset ?? 0;
+
     const handleScroll = () => {
       if (gradientRef.current) {
-        gradientRef.current.yOffset = window.scrollY;
+        gradientRef.current.yOffset = baseYOffset + window.scrollY;
       }
     };
 
     if (scrollReactive) {
+      // Sync immediately so the gradient never jumps on first scroll.
+      handleScroll();
       window.addEventListener("scroll", handleScroll, { passive: true });
     }
 

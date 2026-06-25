@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { MoonIcon, SunIcon } from "./icons";
 
 // Light/dark theme toggle (rebuild-prompt #5).
@@ -34,14 +35,21 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
   };
 
   return (
-    <button
+    <motion.button
       type="button"
       onClick={toggle}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       suppressHydrationWarning
-      className={`inline-flex h-[20px] w-[24px] items-center justify-center rounded-full border-[1.2px] border-border-highlight p-[4px] text-text-primary transition-colors ${className}`}
+      whileHover={{
+        scale: 1.2,
+        boxShadow: isDark
+          ? "0 0 8px 2px rgba(55, 68, 255, 0.3)"
+          : "0 0 8px 2px rgba(0, 0, 0, 0.1)",
+      }}
+      transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+      className={`inline-flex h-[20px] w-[24px] items-center justify-center rounded-full border-[1.2px] border-border-highlight p-[4px] text-text-primary ${className}`}
     >
       {isDark ? <SunIcon className="size-md" /> : <MoonIcon className="size-md" />}
-    </button>
+    </motion.button>
   );
 }
