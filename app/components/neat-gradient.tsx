@@ -35,8 +35,8 @@ const defaultConfig: NeatConfig = {
   colorSaturation: 2,
   wireframe: false,
   colorBlending: 5,
-  backgroundColor: "#E4E4E4",
-  backgroundAlpha: 0,
+  backgroundColor: "#f2f4f8",
+  backgroundAlpha: 1,
   grainScale: 4,
   grainSparsity: 0,
   grainIntensity: 0,
@@ -145,6 +145,10 @@ export function NeatGradientBg({
       const isDark = document.documentElement.getAttribute("data-theme") === "dark";
       if (gradientRef.current) {
         gradientRef.current.colors = isDark ? darkColors : lightColors;
+        // Solid background matching the page avoids Firefox's white fill on
+        // transparent WebGL canvases under filter:blur().
+        gradientRef.current.backgroundColor = isDark ? "#0a090a" : "#f2f4f8";
+        gradientRef.current.backgroundAlpha = 1;
       }
     };
 

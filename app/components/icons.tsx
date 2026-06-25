@@ -1,6 +1,15 @@
 // Shared inline icons. Drawn with currentColor so they inherit text colour and
 // theme correctly in both light and dark — no per-theme asset swaps needed.
 
+export function ArrowRight({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden className={className}>
+      <path d="M3 12 H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="butt" />
+      <path d="M14 7 L20 12 L14 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="butt" strokeLinejoin="miter" />
+    </svg>
+  );
+}
+
 export function ArrowUpRight({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden className={className}>
@@ -9,6 +18,7 @@ export function ArrowUpRight({ className }: { className?: string }) {
     </svg>
   );
 }
+
 
 export function MoonIcon({ className }: { className?: string }) {
   return (

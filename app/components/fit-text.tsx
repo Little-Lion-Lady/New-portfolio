@@ -7,15 +7,16 @@ const BASE_SIZE = 100;
 export function FitText({
   children,
   className,
+  heightRatio = 1.0,
 }: {
   children: string;
   className?: string;
+  // When < 1.0, clips the container to this fraction of the natural line-box
+  // height and bottom-aligns the text so the cap height rides to the top edge.
+  heightRatio?: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const spanRef = useRef<HTMLSpanElement>(null);
-  // fontSize state keeps React re-renders correct; direct DOM write handles
-  // the case where state value doesn't change (React bails out) but the DOM
-  // was temporarily mutated during measurement.
   const [fontSize, setFontSize] = useState<number>(BASE_SIZE);
 
   useEffect(() => {
@@ -27,13 +28,10 @@ export function FitText({
     const fit = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        // Switch to inline-block so getBoundingClientRect gives the text's
-        // intrinsic width — display:block always fills the container width.
         span.style.display = "inline-block";
         span.style.fontSize = `${BASE_SIZE}px`;
         const naturalWidth = span.getBoundingClientRect().width;
 
-        // Restore immediately so the span is never visibly at 100px.
         span.style.display = "block";
 
         if (!naturalWidth) return;
@@ -41,8 +39,6 @@ export function FitText({
         const rect = container.getBoundingClientRect();
         const paddingLeft = parseFloat(getComputedStyle(container).paddingLeft) || 0;
         const textStart = rect.left + paddingLeft;
-        // Fill to the footer's right edge (which clips at main's padding boundary),
-        // not clientWidth (which would overshoot by main's right padding).
         const footer = container.closest("footer");
         const clipRight = footer
           ? footer.getBoundingClientRect().right
@@ -50,23 +46,29 @@ export function FitText({
         const available = (clipRight - textStart) * 0.985;
         const newSize = (available / naturalWidth) * BASE_SIZE;
 
-        // Write directly so the DOM is always correct even when React bails
-        // out because newSize matches the current state value.
         span.style.fontSize = `${newSize}px`;
+
+        if (heightRatio < 1.0) {
+          // lineHeight is the computed px value (newSize × 1.15 from the parent class).
+          const lineHeight = parseFloat(getComputedStyle(span).lineHeight);
+          container.style.height = `${lineHeight * heightRatio}px`;
+          container.style.overflow = "hidden";
+          container.style.display = "flex";
+          container.style.alignItems = "flex-end";
+        }
+
         setFontSize(newSize);
       });
     };
 
     fit();
     document.fonts.ready.then(fit);
-    // Use window resize — ResizeObserver on the container fires on height
-    // changes too, which creates a feedback loop when font size changes.
     window.addEventListener("resize", fit, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", fit);
     };
-  }, [children]);
+  }, [children, heightRatio]);
 
   return (
     <div ref={containerRef} className={className}>

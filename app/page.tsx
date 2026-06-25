@@ -5,16 +5,14 @@ import { SectionHeader } from "./components/section-header";
 import { WorkItem } from "./components/work-item";
 import { Button } from "./components/button";
 import { SectionReveal } from "./components/section-reveal-context";
-import { Reveal, RevealWords } from "./components/reveal";
+import { Reveal } from "./components/reveal";
 import { HeroCat } from "./components/hero-cat";
+import { AboutCat } from "./components/about-cat";
+import { HeroText } from "./components/hero-text";
 
 function Divider({ className }: { className?: string }) {
   return <div className={`h-px bg-border-primary ${className ?? "w-full"}`} />;
 }
-
-// Hero copy is style-less in Figma — it scales fluidly with the viewport.
-// clamp() is tuned to hit the Figma frame sizes: 32px (mobile) / 60px (tablet) / 92px (desktop).
-const HL = { color: "var(--text-primary-highlight)" };
 
 export default function Home() {
   return (
@@ -29,26 +27,8 @@ export default function Home() {
           Text vertically centered in the top 3/4. Image bottom-aligned in the remaining 1/4. */}
       {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
       <section className="relative z-10 flex h-[clamp(640px,calc(100svh-56px),1500px)] w-full flex-col md:h-[clamp(640px,calc(100svh-64px),1500px)] lg:h-[clamp(640px,calc(100svh-80px),1500px)]">
-        {/* Text — top 4/5, content vertically centered with responsive y-padding */}
-        <div className="flex h-[calc(100%-100%/4.5)] w-full items-center py-3xs md:py-2xl lg:py-4xl">
-          <RevealWords
-            as="p"
-            className="w-full"
-            style={{
-              fontFamily: "var(--font-family-body)",
-              fontWeight: "var(--font-weight-medium)",
-              fontSize: "clamp(32px, min(5.85vw, 6.5svh), 92px)",
-              lineHeight: 1.2,
-              letterSpacing: "-0.02em",
-              color: "var(--text-primary-overlay)",
-            }}
-          >
-            I&apos;m an <span style={HL}>IC Product Designer</span> specialising in{" "}
-            <span style={HL}>product growth</span> and optimisation with a track record of shipping{" "}
-            <span style={HL}>highly crafted interfaces</span> and dynamic interactions that elevate
-            user experience. Currently <span style={HL}>leading design</span> at First Table.
-          </RevealWords>
-        </div>
+        {/* Text — fits to its bounding box via JS binary search on font-size */}
+        <HeroText className="flex h-[calc(100%-100%/3)] w-full items-center py-3xs md:py-2xl lg:pt-6xl lg:pb-4xl" />
         {/* Image + divider — bottom 1/4.5.
             Divider is flex-1 so it stretches from the left page edge.
             Image pulls left with a negative margin to overlap the divider
@@ -56,9 +36,9 @@ export default function Home() {
               mobile  296px → -ml-[15px]
               tablet  636px → -ml-[32px]
               desktop 42vw  → -ml-[2.1vw] */}
-        <Reveal as="div" delay={2} noY className="flex h-[calc(100%/4.5)] items-end">
-          <Divider className="flex-1 self-end mb-[calc(100svh/4.5*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
-          <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[15px] max-w-[296px] md:-ml-[32px] md:max-w-[636px] lg:-ml-[2.1vw] lg:max-w-[42vw]" />
+        <Reveal as="div" delay={2} noY className="flex h-[calc(100%/3)] items-end">
+          <Divider className="flex-1 self-end mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
+          <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[15px] max-w-[296px] md:-ml-[32px] md:max-w-[636px] md:min-h-[300px] lg:-ml-[1.8vw] lg:max-w-[36vw] lg:min-h-[300px]" />
         </Reveal>
       </section>
       </div>
@@ -122,12 +102,7 @@ export default function Home() {
             </div>
           </div>
           <div className="flex justify-end self-end md:col-start-7 md:col-span-2 md:justify-center lg:col-start-10 lg:col-span-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/home/magic-cat.png"
-              alt=""
-              className="w-[233px] max-w-full object-contain md:w-full lg:w-[412px]"
-            />
+            <AboutCat className="w-[233px] max-w-full md:w-full lg:w-[412px]" />
           </div>
         </Reveal>
       </SectionReveal>

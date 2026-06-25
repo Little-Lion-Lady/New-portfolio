@@ -41,15 +41,15 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       suppressHydrationWarning
       whileHover={{
-        scale: 1.2,
+        scale: 1.07,
         boxShadow: isDark
           ? "0 0 8px 2px rgba(55, 68, 255, 0.3)"
           : "0 0 8px 2px rgba(0, 0, 0, 0.1)",
       }}
       transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`inline-flex h-[20px] w-[24px] items-center justify-center rounded-full border-[1.2px] border-border-highlight p-[4px] text-text-primary ${className}`}
+      className={`group inline-flex h-[20px] w-[24px] items-center justify-center rounded-full border-[1.2px] border-border-highlight p-[4px] text-text-primary ${className}`}
     >
-      {isDark ? <SunIcon className="size-md" /> : <MoonIcon className="size-md" />}
+      {isDark ? <SunIcon className="size-md group-hover:fill-current" /> : <MoonIcon className="size-md group-hover:fill-current" />}
     </motion.button>
   );
 }

@@ -7,7 +7,7 @@ export function HeroCat({ className }: { className?: string }) {
   const [animationData, setAnimationData] = useState<object | null>(null);
 
   useEffect(() => {
-    fetch("/home/hero-cat.json")
+    fetch("/home/hero-cat.json?v=8")
       .then((r) => r.json())
       .then(setAnimationData);
   }, []);

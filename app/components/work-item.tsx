@@ -35,9 +35,9 @@ export function WorkItem({
 
         {/* description block — holds desc + roles, and the View link on mobile/tablet */}
         <div className="flex flex-col gap-sm md:col-start-5 md:col-span-5 md:gap-xs lg:col-start-6 lg:col-span-6 lg:gap-md">
-          <div className="flex flex-col gap-xs md:gap-xs lg:gap-md">
-            <p className="m-xs uppercase text-text-primary md:m-sm lg:m-md">{description}</p>
-            <p className="m-xs uppercase text-text-tertiary md:m-sm lg:m-md">{roles}</p>
+          <div className="flex flex-col gap-3xs lg:gap-2xs">
+            <p className="b-xs text-text-primary lg:b-sm">{description}</p>
+            <p className="b-xs text-text-tertiary lg:b-sm">{roles}</p>
           </div>
           {/* View — wrapper controls visibility so it doesn't fight Button's display */}
           <div className="w-full lg:hidden">

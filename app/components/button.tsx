@@ -1,16 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "./icons";
+import { ArrowRight, ArrowUpRight } from "./icons";
 
 const arrowVariants = {
   rest: { x: 0, y: 0, scale: 1 },
   hover: { x: 3, y: -3, scale: 1.2 },
 };
 
-const arrowVariantsMono = {
+const arrowVariantsRight = {
   rest: { x: 0, y: 0 },
-  hover: { x: 3, y: -3 },
+  hover: { x: 4, y: 0 },
 };
 
 // Figma "Button" component. Three variants × three breakpoints (mobile/tablet/desktop):
@@ -59,15 +59,15 @@ export function Button({
         initial="rest"
         whileHover="hover"
         animate="rest"
-        className={`inline-flex items-center gap-3xs m-xs uppercase text-text-primary transition-colors hover:text-text-primary-hover md:gap-2xs md:m-sm lg:gap-3xs lg:m-md ${className}`}
+        className={`inline-flex items-center gap-3xs b-2xs text-text-primary transition-colors hover:text-text-primary-hover md:gap-2xs md:b-xs lg:gap-3xs lg:b-sm ${className}`}
       >
         <span>{label}</span>
         <motion.span
-          variants={arrowVariantsMono}
+          variants={arrowVariantsRight}
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="inline-flex shrink-0"
         >
-          <ArrowUpRight className="size-md md:size-lg" />
+          <ArrowRight className="size-md md:size-lg" />
         </motion.span>
       </motion.a>
     );
@@ -99,7 +99,13 @@ export function Button({
         transition={{ duration: 0.25 }}
       />
       <span className="relative whitespace-nowrap">{label}</span>
-      <ArrowUpRight className="relative size-xl shrink-0 lg:size-2xl" />
+      <motion.span
+        variants={arrowVariantsRight}
+        transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+        className="relative inline-flex shrink-0"
+      >
+        <ArrowRight className="size-lg md:size-xl lg:size-2xl" />
+      </motion.span>
       {/* Glow overlay — tightens and brightens on hover */}
       <motion.span
         aria-hidden

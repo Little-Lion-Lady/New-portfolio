@@ -354,9 +354,9 @@ Never mix font families outside their intended roles.
 | `b-lg` | `font-family-font-family-body` (Geist) | `font-size-text-xl` (32px) | `line-height-body-lg` (48px) | `font-weight-regular` (400) |
 | `b-md` | `font-family-font-family-body` (Geist) | `font-size-text-md` (24px) | `line-height-body-md` (40px) | `font-weight-regular` (400) |
 | `b-sm` | `font-family-font-family-body` (Geist) | `font-size-text-sm` (20px) | `line-height-body-sm` (32px) | `font-weight-regular` (400) |
-| `b-xs` | `font-family-font-family-body` (Geist) | `font-size-text-xs` (16px) | `line-height-body-xs` (24px) | `font-weight-regular` (400) |
-| `b-2xs` | `font-family-font-family-body` (Geist) | `font-size-text-2xs` (14px) | `line-height-body-2xs` (20px) | `font-weight-regular` (400) |
-| `b-3xs` | `font-family-font-family-body` (Geist) | `font-size-text-3xs` (12px) | `line-height-body-3xs` (18px) | `font-weight-regular` (400) |
+| `b-xs` | `font-family-font-family-body` (Geist) | `font-size-text-xs` (16px) | `line-height-body-xs` (26px) | `font-weight-regular` (400) |
+| `b-2xs` | `font-family-font-family-body` (Geist) | `font-size-text-2xs` (14px) | `line-height-body-2xs` (24px) | `font-weight-regular` (400) |
+| `b-3xs` | `font-family-font-family-body` (Geist) | `font-size-text-3xs` (12px) | `line-height-body-3xs` (22px) | `font-weight-regular` (400) |
 
 ---
 
