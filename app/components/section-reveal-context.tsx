@@ -55,7 +55,7 @@ export function SectionReveal({
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    let timeoutId: number | undefined;
 
     if (reducedMotion) {
       // Defer to avoid calling setState synchronously in the effect body.
@@ -70,7 +70,7 @@ export function SectionReveal({
       (entries) => {
         if (entries[0]?.isIntersecting) {
           const wait = (notBefore ? Math.max(0, notBefore - Date.now()) : 0) + delay;
-          timeoutId = window.setTimeout(() => setActive(true), wait);
+          timeoutId = window.setTimeout(() => setActive(true), wait) as number;
           observer.disconnect();
         }
       },
@@ -87,7 +87,7 @@ export function SectionReveal({
 
   return (
     <SectionRevealContext.Provider value={active}>
-      <Tag ref={ref as unknown as React.RefObject<HTMLElement>} className={className} style={style} id={id}>
+      <Tag ref={ref as unknown as React.RefObject<never>} className={className} style={style} id={id}>
         {children}
       </Tag>
     </SectionRevealContext.Provider>

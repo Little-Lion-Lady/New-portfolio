@@ -243,7 +243,7 @@ export function RevealWords({
   const Tag = as;
 
   return (
-    <Tag ref={ref as unknown as React.RefObject<HTMLElement>} className={className} style={style}>
+    <Tag ref={ref as unknown as React.RefObject<never>} className={className} style={style}>
       {tokens.map((token, i) => (
         <motion.span
           key={i}
