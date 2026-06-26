@@ -44,15 +44,15 @@ export function SiteHeader() {
         style={{ background: "linear-gradient(to bottom, var(--bg-primary) 0%, var(--bg-transparency) 100%)" }}
       />
       <nav className="relative grid grid-cols-4 items-center gap-lg md:grid-cols-8 lg:grid-cols-12">
-        <p className="col-start-1 col-span-2 b-3xs text-text-primary md:col-span-2 lg:col-span-2 lg:b-2xs">
+        <a href="/" className="col-start-1 col-span-2 b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-span-2 lg:col-span-2 lg:b-2xs">
           Maryna Babych
-        </p>
+        </a>
         <p className="hidden whitespace-nowrap b-3xs text-text-primary md:col-start-3 md:col-span-2 md:block lg:col-start-3 lg:b-2xs">
           Lead Product Designer
         </p>
         <a
           href="#work"
-          className="hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover lg:col-start-10 lg:block lg:justify-self-start lg:b-2xs"
+          className="hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover lg:col-start-10 lg:justify-self-start lg:b-2xs"
         >
           Work
         </a>
