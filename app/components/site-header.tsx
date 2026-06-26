@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { ThemeToggle } from "./theme-toggle";
 
 // Figma "Header" component. Responsive grid: 4 cols (mobile) / 8 (tablet) / 12 (desktop),
@@ -7,6 +10,15 @@ import { ThemeToggle } from "./theme-toggle";
 // Progressive blur: 4 stacked backdrop-filter layers with gradient masks — strongest at top,
 // fades to zero at the bottom edge. Background gradient paints above the blur layers.
 export function SiteHeader() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 0);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 overflow-hidden px-md pt-md pb-lg md:px-xl md:pt-lg md:pb-xl lg:px-5xl lg:pb-2xl">
       {/* Progressive blur — full-height layers stacked in place (NOT flex/margin overlap:
@@ -16,7 +28,7 @@ export function SiteHeader() {
           reaches further down. Since backdrop-filters compound, the top gets every layer
           (max blur) and layers drop out one-by-one going down, so the total blur decays as
           one smooth ramp — no triangular peaks, no bands — to 0 at the bottom edge. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
+      <div aria-hidden className="pointer-events-none absolute inset-0 transition-opacity duration-300" style={{ opacity: scrolled ? 1 : 0 }}>
         {[
           { blur: 1,   mask: "black 0%, black 40%, transparent 100%" },
           { blur: 2,   mask: "black 0%, black 33%, transparent 85%" },
@@ -40,8 +52,8 @@ export function SiteHeader() {
       {/* Background gradient painted above blur layers */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{ background: "linear-gradient(to bottom, var(--bg-primary) 0%, var(--bg-transparency) 100%)" }}
+        className="pointer-events-none absolute inset-0 transition-opacity duration-300"
+        style={{ background: "linear-gradient(to bottom, var(--bg-primary) 0%, var(--bg-transparency) 100%)", opacity: scrolled ? 1 : 0 }}
       />
       <nav className="relative grid grid-cols-4 items-center gap-lg md:grid-cols-8 lg:grid-cols-12">
         <a href="/" className="col-start-1 col-span-2 b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-span-2 lg:col-span-2 lg:b-2xs">

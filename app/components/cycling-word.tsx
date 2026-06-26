@@ -42,9 +42,9 @@ export function CyclingWord({
         <motion.span
           key={words[index]}
           className={`[grid-area:1/1] ${className ?? ""}`}
-          initial={reduced ? { opacity: 0 } : { y: "110%", opacity: 0, filter: "blur(16px)" }}
+          initial={reduced ? { opacity: 0 } : { y: "40%", opacity: 0, filter: "blur(16px)" }}
           animate={reduced ? { opacity: 1 } : { y: "0%", opacity: 1, filter: "blur(0px)" }}
-          exit={reduced ? { opacity: 0 } : { y: "-110%", opacity: 0, filter: "blur(16px)" }}
+          exit={reduced ? { opacity: 0 } : { y: "-40%", opacity: 0, filter: "blur(16px)" }}
           transition={
             reduced
               ? { duration: 0.2 }

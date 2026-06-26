@@ -185,11 +185,13 @@ export function RevealWords({
   as = "p",
   className,
   style,
+  startIndex = 0,
 }: {
   children: ReactNode;
   as?: Tag;
   className?: string;
   style?: CSSProperties;
+  startIndex?: number;
 }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
@@ -248,7 +250,7 @@ export function RevealWords({
         <motion.span
           key={i}
           style={{ display: "inline-block", whiteSpace: "pre-wrap" }}
-          custom={i}
+          custom={startIndex + i}
           initial="hidden"
           animate={shouldAnimate ? "visible" : "hidden"}
           variants={reducedMotion ? reducedVariants : isFF ? ffWordVariants : wordVariants}

@@ -1,13 +1,12 @@
 import { GradientBg } from "./components/gradient-bg";
 import { SiteHeader } from "./components/site-header";
 import { Button } from "./components/button";
+import { Reveal, RevealWords } from "./components/reveal";
 
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-svh flex-col bg-bg-primary px-md pt-[56px] md:px-3xl md:pt-[64px] lg:px-5xl lg:pt-[72px]">
-      {/* Gradient — absolute z-0, renders behind everything */}
+    <main className="relative flex min-h-svh flex-col bg-bg-primary px-md pt-[56px] md:px-xl md:pt-[64px] lg:px-5xl lg:pt-[72px]">
       <GradientBg />
-      {/* Fixed header — always on top */}
       <SiteHeader />
 
       {/* Full-height content wrapper, sits above gradient */}
@@ -21,30 +20,33 @@ export default function NotFound() {
 
           {/* Mobile: no stagger, stack */}
           <div className="md:hidden">
-            <p className="d-md whitespace-nowrap text-text-primary-highlight">Oops</p>
-            <p className="d-md leading-[0.8] whitespace-nowrap text-text-highlight-dark">404 error</p>
+            <RevealWords as="p" className="d-md whitespace-nowrap text-text-primary-highlight">Oops</RevealWords>
+            <RevealWords as="p" startIndex={1} className="d-md leading-[0.8] whitespace-nowrap text-text-highlight-dark">404 error</RevealWords>
           </div>
 
           {/* Tablet: 9-col grid stagger */}
           <div className="hidden grid-cols-9 gap-x-[20px] md:grid lg:hidden">
-            <p className="col-[1/span_4] d-lg leading-[0.9] whitespace-nowrap text-text-primary-highlight">Oops</p>
-            <p className="col-[2/span_8] d-lg leading-[0.9] whitespace-nowrap text-text-highlight-dark">404 error</p>
+            <RevealWords as="p" className="col-[1/span_4] d-lg leading-[0.9] whitespace-nowrap text-text-primary-highlight">Oops</RevealWords>
+            <RevealWords as="p" startIndex={1} className="col-[2/span_8] d-lg leading-[0.9] whitespace-nowrap text-text-highlight-dark">404 error</RevealWords>
           </div>
 
           {/* Desktop: 12-col grid stagger, fluid D-xl → D-2xl */}
           <div className="hidden grid-cols-12 gap-x-[20px] lg:grid">
-            <p
+            <RevealWords
+              as="p"
               className="col-[1/span_5] d-xl leading-[0.9] whitespace-nowrap text-text-primary-highlight"
               style={{ fontSize: "clamp(142px, 22.7px + 11.65vw, 224px)" }}
             >
               Oops
-            </p>
-            <p
+            </RevealWords>
+            <RevealWords
+              as="p"
+              startIndex={1}
               className="col-[3/span_10] d-xl leading-[0.9] whitespace-nowrap text-text-highlight-dark"
               style={{ fontSize: "clamp(142px, 22.7px + 11.65vw, 224px)" }}
             >
               404 error
-            </p>
+            </RevealWords>
           </div>
         </div>
 
@@ -53,29 +55,31 @@ export default function NotFound() {
         {/* Mobile: stacked texts + button */}
         <div className="mt-3xl flex flex-col gap-3xl md:hidden">
           <div className="flex flex-col gap-[20px]">
-            <p className="b-sm text-text-secondary">Are you lost?</p>
-            <p className="b-sm text-text-secondary">I can fix this</p>
+            <Reveal index={0} delay={0.5} as="p" className="b-sm text-text-secondary">Are you lost?</Reveal>
+            <Reveal index={1} delay={0.5} as="p" className="b-sm text-text-secondary">I can fix this</Reveal>
           </div>
-          <Button variant="primary" label="Go home" href="/" className="self-start" />
+          <Reveal index={2} delay={0.5} className="self-start">
+            <Button variant="primary" label="Go home" href="/" />
+          </Reveal>
         </div>
 
         {/* Tablet: flex row, button ml-auto */}
         <div className="mt-8xl hidden items-center gap-x-[20px] md:flex lg:hidden">
-          <p className="w-[258px] b-md text-text-secondary">Are you lost?</p>
-          <p className="w-[258px] b-md text-text-secondary">I can fix this</p>
-          <div className="ml-auto">
+          <Reveal index={0} delay={0.5} as="p" className="w-[258px] b-md text-text-secondary">Are you lost?</Reveal>
+          <Reveal index={1} delay={0.5} as="p" className="w-[258px] b-md text-text-secondary">I can fix this</Reveal>
+          <Reveal index={2} delay={0.5} className="ml-auto">
             <Button variant="primary" label="Go home" href="/" />
-          </div>
+          </Reveal>
         </div>
 
         {/* Desktop: fills remaining ~30svh, flex-1 centers helper vertically */}
         <div className="hidden flex-1 items-center gap-x-[20px] lg:flex">
           <div className="flex-1" />
-          <p className="w-[258px] b-md text-text-secondary">Are you lost?</p>
-          <p className="w-[258px] b-md text-text-secondary">I can fix this</p>
-          <div className="ml-auto">
+          <Reveal index={0} delay={0.5} as="p" className="w-[258px] b-md text-text-secondary">Are you lost?</Reveal>
+          <Reveal index={1} delay={0.5} as="p" className="w-[258px] b-md text-text-secondary">I can fix this</Reveal>
+          <Reveal index={2} delay={0.5} className="ml-auto">
             <Button variant="primary" label="Go home" href="/" />
-          </div>
+          </Reveal>
         </div>
 
       </div>

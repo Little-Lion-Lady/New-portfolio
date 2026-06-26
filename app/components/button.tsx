@@ -85,7 +85,7 @@ export function Button({
         hover: { scale: 1.04 },
       }}
       transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`relative inline-flex items-center gap-xs overflow-hidden rounded-full pl-xl pr-md py-sm b-xs text-text-inverted md:gap-sm md:pl-2xl md:pr-lg md:py-md md:b-sm lg:pl-3xl lg:pr-xl lg:py-md lg:b-md ${className}`}
+      className={`relative inline-flex items-center gap-xs overflow-hidden rounded-full pl-xl pr-lg py-sm b-xs text-text-inverted md:gap-sm md:pl-2xl md:pr-xl md:py-md md:b-sm lg:pl-3xl lg:pr-2xl lg:py-md lg:b-md ${className}`}
       style={{
         boxShadow:
           "0 10px 10px -10px var(--shadows-shadow-01), 0 10px 30px 1px var(--shadows-shadow-02)",
