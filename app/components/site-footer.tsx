@@ -12,7 +12,7 @@ const CYCLING_WORDS = ["love", "hate", "AI", "coffee", "mischief", "claude", "ca
 // per rebuild-prompt #6 (match each frame, don't interpolate). Clipped to avoid scroll.
 export function SiteFooter() {
   return (
-    <footer className="grid w-full grid-cols-4 gap-x-lg overflow-x-clip pt-2xl pb-4xs md:gap-y-xl md:pt-5xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-0 dt:pb-0">
+    <footer className="grid w-full grid-cols-4 gap-x-lg overflow-x-clip pt-2xl pb-4xs md:gap-y-xl md:pt-3xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-0 dt:pb-0">
       {/* Socials — vertical on mobile, horizontal md+ */}
       <div className="col-start-1 col-span-3 row-start-1 flex flex-col items-start gap-2xl md:col-span-2 md:flex-row md:items-center md:gap-6xl md:pt-md dt:pb-2xl dt:!pt-5xl">
         <Button variant="link" label="LinkedIn" href="https://www.linkedin.com" />
@@ -20,14 +20,14 @@ export function SiteFooter() {
       </div>
 
       {/* Made with love */}
-      <div className="col-start-1 col-span-3 row-start-2 flex items-center pt-4xl md:col-span-2 md:pt-4xl dt:!col-start-5 dt:col-span-2 dt:row-start-1 dt:items-start dt:!pt-3xl dt:overflow-hidden">
+      <div className="col-start-1 col-span-3 row-start-2 flex items-center pt-2xl pb-2xl md:col-span-2 md:pt-4xl md:pb-lg dt:!col-start-5 dt:col-span-2 dt:row-start-1 dt:items-start dt:!pt-3xl dt:overflow-hidden">
         <p className="whitespace-nowrap text-[32px] leading-[48px] text-text-tertiary md:text-[44px] md:leading-[1.1]">
           Made with <CyclingWord words={CYCLING_WORDS} className="text-text-primary-highlight" />
         </p>
       </div>
 
       {/* Colophon — M-xs → M-md → M-lg */}
-      <div className="col-start-1 col-span-4 row-start-3 flex items-center -mb-sm md:col-span-3 md:-mb-lg dt:col-span-2 dt:row-start-2 dt:pt-4xl dt:!-mb-2xl">
+      <div className="col-start-1 col-span-4 row-start-3 flex items-center md:col-span-3 md:-mb-lg dt:col-span-2 dt:row-start-2 dt:pt-4xl dt:!-mb-2xl">
         <p className="b-3xs text-text-tertiary md:b-2xs dt:b-sm">©2026_Maryna_Babych</p>
       </div>
 

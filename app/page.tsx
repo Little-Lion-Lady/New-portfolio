@@ -37,7 +37,7 @@ export default function Home() {
               tablet  636px → -ml-[32px]
               desktop 42vw  → -ml-[2.1vw] */}
         <Reveal as="div" delay={2} noY className="flex h-[calc(100%/3)] items-end">
-          <Divider className="flex-1 self-end mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
+          <Divider className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
           <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[15px] max-w-[296px] md:-ml-[32px] md:max-w-[636px] md:min-h-[300px] lg:-ml-[1.8vw] lg:max-w-[36vw] lg:min-h-[300px]" />
         </Reveal>
       </section>
