@@ -20,7 +20,7 @@ export function SiteFooter() {
       </div>
 
       {/* Made with love */}
-      <div className="col-start-1 col-span-3 row-start-2 flex items-center pt-4xl md:col-span-2 md:pt-4xl dt:!col-start-5 dt:col-span-2 dt:row-start-1 dt:items-end dt:self-end dt:justify-end dt:!pt-0 dt:pb-2xl">
+      <div className="col-start-1 col-span-3 row-start-2 flex items-center pt-4xl md:col-span-2 md:pt-4xl dt:!col-start-5 dt:col-span-2 dt:row-start-1 dt:items-start dt:justify-end dt:!pt-3xl dt:overflow-hidden">
         <p className="whitespace-nowrap text-[32px] leading-[48px] text-text-tertiary md:text-[44px] md:leading-[1.1]">
           Made with <CyclingWord words={CYCLING_WORDS} className="text-text-primary-highlight" />
         </p>
