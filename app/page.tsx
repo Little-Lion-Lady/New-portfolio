@@ -28,7 +28,7 @@ export default function Home() {
       {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
       <section className="relative z-10 flex h-[clamp(640px,calc(100svh-56px),1500px)] w-full flex-col md:h-[clamp(640px,calc(100svh-64px),1500px)] lg:h-[clamp(640px,calc(100svh-80px),1500px)]">
         {/* Text — fits to its bounding box via JS binary search on font-size */}
-        <HeroText className="flex h-[calc(100%-100%/3)] w-full items-center py-3xs md:py-2xl lg:pt-6xl lg:pb-4xl" />
+        <HeroText className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:py-2xl lg:pt-6xl lg:pb-4xl" />
         {/* Image + divider — bottom 1/4.5.
             Divider is flex-1 so it stretches from the left page edge.
             Image pulls left with a negative margin to overlap the divider
@@ -75,9 +75,12 @@ export default function Home() {
         <Reveal index={0} className="w-full">
           <SectionHeader number="02" name="Backstory" />
         </Reveal>
-        {/* Content: mobile stack (desc → cat below); tablet 8-col; desktop 12-col */}
-        <Reveal index={1} className="flex flex-col gap-lg md:grid md:grid-cols-8 md:items-start lg:grid-cols-12">
-          <div className="flex flex-col gap-r-xl md:col-start-1 md:col-span-6 lg:col-span-7">
+        {/* Content: mobile+tablet stack (cat → desc); desktop 12-col grid */}
+        <Reveal index={1} className="flex flex-col gap-lg lg:grid lg:grid-cols-12 lg:items-start">
+          <div className="flex justify-end lg:col-start-8 lg:col-span-5 lg:justify-self-end lg:self-end">
+            <AboutCat className="w-full md:w-1/2 md:min-w-[350px]" />
+          </div>
+          <div className="flex flex-col gap-r-xl lg:col-start-1 lg:col-span-7 lg:row-start-1">
             {/* Key paragraph — B-sm → B-md → B-lg */}
             <p className="b-sm text-text-secondary md:b-md lg:b-lg">
               I’m a <span className="text-text-highlight-dark">passionate</span>,{" "}
@@ -90,19 +93,7 @@ export default function Home() {
               industries and environments, including agencies, startups, and established product
               companies.
             </p>
-            {/* Button + awards — col on mobile, row md+, spread on desktop */}
-            <div className="flex flex-col items-start gap-md md:flex-row md:items-center md:gap-6xl lg:justify-between lg:gap-0">
-              <Button variant="primary" label="About me" href="#about" />
-              <div className="flex items-center gap-md pr-3xl">
-                {[1, 2, 3, 4].map((n) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img key={n} src={`/home/award-${n}.png`} alt="" className="size-award-sm object-contain md:size-award-lg" />
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-end self-end md:col-start-7 md:col-span-2 md:justify-center lg:col-start-10 lg:col-span-3">
-            <AboutCat className="w-[233px] max-w-full md:w-full lg:w-[412px]" />
+            <Button variant="primary" label="About me" href="#about" className="self-start" />
           </div>
         </Reveal>
       </SectionReveal>

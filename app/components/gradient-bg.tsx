@@ -10,9 +10,11 @@ export function GradientBg() {
     >
       {/* clip-path rounds match border-radius at each breakpoint so the
           blur-60px child's bleed is clipped to the same rounded rect. */}
-      <div className="h-full w-full overflow-hidden rounded-2xl blur-[20px] [clip-path:inset(0_round_1rem)] md:rounded-[20px] md:[clip-path:inset(0_round_20px)] lg:rounded-3xl lg:[clip-path:inset(0_round_1.5rem)]">
-        <div className="h-full w-full blur-[60px]">
-          <NeatGradientBg />
+      <div className="h-full w-full blur-[20px] opacity-80">
+        <div className="h-full w-full overflow-hidden rounded-2xl [clip-path:inset(0_round_1rem)] md:rounded-[20px] md:[clip-path:inset(0_round_20px)] lg:rounded-3xl lg:[clip-path:inset(0_round_1.5rem)]">
+          <div className="h-full w-full blur-[60px]">
+            <NeatGradientBg />
+          </div>
         </div>
       </div>
     </div>

@@ -80,8 +80,8 @@ export function HeroText({ className }: { className?: string }) {
           color: "var(--text-primary-overlay)",
         }}
       >
-        I&apos;m an <span style={HL}>IC Product Designer</span> specialising in{" "}
-        <span style={HL}>product growth</span> and optimisation with a track record of shipping{" "}
+        I&apos;m an <span style={HL}>IC Product Designer </span>specialising in{" "}
+        <span style={HL}>product growth </span>and optimisation with a track record of shipping{" "}
         <span style={HL}>highly crafted interfaces</span> and dynamic interactions that elevate
         user experience. Currently <span style={HL}>leading design</span> at First Table.
       </RevealWords>
