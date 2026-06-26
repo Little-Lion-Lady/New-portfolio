@@ -27,7 +27,7 @@ export function SiteFooter() {
       </div>
 
       {/* Colophon — M-xs → M-md → M-lg */}
-      <div className="col-start-1 col-span-4 row-start-3 flex items-center pt-4xl md:col-span-3 dt:col-span-2 dt:row-start-2 dt:pt-9xl">
+      <div className="col-start-1 col-span-4 row-start-3 flex items-center md:col-span-3 dt:col-span-2 dt:row-start-2 dt:pt-4xl">
         <p className="b-3xs text-text-tertiary md:b-2xs dt:b-sm">©2026_Maryna_Babych</p>
       </div>
 
