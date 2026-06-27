@@ -119,11 +119,12 @@ export function AboutCat({ className }: { className?: string }) {
   if (!animationData) return null;
 
   return (
-    <Lottie
-      animationData={animationData}
-      loop
-      className={className}
-      style={{ aspectRatio: "1857/1206", height: "auto" }}
-    />
+    <div className={className}>
+      <Lottie
+        animationData={animationData}
+        loop
+        style={{ width: "100%", height: "100%" }}
+      />
+    </div>
   );
 }

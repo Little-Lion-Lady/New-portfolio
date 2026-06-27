@@ -76,9 +76,9 @@ export default function Home() {
           <SectionHeader number="02" name="Backstory" />
         </Reveal>
         {/* Content: mobile+tablet stack (cat → desc); desktop 12-col grid */}
-        <Reveal index={1} className="w-full flex flex-col gap-lg lg:grid lg:grid-cols-12 lg:items-start">
-          <div className="flex justify-end lg:col-start-8 lg:col-span-5 lg:self-end">
-            <AboutCat className="w-full max-w-[350px] md:max-w-none md:w-1/2 md:min-w-[350px] lg:w-full" />
+        <Reveal index={1} className="w-full flex flex-col gap-lg lg:grid lg:grid-cols-12 lg:items-stretch">
+          <div className="flex justify-end lg:col-start-8 lg:col-span-5 lg:self-end lg:h-full">
+            <AboutCat className="w-full max-w-[350px] aspect-[1857/1206] md:w-1/2 md:min-w-[350px] lg:w-full lg:max-w-full lg:h-full lg:aspect-auto" />
           </div>
           <div className="flex flex-col gap-r-xl lg:col-start-1 lg:col-span-7 lg:row-start-1">
             {/* Key paragraph — B-sm → B-md → B-lg */}
