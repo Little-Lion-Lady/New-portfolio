@@ -15,8 +15,8 @@ export function SiteFooter() {
     <footer className="grid w-full grid-cols-4 gap-x-lg overflow-x-clip pt-2xl pb-4xs md:gap-y-xl md:pt-3xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-0 dt:pb-0">
       {/* Socials — vertical on mobile, horizontal md+ */}
       <div className="col-start-1 col-span-3 row-start-1 flex flex-col items-start gap-2xl md:col-span-2 md:flex-row md:items-center md:gap-6xl md:pt-md dt:pb-2xl dt:!pt-5xl">
-        <Button variant="link" label="LinkedIn" href="https://www.linkedin.com" />
-        <Button variant="link" label="Email" href="mailto:maryna.babych@gmail.com" />
+        <Button variant="link" label="LinkedIn" href="https://www.linkedin.com/in/marynababych/" target="_blank" rel="noopener noreferrer" />
+        <Button variant="link" label="Email" href="mailto:maryna.babych@gmail.com" target="_blank" rel="noopener noreferrer" />
       </div>
 
       {/* Made with love */}

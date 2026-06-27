@@ -20,7 +20,7 @@ export default function Home() {
     <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
       {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
       <div>
-        <GradientBg />
+        <GradientBg scaleClassName="lg:[transform:scaleX(1.5)]" />
         <SiteHeader />
 
         {/* Hero — fills the viewport (clamped 640px–1500px).
@@ -78,7 +78,7 @@ export default function Home() {
         {/* Content: mobile+tablet stack (cat → desc); desktop 12-col grid */}
         <Reveal index={1} className="w-full flex flex-col gap-lg lg:grid lg:grid-cols-12 lg:items-start">
           <div className="flex justify-end lg:col-start-8 lg:col-span-5 lg:self-end">
-            <AboutCat className="w-full md:w-1/2 md:min-w-[350px] lg:w-full" />
+            <AboutCat className="w-full max-w-[350px] md:max-w-none md:w-1/2 md:min-w-[350px] lg:w-full" />
           </div>
           <div className="flex flex-col gap-r-xl lg:col-start-1 lg:col-span-7 lg:row-start-1">
             {/* Key paragraph — B-sm → B-md → B-lg */}
@@ -93,7 +93,7 @@ export default function Home() {
               industries and environments, including agencies, startups, and established product
               companies.
             </p>
-            <Button variant="primary" label="About me" href="#about" className="self-start" />
+            <Button variant="primary" label="About me" href="/about" className="self-start" />
           </div>
         </Reveal>
       </SectionReveal>

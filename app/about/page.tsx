@@ -1,0 +1,237 @@
+import { Fragment } from "react";
+import { GradientBg } from "../components/gradient-bg";
+import { SiteHeader } from "../components/site-header";
+import { SiteFooter } from "../components/site-footer";
+import { SectionHeader } from "../components/section-header";
+import { Button } from "../components/button";
+import { SectionReveal } from "../components/section-reveal-context";
+import { Reveal, RevealWords } from "../components/reveal";
+
+function Divider({ className }: { className?: string }) {
+  return <div className={`h-px bg-border-primary ${className ?? "w-full"}`} />;
+}
+
+function ArrowUpRight({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 12 12" fill="none" aria-hidden className={className}>
+      <path d="M1.5 10.5L10.5 1.5M10.5 1.5H3M10.5 1.5V9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+const experience = [
+  { role: "Lead Product Designer", org: "First Table | Marketplace", project: "First Table app", year: "25’ – Now" },
+  { role: "Senior Product Designer", org: "Basis | Startup", project: "Basis Home app", year: "22’ – 25’" },
+  { role: "Senior Product Designer", org: "Serko | Business product", project: "Booking.com for Business", year: "21’ – 22’" },
+  { role: "Senior Product Designer", org: "RUSH | Agency", project: "NZ Covid Tracer App, Eroad", year: "20’ – 21’" },
+  { role: "Product Designer", org: "RUSH | Agency", project: "Google, Z energy, Frankie", year: "18’ – 20’" },
+];
+
+const awards = [
+  { project: "Basis Smart Panel", award: "Best Design Gold", year: "25’", href: "https://bestawards.co.nz/industrial-design/consumer/basis/basis-smart-panel-1/" },
+  { project: "NZ COVID Tracer app", award: "Best Design Gold", year: "21’", href: "https://bestawards.co.nz/digital/digital-products/rush-1/nz-covid-tracer-app/" },
+  { project: "Z Energy Sharetank", award: "Best Design Gold", year: "20’", href: "https://bestawards.co.nz/digital/user-experience/z-energy-innovation-refinery/z-energy-sharetank/" },
+  { project: "Starship Check-Up", award: "Best Design Purple", year: "18’", href: "https://bestawards.co.nz/user-experience-award/public-good-award/rush-1/starship-animal-check-ups-magical-forest-1/" },
+];
+
+export default function About() {
+  return (
+    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
+      {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
+      <div>
+        <GradientBg height="350px" fullWidth scaleX={2} />
+        <SiteHeader />
+
+        {/* Hero — shorter than home, text positioned in lower 2/3 of gradient */}
+        <section className="relative z-10 pb-2xl pt-[100px] md:pt-[128px] lg:pt-[160px]">
+          <RevealWords as="h1" className="about-hero-title text-text-primary-highlight">who am I?</RevealWords>
+        </section>
+      </div>
+
+      <Divider />
+
+      {/* 01 — Overview */}
+      <SectionReveal as="section" className="flex flex-col gap-r-xl">
+        <Reveal index={0} className="w-full">
+          <SectionHeader number="01" name="Overview" />
+        </Reveal>
+
+        {/* Desktop: description left (~5/11) + history right (~6/11).
+            Tablet/mobile: stacked (description → history). */}
+        <Reveal index={1} className="flex flex-col gap-r-2xl wide:flex-row wide:items-start wide:gap-r-xl">
+          {/* Description + CV button */}
+          <div className="flex flex-col gap-r-xl wide:flex-[5]">
+            <p className="b-xs text-text-secondary md:b-sm wide:b-lg">
+              I&apos;m a <span className="text-text-highlight-dark">passionate</span>,{" "}
+              <span className="text-text-highlight-dark">strategic</span>, and{" "}
+              <span className="text-text-highlight-dark">creative thinker</span>, blending
+              human-centred design with technology to create experiences that positively impact lives.
+              With <span className="text-text-highlight-dark">9 years</span> of experience in product
+              design, I&apos;ve delivered{" "}
+              <span className="text-text-highlight-dark">award-winning</span>,{" "}
+              <span className="text-text-highlight-dark">impactful</span> designs across a variety of
+              industries and environments, including agencies, startups, and established product
+              companies.
+            </p>
+            <Button variant="primary" label="Download CV" href="#" className="self-start" />
+          </div>
+
+          {/* Experience + Recognition tables */}
+          <div className="flex flex-col gap-r-xl wide:flex-[6]">
+            {/* ── Experience ── */}
+            <div className="flex flex-col gap-xl">
+              <div>
+                <p className="b-xs md:b-sm text-text-primary mb-2xs">Experience</p>
+                <Divider />
+              </div>
+              <div className="flex flex-col gap-sm">
+                {experience.map((e, i) => (
+                  <Fragment key={i}>
+                    {/* Mobile: role + year on one row, org below, project (tertiary) below */}
+                    <div className="flex flex-col md:hidden">
+                      <div className="flex justify-between">
+                        <p className="b-xs text-text-secondary">{e.role}</p>
+                        <p className="b-xs text-text-secondary">{e.year}</p>
+                      </div>
+                      <p className="b-xs text-text-secondary">{e.org}</p>
+                      <p className="b-xs text-text-tertiary">{e.project}</p>
+                    </div>
+                    {/* Tablet: 3-col (role+org | project | year).
+                        Desktop: 6-col (role+org 1-2 | project 3-4 | year 6). */}
+                    <div className="hidden md:grid md:grid-cols-3 md:gap-x-lg md:items-start lg:grid-cols-6">
+                      <div className="flex flex-col md:col-span-1 lg:col-span-3">
+                        <p className="b-sm text-text-secondary">{e.role}</p>
+                        <p className="b-sm text-text-tertiary">{e.org}</p>
+                      </div>
+                      <p className="b-sm text-text-secondary md:col-span-1 lg:col-start-4 lg:col-span-2">{e.project}</p>
+                      <p className="b-sm text-text-secondary text-right md:col-span-1 lg:col-start-6">{e.year}</p>
+                    </div>
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+
+            {/* ── Recognition ── */}
+            <div className="flex flex-col gap-xl">
+              <div>
+                <p className="b-xs md:b-sm text-text-primary mb-2xs">Recognition</p>
+                <Divider />
+              </div>
+              <div className="flex flex-col gap-sm">
+                {awards.map((a, i) => (
+                  <a key={i} href={a.href} target="_blank" rel="noopener noreferrer" className="group">
+                    {/* Mobile: award + year↗ on one row, project (tertiary) below */}
+                    <div className="flex flex-col md:hidden">
+                      <div className="flex items-start justify-between">
+                        <p className="b-xs text-text-secondary">{a.award}</p>
+                        <div className="flex items-center gap-3xs text-text-secondary shrink-0 ml-sm">
+                          <p className="b-xs">{a.year}</p>
+                          <ArrowUpRight className="size-[10px] transition-transform duration-200 ease-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px] group-hover:scale-[1.2]" />
+                        </div>
+                      </div>
+                      <p className="b-xs text-text-tertiary">{a.project}</p>
+                    </div>
+                    {/* Tablet: 3-col. Desktop: 6-col (project 1-3 | award 4-5 | year↗ 6) */}
+                    <div className="hidden md:grid md:grid-cols-3 md:gap-x-lg md:items-start lg:grid-cols-6">
+                      <p className="b-sm text-text-secondary md:col-span-1 lg:col-span-3">{a.project}</p>
+                      <p className="b-sm text-text-secondary md:col-span-1 lg:col-span-2">{a.award}</p>
+                      <div className="flex items-center justify-end gap-3xs text-text-secondary md:col-span-1 lg:col-start-6">
+                        <p className="b-sm">{a.year}</p>
+                        <ArrowUpRight className="size-[14px] transition-transform duration-200 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:scale-[1.2]" />
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* 02 — Biography */}
+      <SectionReveal as="section" className="flex flex-col gap-r-xl">
+        <Reveal index={0} className="w-full">
+          <SectionHeader number="02" name="Biography" />
+        </Reveal>
+
+        {/* Mobile:  text first (order-1), images below (order-2).
+            Tablet:  images first (order-1), text below (order-2) — stacked.
+            Desktop: images left (order-1), text right (order-2) — side by side. */}
+        <Reveal index={1} className="flex flex-col gap-r-xl lg:flex-row lg:items-start">
+          {/* Images */}
+          <div className="order-2 flex gap-lg md:order-1 lg:flex-[5]">
+            <div className="h-[250px] flex-1 rounded-sm bg-bg-inverse md:h-[676px] lg:h-[482px]" />
+            <div className="h-[250px] flex-1 rounded-sm bg-bg-inverse md:h-[676px] lg:h-[482px]" />
+          </div>
+
+          {/* Bio text */}
+          <div className="order-1 flex flex-col gap-md md:gap-lg md:order-2 lg:flex-[6]">
+            <p className="b-xs text-text-secondary md:b-sm lg:b-md">
+              I grew up in Kyiv, Ukraine, and at 17 I made the leap to New Zealand&mdash;a
+              life-changing move that instilled in me persistence and self-motivation. It also gave me
+              the chance to explore the iconic Lord of the Rings filming locations I had always
+              dreamed of visiting.
+            </p>
+            <p className="b-xs text-text-secondary md:b-sm lg:b-md">
+              When I&apos;m not deep in design work, you can find me enjoying live music, cycling,
+              drawing, and reading hard sci-fi and fantasy novels.
+            </p>
+            <p className="b-xs text-text-tertiary md:b-sm lg:b-md">
+              Bonus points: I&apos;m first-aid trained, so I&apos;m fully prepared to survive the
+              zombie apocalypse.
+            </p>
+          </div>
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* 03 — Artwork */}
+      <SectionReveal as="section" className="flex flex-col gap-r-xl">
+        <Reveal index={0} className="w-full">
+          <SectionHeader number="03" name="Artwork" />
+        </Reveal>
+
+        <Reveal index={1} className="w-full">
+          <p className="b-xs text-text-secondary md:b-sm lg:b-md">
+            I&apos;ve been creating art for as long as I can remember. While I began by honing my
+            digital skills, working in the tech industry inspired me to explore traditional mediums.
+            Art is still a big part of my life and a way to unwind and express my creativity in my
+            spare time.
+          </p>
+        </Reveal>
+
+        {/* Image strip — 4 equal-width placeholder slots, same pattern as WorkItem.
+            Heights match Figma: 300 px mobile / 639 px tablet+desktop. */}
+        <Reveal index={2} className="w-full">
+          <div className="flex w-full items-start gap-xs">
+            <div className="h-[300px] flex-1 rounded-sm bg-bg-inverse lg:h-[639px]" />
+            <div className="h-[300px] flex-1 rounded-sm bg-bg-inverse lg:h-[639px]" />
+            <div className="h-[300px] flex-1 rounded-sm bg-bg-inverse lg:h-[639px]" />
+            <div className="h-[300px] flex-1 rounded-sm bg-bg-inverse lg:h-[639px]" />
+          </div>
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* Case study nav */}
+      <Reveal className="flex w-full items-center gap-lg">
+        <div className="h-[60px] w-[60px] flex-shrink-0 rounded-sm bg-bg-inverse md:h-[80px] md:w-[80px]" />
+        <div className="flex flex-1 flex-col gap-2xs">
+          <p className="b-3xs text-text-tertiary">Next case study</p>
+          <p className="b-sm text-text-primary lg:b-md">NZ COVID Tracer app</p>
+        </div>
+        <Button variant="view" label="View" href="#" className="flex-shrink-0" />
+      </Reveal>
+
+      <Divider />
+
+      <Reveal className="w-full">
+        <SiteFooter />
+      </Reveal>
+    </main>
+  );
+}

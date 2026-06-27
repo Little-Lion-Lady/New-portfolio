@@ -726,6 +726,7 @@
   /* Custom desktop breakpoint — 1350px instead of lg (1024px).
      Naming it "dt" keeps it distinct from the built-in lg/xl. */
   --breakpoint-dt: 1350px;
+  --breakpoint-wide: 1400px;
 }
 
 /* ============================================================
@@ -958,5 +959,45 @@ body {
     --rspace-xl:  var(--spacing-6xl);  /* 80  */
     --rspace-2xl: var(--spacing-8xl);  /* 128 */
     --rspace-3xl: var(--spacing-9xl);  /* 160 */
+  }
+}
+
+/* ── Page headers: d-xs and d-sm use medium weight on h1 ───────────────── */
+h1.d-xs,
+h1.d-sm {
+  font-weight: var(--font-weight-medium);
+}
+
+/* ── About page: fluid hero title ──────────────────────────────────────────
+   Mobile  : D-xs fixed (44 px / lh 1.10)
+   Tablet  : D-sm → D-md  (60 → 80 px, fluid via vw)
+   Desktop : D-lg → D-xl  (124 → 142 px, fluid via vw)
+   All display sizes share lh 1.15; D-xs uses 1.10.
+   ────────────────────────────────────────────────────────────────────────── */
+.about-hero-title {
+  font-family: var(--font-family-body);
+  font-weight: 500;
+  font-size: var(--font-size-display-xs);   /* 44 px */
+  line-height: 1.10;
+}
+@media (min-width: 768px) {
+  .about-hero-title {
+    /* 60 px at 768 px viewport → 80 px at 1024 px viewport */
+    font-size: clamp(var(--font-size-display-sm), 7.8125vw, var(--font-size-display-md));
+    font-weight: 500;
+    line-height: 1.15;
+  }
+}
+@media (min-width: 1024px) {
+  .about-hero-title {
+    /* 124 px until ~1509 px viewport → scales to 142 px at 1728 px */
+    font-size: clamp(var(--font-size-display-lg), 8.218vw, var(--font-size-display-xl));
+    line-height: 1.15;
+  }
+}
+
+@media (min-width: 1024px) {
+  [style*="--lg-scale-x"] {
+    transform: scaleX(var(--lg-scale-x)) !important;
   }
 }

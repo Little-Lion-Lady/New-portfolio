@@ -25,16 +25,22 @@ export function Button({
   href = "#",
   variant = "primary",
   className = "",
+  target,
+  rel,
 }: {
   label: string;
   href?: string;
   variant?: Variant;
   className?: string;
+  target?: string;
+  rel?: string;
 }) {
   if (variant === "link") {
     return (
       <motion.a
         href={href}
+        target={target}
+        rel={rel}
         initial="rest"
         whileHover="hover"
         animate="rest"
