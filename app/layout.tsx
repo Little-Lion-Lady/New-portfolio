@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import Script from "next/script";
 import "./globals.css";
 
 // Both fonts come from the geist package (local woff2, no network request).
@@ -37,6 +38,12 @@ export default function RootLayout({
       ].join(" ")}
       suppressHydrationWarning
     >
+      <head>
+        {/* Apply saved theme before first paint to prevent flash.
+            beforeInteractive runs before the page is hydrated so data-theme
+            is set before any CSS tokens resolve. */}
+        <Script id="theme-init" strategy="beforeInteractive">{`(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`}</Script>
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

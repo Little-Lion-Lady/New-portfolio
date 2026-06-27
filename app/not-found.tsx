@@ -20,20 +20,20 @@ export default function NotFound() {
 
           {/* Mobile: no stagger, stack */}
           <div className="md:hidden">
-            <RevealWords as="p" className="d-md whitespace-nowrap text-text-primary-highlight">Oops</RevealWords>
+            <RevealWords as="h1" className="d-md whitespace-nowrap text-text-primary-highlight">Oops</RevealWords>
             <RevealWords as="p" startIndex={1} className="d-md leading-[0.8] whitespace-nowrap text-text-highlight-dark">404 error</RevealWords>
           </div>
 
           {/* Tablet: 9-col grid stagger */}
           <div className="hidden grid-cols-9 gap-x-[20px] md:grid lg:hidden">
-            <RevealWords as="p" className="col-[1/span_4] d-lg leading-[0.9] whitespace-nowrap text-text-primary-highlight">Oops</RevealWords>
+            <RevealWords as="h1" className="col-[1/span_4] d-lg leading-[0.9] whitespace-nowrap text-text-primary-highlight">Oops</RevealWords>
             <RevealWords as="p" startIndex={1} className="col-[2/span_8] d-lg leading-[0.9] whitespace-nowrap text-text-highlight-dark">404 error</RevealWords>
           </div>
 
           {/* Desktop: 12-col grid stagger, fluid D-xl → D-2xl */}
           <div className="hidden grid-cols-12 gap-x-[20px] lg:grid">
             <RevealWords
-              as="p"
+              as="h1"
               className="col-[1/span_5] d-xl leading-[0.9] whitespace-nowrap text-text-primary-highlight"
               style={{ fontSize: "clamp(142px, 22.7px + 11.65vw, 224px)" }}
             >

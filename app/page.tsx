@@ -9,10 +9,7 @@ import { Reveal } from "./components/reveal";
 import { HeroCat } from "./components/hero-cat";
 import { AboutCat } from "./components/about-cat";
 import { HeroText } from "./components/hero-text";
-
-function Divider({ className }: { className?: string }) {
-  return <div className={`h-px bg-border-primary ${className ?? "w-full"}`} />;
-}
+import { Divider } from "./components/divider";
 
 export default function Home() {
   return (

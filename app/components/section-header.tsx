@@ -10,8 +10,8 @@ import { Reveal } from "./reveal";
 export function SectionHeader({ number, name }: { number: string; name: string }) {
   return (
     <div className="flex w-full items-center justify-between">
-      <Reveal as="p" className="w-[110px] b-md text-text-decorative md:d-2xs lg:d-sm">{number}</Reveal>
-      <Reveal as="p" className="b-md text-text-quaternary text-center md:d-2xs lg:d-sm">{name}</Reveal>
+      <Reveal index={0} as="p" className="w-[110px] b-md text-text-decorative md:d-2xs lg:d-sm">{number}</Reveal>
+      <Reveal index={1} as="p" className="b-md text-text-quaternary text-center md:d-2xs lg:d-sm">{name}</Reveal>
     </div>
   );
 }

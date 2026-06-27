@@ -27,6 +27,8 @@ export function CyclingWord({
     // is nothing to clip harshly at the left/right edges.
     <span
       className="inline-grid"
+      aria-live="polite"
+      aria-atomic="true"
       style={{
         minWidth: `${Math.max(...words.map((w) => w.length))}ch`,
         lineHeight: "1.2em",

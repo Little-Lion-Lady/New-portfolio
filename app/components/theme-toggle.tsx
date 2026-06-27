@@ -4,34 +4,65 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MoonIcon, SunIcon } from "./icons";
 
-// Light/dark theme toggle (rebuild-prompt #5).
-// - On mount, follow the system preference and subscribe to OS changes.
-// - A manual click wins for the rest of the session; a refresh resets to
-//   following the system again (state is not persisted).
-// - "Apply" sets data-theme on <html>; globals.css resolves all tokens from it.
+const STORAGE_KEY = "theme";
+
+// Read the saved preference, falling back to system preference.
+// Returns "dark" | "light" — never null.
+function resolveTheme(): "dark" | "light" {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === "dark" || saved === "light") return saved;
+  } catch {
+    // localStorage unavailable (private browsing, SSR guard)
+  }
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function applyTheme(theme: "dark" | "light") {
+  document.documentElement.setAttribute("data-theme", theme);
+}
+
+// Light/dark theme toggle.
+// - On mount, restores the saved localStorage preference (or falls back to OS).
+// - On click, saves the new preference to localStorage so it survives
+//   navigation (ThemeToggle remounts per page) and page refreshes.
+// - Subscribes to OS changes only when the user hasn't made a manual choice.
+// - Sets data-theme on <html>; globals.css resolves all tokens from it.
 // Visual matches the Figma toggle: 24×20 pill, border-highlight, 16px icon.
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const [isDark, setIsDark] = useState(false);
-  const [manualOverride, setManualOverride] = useState(false);
+  const [hasManual, setHasManual] = useState(false);
 
   useEffect(() => {
-    if (manualOverride) return;
+    const theme = resolveTheme();
+    const manual = (() => {
+      try { return localStorage.getItem(STORAGE_KEY) !== null; } catch { return false; }
+    })();
+
+    setHasManual(manual);
+    setIsDark(theme === "dark");
+    applyTheme(theme);
+
+    if (manual) return;
+
+    // No saved preference — follow OS changes in real time.
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const apply = (dark: boolean) => {
-      setIsDark(dark);
-      document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+    const onChange = (e: MediaQueryListEvent) => {
+      const next = e.matches ? "dark" : "light";
+      setIsDark(e.matches);
+      applyTheme(next);
     };
-    apply(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => apply(e.matches);
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
-  }, [manualOverride]);
+  }, []);
 
   const toggle = () => {
     const next = !isDark;
-    setManualOverride(true);
+    const theme = next ? "dark" : "light";
     setIsDark(next);
-    document.documentElement.setAttribute("data-theme", next ? "dark" : "light");
+    setHasManual(true);
+    applyTheme(theme);
+    try { localStorage.setItem(STORAGE_KEY, theme); } catch { /* ignore */ }
   };
 
   return (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "framer-motion";
 import { NeatGradient, type NeatConfig } from "@firecms/neat";
 
 const lightColors: NeatConfig["colors"] = [
@@ -118,8 +119,23 @@ export function NeatGradientBg({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gradientRef = useRef<NeatGradient | null>(null);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
+    // Respect prefers-reduced-motion: render a static colour instead of the
+    // animated WebGL gradient. The canvas stays in the DOM so layout is unchanged.
+    if (reducedMotion) {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark"
+        || (!document.documentElement.getAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      ctx.fillStyle = isDark ? "#0a090a" : "#f2f4f8";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+
     if (!canvasRef.current) return;
 
     gradientRef.current = new NeatGradient({
@@ -177,7 +193,11 @@ export function NeatGradientBg({
       if (scrollReactive) window.removeEventListener("scroll", handleScroll);
       gradientRef.current?.destroy();
     };
-  }, []);
+  // config is an object prop — changes require full teardown/reinit.
+  // scrollReactive is a boolean that gates the scroll listener.
+  // reducedMotion gates the entire effect body.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scrollReactive, reducedMotion]);
 
   return (
     <canvas

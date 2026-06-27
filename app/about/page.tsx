@@ -6,18 +6,8 @@ import { SectionHeader } from "../components/section-header";
 import { Button } from "../components/button";
 import { SectionReveal } from "../components/section-reveal-context";
 import { Reveal, RevealWords } from "../components/reveal";
-
-function Divider({ className }: { className?: string }) {
-  return <div className={`h-px bg-border-primary ${className ?? "w-full"}`} />;
-}
-
-function ArrowUpRight({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 12 12" fill="none" aria-hidden className={className}>
-      <path d="M1.5 10.5L10.5 1.5M10.5 1.5H3M10.5 1.5V9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
+import { Divider } from "../components/divider";
+import { ArrowUpRight } from "../components/icons";
 
 const experience = [
   { role: "Lead Product Designer", org: "First Table | Marketplace", project: "First Table app", year: "25’ – Now" },
