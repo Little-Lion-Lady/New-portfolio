@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { ThemeToggle } from "./theme-toggle";
 
 // Figma "Header" component. Responsive grid: 4 cols (mobile) / 8 (tablet) / 12 (desktop),
@@ -11,6 +12,8 @@ import { ThemeToggle } from "./theme-toggle";
 // fades to zero at the bottom edge. Background gradient paints above the blur layers.
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isAbout = pathname === "/about";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 0);
@@ -68,12 +71,14 @@ export function SiteHeader() {
         >
           Work
         </a>
-        <a
-          href="#about"
-          className="hidden justify-self-start b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-start-7 md:block lg:col-start-11 lg:b-2xs"
-        >
-          About
-        </a>
+        {!isAbout && (
+          <a
+            href="/about"
+            className="col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-start-7 md:justify-self-start lg:col-start-11 lg:b-2xs"
+          >
+            About
+          </a>
+        )}
         <ThemeToggle className="col-start-4 justify-self-end md:col-start-8 lg:col-start-12" />
       </nav>
     </header>
