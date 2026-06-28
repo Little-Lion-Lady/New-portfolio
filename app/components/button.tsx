@@ -65,7 +65,7 @@ export function Button({
         initial="rest"
         whileHover="hover"
         animate="rest"
-        className={`inline-flex items-center gap-3xs b-2xs text-text-primary transition-colors hover:text-text-primary-hover md:gap-2xs md:b-xs lg:gap-3xs lg:b-sm ${className}`}
+        className={`inline-flex items-center gap-3xs b-xs text-text-primary transition-colors hover:text-text-primary-hover md:gap-2xs lg:gap-3xs lg:b-sm ${className}`}
       >
         <span>{label}</span>
         <motion.span

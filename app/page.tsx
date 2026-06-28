@@ -60,6 +60,7 @@ export default function Home() {
               name="NZ COVID Tracer app"
               description="Working on a nation-wide COVID-19 pandemic response to support contact tracing efforts and protect New Zealand from the spread of COVID-19."
               roles="UX/UI, Research, Product strategy"
+              href="/work/covid-tracer"
             />
           </Reveal>
         </div>

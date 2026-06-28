@@ -75,8 +75,8 @@ export default function NotFound() {
         {/* Desktop: fills remaining ~30svh, flex-1 centers helper vertically */}
         <div className="hidden flex-1 items-center gap-x-[20px] lg:flex">
           <div className="flex-1" />
-          <Reveal index={0} delay={0.5} as="p" className="w-[258px] b-md text-text-secondary">Are you lost?</Reveal>
-          <Reveal index={1} delay={0.5} as="p" className="w-[258px] b-md text-text-secondary">I can fix this</Reveal>
+          <Reveal index={0} delay={0.5} as="p" className="w-[258px] lg:b-md text-text-secondary">Are you lost?</Reveal>
+          <Reveal index={1} delay={0.5} as="p" className="w-[258px] lg:b-md text-text-secondary">I can fix this</Reveal>
           <Reveal index={2} delay={0.5} className="ml-auto">
             <Button variant="primary" label="Go home" href="/" />
           </Reveal>

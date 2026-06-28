@@ -22,7 +22,7 @@
 
 import React, { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { motion, useInView, useReducedMotion, type Variants } from "framer-motion";
-import { useSectionActive } from "./section-reveal-context";
+import { useSectionReveal } from "./section-reveal-context";
 
 // SSR-safe Firefox detection. Starts false (matches server render), flips to
 // true on the client after hydration so there's no mismatch error.
@@ -142,6 +142,7 @@ export function Reveal({
   as = "div",
   blur = false,
   noY = false,
+  immediate = false,
   className,
   style,
 }: {
@@ -151,6 +152,7 @@ export function Reveal({
   as?: Tag;
   blur?: boolean;
   noY?: boolean;
+  immediate?: boolean;
   className?: string;
   style?: CSSProperties;
 }) {
@@ -158,8 +160,15 @@ export function Reveal({
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const reducedMotion = useReducedMotion();
   const isFF = useIsFirefox();
-  const sectionActive = useSectionActive();
-  const shouldAnimate = sectionActive && inView;
+  const { active, immediate: ctxImmediate } = useSectionReveal();
+  // `immediate` (prop or inherited from an immediate SectionReveal) reveals on
+  // mount and ignores the in-view gate, so all content appears at once on load.
+  const isImmediate = immediate || ctxImmediate;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    if (isImmediate) setMounted(true);
+  }, [isImmediate]);
+  const shouldAnimate = isImmediate ? mounted : active && inView;
 
   const Component = motion[as] as typeof motion.div;
 
@@ -186,19 +195,26 @@ export function RevealWords({
   className,
   style,
   startIndex = 0,
+  immediate = false,
 }: {
   children: ReactNode;
   as?: Tag;
   className?: string;
   style?: CSSProperties;
   startIndex?: number;
+  immediate?: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const reducedMotion = useReducedMotion();
   const isFF = useIsFirefox();
-  const sectionActive = useSectionActive();
-  const shouldAnimate = sectionActive && inView;
+  const { active, immediate: ctxImmediate } = useSectionReveal();
+  const isImmediate = immediate || ctxImmediate;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    if (isImmediate) setMounted(true);
+  }, [isImmediate]);
+  const shouldAnimate = isImmediate ? mounted : active && inView;
 
   // Tokenise: string nodes → individual words (trailing space preserved so
   // the rendered text reflowing works naturally). Element nodes stay whole.

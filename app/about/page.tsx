@@ -9,6 +9,7 @@ import { Reveal, RevealWords } from "../components/reveal";
 import { Divider } from "../components/divider";
 import { ArrowUpRight } from "../components/icons";
 import { MeCat } from "../components/me-cat";
+import { CaseStudyNav } from "../components/case-study-nav";
 
 const experience = [
   { role: "Lead Product Designer", org: "First Table | Marketplace", project: "First Table app", year: "25’ – Now" },
@@ -22,7 +23,7 @@ const awards = [
   { project: "Basis Smart Panel", award: "Best Design Gold", year: "25’", href: "https://bestawards.co.nz/industrial-design/consumer/basis/basis-smart-panel-1/" },
   { project: "NZ COVID Tracer app", award: "Best Design Gold", year: "21’", href: "https://bestawards.co.nz/digital/digital-products/rush-1/nz-covid-tracer-app/" },
   { project: "Z Energy Sharetank", award: "Best Design Gold", year: "20’", href: "https://bestawards.co.nz/digital/user-experience/z-energy-innovation-refinery/z-energy-sharetank/" },
-  { project: "Starship Check-Up", award: "Best Design Purple", year: "18’", href: "https://bestawards.co.nz/user-experience-award/public-good-award/rush-1/starship-animal-check-ups-magical-forest-1/" },
+  { project: "Starship Check-Up", award: "Best Design Purple", year: "18’", href: "https://bestawards.co.nz/user-experience-award/interactive/rush-1/starship-animal-check-ups-magical-forest/" },
 ];
 
 export default function About() {
@@ -42,7 +43,7 @@ export default function About() {
       <Divider />
 
       {/* 01 — Overview */}
-      <SectionReveal as="section" className="flex flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="flex flex-col gap-r-xl">
         <Reveal index={0} delay={0.5} className="w-full">
           <SectionHeader number="01" name="Overview" />
         </Reveal>
@@ -72,14 +73,14 @@ export default function About() {
             {/* ── Experience ── */}
             <div className="flex flex-col gap-xl">
               <div>
-                <p className="b-xs md:b-sm text-text-primary mb-2xs">Experience</p>
+                <p className="b-xs md:b-sm text-text-primary mb-lg">Experience</p>
                 <Divider />
               </div>
-              <div className="flex flex-col gap-sm">
+              <div className="flex flex-col gap-xl">
                 {experience.map((e, i) => (
                   <Fragment key={i}>
                     {/* Mobile: role + year on one row, org below, project (tertiary) below */}
-                    <div className="flex flex-col md:hidden">
+                    <div className="flex flex-col gap-sm md:hidden">
                       <div className="flex justify-between">
                         <p className="b-xs text-text-secondary">{e.role}</p>
                         <p className="b-xs text-text-secondary">{e.year}</p>
@@ -90,7 +91,7 @@ export default function About() {
                     {/* Tablet: 3-col (role+org | project | year).
                         Desktop: 6-col (role+org 1-2 | project 3-4 | year 6). */}
                     <div className="hidden md:grid md:grid-cols-3 md:gap-x-lg md:items-start lg:grid-cols-6">
-                      <div className="flex flex-col md:col-span-1 lg:col-span-3">
+                      <div className="flex flex-col gap-md md:col-span-1 lg:col-span-3">
                         <p className="b-sm text-text-secondary">{e.role}</p>
                         <p className="b-sm text-text-tertiary">{e.org}</p>
                       </div>
@@ -105,14 +106,14 @@ export default function About() {
             {/* ── Recognition ── */}
             <div className="flex flex-col gap-xl">
               <div>
-                <p className="b-xs md:b-sm text-text-primary mb-2xs">Recognition</p>
+                <p className="b-xs md:b-sm text-text-primary mb-lg">Recognition</p>
                 <Divider />
               </div>
-              <div className="flex flex-col gap-sm">
+              <div className="flex flex-col gap-xl">
                 {awards.map((a, i) => (
                   <a key={i} href={a.href} target="_blank" rel="noopener noreferrer" className="group">
                     {/* Mobile: award + year↗ on one row, project (tertiary) below */}
-                    <div className="flex flex-col md:hidden">
+                    <div className="flex flex-col gap-sm md:hidden">
                       <div className="flex items-start justify-between">
                         <p className="b-xs text-text-secondary">{a.award}</p>
                         <div className="flex items-center gap-3xs text-text-secondary shrink-0 ml-sm">
@@ -142,7 +143,7 @@ export default function About() {
       <Divider />
 
       {/* 02 — Biography */}
-      <SectionReveal as="section" className="flex flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="flex flex-col gap-r-xl">
         <Reveal index={0} delay={0.5} className="w-full">
           <SectionHeader number="02" name="Biography" />
         </Reveal>
@@ -158,7 +159,7 @@ export default function About() {
           </div>
 
           {/* Bio text */}
-          <div className="order-1 flex flex-col gap-md md:gap-lg md:order-2 wide:flex-[6]">
+          <div className="order-1 flex flex-col gap-lg lg:gap-xl md:order-2 wide:flex-[6]">
             <p className="b-xs text-text-secondary md:b-sm lg:b-md">
               I grew up in Kyiv, Ukraine, and at 17 I made the leap to New Zealand&mdash;a
               life-changing move that instilled in me persistence and self-motivation. It also gave me
@@ -180,7 +181,7 @@ export default function About() {
       <Divider />
 
       {/* 03 — Artwork */}
-      <SectionReveal as="section" className="flex flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="flex flex-col gap-r-xl">
         <Reveal index={0} delay={0.5} className="w-full">
           <SectionHeader number="03" name="Artwork" />
         </Reveal>
@@ -209,18 +210,13 @@ export default function About() {
       <Divider />
 
       {/* Case study nav */}
-      <Reveal delay={0.5} className="flex w-full items-center gap-lg">
-        <div className="h-[60px] w-[60px] flex-shrink-0 rounded-sm bg-bg-inverse md:h-[80px] md:w-[80px]" />
-        <div className="flex flex-1 flex-col gap-2xs">
-          <p className="b-3xs text-text-tertiary">Next case study</p>
-          <p className="b-sm text-text-primary lg:b-md">NZ COVID Tracer app</p>
-        </div>
-        <Button variant="view" label="View" href="#" className="flex-shrink-0" />
+      <Reveal delay={0.5} immediate className="w-full">
+        <CaseStudyNav title="NZ COVID Tracer app" href="/work/covid-tracer" />
       </Reveal>
 
       <Divider />
 
-      <Reveal delay={0.5} className="w-full">
+      <Reveal delay={0.5} immediate className="w-full">
         <SiteFooter />
       </Reveal>
     </main>

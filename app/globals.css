@@ -209,7 +209,7 @@
   --bg-primary:          var(--colour-gray-light-50);
   --bg-light:            var(--colour-gray-light-50);
   --bg-white:            var(--colour-base-white);
-  --bg-highlight:        var(--colour-blue-200);
+  --bg-highlight:        var(--colour-blue-100);
   --bg-inverse:          var(--colour-gray-light-500);
   --bg-transparency:     var(--colour-gray-light-50-00);
 
@@ -742,42 +742,49 @@
   font-size: var(--font-size-display-2xl);
   line-height: var(--line-height-display-2xl);
   font-weight: var(--font-weight-medium);
+  text-box: trim-both cap alphabetic;
 }
 @utility d-xl {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-xl);
   line-height: var(--line-height-display-xl);
   font-weight: var(--font-weight-medium);
+  text-box: trim-both cap alphabetic;
 }
 @utility d-lg {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-lg);
   line-height: var(--line-height-display-lg);
   font-weight: var(--font-weight-medium);
+  text-box: trim-both cap alphabetic;
 }
 @utility d-md {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-md);
   line-height: var(--line-height-display-md);
   font-weight: var(--font-weight-medium);
+  text-box: trim-both cap alphabetic;
 }
 @utility d-sm {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-sm);
   line-height: var(--line-height-display-sm);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility d-xs {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-xs);
   line-height: var(--line-height-display-xs);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility d-2xs {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-2xs);
   line-height: var(--line-height-display-2xs);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 
 /* Mono — Geist Mono */
@@ -787,6 +794,7 @@
   font-size: var(--font-size-text-xl);
   line-height: var(--line-height-mono-xl);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility m-lg {
   margin: 0 !important;
@@ -794,6 +802,7 @@
   font-size: var(--font-size-text-md);
   line-height: var(--line-height-mono-lg);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility m-md {
   margin: 0 !important;
@@ -801,6 +810,7 @@
   font-size: var(--font-size-text-sm);
   line-height: var(--line-height-mono-md);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility m-sm {
   margin: 0 !important;
@@ -808,6 +818,7 @@
   font-size: var(--font-size-text-xs);
   line-height: var(--line-height-mono-sm);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility m-xs {
   margin: 0 !important;
@@ -815,6 +826,7 @@
   font-size: var(--font-size-text-2xs);
   line-height: var(--line-height-mono-xs);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility m-2xs {
   margin: 0 !important;
@@ -822,6 +834,7 @@
   font-size: var(--font-size-text-3xs);
   line-height: var(--line-height-mono-2xs);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 
 /* Body — Geist */
@@ -830,42 +843,49 @@
   font-size: var(--font-size-text-2xl);
   line-height: var(--line-height-body-xl);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility b-lg {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-xl);
   line-height: var(--line-height-body-lg);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility b-md {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-md);
   line-height: var(--line-height-body-md);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility b-sm {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-sm);
   line-height: var(--line-height-body-sm);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility b-xs {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-xs);
   line-height: var(--line-height-body-xs);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility b-2xs {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-2xs);
   line-height: var(--line-height-body-2xs);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 @utility b-3xs {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-3xs);
   line-height: var(--line-height-body-3xs);
   font-weight: var(--font-weight-regular);
+  text-box: trim-both cap alphabetic;
 }
 
 /* ============================================================
@@ -881,8 +901,6 @@ body {
   color: var(--text-primary);
   font-family: var(--font-family-body);
   overflow-x: hidden;
-  text-box-trim: trim-both;
-  text-box-edge: cap alphabetic;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -979,6 +997,7 @@ h1.d-sm {
   font-weight: 500;
   font-size: var(--font-size-display-xs);   /* 44 px */
   line-height: 1.10;
+  text-box: trim-both cap alphabetic;
 }
 @media (min-width: 768px) {
   .about-hero-title {
@@ -999,5 +1018,44 @@ h1.d-sm {
 @media (min-width: 1024px) {
   [style*="--lg-scale-x"] {
     transform: scaleX(var(--lg-scale-x)) !important;
+  }
+}
+
+/* ── Case study hero title (Figma "Hero content" D-xs→D-md→D-2xl) ───────────
+   Mobile  : D-xs  44 px / lh 1.10
+   Tablet  : D-md  80 px / lh 1.15
+   Desktop : fluid D-lg → D-2xl (124 → 224) so the nowrap lines never overflow
+             between the 1024 px breakpoint and the 1728 px Figma frame.
+   ────────────────────────────────────────────────────────────────────────── */
+.case-hero-title {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-display-xs);   /* 44 */
+  line-height: 0.8;
+  text-box: trim-both cap alphabetic;
+}
+@media (min-width: 768px) {
+  .case-hero-title {
+    font-size: var(--font-size-display-md); /* 80 */
+    line-height: 0.8;
+  }
+}
+@media (min-width: 1024px) {
+  .case-hero-title {
+    font-size: 7.6rem;
+    line-height: 0.8;
+  }
+}
+
+/* ── Fluid B-md on desktop ──────────────────────────────────────────────────
+   On desktop (≥1024px) all `lg:b-md` text scales with viewport width: it starts
+   at B-sm (20 / 32) at 1024px and grows linearly to B-md (24 / 40) at 1440px,
+   clamped at both ends. Unlayered so it overrides the lg:b-md utility. Mobile /
+   tablet b-md (base / md:b-md) are unaffected.
+   ──────────────────────────────────────────────────────────────────────────── */
+@media (min-width: 1024px) {
+  .lg\:b-md {
+    font-size: clamp(var(--font-size-text-sm), 0.9615vw + 10.154px, var(--font-size-text-md));
+    line-height: clamp(var(--line-height-body-sm), 1.923vw + 12.31px, var(--line-height-body-md));
   }
 }

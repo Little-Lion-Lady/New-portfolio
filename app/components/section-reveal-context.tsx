@@ -3,13 +3,17 @@
 /*
   SectionReveal + context (shared dependency for Reveal / ScrambleText).
   ─────────────────────────────────────────────────────────────────────
-  An invisible scroll-trigger. It never animates itself; it watches its own
-  position and, on first intersection, flips a context flag to `true`. Children
-  (Reveal, ScrambleText, images) stay hidden until the section releases them.
+  A scroll-trigger by default: it watches its own position and, on first
+  intersection, flips a context flag to `true`. Children (Reveal, ScrambleText,
+  images) stay hidden until the section releases them.
 
   - IntersectionObserver at threshold 0.15, fire-once (disconnects after).
   - `delay` waits N ms after intersection; `notBefore` gates on an absolute
     Date.now() timestamp (for staggering sibling sections).
+  - `immediate`: skip the observer entirely and release children on mount, and
+    tell child Reveals (via context) to ignore their own in-view gate. Used on
+    pages that should reveal all content at once on load (About, case studies)
+    rather than progressively on scroll.
   - Reduced motion: activate immediately on mount.
   - SSR-safe: `active` starts false, so server HTML and first client paint match.
 */
@@ -25,9 +29,14 @@ import React, {
   type ReactNode,
 } from "react";
 
-const SectionRevealContext = createContext<boolean>(true);
+type SectionRevealState = { active: boolean; immediate: boolean };
 
-export function useSectionActive() {
+const SectionRevealContext = createContext<SectionRevealState>({
+  active: true,
+  immediate: false,
+});
+
+export function useSectionReveal() {
   return useContext(SectionRevealContext);
 }
 
@@ -37,6 +46,7 @@ export function SectionReveal({
   children,
   delay = 0,
   notBefore,
+  immediate = false,
   as = "section",
   className,
   style,
@@ -45,6 +55,7 @@ export function SectionReveal({
   children: ReactNode;
   delay?: number;
   notBefore?: number;
+  immediate?: boolean;
   as?: Tag;
   className?: string;
   style?: CSSProperties;
@@ -57,8 +68,8 @@ export function SectionReveal({
   useEffect(() => {
     let timeoutId: number | undefined;
 
-    if (reducedMotion) {
-      // Defer to avoid calling setState synchronously in the effect body.
+    // Immediate (or reduced motion): release on mount, no scroll gating.
+    if (immediate || reducedMotion) {
       timeoutId = window.setTimeout(() => setActive(true), 0);
       return () => clearTimeout(timeoutId);
     }
@@ -81,12 +92,12 @@ export function SectionReveal({
       observer.disconnect();
       clearTimeout(timeoutId);
     };
-  }, [delay, notBefore, reducedMotion]);
+  }, [delay, notBefore, reducedMotion, immediate]);
 
   const Tag = as;
 
   return (
-    <SectionRevealContext.Provider value={active}>
+    <SectionRevealContext.Provider value={{ active, immediate }}>
       <Tag ref={ref as unknown as React.RefObject<never>} className={className} style={style} id={id}>
         {children}
       </Tag>

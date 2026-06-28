@@ -24,7 +24,7 @@ export function WorkItem({
   return (
     <article className="flex w-full flex-col items-center gap-lg md:gap-2xl lg:gap-4xl">
       {/* Text container: stack (mobile) → 9-col grid (tablet) → 12-col grid (desktop) */}
-      <div className="flex w-full flex-col gap-xs md:grid md:grid-cols-9 md:items-start md:gap-lg lg:grid-cols-12">
+      <div className="flex w-full flex-col gap-lg md:grid md:grid-cols-9 md:items-start md:gap-lg lg:grid-cols-12">
         {/* number + name — one row on mobile; individual grid cells on md+ (via contents) */}
         <div className="flex items-center gap-xl md:contents">
           <p className="b-xs text-text-primary md:col-start-1 md:b-xs lg:b-sm">{number}</p>
@@ -35,7 +35,7 @@ export function WorkItem({
 
         {/* description block — holds desc + roles, and the View link on mobile/tablet */}
         <div className="flex flex-col gap-sm md:col-start-5 md:col-span-5 md:gap-xs lg:col-start-6 lg:col-span-6 lg:gap-md">
-          <div className="flex flex-col gap-3xs lg:gap-2xs">
+          <div className="flex flex-col gap-lg lg:gap-xl">
             <p className="b-xs text-text-primary lg:b-sm">{description}</p>
             <p className="b-xs text-text-tertiary lg:b-sm">{roles}</p>
           </div>

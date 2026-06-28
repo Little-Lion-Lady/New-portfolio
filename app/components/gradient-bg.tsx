@@ -20,8 +20,8 @@ export function GradientBg({
     >
       {/* clip-path rounds match border-radius at each breakpoint so the
           blur-60px child's bleed is clipped to the same rounded rect. */}
-      <div className="h-full w-full blur-[20px] opacity-80">
-        <div className="h-full w-full overflow-hidden [clip-path:inset(0)]">
+      <div className="h-full w-full blur-[12px] opacity-80">
+        <div className="h-full w-full overflow-hidden rounded-t-[16px] [clip-path:inset(0_round_16px_16px_0_0)] md:rounded-t-[24px] md:[clip-path:inset(0_round_24px_24px_0_0)] lg:rounded-t-[32px] lg:[clip-path:inset(0_round_32px_32px_0_0)]">
           <div
             className={`h-full w-full blur-[80px] ${scaleClassName}`}
             style={scaleClassName ? undefined : { transform: `scaleX(${scaleX})` }}
