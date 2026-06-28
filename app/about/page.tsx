@@ -8,6 +8,7 @@ import { SectionReveal } from "../components/section-reveal-context";
 import { Reveal, RevealWords } from "../components/reveal";
 import { Divider } from "../components/divider";
 import { ArrowUpRight } from "../components/icons";
+import { MeCat } from "../components/me-cat";
 
 const experience = [
   { role: "Lead Product Designer", org: "First Table | Marketplace", project: "First Table app", year: "25’ – Now" },
@@ -42,13 +43,13 @@ export default function About() {
 
       {/* 01 — Overview */}
       <SectionReveal as="section" className="flex flex-col gap-r-xl">
-        <Reveal index={0} className="w-full">
+        <Reveal index={0} delay={0.5} className="w-full">
           <SectionHeader number="01" name="Overview" />
         </Reveal>
 
         {/* Desktop: description left (~5/11) + history right (~6/11).
             Tablet/mobile: stacked (description → history). */}
-        <Reveal index={1} className="flex flex-col gap-r-2xl wide:flex-row wide:items-start wide:gap-r-xl">
+        <Reveal index={1} delay={0.5} className="flex flex-col gap-r-2xl wide:flex-row wide:items-start wide:gap-r-xl">
           {/* Description + CV button */}
           <div className="flex flex-col gap-r-xl wide:flex-[5]">
             <p className="b-xs text-text-secondary md:b-sm wide:b-lg">
@@ -116,7 +117,7 @@ export default function About() {
                         <p className="b-xs text-text-secondary">{a.award}</p>
                         <div className="flex items-center gap-3xs text-text-secondary shrink-0 ml-sm">
                           <p className="b-xs">{a.year}</p>
-                          <ArrowUpRight className="size-[10px] transition-transform duration-200 ease-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px] group-hover:scale-[1.2]" />
+                          <ArrowUpRight className="size-sm transition-transform duration-200 ease-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px] group-hover:scale-[1.1]" />
                         </div>
                       </div>
                       <p className="b-xs text-text-tertiary">{a.project}</p>
@@ -127,7 +128,7 @@ export default function About() {
                       <p className="b-sm text-text-secondary md:col-span-1 lg:col-span-2">{a.award}</p>
                       <div className="flex items-center justify-end gap-3xs text-text-secondary md:col-span-1 lg:col-start-6">
                         <p className="b-sm">{a.year}</p>
-                        <ArrowUpRight className="size-[14px] transition-transform duration-200 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:scale-[1.2]" />
+                        <ArrowUpRight className="size-lg transition-transform duration-200 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:scale-[1.1]" />
                       </div>
                     </div>
                   </a>
@@ -142,22 +143,22 @@ export default function About() {
 
       {/* 02 — Biography */}
       <SectionReveal as="section" className="flex flex-col gap-r-xl">
-        <Reveal index={0} className="w-full">
+        <Reveal index={0} delay={0.5} className="w-full">
           <SectionHeader number="02" name="Biography" />
         </Reveal>
 
         {/* Mobile:  text first (order-1), images below (order-2).
             Tablet:  images first (order-1), text below (order-2) — stacked.
             Desktop: images left (order-1), text right (order-2) — side by side. */}
-        <Reveal index={1} className="flex flex-col gap-r-xl lg:flex-row lg:items-start">
+        <Reveal index={1} delay={0.5} className="flex flex-col gap-r-xl wide:flex-row wide:items-start">
           {/* Images */}
-          <div className="order-2 flex gap-lg md:order-1 lg:flex-[5]">
-            <div className="h-[250px] flex-1 rounded-sm bg-bg-inverse md:h-[676px] lg:h-[482px]" />
-            <div className="h-[250px] flex-1 rounded-sm bg-bg-inverse md:h-[676px] lg:h-[482px]" />
+          <div className="order-2 flex gap-lg md:order-1 wide:flex-[5]">
+            <div className="flex-1 self-stretch rounded-sm bg-bg-inverse wide:h-[482px]" />
+            <MeCat className="flex-1 min-w-0 rounded-sm" />
           </div>
 
           {/* Bio text */}
-          <div className="order-1 flex flex-col gap-md md:gap-lg md:order-2 lg:flex-[6]">
+          <div className="order-1 flex flex-col gap-md md:gap-lg md:order-2 wide:flex-[6]">
             <p className="b-xs text-text-secondary md:b-sm lg:b-md">
               I grew up in Kyiv, Ukraine, and at 17 I made the leap to New Zealand&mdash;a
               life-changing move that instilled in me persistence and self-motivation. It also gave me
@@ -180,11 +181,11 @@ export default function About() {
 
       {/* 03 — Artwork */}
       <SectionReveal as="section" className="flex flex-col gap-r-xl">
-        <Reveal index={0} className="w-full">
+        <Reveal index={0} delay={0.5} className="w-full">
           <SectionHeader number="03" name="Artwork" />
         </Reveal>
 
-        <Reveal index={1} className="w-full">
+        <Reveal index={1} delay={0.5} className="w-full">
           <p className="b-xs text-text-secondary md:b-sm lg:b-md">
             I&apos;ve been creating art for as long as I can remember. While I began by honing my
             digital skills, working in the tech industry inspired me to explore traditional mediums.
@@ -195,7 +196,7 @@ export default function About() {
 
         {/* Image strip — 4 equal-width placeholder slots, same pattern as WorkItem.
             Heights match Figma: 300 px mobile / 639 px tablet+desktop. */}
-        <Reveal index={2} className="w-full">
+        <Reveal index={2} delay={0.5} className="w-full">
           <div className="flex w-full items-start gap-xs">
             <div className="h-[300px] flex-1 rounded-sm bg-bg-inverse lg:h-[639px]" />
             <div className="h-[300px] flex-1 rounded-sm bg-bg-inverse lg:h-[639px]" />
@@ -208,7 +209,7 @@ export default function About() {
       <Divider />
 
       {/* Case study nav */}
-      <Reveal className="flex w-full items-center gap-lg">
+      <Reveal delay={0.5} className="flex w-full items-center gap-lg">
         <div className="h-[60px] w-[60px] flex-shrink-0 rounded-sm bg-bg-inverse md:h-[80px] md:w-[80px]" />
         <div className="flex flex-1 flex-col gap-2xs">
           <p className="b-3xs text-text-tertiary">Next case study</p>
@@ -219,7 +220,7 @@ export default function About() {
 
       <Divider />
 
-      <Reveal className="w-full">
+      <Reveal delay={0.5} className="w-full">
         <SiteFooter />
       </Reveal>
     </main>

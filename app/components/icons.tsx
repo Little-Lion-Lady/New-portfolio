@@ -12,9 +12,9 @@ export function ArrowRight({ className }: { className?: string }) {
 
 export function ArrowUpRight({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden className={`[stroke-width:1.8px] md:[stroke-width:2px] lg:[stroke-width:2.5px] ${className ?? ""}`}>
-      <path d="M5 19 17 7" stroke="currentColor" strokeLinecap="butt" strokeLinejoin="miter" vectorEffect="non-scaling-stroke" />
-      <path d="M8.5 7H17v8.5" stroke="currentColor" strokeLinecap="butt" strokeLinejoin="miter" vectorEffect="non-scaling-stroke" />
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden className={`[stroke-width:1.5px] md:[stroke-width:2px] ${className ?? ""}`}>
+      <path d="M4.82177 2.66699H16.8216V14.667" stroke="currentColor" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+      <path d="M4.82173 14.5782L16.3966 3.00333" stroke="currentColor" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
     </svg>
   );
 }
