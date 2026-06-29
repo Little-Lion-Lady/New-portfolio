@@ -1,16 +1,40 @@
 /*
-  Token foundation proof page — full reference.
-  Temporary: exists only to verify every token in Instruction.md loads and
-  resolves in both light and dark. Colour swatches read `var(--token)` directly
-  (the truest proof a token exists); typography uses the named display, mono and
-  body utility classes so we also verify they override Tailwind defaults.
+  Design system reference (/tokens).
+  A living style guide: every implemented component rendered live, plus the full
+  token foundation — colour ramps, semantic + utility tokens, gradients, spacing,
+  radius, and the display / body / mono text styles. Colour swatches read
+  `var(--token)` directly; type samples use the named utility classes. Toggle OS
+  dark mode (or the in-page theme toggle) to confirm the semantic + utility layers
+  invert correctly.
 */
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
+
+import { Button } from "../components/button";
+import { ThemeToggle } from "../components/theme-toggle";
+import { ArrowRight, ArrowUpRight, MoonIcon, SunIcon } from "../components/icons";
+import { SectionHeader } from "../components/section-header";
+import { Divider } from "../components/divider";
+import { Stat, Stats } from "../components/stat";
+import { KeyParagraph } from "../components/key-paragraph";
+import { Insight } from "../components/insight";
+import { Column } from "../components/column";
+import { Hypothesis } from "../components/hypothesis";
+import { FindingsTable } from "../components/findings-table";
+import { Journey } from "../components/journey";
+import { CaseStudyNav } from "../components/case-study-nav";
+import { WorkItem } from "../components/work-item";
+import { CaseStudyHero } from "../components/case-study-hero";
+import {
+  ApproachMedia,
+  FlowDiagram,
+  DesignMedia,
+  OutcomeMedia,
+} from "../components/media-block";
+import { GradientBg } from "../components/gradient-bg";
 
 const STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
-// --- Primitive ramps (mode-independent) ---
 const PRIMITIVE_RAMPS: Array<[string, string]> = [
   ["gray-dark", "--colour-gray-dark-"],
   ["gray-light", "--colour-gray-light-"],
@@ -20,7 +44,6 @@ const PRIMITIVE_RAMPS: Array<[string, string]> = [
   ["blue", "--colour-blue-"],
 ];
 
-// --- Semantic tokens (light/dark via the token itself) ---
 const SEMANTIC_GROUPS: Array<{ title: string; tokens: string[] }> = [
   { title: "Background", tokens: ["bg-primary", "bg-light", "bg-white", "bg-highlight", "bg-inverse", "bg-transparency"] },
   {
@@ -36,7 +59,6 @@ const SEMANTIC_GROUPS: Array<{ title: string; tokens: string[] }> = [
   { title: "Shadow / Glow", tokens: ["shadows-shadow-01", "shadows-shadow-02", "shadows-glow-01"] },
 ];
 
-// --- Utility ramps (auto-invert per Instruction.md) ---
 const UTILITY_RAMPS: Array<[string, string]> = [
   ["gray", "--utility-gray-"],
   ["beige", "--utility-beige-"],
@@ -61,7 +83,18 @@ const BODY_STYLES: Array<[string, string]> = [
   ["b-xl", "44"], ["b-lg", "32"], ["b-md", "24"], ["b-sm", "20"], ["b-xs", "16"], ["b-2xs", "14"], ["b-3xs", "12"],
 ];
 
-function Label({ children }: { children: string }) {
+// Named spacing scale → underlying px (from globals @theme).
+const SPACING: Array<[string, number]> = [
+  ["none", 0], ["4xs", 2], ["3xs", 4], ["2xs", 6], ["xs", 8], ["sm", 12], ["md", 16],
+  ["lg", 20], ["xl", 24], ["2xl", 32], ["3xl", 40], ["4xl", 64], ["5xl", 72], ["6xl", 80],
+  ["7xl", 96], ["8xl", 128], ["9xl", 160],
+];
+
+const RADII: Array<[string, string]> = [
+  ["sm", "12"], ["md", "16"], ["lg", "20"], ["xl", "24"], ["full", "9999"],
+];
+
+function Label({ children }: { children: ReactNode }) {
   return (
     <span className="m-2xs text-text-tertiary" style={{ wordBreak: "break-word" }}>
       {children}
@@ -71,6 +104,22 @@ function Label({ children }: { children: string }) {
 
 function SectionTitle({ children }: { children: string }) {
   return <h2 className="m-sm uppercase tracking-widest text-text-tertiary">{children}</h2>;
+}
+
+// Labelled card for a component demo.
+function Demo({ name, full, children }: { name: string; full?: boolean; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-sm">
+      <Label>{name}</Label>
+      <div
+        className={`rounded-[var(--size-6)] border border-border-primary bg-bg-light p-xl ${
+          full ? "" : "flex flex-wrap items-center gap-xl"
+        }`}
+      >
+        {children}
+      </div>
+    </div>
+  );
 }
 
 function Swatch({ token, css }: { token: string; css?: CSSProperties }) {
@@ -104,19 +153,172 @@ function Ramp({ name, prefix }: { name: string; prefix: string }) {
   );
 }
 
-export default function TokenProof() {
+const FINDINGS = [
+  { finding: "No system visibility — users couldn’t tell if BT was active", decision: "Persistent BT status indicator on the dashboard, always visible" },
+  { finding: "Action relied on memory rather than a clear prompt", decision: "Single action per onboarding screen — one decision at a time" },
+];
+
+const JOURNEY = [
+  { title: "Audit & Benchmark", body: "Heuristic evaluation and baseline usability test across onboarding." },
+  { title: "Design", body: "Collaborative ideation with PO, design, dev, and MoH PO." },
+  { title: "Test", body: "Two rounds of user testing, each with a clear “therefore.”" },
+  { title: "Ship", body: "Delivered over two agile sprints with MoH approval." },
+];
+
+export default function DesignSystem() {
   return (
     <main className="bg-bg-primary text-text-primary min-h-screen px-2xl py-3xl flex flex-col gap-5xl">
       <header className="flex flex-col gap-2xs">
-        <p className="m-xs uppercase tracking-widest text-text-highlight">Token foundation</p>
-        <h1 className="d-md text-text-primary">Refined design system</h1>
+        <div className="flex items-start justify-between gap-md">
+          <p className="m-xs uppercase tracking-widest text-text-highlight">Design system</p>
+          <ThemeToggle />
+        </div>
+        <h1 className="d-md text-text-primary">Components & tokens</h1>
         <p className="b-md text-text-secondary max-w-[var(--size-80)]">
-          Every swatch and type sample below is wired to a token in Instruction.md.
-          Toggle OS dark mode to confirm the semantic and utility layers invert correctly.
+          Every implemented component rendered live, plus the full token foundation —
+          colour, spacing, radius, and text styles. Toggle the theme to verify dark mode.
         </p>
       </header>
 
-      {/* PRIMITIVES */}
+      {/* ============================ COMPONENTS ============================ */}
+      <section className="flex flex-col gap-2xl">
+        <SectionTitle>Components</SectionTitle>
+
+        <Demo name="Button — primary / link / view">
+          <Button variant="primary" label="About me" href="#" />
+          <Button variant="link" label="LinkedIn" href="#" />
+          <Button variant="view" label="View" href="#" />
+        </Demo>
+
+        <Demo name="Theme toggle & icons">
+          <ThemeToggle />
+          <span className="flex items-center gap-md text-text-primary">
+            <ArrowRight className="size-xl" />
+            <ArrowUpRight className="size-xl" />
+            <MoonIcon className="size-xl" />
+            <SunIcon className="size-xl" />
+          </span>
+        </Demo>
+
+        <Demo name="Section header" full>
+          <SectionHeader number="01" name="Problem" />
+        </Demo>
+
+        <Demo name="Divider" full>
+          <Divider />
+        </Demo>
+
+        <Demo name="Stat — lg, lg highlight, sm before→after" full>
+          <Stats className="md:grid-cols-3">
+            <Stat size="lg" value="2.7M" label="Unique app installs" />
+            <Stat size="lg" value="49%" label="Users enabled BT tracing" highlight />
+            <Stat size="sm" value="18% → 5.3%" label="Mislick rate reduction" />
+          </Stats>
+        </Demo>
+
+        <Demo name="Key paragraph — lead + body" full>
+          <KeyParagraph lead="Two rounds. Each one answered a specific question.">
+            I ran two rounds of user testing against the redesign. Each round had a clear
+            “therefore” — findings fed directly into the next iteration.
+          </KeyParagraph>
+        </Demo>
+
+        <Demo name="Insight" full>
+          <Insight>
+            The problem wasn’t awareness. It was comprehension and confidence. Reassure
+            first. Explain second. Ask third.
+          </Insight>
+        </Demo>
+
+        <Demo name="Column — label + title + body" full>
+          <Column label="Blocker 1" title="The app asked for trust before earning it">
+            Onboarding used technical language and frontloaded too much information. Users
+            arrived at the BT screen without understanding what they were being asked to do.
+          </Column>
+        </Demo>
+
+        <Demo name="Hypothesis" full>
+          <Hypothesis
+            label="H1"
+            believe="increasing the visual affordance of Bluetooth Tracing will drive acquisition"
+            because="users need a clear, persistent cue — not a buried setting."
+            metric="BT daily active users grow by 30% within one month of launch."
+          />
+        </Demo>
+
+        <Demo name="Findings table" full>
+          <FindingsTable rows={FINDINGS} />
+        </Demo>
+
+        <Demo name="Journey" full>
+          <Journey steps={JOURNEY} />
+        </Demo>
+
+        <Demo name="Case study nav" full>
+          <CaseStudyNav title="Basis Home app" href="#" />
+        </Demo>
+
+        <Demo name="Work item (carousel slots are placeholders)" full>
+          <WorkItem
+            number="SW/01"
+            name="Basis home app"
+            description="Defining and designing the world’s first Smart Electrical Panel companion app."
+            roles="UX/UI, Research, Product strategy"
+            href="#"
+          />
+        </Demo>
+
+        <Demo name="Media blocks (placeholders)" full>
+          <div className="flex flex-col gap-xl">
+            <ApproachMedia />
+            <FlowDiagram />
+            <DesignMedia />
+            <OutcomeMedia />
+          </div>
+        </Demo>
+
+        <Demo name="Gradient backdrop" full>
+          <div className="relative h-[320px] w-full overflow-hidden rounded-[var(--size-6)]">
+            <GradientBg height="320px" fullWidth />
+          </div>
+        </Demo>
+
+        <Demo name="Case study hero" full>
+          <CaseStudyHero />
+        </Demo>
+      </section>
+
+      {/* ============================ SPACING ============================ */}
+      <section className="flex flex-col gap-lg">
+        <SectionTitle>Spacing scale</SectionTitle>
+        <div className="flex flex-col gap-2xs">
+          {SPACING.map(([name, px]) => (
+            <div key={name} className="flex items-center gap-md">
+              <span className="m-2xs text-text-tertiary w-[var(--size-13)] shrink-0">{name}</span>
+              <div className="h-xl bg-utility-blue-400" style={{ width: `var(--spacing-${name})` }} />
+              <span className="m-2xs text-text-quaternary shrink-0">{px}px</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================ RADIUS ============================ */}
+      <section className="flex flex-col gap-lg">
+        <SectionTitle>Radius scale</SectionTitle>
+        <div className="flex flex-wrap gap-xl">
+          {RADII.map(([name, px]) => (
+            <div key={name} className="flex flex-col gap-3xs">
+              <div
+                className="size-15 border border-border-highlight bg-bg-inverse"
+                style={{ borderRadius: `var(--radius-${name})` }}
+              />
+              <Label>{`${name} · ${px === "9999" ? "full" : px + "px"}`}</Label>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================ PRIMITIVES ============================ */}
       <section className="flex flex-col gap-lg">
         <SectionTitle>Primitives — colour ramps</SectionTitle>
         <div className="flex flex-col gap-md">
@@ -139,7 +341,7 @@ export default function TokenProof() {
         </div>
       </section>
 
-      {/* SEMANTIC */}
+      {/* ============================ SEMANTIC ============================ */}
       <section className="flex flex-col gap-lg">
         <SectionTitle>Semantic</SectionTitle>
         {SEMANTIC_GROUPS.map((group) => (
@@ -154,12 +356,12 @@ export default function TokenProof() {
         ))}
       </section>
 
-      {/* UTILITY RAMPS */}
+      {/* ============================ UTILITY RAMPS ============================ */}
       <section className="flex flex-col gap-lg">
         <SectionTitle>Utility ramps</SectionTitle>
         <p className="b-xs text-text-secondary max-w-[var(--size-80)]">
-          These invert in dark mode per Instruction.md — e.g. gray 50↔950, and red
-          switches from the red-light family to red-dark. Toggle dark mode to verify.
+          These invert in dark mode — e.g. gray 50↔950, and red switches from the
+          red-light family to red-dark. Toggle dark mode to verify.
         </p>
         <div className="flex flex-col gap-lg">
           {UTILITY_RAMPS.map(([name, prefix]) => (
@@ -168,7 +370,7 @@ export default function TokenProof() {
         </div>
       </section>
 
-      {/* GRADIENTS */}
+      {/* ============================ GRADIENTS ============================ */}
       <section className="flex flex-col gap-lg">
         <SectionTitle>Gradient tokens</SectionTitle>
         <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-md">
@@ -178,7 +380,7 @@ export default function TokenProof() {
         </div>
       </section>
 
-      {/* TYPOGRAPHY */}
+      {/* ============================ TYPOGRAPHY ============================ */}
       <section className="flex flex-col gap-lg">
         <SectionTitle>Typography — display (Geist)</SectionTitle>
         <div className="flex flex-col gap-md overflow-x-hidden">
