@@ -83,7 +83,22 @@ export default function CovidTracer() {
         <GradientBg height="647px" fullWidth />
         <SiteHeader />
         <section className="relative z-10">
-          <CaseStudyHero />
+          <CaseStudyHero
+            titleTop="NZ Covid"
+            titleBottom="Tracer App"
+            lead="How I closed a 1.4 million user gap during the COVID-19 pandemic"
+            description="2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million had Bluetooth Tracing enabled, which allowed frictionless contact tracing that would kerb the spread. I diagnosed it as a UX failure and redesigned the experience to close that gap."
+            meta={[
+              { label: "Role_", value: "Senior Product Designer" },
+              { label: "Scope_", value: "Strategy·UX/UI·Research" },
+              { label: "Date_", value: "20’ – 21’" },
+            ]}
+            recognition={[
+              { label: "Recognition_", value: "Best Design Award, Gold" },
+              { label: "Recognition_", value: "Open Source Awards 2021" },
+              { label: "Recognition_", value: "GOOD Design Awards 2021" },
+            ]}
+          />
         </section>
       </div>
 

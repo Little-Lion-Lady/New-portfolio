@@ -8,16 +8,20 @@ import type { ReactNode } from "react";
 // Label is text-primary-highlight; title text-primary; body text-secondary.
 // Text scale B-xs→B-sm→B-md (16/20/24); labelClassName overrides the label scale
 // (e.g. §03 keeps the label at B-sm on desktop).
+// Pass `ordered` instead of children for a numbered list (§04 "How might we" HMW
+// statements 547:10601) — renders a list-decimal <ol> of text-secondary items.
 export function Column({
   label,
   title,
   children,
+  ordered,
   labelClassName,
   className = "",
 }: {
   label: string;
   title?: string;
-  children: ReactNode;
+  children?: ReactNode;
+  ordered?: string[];
   labelClassName?: string;
   className?: string;
 }) {
@@ -33,7 +37,15 @@ export function Column({
       </p>
       <div className="flex flex-col gap-md md:col-start-3 md:col-span-7 md:gap-lg lg:col-start-3 lg:col-span-7 lg:gap-xl">
         {title && <p className={`${scale} text-text-primary`}>{title}</p>}
-        <p className={`${scale} text-text-secondary`}>{children}</p>
+        {ordered ? (
+          <ol className={`${scale} flex list-decimal flex-col gap-md pl-xl text-text-secondary md:gap-lg`}>
+            {ordered.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ol>
+        ) : (
+          <p className={`${scale} text-text-secondary`}>{children}</p>
+        )}
       </div>
     </div>
   );

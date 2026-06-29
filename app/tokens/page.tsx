@@ -285,7 +285,20 @@ export default function DesignSystem() {
         </Demo>
 
         <Demo name="Case study hero" full>
-          <CaseStudyHero />
+          <CaseStudyHero
+            titleTop="NZ Covid"
+            titleBottom="Tracer App"
+            lead="How I closed a 1.4 million user gap during the COVID-19 pandemic"
+            description="2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million had Bluetooth Tracing enabled, which allowed frictionless contact tracing that would kerb the spread. I diagnosed it as a UX failure and redesigned the experience to close that gap."
+            meta={[
+              { label: "Role_", value: "Senior Product Designer" },
+              { label: "Scope_", value: "Strategy·UX/UI·Research" },
+              { label: "Date_", value: "20’ – 21’" },
+            ]}
+            recognition={[
+              { label: "Recognition_", value: "Best Design Award, Gold" },
+            ]}
+          />
         </Demo>
       </section>
 

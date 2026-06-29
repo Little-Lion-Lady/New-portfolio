@@ -21,7 +21,7 @@ function Step({ title, body }: { title: string; body: string }) {
         <div className="w-[var(--size-1)] flex-1 bg-border-highlight md:h-[var(--size-1)] md:w-auto" />
       </div>
       {/* Text */}
-      <div className="flex flex-1 flex-col gap-md pb-md pt-4xs md:flex-none md:gap-md md:pb-xl">
+      <div className="flex flex-1 flex-col gap-md pb-sm pt-4xs md:flex-none md:gap-md md:pb-xl">
         <p className="b-2xs text-text-primary-highlight lg:b-sm">{title}</p>
         <p className="b-2xs text-text-secondary lg:b-sm">{body}</p>
       </div>
@@ -35,7 +35,7 @@ export function Journey({
   steps: { title: string; body: string }[];
 }) {
   return (
-    <div className="flex flex-col gap-md md:grid md:grid-cols-4 md:gap-lg">
+    <div className="flex flex-col gap-sm md:grid md:grid-cols-4 md:gap-md lg:gap-lg">
       {steps.map((s, i) => (
         <Step key={i} title={s.title} body={s.body} />
       ))}

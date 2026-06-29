@@ -52,6 +52,7 @@ export default function Home() {
               name="Basis home app"
               description="Defining and designing the world’s first Smart Electrical Panel companion app to redefine user’s relationship with energy."
               roles="UX/UI, Research, Product strategy"
+              href="/work/basis"
             />
           </Reveal>
           <Reveal index={2} className="w-full">

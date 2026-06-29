@@ -1,33 +1,44 @@
 import type { ReactNode } from "react";
 
 // Figma "Stat container" (393:7120) + "Stats" row. A big number + caption.
-// Two size scales (number / label) per breakpoint, from resolved tokens:
+// Sizes (number / label scales per breakpoint, from resolved tokens):
 //   lg (§01 Problem, §02 Approach)  number B-lg→D-xs→D-sm (32/44/60) · label B-xs→B-xs→B-sm
 //   sm (§05 Validation, §06 Outcome) number B-md→B-lg→D-xs (24/32/44) · label B-xs (16)
+//   outcome (Basis §07)             number D-xs→D-sm→D-md (44/60/80; medium on desktop) ·
+//                                   label B-xs→B-sm→B-md · sublabel B-2xs→B-sm→B-sm (sentence case)
 // Number colour: text-primary by default, text-highlight-dark for the red "alert" variant.
-// Label is always text-tertiary. Number→label gap = 2xs→sm→md (6/12/16).
-// Before→after values are passed inline as the value string, e.g. "18% → 5.3%".
+// Label + sublabel are text-tertiary.
+// Optional sublabel (§07 Outcome "Measured over 6-month pilot") — a second caption line.
 export function Stat({
   value,
   label,
+  sublabel,
   size = "lg",
   highlight = false,
   className = "",
 }: {
   value: ReactNode;
   label: string;
-  size?: "lg" | "sm";
+  sublabel?: string;
+  size?: "lg" | "sm" | "outcome";
   highlight?: boolean;
   className?: string;
 }) {
   const numberClass =
-    size === "lg" ? "b-lg md:d-xs lg:d-sm" : "b-md md:b-lg lg:d-xs";
-  const labelClass = size === "lg" ? "b-xs lg:b-sm" : "b-xs lg:b-sm";
+    size === "lg"
+      ? "b-lg md:d-xs lg:d-sm"
+      : size === "sm"
+        ? "b-md md:b-lg lg:d-xs"
+        : "d-xs md:d-sm lg:d-md";
+  const labelClass = size === "outcome" ? "b-xs md:b-sm lg:b-md" : "b-xs lg:b-sm";
+  const sublabelClass = size === "outcome" ? "b-2xs md:b-sm" : "b-2xs uppercase";
+  // number → label-group gap, and label → sublabel gap
+  const outerGap =
+    size === "outcome" ? "gap-sm lg:gap-xl" : "gap-xs md:gap-md lg:gap-lg";
+  const labelGap = size === "outcome" ? "gap-sm md:gap-md" : "gap-3xs";
 
   return (
-    <div
-      className={`flex flex-col justify-center gap-xs md:gap-md lg:gap-lg ${className}`}
-    >
+    <div className={`flex flex-col justify-center ${outerGap} ${className}`}>
       <p
         className={`${numberClass} ${
           highlight ? "text-text-highlight-dark" : "text-text-primary"
@@ -35,7 +46,12 @@ export function Stat({
       >
         {value}
       </p>
-      <p className={`${labelClass} text-text-tertiary`}>{label}</p>
+      <div className={`flex flex-col ${labelGap}`}>
+        <p className={`${labelClass} text-text-tertiary`}>{label}</p>
+        {sublabel && (
+          <p className={`${sublabelClass} text-text-tertiary`}>{sublabel}</p>
+        )}
+      </div>
     </div>
   );
 }

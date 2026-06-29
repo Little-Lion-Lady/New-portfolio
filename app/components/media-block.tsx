@@ -56,3 +56,69 @@ export function OutcomeMedia() {
     </div>
   );
 }
+
+/* ── BASIS case study media blocks (placeholders) ──────────────────────────────
+   Proportions sourced from the mobile frames (547:10xxx). Real imagery isn't
+   exported yet; desktop column splits to be confirmed during visual QA. */
+
+// §03 Research — a stacked trio of result shots above a beige-padded wide image.
+export function ResearchMedia() {
+  return (
+    <div className="flex flex-col gap-3xs">
+      <Ph className="h-[198px] w-full md:h-[300px]" />
+      <Ph className="h-[198px] w-full md:h-[300px]" />
+      <Ph className="h-[198px] w-full md:h-[300px]" />
+    </div>
+  );
+}
+
+// §05 Process — a wide flow diagram above a taller detail shot.
+export function ProcessMedia() {
+  return (
+    <div className="flex flex-col gap-xs">
+      <Ph className="aspect-[361/141] w-full" />
+      <Ph className="h-[306px] w-full md:h-[460px]" />
+    </div>
+  );
+}
+
+// §06 Solution design — row of two shots, then two white-framed screens stacked.
+export function SolutionMedia() {
+  return (
+    <div className="flex flex-col gap-xs">
+      <div className="flex flex-col items-center gap-xs md:flex-row md:items-stretch">
+        <Ph className="h-[224px] w-full md:flex-1" />
+        <Ph className="h-[224px] w-full md:w-[299px]" />
+      </div>
+      <div className="flex flex-col gap-xs md:flex-row md:items-stretch">
+        <Ph className="h-[288px] w-[295px] max-w-full" />
+        <Ph className="h-[246px] w-full md:h-auto" />
+      </div>
+    </div>
+  );
+}
+
+// §06 Prototype testing — a wide screenshot strip above two rounded user thumbnails.
+export function PrototypeMedia() {
+  return (
+    <div className="flex flex-col items-center gap-md">
+      <Ph className="aspect-[361/177] w-full" />
+      <div className="flex gap-sm">
+        <Ph className="h-[92px] w-[131px] rounded-sm" />
+        <Ph className="h-[92px] w-[131px] rounded-sm" />
+      </div>
+    </div>
+  );
+}
+
+// §07 Outcome — a hero shot above a wide horizontal peek/scroll strip.
+export function BasisOutcomeMedia() {
+  return (
+    <div className="flex flex-col gap-md">
+      <Ph className="aspect-[361/198] w-full" />
+      <div className="flex gap-xs overflow-hidden">
+        <Ph className="h-[300px] w-full md:h-[454px]" />
+      </div>
+    </div>
+  );
+}
