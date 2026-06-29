@@ -48,7 +48,7 @@ export function CaseStudyHero() {
           </Reveal>
 
           {/* Meta block (desktop: left, c2-6) — 0.3s after the text block */}
-          <Reveal noY immediate delay={0.6} className="flex flex-col gap-sm md:grid md:grid-cols-2 md:gap-x-lg lg:col-start-2 lg:col-span-5 lg:row-start-1 lg:flex lg:flex-col lg:gap-lg">
+          <Reveal noY immediate delay={0.6} className="flex flex-col gap-sm md:grid md:grid-cols-2 md:gap-x-lg lg:col-start-1 lg:col-span-5 lg:row-start-1 lg:flex lg:flex-col lg:gap-lg">
             <div className="flex flex-col gap-sm md:gap-md lg:gap-lg">
               <MetaRow label="Role_" value="Senior Product Designer" />
               <MetaRow label="Scope_" value="Strategy·UX/UI·Research" />

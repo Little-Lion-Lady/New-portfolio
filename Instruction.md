@@ -35,8 +35,8 @@ This applies to all of the following. The token reference below is the source of
 Primitive tokens are the basis that all other tokens are built on. Always references **semantic tokens**, **Utility tokens** and **Component tokens** to Primitive tokens.
 |Token | Value |
 | ---- | ----- |
-`colour-gray-dark-100`| #d7d3d9|
-`colour-gray-dark-200`| #d7d3d9|
+`colour-gray-dark-100`| #E3DFE5|
+`colour-gray-dark-200`| #D7D3D9|
 `colour-gray-dark-300`| #bab3bc|
 `colour-gray-dark-400`| #9c949f|
 `colour-gray-dark-500`| #7d767f|
@@ -324,11 +324,7 @@ These map to Tailwind utilities: `rounded-sm`, `rounded-md`, `rounded-lg`, `roun
 
 ### Typography Tokens
 
-Three font families — use the correct one for the correct role|
-- **Geist Mono** → monospaced/code/label text (`M-xl` through `M-2xs`)
-- **Geist** → all body and UI text (`B-xl` through `B-3xs`)
-
-Never mix font families outside their intended roles.
+One font family — Geist for all text roles (`B-xl` through `B-3xs`, `D-2xl` through `D-2xs`).
 
 **Display styles**
 | Style | Font family | Size | Line height | Weight |
@@ -340,14 +336,6 @@ Never mix font families outside their intended roles.
 | `d-sm` | `font-family-font-family-body` (Geist) | `font-size-display-sm` (60px) | — (115%, no token) | `font-weight-regular` (400) |
 | `d-xs` | `font-family-font-family-body` (Geist) | `font-size-display-xs` (44px) | — (110%, no token) | `font-weight-regular` (400) |
 | `d-2xs` | `font-family-font-family-body` (Geist) | `font-size-display-2xs` (32px) | — (120%, no token) | `font-weight-regular` (400) |
-
-**Mono styles**
-| `m-xl` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-xl` (32px) | `line-height-mono-xl` (40px) | `font-weight-regular` (400) |
-| `m-lg` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-md` (24px) | `line-height-mono-lg` (36px) | `font-weight-regular` (400) |
-| `m-md` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-sm` (20px) | `line-height-mono-md` (32px) | `font-weight-regular` (400) |
-| `m-sm` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-xs` (16px) | `line-height-mono-sm` (28px) | `font-weight-regular` (400) |
-| `m-xs` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-2xs` (14px) | `line-height-mono-xs` (24px) | `font-weight-regular` (400) |
-| `m-2xs` | `font-family-font-family-mono` (Geist Mono) | `font-size-text-3xs` (12px) | `line-height-mono-2xs` (20px) | `font-weight-regular` (400) |
 
 **Body styles**
 | `b-xl` | `font-family-font-family-body` (Geist) | `font-size-text-2xl` (44px) | `line-height-body-xl` (56px) | `font-weight-regular` (400) |

@@ -27,11 +27,11 @@ export function Column({
       className={`flex flex-col gap-lg md:grid md:grid-cols-9 md:gap-x-xl lg:grid-cols-12 lg:gap-x-lg ${className}`}
     >
       <p
-        className={`${labelClassName ?? scale} text-text-primary-highlight md:col-start-1 md:col-span-1 lg:col-span-2`}
+        className={`${labelClassName ?? scale} text-text-primary-highlight md:col-start-1 md:col-span-1 lg:col-span-2 whitespace-nowrap`}
       >
         {label}
       </p>
-      <div className="flex flex-col gap-md md:col-start-3 md:col-span-7 md:gap-xl lg:col-start-3 lg:col-span-7 lg:gap-2xl">
+      <div className="flex flex-col gap-md md:col-start-3 md:col-span-7 md:gap-lg lg:col-start-3 lg:col-span-7 lg:gap-xl">
         {title && <p className={`${scale} text-text-primary`}>{title}</p>}
         <p className={`${scale} text-text-secondary`}>{children}</p>
       </div>

@@ -19,11 +19,13 @@ const arrowVariantsRight = {
 //   view    (Type=Link,   Size=sm) — mono uppercase inline link ("View"), text-primary
 // Every size/gap/padding/colour below is taken from the Figma component spec.
 type Variant = "primary" | "link" | "view";
+type ViewSize = "sm" | "md";
 
 export function Button({
   label,
   href = "#",
   variant = "primary",
+  size = "sm",
   className = "",
   target,
   rel,
@@ -31,6 +33,7 @@ export function Button({
   label: string;
   href?: string;
   variant?: Variant;
+  size?: ViewSize;
   className?: string;
   target?: string;
   rel?: string;
@@ -59,21 +62,24 @@ export function Button({
   }
 
   if (variant === "view") {
+    const viewText = size === "md" ? "b-sm lg:b-md" : "b-xs lg:b-sm";
+    const viewGap  = size === "md" ? "gap-xs" : "gap-3xs md:gap-2xs lg:gap-3xs";
+    const arrowSize = size === "md" ? "size-xl" : "size-md md:size-lg";
     return (
       <motion.a
         href={href}
         initial="rest"
         whileHover="hover"
         animate="rest"
-        className={`inline-flex items-center gap-3xs b-xs text-text-primary transition-colors hover:text-text-primary-hover md:gap-2xs lg:gap-3xs lg:b-sm ${className}`}
+        className={`inline-flex items-center ${viewGap} ${viewText} text-text-primary transition-colors hover:text-text-primary-hover ${className}`}
       >
-        <span>{label}</span>
+        <span className="[text-box:trim-both_cap_alphabetic]">{label}</span>
         <motion.span
           variants={arrowVariantsRight}
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="inline-flex shrink-0"
         >
-          <ArrowRight className="size-md md:size-lg" />
+          <ArrowRight className={arrowSize} />
         </motion.span>
       </motion.a>
     );

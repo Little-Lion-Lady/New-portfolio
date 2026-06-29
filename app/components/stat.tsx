@@ -22,11 +22,11 @@ export function Stat({
 }) {
   const numberClass =
     size === "lg" ? "b-lg md:d-xs lg:d-sm" : "b-md md:b-lg lg:d-xs";
-  const labelClass = size === "lg" ? "b-xs lg:b-sm" : "b-xs";
+  const labelClass = size === "lg" ? "b-xs lg:b-sm" : "b-xs lg:b-sm";
 
   return (
     <div
-      className={`flex flex-col justify-center gap-2xs md:gap-sm lg:gap-md ${className}`}
+      className={`flex flex-col justify-center gap-xs md:gap-md lg:gap-lg ${className}`}
     >
       <p
         className={`${numberClass} ${

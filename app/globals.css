@@ -24,8 +24,8 @@
 :root {
   /* Colour — Gray (dark family) */
   --colour-gray-dark-50:  #faf9fa;
-  --colour-gray-dark-100: #d7d3d9;
-  --colour-gray-dark-200: #d7d3d9;
+  --colour-gray-dark-100: #E3DFE5;
+  --colour-gray-dark-200: #D7D3D9;
   --colour-gray-dark-300: #bab3bc;
   --colour-gray-dark-400: #9c949f;
   --colour-gray-dark-500: #7d767f;
@@ -184,14 +184,6 @@
   --line-height-body-xs:  26px;
   --line-height-body-2xs: 24px;
   --line-height-body-3xs: 22px;
-
-  /* Typography — line heights (mono) */
-  --line-height-mono-xl:  40px;
-  --line-height-mono-lg:  36px;
-  --line-height-mono-md:  32px;
-  --line-height-mono-sm:  28px;
-  --line-height-mono-xs:  24px;
-  --line-height-mono-2xs: 20px;
 
   /* Typography — display line heights (percent values, no Figma token) */
   --line-height-display-2xl: 1.15;
@@ -352,6 +344,12 @@
   --rspace-xl:  var(--spacing-3xl);  /* mobile 40 (Figma) */
   --rspace-2xl: var(--spacing-4xl);  /* mobile 64 */
   --rspace-3xl: var(--spacing-5xl);  /* mobile 72 */
+
+  --radius-sm:   var(--size-6);
+  --radius-md:   var(--size-7);
+  --radius-lg:   var(--size-8);
+  --radius-xl:   var(--size-9);
+  --radius-full: 9999px;
 }
 
 /* ============================================================
@@ -783,56 +781,6 @@
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-2xs);
   line-height: var(--line-height-display-2xs);
-  font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
-}
-
-/* Mono — Geist Mono */
-@utility m-xl {
-  margin: 0 !important;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-text-xl);
-  line-height: var(--line-height-mono-xl);
-  font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
-}
-@utility m-lg {
-  margin: 0 !important;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-text-md);
-  line-height: var(--line-height-mono-lg);
-  font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
-}
-@utility m-md {
-  margin: 0 !important;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-text-sm);
-  line-height: var(--line-height-mono-md);
-  font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
-}
-@utility m-sm {
-  margin: 0 !important;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-text-xs);
-  line-height: var(--line-height-mono-sm);
-  font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
-}
-@utility m-xs {
-  margin: 0 !important;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-text-2xs);
-  line-height: var(--line-height-mono-xs);
-  font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
-}
-@utility m-2xs {
-  margin: 0 !important;
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-text-3xs);
-  line-height: var(--line-height-mono-2xs);
   font-weight: var(--font-weight-regular);
   text-box: trim-both cap alphabetic;
 }

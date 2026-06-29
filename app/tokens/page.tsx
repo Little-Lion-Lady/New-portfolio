@@ -184,10 +184,11 @@ export default function DesignSystem() {
       <section className="flex flex-col gap-2xl">
         <SectionTitle>Components</SectionTitle>
 
-        <Demo name="Button — primary / link / view">
+        <Demo name="Button — primary / link / view / view md">
           <Button variant="primary" label="About me" href="#" />
           <Button variant="link" label="LinkedIn" href="#" />
           <Button variant="view" label="View" href="#" />
+          <Button variant="view" size="md" label="View" href="#" />
         </Demo>
 
         <Demo name="Theme toggle & icons">
@@ -269,7 +270,7 @@ export default function DesignSystem() {
         </Demo>
 
         <Demo name="Media blocks (placeholders)" full>
-          <div className="flex flex-col gap-xl">
+          <div className="flex flex-col gap-md">
             <ApproachMedia />
             <FlowDiagram />
             <DesignMedia />
@@ -405,17 +406,6 @@ export default function DesignSystem() {
         </div>
       </section>
 
-      <section className="flex flex-col gap-lg">
-        <SectionTitle>Typography — mono (Geist Mono)</SectionTitle>
-        <div className="flex flex-col gap-md">
-          {MONO_STYLES.map(([cls, px]) => (
-            <div key={cls} className="flex items-baseline gap-md border-b border-border-overlay pb-2xs">
-              <span className="m-2xs text-text-tertiary w-[var(--size-40)] shrink-0">{`${cls} · ${px}px`}</span>
-              <span className={cls}>const tokens = source.of.truth;</span>
-            </div>
-          ))}
-        </div>
-      </section>
     </main>
   );
 }
