@@ -17,7 +17,7 @@ export function Tag({
     <div className="flex items-center justify-center overflow-clip rounded-full border border-border-primary px-md py-sm md:px-lg md:py-md lg:px-xl lg:py-lg">
       <p
         className={`b-xs whitespace-nowrap text-center text-text-secondary lg:b-sm ${
-          deferred ? "uppercase line-through" : ""
+          deferred ? "line-through" : ""
         }`}
       >
         {children}

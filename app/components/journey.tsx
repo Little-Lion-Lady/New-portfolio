@@ -6,19 +6,19 @@
 // Title text-primary-highlight, body text-secondary; type B-2xs→B-2xs→B-sm.
 function StepDot() {
   return (
-    <div className="flex size-[24px] shrink-0 items-center justify-center rounded-full bg-component-bg-button-primary">
-      <div className="size-[8px] rounded-full bg-bg-primary" />
+    <div className="flex size-[16px] shrink-0 items-center justify-center rounded-full bg-component-bg-button-primary md:size-[24px]">
+      <div className="size-[6px] rounded-full bg-bg-primary md:size-[8px]" />
     </div>
   );
 }
 
-function Step({ title, body }: { title: string; body: string }) {
+function Step({ title, body, isLast = false }: { title: string; body: string; isLast?: boolean }) {
   return (
     <div className="flex gap-md md:flex-col">
       {/* Connector: vertical (mobile) / horizontal (md+) */}
       <div className="flex flex-col items-center gap-3xs self-stretch pb-3xs md:w-full md:flex-row">
         <StepDot />
-        <div className="w-[var(--size-1)] flex-1 bg-border-highlight md:h-[var(--size-1)] md:w-auto" />
+        {!isLast && <div className="w-[var(--size-1)] flex-1 bg-border-highlight md:h-[var(--size-1)] md:w-auto" />}
       </div>
       {/* Text */}
       <div className="flex flex-1 flex-col gap-md pb-sm pt-4xs md:flex-none md:gap-md md:pb-xl">
@@ -35,9 +35,9 @@ export function Journey({
   steps: { title: string; body: string }[];
 }) {
   return (
-    <div className="flex flex-col gap-sm md:grid md:grid-cols-4 md:gap-md lg:gap-lg">
+    <div className="flex flex-col gap-sm md:grid md:grid-flow-col md:auto-cols-fr md:gap-md lg:gap-lg">
       {steps.map((s, i) => (
-        <Step key={i} title={s.title} body={s.body} />
+        <Step key={i} title={s.title} body={s.body} isLast={i === steps.length - 1} />
       ))}
     </div>
   );
