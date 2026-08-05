@@ -20,6 +20,7 @@ import {
   DesignMedia,
   OutcomeMedia,
 } from "../../components/media-block";
+import { GlassImage } from "../../components/work-image";
 
 const findings = [
   {
@@ -97,6 +98,11 @@ export default function CovidTracer() {
               { label: "Recognition_", value: "Best Design Award, Gold" },
               { label: "Recognition_", value: "Open Source Awards 2021" },
               { label: "Recognition_", value: "GOOD Design Awards 2021" },
+            ]}
+            images={[
+              { src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" },
+              { src: "/home/work/covid-tracer/MOH2.jpg", alt: "NZ COVID Tracer app screen" },
+              { src: "/home/work/covid-tracer/MOH3.jpg", alt: "NZ COVID Tracer app screen" },
             ]}
           />
         </section>
@@ -261,7 +267,11 @@ export default function CovidTracer() {
             </div>
           </div>
           {/* Headline image (desktop: left) */}
-          <div className="h-[300px] w-full bg-bg-inverse lg:col-start-1 lg:col-span-6 lg:row-start-1 lg:h-[488px]" />
+          <GlassImage
+            src="/home/work/covid-tracer/MOH11.jpg"
+            alt="NZ COVID Tracer app screen"
+            className="h-[300px] w-full lg:col-start-1 lg:col-span-6 lg:row-start-1 lg:h-[488px]"
+          />
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
           <OutcomeMedia />
@@ -284,7 +294,11 @@ export default function CovidTracer() {
 
       {/* Case study nav */}
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
-        <CaseStudyNav title="Basis Home app" href="/" />
+        <CaseStudyNav
+          title="Basis Home app"
+          href="/work/basis"
+          image={{ src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" }}
+        />
       </Reveal>
 
       <Divider />

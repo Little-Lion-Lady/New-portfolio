@@ -1,25 +1,71 @@
-import { Button } from "./button";
+"use client";
 
-// Figma "Case study nav" (741:7085 desktop / 741:7096 tablet / 741:7199 mobile).
-// A "Next case study" footer link: thumbnail + subtitle/heading + View.
-//   mobile  — flex row: image 80² · text column (subtitle+heading stacked, then View)
-//   tablet  — 9-col grid: image c1-2 (h80) · title block c4-7 · View c8-9
-//   desktop — 12-col grid: image c1-2 (h100) · subtitle c4 · heading c7-10 · View c12
+import { motion } from "framer-motion";
+import { ArrowRight } from "./icons";
+
+const arrowVariantsRight = {
+  rest: { x: 0, y: 0 },
+  hover: { x: 4, y: 0 },
+};
+
+// Visual match for Button's "view" variant, but as a plain span — the whole
+// row is now the link, so this can't be its own nested <a>.
+function ViewLabel({ size = "sm" }: { size?: "sm" | "md" }) {
+  const viewText = size === "md" ? "b-sm lg:b-md" : "b-xs lg:b-sm";
+  const viewGap = size === "md" ? "gap-xs" : "gap-3xs md:gap-2xs lg:gap-3xs";
+  const arrowSize = size === "md" ? "size-xl" : "size-md md:size-lg";
+  return (
+    <span
+      className={`inline-flex items-center ${viewGap} ${viewText} text-text-primary transition-colors group-hover:text-text-primary-hover`}
+    >
+      <span className="[text-box:trim-both_cap_alphabetic]">View</span>
+      <motion.span
+        variants={arrowVariantsRight}
+        transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+        className="inline-flex shrink-0"
+      >
+        <ArrowRight className={arrowSize} />
+      </motion.span>
+    </span>
+  );
+}
+
+// Figma "Case study nav" (741:7028 desktop / 741:7030 tablet / 741:7052 mobile).
+// A "Next case study" footer link: glass-frame thumbnail + subtitle/heading + View.
+// The whole row is the click target (not just the View label).
+//   mobile  — flex row: mini thumbnail 80² · text column (subtitle+heading, then View)
+//   tablet  — 9-col grid: thumbnail c1-2 (h80) · title block c4-7 · View c8-9
+//   desktop — 12-col grid: thumbnail c1-2 (h140) · subtitle c4 · heading c7-10 · View c12
 // Type scale subtitle/heading B-xs→B-sm→B-md; subtitle is "Next" until desktop
-// where it reads "Next case study". Image is a bg-inverse placeholder (rounded-sm).
+// where it reads "Next case study". Thumbnail padding (p-3xs, 4px) is fixed
+// across breakpoints — same compact "mini" glass frame as the carousel/hero cards.
+// (Figma flips this thumbnail vertically on tablet/desktop; skipped here since
+// it renders the actual photo upside down.)
 export function CaseStudyNav({
   title,
   href = "#",
+  image,
 }: {
   title: string;
   href?: string;
+  image: { src: string; alt: string };
 }) {
   return (
-    <div className="flex w-full items-center gap-lg md:grid md:grid-cols-9 md:items-center lg:grid-cols-12 lg:items-center">
+    <motion.a
+      href={href}
+      initial="rest"
+      whileHover="hover"
+      animate="rest"
+      className="group flex w-full items-center gap-lg md:grid md:grid-cols-9 md:items-center lg:grid-cols-12 lg:items-center"
+    >
       {/* Thumbnail */}
-      <div className="h-[80px] w-[80px] shrink-0 bg-bg-inverse md:col-start-1 md:col-span-2 md:w-full lg:h-[100px]" />
+      <div className="h-[80px] w-[80px] shrink-0 overflow-hidden rounded-sm border border-border-overlay bg-utility-inverses-glass p-3xs shadow-[0_2px_10px_var(--shadows-shadow-02)] backdrop-blur-[10px] md:col-start-1 md:col-span-2 md:h-[80px] md:w-full lg:h-[140px]">
+        <div className="relative h-full w-full overflow-hidden rounded-xs border border-border-overlay">
+          <img src={image.src} alt={image.alt} className="absolute inset-0 h-full w-full object-cover" />
+        </div>
+      </div>
 
-      {/* Text column — on mobile this also holds the View button; from md it flattens
+      {/* Text column — on mobile this also holds the View label; from md it flattens
           (lg:contents) so subtitle/heading become direct grid cells on desktop. */}
       <div className="flex min-w-0 flex-1 flex-col gap-md md:col-start-3 md:col-span-4 md:self-center lg:contents">
         <div className="flex flex-col gap-sm md:gap-md lg:contents">
@@ -32,14 +78,14 @@ export function CaseStudyNav({
         </div>
         {/* View — mobile only (nested in text column) */}
         <div className="md:hidden">
-          <Button variant="view" label="View" href={href} />
+          <ViewLabel />
         </div>
       </div>
 
       {/* View — tablet + desktop (own grid cell) */}
       <div className="hidden md:col-start-8 md:col-span-2 md:flex md:justify-end md:self-center lg:col-start-12 lg:col-span-1 lg:self-center">
-        <Button variant="view" size="md" label="View" href={href} />
+        <ViewLabel size="md" />
       </div>
-    </div>
+    </motion.a>
   );
 }

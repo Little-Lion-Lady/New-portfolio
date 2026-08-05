@@ -53,6 +53,12 @@ export default function Home() {
               description="Defining and designing the world’s first Smart Electrical Panel companion app to redefine user’s relationship with energy."
               roles="UX/UI, Research, Product strategy"
               href="/work/basis"
+              images={[
+                { src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" },
+                { src: "/home/work/basis/BS2.jpg", alt: "Basis home app screen" },
+                { src: "/home/work/basis/BS3.png", alt: "Basis home app screen" },
+                { src: "/home/work/basis/BS4.png", alt: "Basis home app screen" },
+              ]}
             />
           </Reveal>
           <Reveal index={2} className="w-full">
@@ -62,6 +68,12 @@ export default function Home() {
               description="Working on a nation-wide COVID-19 pandemic response to support contact tracing efforts and protect New Zealand from the spread of COVID-19."
               roles="UX/UI, Research, Product strategy"
               href="/work/covid-tracer"
+              images={[
+                { src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" },
+                { src: "/home/work/covid-tracer/MOH2.jpg", alt: "NZ COVID Tracer app screen" },
+                { src: "/home/work/covid-tracer/MOH3.jpg", alt: "NZ COVID Tracer app screen" },
+                { src: "/home/work/covid-tracer/MOH4.jpg", alt: "NZ COVID Tracer app screen" },
+              ]}
             />
           </Reveal>
         </div>

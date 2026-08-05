@@ -256,16 +256,26 @@ export default function DesignSystem() {
         </Demo>
 
         <Demo name="Case study nav" full>
-          <CaseStudyNav title="Basis Home app" href="#" />
+          <CaseStudyNav
+            title="Basis Home app"
+            href="#"
+            image={{ src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" }}
+          />
         </Demo>
 
-        <Demo name="Work item (carousel slots are placeholders)" full>
+        <Demo name="Work item" full>
           <WorkItem
             number="SW/01"
             name="Basis home app"
             description="Defining and designing the world’s first Smart Electrical Panel companion app."
             roles="UX/UI, Research, Product strategy"
             href="#"
+            images={[
+              { src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" },
+              { src: "/home/work/basis/BS2.jpg", alt: "Basis home app screen" },
+              { src: "/home/work/basis/BS3.png", alt: "Basis home app screen" },
+              { src: "/home/work/basis/BS4.png", alt: "Basis home app screen" },
+            ]}
           />
         </Demo>
 
@@ -297,6 +307,11 @@ export default function DesignSystem() {
             ]}
             recognition={[
               { label: "Recognition_", value: "Best Design Award, Gold" },
+            ]}
+            images={[
+              { src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" },
+              { src: "/home/work/covid-tracer/MOH2.jpg", alt: "NZ COVID Tracer app screen" },
+              { src: "/home/work/covid-tracer/MOH3.jpg", alt: "NZ COVID Tracer app screen" },
             ]}
           />
         </Demo>

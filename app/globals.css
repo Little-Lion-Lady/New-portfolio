@@ -105,6 +105,7 @@
   --colour-base-black: #000000;
   --colour-base-white-transparent: rgba(255, 255, 255, 0);
   --colour-base-black-transparent: rgba(0, 0, 0, 0);
+  --colour-base-white-50: rgba(255, 255, 255, 0.5);
 
   /* Colour — opacity-suffixed primitives */
   --colour-gray-light-950-50: rgba(15, 17, 23, 0.5);
@@ -227,6 +228,13 @@
   --shadows-shadow-01: var(--colour-gray-light-950-50);
   --shadows-shadow-02: var(--colour-gray-light-950-10);
   --shadows-glow-01:   var(--colour-gray-light-50-30);
+
+  /* Carousel glass-card fill. TODO: designer added a purple colour + inverses
+     tokens in Figma for this — dark-mode value is pending, currently unchanged. */
+  --utility-inverses-glass: var(--colour-base-white-50);
+
+  /* Insight band glass fill. TODO: same as above — dark-mode value pending. */
+  --utility-white-50: var(--colour-base-white-50);
 
   /* ----------------------------------------------------------
      4. COMPONENT TOKENS — light mode
@@ -389,6 +397,10 @@
     --shadows-shadow-02: var(--colour-blue-100-10);
     --shadows-glow-01:   var(--colour-blue-100);
 
+    /* TODO: pending the new purple/inverses dark value from Figma. */
+    --utility-inverses-glass: var(--colour-base-white-50);
+    --utility-white-50: var(--colour-base-white-50);
+
     --component-bg-button-primary: var(--colour-base-white);
     --component-bg-button-hover:   var(--colour-blue-100);
     --component-bg-button-pressed: var(--colour-blue-200);
@@ -494,6 +506,10 @@
   --shadows-shadow-01: var(--colour-blue-200-50);
   --shadows-shadow-02: var(--colour-blue-100-10);
   --shadows-glow-01:   var(--colour-blue-100);
+
+  /* TODO: pending the new purple/inverses dark value from Figma. */
+  --utility-inverses-glass: var(--colour-base-white-50);
+  --utility-white-50: var(--colour-base-white-50);
 
   --component-bg-button-primary: var(--colour-base-white);
   --component-bg-button-hover:   var(--colour-blue-100);
@@ -612,6 +628,12 @@
   --color-border-highlight: var(--border-highlight);
   --color-border-overlay:   var(--border-overlay);
 
+  /* Carousel glass fill */
+  --color-utility-inverses-glass: var(--utility-inverses-glass);
+
+  /* Insight band glass fill */
+  --color-utility-white-50: var(--utility-white-50);
+
   /* Component */
   --color-component-bg-button-primary: var(--component-bg-button-primary);
   --color-component-bg-button-hover:   var(--component-bg-button-hover);
@@ -715,6 +737,7 @@
   /* Radius — @theme inline outputs these as --radius-* CSS vars AND generates
      rounded-* / rounded-tl-* etc. utilities. Reference size primitives directly
      (not via :root aliases) to avoid circular var() references. */
+  --radius-xs:   var(--size-4);   /* 8px — carousel card inner image */
   --radius-sm:   var(--size-6);   /* 12px — carousel cards */
   --radius-md:   var(--size-7);   /* 16px — divider mobile */
   --radius-lg:   var(--size-8);   /* 20px — divider tablet */

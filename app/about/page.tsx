@@ -211,7 +211,11 @@ export default function About() {
 
       {/* Case study nav */}
       <Reveal delay={0.5} immediate className="w-full">
-        <CaseStudyNav title="NZ COVID Tracer app" href="/work/covid-tracer" />
+        <CaseStudyNav
+          title="NZ COVID Tracer app"
+          href="/work/covid-tracer"
+          image={{ src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" }}
+        />
       </Reveal>
 
       <Divider />

@@ -89,6 +89,11 @@ export default function Basis() {
             recognition={[
               { label: "Recognition_", value: "Best Design Award, Gold" },
             ]}
+            images={[
+              { src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" },
+              { src: "/home/work/basis/BS2.jpg", alt: "Basis home app screen" },
+              { src: "/home/work/basis/BS3.png", alt: "Basis home app screen" },
+            ]}
           />
         </section>
       </div>
@@ -361,7 +366,11 @@ export default function Basis() {
 
       {/* Case study nav */}
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
-        <CaseStudyNav title="NZ COVID Tracer app" href="/work/covid-tracer" />
+        <CaseStudyNav
+          title="NZ COVID Tracer app"
+          href="/work/covid-tracer"
+          image={{ src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" }}
+        />
       </Reveal>
 
       <Divider />

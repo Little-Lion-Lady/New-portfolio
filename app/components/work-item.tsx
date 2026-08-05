@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Button } from "./button";
+import { WorkImage, type WorkImageData, type WorkImageSize } from "./work-image";
 
 // Figma "Work item" component.
 // Layout per breakpoint:
@@ -7,20 +8,25 @@ import { Button } from "./button";
 //   tablet  — 9-col grid (number c1, name c2-3, desc c5-9 with View inside)
 //   desktop — 12-col grid (number c1, name c3-4, desc c6-11, View standalone c12)
 // Type scales: number/name B-xs→B-sm→B-md; desc/roles/View M-xs→M-sm→M-md.
-// Image carousel: 3 equal slots, h-400, rounded-12, bg-inverse (placeholders).
+// Image carousel: WorkImage cards (frosted glass, tilted, overlapping).
 export function WorkItem({
   number,
   name,
   description,
   roles,
   href = "#",
+  images,
+  imageSize = "md",
 }: {
   number: string;
   name: ReactNode;
   description: string;
   roles: string;
   href?: string;
+  images: WorkImageData[];
+  imageSize?: WorkImageSize;
 }) {
+  const total = images.length as 3 | 4;
   return (
     <article className="flex w-full flex-col items-center gap-lg md:gap-2xl lg:gap-4xl">
       {/* Text container: stack (mobile) → 9-col grid (tablet) → 12-col grid (desktop) */}
@@ -51,13 +57,18 @@ export function WorkItem({
         </div>
       </div>
 
-      {/* Image carousel — equal placeholder slots (bg-inverse). NOTE: Figma is a
-          fixed 1936px strip that bleeds past the content width (a peek/scroll
-          carousel); implement that with the real images + scroll interaction. */}
-      <div className="flex w-full items-start gap-xs">
-        <div className="h-[400px] flex-1 bg-bg-inverse" />
-        <div className="h-[400px] flex-1 bg-bg-inverse" />
-        <div className="h-[400px] flex-1 bg-bg-inverse" />
+      {/* Image carousel */}
+      <div className="flex w-full items-center justify-center">
+        {images.map((image, i) => (
+          <WorkImage
+            key={image.src}
+            src={image.src}
+            alt={image.alt}
+            index={i}
+            total={total}
+            size={imageSize}
+          />
+        ))}
       </div>
     </article>
   );

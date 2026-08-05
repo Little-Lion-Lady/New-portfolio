@@ -1,12 +1,14 @@
 import { Reveal, RevealWords } from "./reveal";
+import { WorkImage, type WorkImageData } from "./work-image";
 
-// Figma "Hero" (393:15527 desktop / 436:16273 tablet / 436:16901 mobile).
-// Title (two-tone, fluid) + description (lead + body) + meta + bleed image strip.
+// Figma "Hero" (393:15572 desktop / tablet / mobile).
+// Title (two-tone, fluid) + description (lead + body) + meta + image carousel.
 //   title    — case-hero-title (D-xs→D-md→D-2xl); line 1 primary-highlight, line 2 50% overlay
 //              revealed word-by-word (RevealWords), matching the About hero
 //   layout   — mobile/tablet stack text→meta; desktop 12-col grid (meta c2-6 | text c7-12)
 //   meta     — always a single column (meta rows then recognition rows stacked)
-//   images   — horizontal strip of bg-inverse placeholders, h 300→400→600, proportional widths
+//   images   — 3 WorkImage cards (same glass-frame treatment as the home carousel),
+//              size="lg" on desktop, untilted (flat, still overlapping)
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start">
@@ -25,6 +27,7 @@ export function CaseStudyHero({
   description,
   meta,
   recognition,
+  images,
 }: {
   titleTop: string;
   titleBottom: string;
@@ -32,6 +35,7 @@ export function CaseStudyHero({
   description: string;
   meta: MetaItem[];
   recognition: MetaItem[];
+  images: WorkImageData[];
 }) {
   // Second title line continues the word-reveal sequence after the first line's words.
   const topWordCount = titleTop.trim().split(/\s+/).length;
@@ -76,18 +80,12 @@ export function CaseStudyHero({
         </div>
       </div>
 
-      {/* Image strip — 4 proportional placeholders (real Figma is a 1936px peek/scroll
-          strip for real imagery). No corner radius, per Figma. */}
-      <Reveal
-        noY
-        immediate
-        delay={0.6}
-        className="flex w-full gap-sm overflow-hidden md:gap-xs lg:gap-md"
-      >
-        <div className="h-[300px] flex-[3] bg-bg-inverse md:h-[400px] lg:h-[600px]" />
-        <div className="h-[300px] flex-[4] bg-bg-inverse md:h-[400px] lg:h-[600px]" />
-        <div className="h-[300px] flex-[4] bg-bg-inverse md:h-[400px] lg:h-[600px]" />
-        <div className="h-[300px] flex-[7] bg-bg-inverse md:h-[400px] lg:h-[600px]" />
+      {/* Image carousel — 3 tilted WorkImage cards (same fan pattern as the home
+          carousel), lg size on desktop. */}
+      <Reveal noY immediate delay={0.6} className="flex w-full items-center justify-center">
+        {images.map((image, i) => (
+          <WorkImage key={image.src} src={image.src} alt={image.alt} index={i} total={3} size="lg" />
+        ))}
       </Reveal>
     </div>
   );
