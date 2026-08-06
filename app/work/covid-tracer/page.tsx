@@ -215,7 +215,7 @@ export default function CovidTracer() {
         <Reveal index={1} delay={0.6} className="w-full">
           <FindingsTable rows={findings} />
         </Reveal>
-        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-xs">
+        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-xs md:gap-md lg:gap-xl">
           <FlowDiagram />
           <DesignMedia />
         </Reveal>
@@ -252,7 +252,7 @@ export default function CovidTracer() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg lg:grid lg:grid-cols-12 lg:gap-x-lg">
           {/* Content (desktop: right) */}
-          <div className="flex flex-col gap-2xl lg:col-start-7 lg:col-span-6">
+          <div className="flex flex-col gap-2xl lg:col-start-8 lg:col-span-5">
             <KeyParagraph>
               Both hypotheses validated within one month of launch. While at the end of my
               tenure on the project the app rating score doubled.
@@ -270,7 +270,7 @@ export default function CovidTracer() {
           <GlassImage
             src="/home/work/covid-tracer/MOH11.jpg"
             alt="NZ COVID Tracer app screen"
-            className="h-[300px] w-full lg:col-start-1 lg:col-span-6 lg:row-start-1 lg:h-[488px]"
+            className="h-[300px] w-full lg:col-start-1 lg:col-span-6 lg:row-start-1 lg:h-[500px]"
           />
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">

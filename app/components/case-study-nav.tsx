@@ -59,9 +59,11 @@ export function CaseStudyNav({
       className="group flex w-full items-center gap-lg md:grid md:grid-cols-9 md:items-center lg:grid-cols-12 lg:items-center"
     >
       {/* Thumbnail */}
-      <div className="h-[80px] w-[80px] shrink-0 overflow-hidden rounded-sm border border-border-overlay bg-utility-inverses-glass p-3xs shadow-[0_2px_10px_var(--shadows-shadow-02)] backdrop-blur-[10px] md:col-start-1 md:col-span-2 md:h-[80px] md:w-full lg:h-[140px]">
-        <div className="relative h-full w-full overflow-hidden rounded-xs border border-border-overlay">
-          <img src={image.src} alt={image.alt} className="absolute inset-0 h-full w-full object-cover" />
+      <div className="shrink-0 md:col-start-1 md:col-span-2 lg:pr-xl">
+        <div className="h-[80px] w-[80px] overflow-hidden rounded-sm border border-border-overlay bg-utility-inverses-glass p-3xs shadow-[0_2px_10px_var(--shadows-shadow-02)] backdrop-blur-[10px] md:h-[80px] md:w-full lg:h-[140px]">
+          <div className="relative h-full w-full overflow-hidden rounded-xs border border-border-overlay">
+            <img src={image.src} alt={image.alt} className="absolute inset-0 h-full w-full object-cover" />
+          </div>
         </div>
       </div>
 

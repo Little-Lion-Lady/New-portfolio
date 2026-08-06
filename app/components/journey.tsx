@@ -16,7 +16,7 @@ function Step({ title, body, isLast = false }: { title: string; body: string; is
   return (
     <div className="flex gap-md md:flex-col">
       {/* Connector: vertical (mobile) / horizontal (md+) */}
-      <div className="flex flex-col items-center gap-3xs self-stretch pb-3xs md:w-full md:flex-row">
+      <div className="flex flex-col items-center gap-xs self-stretch pb-3xs md:w-full md:flex-row md:gap-md">
         <StepDot />
         {!isLast && <div className="w-[var(--size-1)] flex-1 bg-border-highlight md:h-[var(--size-1)] md:w-auto" />}
       </div>
