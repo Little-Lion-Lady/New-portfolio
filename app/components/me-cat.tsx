@@ -17,7 +17,7 @@ export function MeCat({ className }: { className?: string }) {
   const [dark, setDark] = useState(isDarkTheme);
 
   useEffect(() => {
-    fetch("/home/me-cat.json?v=3")
+    fetch("/home/me-cat.json?v=4")
       .then((r) => r.json())
       .then(setRawData)
       .catch((err) => console.error("[MeCat] Failed to load animation:", err));
