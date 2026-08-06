@@ -1,0 +1,5 @@
+{
+  "name": "new-portfolio",
+  "autoPort": true,
+  "startCommand": "bash /Users/marynababych/CC/start-dev-new.sh"
+}
