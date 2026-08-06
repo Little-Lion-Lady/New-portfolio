@@ -8,8 +8,9 @@ import { SectionReveal } from "../components/section-reveal-context";
 import { Reveal, RevealWords } from "../components/reveal";
 import { Divider } from "../components/divider";
 import { ArrowUpRight } from "../components/icons";
-import { MeCat } from "../components/me-cat";
+import { BioCollage } from "../components/bio-collage";
 import { CaseStudyNav } from "../components/case-study-nav";
+import { GlassImage } from "../components/work-image";
 
 const experience = [
   { role: "Lead Product Designer", org: "First Table | Marketplace", project: "First Table app", year: "25’ – Now" },
@@ -25,6 +26,8 @@ const awards = [
   { project: "Z Energy Sharetank", award: "Best Design Gold", year: "20’", href: "https://bestawards.co.nz/digital/user-experience/z-energy-innovation-refinery/z-energy-sharetank/" },
   { project: "Starship Check-Up", award: "Best Design Purple", year: "18’", href: "https://bestawards.co.nz/user-experience-award/interactive/rush-1/starship-animal-check-ups-magical-forest/" },
 ];
+
+const artwork = ["ART1", "ART2", "ART3", "ART4", "ART5", "ART6", "ART7"];
 
 export default function About() {
   return (
@@ -153,9 +156,8 @@ export default function About() {
             Desktop: images left (order-1), text right (order-2) — side by side. */}
         <Reveal index={1} delay={0.5} className="flex flex-col gap-r-xl wide:flex-row wide:items-start">
           {/* Images */}
-          <div className="order-2 flex gap-lg md:order-1 wide:flex-[5]">
-            <div className="flex-1 self-stretch rounded-sm bg-bg-inverse wide:h-[482px]" />
-            <MeCat className="flex-1 min-w-0 rounded-sm" />
+          <div className="order-2 md:order-1 wide:flex-[5]">
+            <BioCollage />
           </div>
 
           {/* Bio text */}
@@ -195,14 +197,17 @@ export default function About() {
           </p>
         </Reveal>
 
-        {/* Image strip — 4 equal-width placeholder slots, same pattern as WorkItem.
-            Heights match Figma: 300 px mobile / 639 px tablet+desktop. */}
+        {/* Image strip — a horizontal peek/scroll strip of 7 original artworks. */}
         <Reveal index={2} delay={0.5} className="w-full">
-          <div className="flex w-full items-start gap-xs">
-            <div className="h-[300px] flex-1 rounded-sm bg-bg-inverse lg:h-[639px]" />
-            <div className="h-[300px] flex-1 rounded-sm bg-bg-inverse lg:h-[639px]" />
-            <div className="h-[300px] flex-1 rounded-sm bg-bg-inverse lg:h-[639px]" />
-            <div className="h-[300px] flex-1 rounded-sm bg-bg-inverse lg:h-[639px]" />
+          <div className="-mx-sm -my-sm flex w-full gap-sm overflow-x-auto p-sm md:gap-lg lg:gap-xl">
+            {artwork.map((name) => (
+              <GlassImage
+                key={name}
+                src={`/home/about/${name}.jpg`}
+                alt="Original artwork by Maryna Babych"
+                className="h-[300px] w-[210px] shrink-0 md:h-[600px] md:w-[420px] lg:h-[600px] lg:w-[420px]"
+              />
+            ))}
           </div>
         </Reveal>
       </SectionReveal>

@@ -29,6 +29,7 @@ export function Button({
   className = "",
   target,
   rel,
+  as = "a",
 }: {
   label: string;
   href?: string;
@@ -37,13 +38,14 @@ export function Button({
   className?: string;
   target?: string;
   rel?: string;
+  /** Render as a plain (non-link) element — use when nesting inside an outer <a>. */
+  as?: "a" | "span";
 }) {
   if (variant === "link") {
+    const LinkTag = as === "span" ? motion.span : motion.a;
     return (
-      <motion.a
-        href={href}
-        target={target}
-        rel={rel}
+      <LinkTag
+        {...(as === "a" ? { href, target, rel } : {})}
         initial="rest"
         whileHover="hover"
         animate="rest"
@@ -57,7 +59,7 @@ export function Button({
         >
           <ArrowUpRight className="size-xl md:size-2xl lg:size-3xl" />
         </motion.span>
-      </motion.a>
+      </LinkTag>
     );
   }
 
@@ -65,9 +67,10 @@ export function Button({
     const viewText = size === "md" ? "b-sm lg:b-md" : "b-xs lg:b-sm";
     const viewGap  = size === "md" ? "gap-xs" : "gap-3xs md:gap-2xs lg:gap-3xs";
     const arrowSize = size === "md" ? "size-xl" : "size-md md:size-lg";
+    const ViewTag = as === "span" ? motion.span : motion.a;
     return (
-      <motion.a
-        href={href}
+      <ViewTag
+        {...(as === "a" ? { href } : {})}
         initial="rest"
         whileHover="hover"
         animate="rest"
@@ -81,7 +84,7 @@ export function Button({
         >
           <ArrowRight className={arrowSize} />
         </motion.span>
-      </motion.a>
+      </ViewTag>
     );
   }
 

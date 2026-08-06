@@ -49,6 +49,20 @@ export default function Home() {
           <Reveal index={1} className="w-full">
             <WorkItem
               number="SW/01"
+              name="First Table app"
+              description="A ground-up redesign of First Table, the app that gives diners 50% off their first table of the night, now used by 1.5 million people. In the six months since launch, sign-ups are up 51%, bookings up 62%, and conversion up 12.3%."
+              roles="UX/UI, Design system, Research"
+              comingSoon
+              images={[
+                { src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" },
+                { src: "/home/work/firsttable/FT2.jpg", alt: "First Table app screen" },
+                { src: "/home/work/firsttable/FT3.jpg", alt: "First Table app screen" },
+              ]}
+            />
+          </Reveal>
+          <Reveal index={2} className="w-full">
+            <WorkItem
+              number="SW/02"
               name="Basis home app"
               description="Defining and designing the world’s first Smart Electrical Panel companion app to redefine user’s relationship with energy."
               roles="UX/UI, Research, Product strategy"
@@ -61,9 +75,9 @@ export default function Home() {
               ]}
             />
           </Reveal>
-          <Reveal index={2} className="w-full">
+          <Reveal index={3} className="w-full">
             <WorkItem
-              number="SW/02"
+              number="SW/03"
               name="NZ COVID Tracer app"
               description="Working on a nation-wide COVID-19 pandemic response to support contact tracing efforts and protect New Zealand from the spread of COVID-19."
               roles="UX/UI, Research, Product strategy"
