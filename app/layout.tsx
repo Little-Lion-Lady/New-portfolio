@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import Script from "next/script";
+import { LazyMotion, domAnimation } from "framer-motion";
 import "./globals.css";
 
 // Both fonts come from the geist package (local woff2, no network request).
@@ -44,7 +45,15 @@ export default function RootLayout({
             is set before any CSS tokens resolve. */}
         <Script id="theme-init" strategy="beforeInteractive">{`(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`}</Script>
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {/* domAnimation covers everything the site uses (hover/tap/animate/
+            AnimatePresence) without drag/layout — smaller than importing the
+            full `motion` feature set on every page. `m.*` components below
+            read features from this provider instead of bundling their own. */}
+        <LazyMotion features={domAnimation} strict>
+          {children}
+        </LazyMotion>
+      </body>
     </html>
   );
 }

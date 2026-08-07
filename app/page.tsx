@@ -6,8 +6,7 @@ import { WorkItem } from "./components/work-item";
 import { Button } from "./components/button";
 import { SectionReveal } from "./components/section-reveal-context";
 import { Reveal } from "./components/reveal";
-import { HeroCat } from "./components/hero-cat";
-import { AboutCat } from "./components/about-cat";
+import { HeroCat, AboutCat } from "./components/dynamic-visuals";
 import { HeroText } from "./components/hero-text";
 import { Divider } from "./components/divider";
 
@@ -41,7 +40,7 @@ export default function Home() {
       </div>
 
       {/* 01 — Selected works. gap = --xl, pb-3xl. Reveals on scroll, staggered. */}
-      <SectionReveal as="section" id="work" className="relative z-10 flex w-full flex-col gap-r-xl pb-3xl">
+      <SectionReveal as="section" id="work" className="relative z-10 flex w-full scroll-mt-[56px] flex-col gap-r-xl pb-3xl md:scroll-mt-[64px] lg:scroll-mt-[72px]">
         <Reveal index={0} className="w-full">
           <SectionHeader number="01" name="Selected works" />
         </Reveal>
@@ -71,7 +70,7 @@ export default function Home() {
                 { src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" },
                 { src: "/home/work/basis/BS2.jpg", alt: "Basis home app screen" },
                 { src: "/home/work/basis/BS3.png", alt: "Basis home app screen" },
-                { src: "/home/work/basis/BS4.png", alt: "Basis home app screen" },
+                { src: "/home/work/basis/BS4.png", alt: "Basis home app screen", quality: 75 },
               ]}
             />
           </Reveal>

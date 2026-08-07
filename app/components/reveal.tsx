@@ -11,7 +11,7 @@
                   splits string nodes into individual words (keeping trailing
                   whitespace), and treats every element node (e.g. a highlight
                   <span>) as a single indivisible token. Each token is wrapped
-                  in a motion.span with display:inline-block.
+                  in an m.span with display:inline-block.
 
   Both components:
   - Respect prefers-reduced-motion — instant fade.
@@ -20,16 +20,28 @@
     normally.
 */
 
-import React, { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { motion, useInView, useReducedMotion, type Variants } from "framer-motion";
+import React, { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
+import { m, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
 
-// SSR-safe Firefox detection. Starts false (matches server render), flips to
-// true on the client after hydration so there's no mismatch error.
+// SSR-safe Firefox detection, computed once and shared across every Reveal/
+// RevealWords instance (a page can render dozens) instead of once per
+// instance. useSyncExternalStore lets the client value differ from the
+// server's `false` on the very first client render with no hydration warning
+// and no extra setState-in-effect render, unlike a useState+useEffect pair.
+let cachedIsFirefox: boolean | null = null;
+function getIsFirefoxSnapshot() {
+  if (cachedIsFirefox === null) cachedIsFirefox = /Firefox/.test(navigator.userAgent);
+  return cachedIsFirefox;
+}
+function getIsFirefoxServerSnapshot() {
+  return false;
+}
+function subscribeNoop() {
+  return () => {};
+}
 function useIsFirefox() {
-  const [isFF, setIsFF] = useState(false);
-  useEffect(() => { setIsFF(/Firefox/.test(navigator.userAgent)); }, []);
-  return isFF;
+  return useSyncExternalStore(subscribeNoop, getIsFirefoxSnapshot, getIsFirefoxServerSnapshot);
 }
 
 const variants: Variants = {
@@ -170,7 +182,7 @@ export function Reveal({
   }, [isImmediate]);
   const shouldAnimate = isImmediate ? mounted : active && inView;
 
-  const Component = motion[as] as typeof motion.div;
+  const Component = m[as] as typeof m.div;
 
   return (
     <Component
@@ -263,7 +275,7 @@ export function RevealWords({
   return (
     <Tag ref={ref as unknown as React.RefObject<never>} className={className} style={style}>
       {tokens.map((token, i) => (
-        <motion.span
+        <m.span
           key={i}
           style={{ display: "inline-block", whiteSpace: "pre-wrap" }}
           custom={startIndex + i}
@@ -272,7 +284,7 @@ export function RevealWords({
           variants={reducedMotion ? reducedVariants : isFF ? ffWordVariants : wordVariants}
         >
           {token}
-        </motion.span>
+        </m.span>
       ))}
     </Tag>
   );

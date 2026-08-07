@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { GradientBg } from "../../components/gradient-bg";
 import { SiteHeader } from "../../components/site-header";
 import { SiteFooter } from "../../components/site-footer";
@@ -67,6 +68,12 @@ const journeySteps = [
     body: "Dual-track agile delivery. Compliance testing pilot. Outcomes measured against original hypotheses.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Basis smart panel app — Maryna Babych",
+  description:
+    "Basis built smart electrical hardware for NZ homes. They knew they needed a companion app, but had no PO, no product brief, and no defined direction. I stepped in to own the strategy, run the research, and design an app that reduced household energy bills by 10% in the first pilot.",
+};
 
 export default function Basis() {
   return (

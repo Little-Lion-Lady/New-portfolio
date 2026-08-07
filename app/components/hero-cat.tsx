@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Lottie from "lottie-react";
+import { useReducedMotion } from "framer-motion";
+import heroCatRaw from "@/public/home/hero-cat.json";
 import { hex, remapColors, isDarkTheme, type ColorMap } from "./lottie-utils";
 
 const DARK_MAP: ColorMap = [
@@ -14,15 +16,8 @@ const DARK_MAP: ColorMap = [
 ];
 
 export function HeroCat({ className }: { className?: string }) {
-  const [rawData, setRawData] = useState<object | null>(null);
   const [dark, setDark] = useState(isDarkTheme);
-
-  useEffect(() => {
-    fetch("/home/hero-cat.json?v=8")
-      .then((r) => r.json())
-      .then(setRawData)
-      .catch((err) => console.error("[HeroCat] Failed to load animation:", err));
-  }, []);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     setDark(isDarkTheme());
@@ -34,18 +29,18 @@ export function HeroCat({ className }: { className?: string }) {
     return () => observer.disconnect();
   }, []);
 
-  const animationData = rawData
-    ? dark
-      ? (remapColors(rawData, DARK_MAP) as object)
-      : rawData
-    : null;
-
-  if (!animationData) return null;
+  // Bundled at build time (content-hashed by Next automatically) instead of
+  // fetched at runtime with a hand-maintained ?v=N cache-busting param.
+  const animationData = useMemo(
+    () => (dark ? (remapColors(heroCatRaw, DARK_MAP) as object) : heroCatRaw),
+    [dark],
+  );
 
   return (
     <Lottie
       animationData={animationData}
       loop
+      autoplay={!reducedMotion}
       className={className}
       style={{ aspectRatio: "1503/818", height: "auto" }}
     />
