@@ -108,6 +108,16 @@ const defaultConfig: NeatConfig = {
   cameraZoom: 3.05,
 };
 
+function paintStaticFallback(canvas: HTMLCanvasElement | null) {
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark"
+    || (!document.documentElement.getAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  ctx.fillStyle = isDark ? "#0a090a" : "#f2f4f8";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
 export function NeatGradientBg({
   config = defaultConfig,
   scrollReactive = true,
@@ -125,24 +135,24 @@ export function NeatGradientBg({
     // Respect prefers-reduced-motion: render a static colour instead of the
     // animated WebGL gradient. The canvas stays in the DOM so layout is unchanged.
     if (reducedMotion) {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-      const isDark = document.documentElement.getAttribute("data-theme") === "dark"
-        || (!document.documentElement.getAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
-      ctx.fillStyle = isDark ? "#0a090a" : "#f2f4f8";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      paintStaticFallback(canvasRef.current);
       return;
     }
 
     if (!canvasRef.current) return;
 
-    gradientRef.current = new NeatGradient({
-      ref: canvasRef.current,
-      ...defaultConfig,
-      ...config,
-    });
+    try {
+      gradientRef.current = new NeatGradient({
+        ref: canvasRef.current,
+        ...defaultConfig,
+        ...config,
+      });
+    } catch {
+      // WebGL unavailable (disabled hardware acceleration, locked-down browsers, etc).
+      // Fall back to the same static fill used for reduced motion instead of crashing.
+      paintStaticFallback(canvasRef.current);
+      return;
+    }
 
     // Remove the watermark link the library injects (sync + async via observer)
     const removeWatermark = (root: Element | null) => {

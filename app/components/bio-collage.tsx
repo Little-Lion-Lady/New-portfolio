@@ -1,5 +1,5 @@
 import { GlassImage } from "./work-image";
-import { MeCat } from "./me-cat";
+import { MeCat } from "./dynamic-visuals";
 
 // Figma "02 Biography" image collage (node 1144:9241/9251/18610) — two tilted
 // glass-frame cards (a real photo + a decorative gradient card) with the cat

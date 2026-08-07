@@ -1,7 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "./icons";
+
+const MotionLink = m.create(Link);
 
 const arrowVariantsRight = {
   rest: { x: 0, y: 0 },
@@ -19,13 +23,13 @@ function ViewLabel({ size = "sm" }: { size?: "sm" | "md" }) {
       className={`inline-flex items-center ${viewGap} ${viewText} text-text-primary transition-colors group-hover:text-text-primary-hover`}
     >
       <span className="[text-box:trim-both_cap_alphabetic]">View</span>
-      <motion.span
+      <m.span
         variants={arrowVariantsRight}
         transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         className="inline-flex shrink-0"
       >
         <ArrowRight className={arrowSize} />
-      </motion.span>
+      </m.span>
     </span>
   );
 }
@@ -51,10 +55,11 @@ export function CaseStudyNav({
   image: { src: string; alt: string };
 }) {
   return (
-    <motion.a
+    <MotionLink
       href={href}
       initial="rest"
       whileHover="hover"
+      whileTap={{ scale: 0.95 }}
       animate="rest"
       className="group flex w-full items-center gap-lg md:grid md:grid-cols-9 md:items-center lg:grid-cols-12 lg:items-center"
     >
@@ -62,7 +67,7 @@ export function CaseStudyNav({
       <div className="shrink-0 md:col-start-1 md:col-span-2 lg:pr-xl">
         <div className="h-[80px] w-[80px] overflow-hidden rounded-sm border border-border-overlay bg-utility-inverses-glass p-3xs shadow-[0_2px_10px_var(--shadows-shadow-02)] backdrop-blur-[10px] md:h-[80px] md:w-full lg:h-[140px]">
           <div className="relative h-full w-full overflow-hidden rounded-xs border border-border-overlay">
-            <img src={image.src} alt={image.alt} className="absolute inset-0 h-full w-full object-cover" />
+            <Image src={image.src} alt={image.alt} fill quality={100} sizes="140px" className="object-cover" />
           </div>
         </div>
       </div>
@@ -88,6 +93,6 @@ export function CaseStudyNav({
       <div className="hidden md:col-start-8 md:col-span-2 md:flex md:justify-end md:self-center lg:col-start-12 lg:col-span-1 lg:self-center">
         <ViewLabel size="md" />
       </div>
-    </motion.a>
+    </MotionLink>
   );
 }

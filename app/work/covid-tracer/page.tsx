@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { GradientBg } from "../../components/gradient-bg";
 import { SiteHeader } from "../../components/site-header";
 import { SiteFooter } from "../../components/site-footer";
@@ -75,6 +76,12 @@ function StatArrow() {
     <span className="b-md self-start text-text-highlight-dark md:b-lg lg:d-xs">→</span>
   );
 }
+
+export const metadata: Metadata = {
+  title: "NZ Covid Tracer app — Maryna Babych",
+  description:
+    "2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million had Bluetooth Tracing enabled, which allowed frictionless contact tracing that would kerb the spread. I diagnosed it as a UX failure and redesigned the experience to close that gap.",
+};
 
 export default function CovidTracer() {
   return (

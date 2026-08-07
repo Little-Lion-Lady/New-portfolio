@@ -1,4 +1,14 @@
-import { NeatGradientBg } from "./neat-gradient";
+"use client";
+
+import dynamic from "next/dynamic";
+
+// Code-split: the WebGL gradient (and its @firecms/neat dependency) is fairly
+// heavy and can't render anything meaningful during SSR anyway, so it's
+// fetched as its own chunk instead of bundled into every page that uses it.
+const NeatGradientBg = dynamic(
+  () => import("./neat-gradient").then((mod) => mod.NeatGradientBg),
+  { ssr: false },
+);
 
 export function GradientBg({
   height = "620px",

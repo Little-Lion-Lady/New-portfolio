@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { Button } from "./button";
 import { WorkImage, type WorkImageData, type WorkImageSize } from "./work-image";
 
@@ -29,12 +30,10 @@ export function WorkItem({
   comingSoon?: boolean;
 }) {
   const total = images.length as 3 | 4;
-  const Wrapper = comingSoon ? "article" : "a";
-  return (
-    <Wrapper
-      {...(!comingSoon ? { href } : {})}
-      className="flex w-full flex-col items-center gap-lg md:gap-2xl lg:gap-4xl"
-    >
+  const wrapperClassName = "flex w-full flex-col items-center gap-lg md:gap-2xl lg:gap-4xl";
+
+  const content = (
+    <>
       {/* Text container: stack (mobile) → 9-col grid (tablet) → 12-col grid (desktop) */}
       <div className="flex w-full flex-col gap-lg md:grid md:grid-cols-9 md:items-start md:gap-lg lg:grid-cols-12 lg:items-start">
         {/* number + name — one row on mobile; individual grid cells on md+ (via contents) */}
@@ -78,9 +77,20 @@ export function WorkItem({
             index={i}
             total={total}
             size={imageSize}
+            quality={image.quality}
           />
         ))}
       </div>
-    </Wrapper>
+    </>
+  );
+
+  if (comingSoon) {
+    return <article className={wrapperClassName}>{content}</article>;
+  }
+
+  return (
+    <Link href={href} className={wrapperClassName}>
+      {content}
+    </Link>
   );
 }

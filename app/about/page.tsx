@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import type { Metadata } from "next";
 import { GradientBg } from "../components/gradient-bg";
 import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
@@ -28,6 +29,12 @@ const awards = [
 ];
 
 const artwork = ["ART1", "ART2", "ART3", "ART4", "ART5", "ART6", "ART7"];
+
+export const metadata: Metadata = {
+  title: "About — Maryna Babych",
+  description:
+    "I'm a passionate, strategic, and creative thinker, blending human-centred design with technology to create experiences that positively impact lives. With 9 years of experience in product design, I've delivered award-winning, impactful designs across a variety of industries and environments.",
+};
 
 export default function About() {
   return (

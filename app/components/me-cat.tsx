@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Lottie from "lottie-react";
+import { useReducedMotion } from "framer-motion";
+import meCatRaw from "@/public/home/me-cat.json";
 import { hex, remapColors, isDarkTheme, type ColorMap } from "./lottie-utils";
 
 const DARK_MAP: ColorMap = [
@@ -13,15 +15,8 @@ const DARK_MAP: ColorMap = [
 ];
 
 export function MeCat({ className }: { className?: string }) {
-  const [rawData, setRawData] = useState<object | null>(null);
   const [dark, setDark] = useState(isDarkTheme);
-
-  useEffect(() => {
-    fetch("/home/me-cat.json?v=4")
-      .then((r) => r.json())
-      .then(setRawData)
-      .catch((err) => console.error("[MeCat] Failed to load animation:", err));
-  }, []);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     setDark(isDarkTheme());
@@ -33,19 +28,19 @@ export function MeCat({ className }: { className?: string }) {
     return () => observer.disconnect();
   }, []);
 
-  const animationData = rawData
-    ? dark
-      ? (remapColors(rawData, DARK_MAP) as object)
-      : rawData
-    : null;
-
-  if (!animationData) return null;
+  // Bundled at build time (content-hashed by Next automatically) instead of
+  // fetched at runtime with a hand-maintained ?v=N cache-busting param.
+  const animationData = useMemo(
+    () => (dark ? (remapColors(meCatRaw, DARK_MAP) as object) : meCatRaw),
+    [dark],
+  );
 
   return (
     <div className={className}>
       <Lottie
         animationData={animationData}
         loop
+        autoplay={!reducedMotion}
         style={{ width: "100%", height: "auto" }}
       />
     </div>

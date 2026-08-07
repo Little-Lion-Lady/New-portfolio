@@ -23,6 +23,7 @@ import React, {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
@@ -95,9 +96,10 @@ export function SectionReveal({
   }, [delay, notBefore, reducedMotion, immediate]);
 
   const Tag = as;
+  const contextValue = useMemo(() => ({ active, immediate }), [active, immediate]);
 
   return (
-    <SectionRevealContext.Provider value={{ active, immediate }}>
+    <SectionRevealContext.Provider value={contextValue}>
       <Tag ref={ref as unknown as React.RefObject<never>} className={className} style={style} id={id}>
         {children}
       </Tag>

@@ -1,4 +1,6 @@
-export type WorkImageData = { src: string; alt: string };
+import Image from "next/image";
+
+export type WorkImageData = { src: string; alt: string; quality?: number };
 export type WorkImageSize = "md" | "lg";
 
 // Figma "ImageCarousel" component (node 1080:8018) — fixed card dimensions per
@@ -42,17 +44,19 @@ export function GlassImage({
   src,
   alt,
   className = "",
+  quality = 100,
 }: {
   src: string;
   alt: string;
   className?: string;
+  quality?: number;
 }) {
   return (
     <div
       className={`flex flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass ${PADDING_CLASS} shadow-[0_2px_10px_var(--shadows-shadow-02)] backdrop-blur-[10px] ${className}`}
     >
       <div className="relative h-full w-full flex-1 overflow-hidden rounded-xs border border-border-overlay">
-        <img src={src} alt={alt} className="absolute inset-0 h-full w-full object-cover" />
+        <Image src={src} alt={alt} fill quality={quality} sizes="100vw" className="object-cover" />
       </div>
     </div>
   );
@@ -65,6 +69,7 @@ export function WorkImage({
   total,
   size = "md",
   tilt = true,
+  quality = 100,
 }: {
   src: string;
   alt: string;
@@ -72,6 +77,7 @@ export function WorkImage({
   total: 3 | 4;
   size?: WorkImageSize;
   tilt?: boolean;
+  quality?: number;
 }) {
   const isLast = index === total - 1;
   return (
@@ -84,7 +90,7 @@ export function WorkImage({
         className={`flex h-full w-full flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass ${PADDING_CLASS} shadow-[0_2px_10px_var(--shadows-shadow-02)] backdrop-blur-[10px]`}
       >
         <div className="relative h-full w-full flex-1 overflow-hidden rounded-xs border border-border-overlay">
-          <img src={src} alt={alt} className="absolute inset-0 h-full w-full object-cover" />
+          <Image src={src} alt={alt} fill quality={quality} sizes="(min-width: 1024px) 560px, (min-width: 768px) 370px, 250px" className="object-cover" />
         </div>
       </div>
     </div>

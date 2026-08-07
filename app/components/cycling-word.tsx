@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 
 const INTERVAL = 2400;
 
@@ -41,7 +41,7 @@ export function CyclingWord({
       }}
     >
       <AnimatePresence mode="wait" initial={false}>
-        <motion.span
+        <m.span
           key={words[index]}
           className={`[grid-area:1/1] ${className ?? ""}`}
           initial={reduced ? { opacity: 0 } : { y: "40%", opacity: 0, filter: "blur(16px)" }}
@@ -58,7 +58,7 @@ export function CyclingWord({
           }
         >
           {words[index]}
-        </motion.span>
+        </m.span>
       </AnimatePresence>
     </span>
   );

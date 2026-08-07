@@ -1,7 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "./icons";
+
+// Animated Next.js Link — client-side nav + prefetch for internal routes.
+const MotionLink = m.create(Link);
+
+// True for hrefs that shouldn't go through next/link (external origins,
+// mailto/tel, or the "#" placeholder used by not-yet-wired buttons).
+function isExternalHref(href: string) {
+  return href === "#" || /^(https?:|mailto:|tel:)/.test(href);
+}
 
 const arrowVariants = {
   rest: { x: 0, y: 0, scale: 1 },
@@ -11,6 +21,24 @@ const arrowVariants = {
 const arrowVariantsRight = {
   rest: { x: 0, y: 0 },
   hover: { x: 4, y: 0 },
+};
+
+const primaryScaleVariants = {
+  rest: { scale: 1 },
+  hover: { scale: 1.04 },
+  press: { scale: 0.95 },
+};
+
+const primaryWhiteOverlayVariants = {
+  rest: { opacity: 0 },
+  hover: { opacity: 0.08 },
+  press: { opacity: 0.08 },
+};
+
+const primaryPressTintVariants = {
+  rest: { opacity: 0 },
+  hover: { opacity: 0 },
+  press: { opacity: 0.14 },
 };
 
 // Figma "Button" component. Three variants × three breakpoints (mobile/tablet/desktop):
@@ -42,23 +70,24 @@ export function Button({
   as?: "a" | "span";
 }) {
   if (variant === "link") {
-    const LinkTag = as === "span" ? motion.span : motion.a;
+    const LinkTag = as === "span" ? m.span : isExternalHref(href) ? m.a : MotionLink;
     return (
       <LinkTag
         {...(as === "a" ? { href, target, rel } : {})}
         initial="rest"
         whileHover="hover"
+        whileTap={{ scale: 0.95 }}
         animate="rest"
         className={`inline-flex items-center gap-2xs d-2xs text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-xs md:d-xs ${className}`}
       >
         <span>{label}</span>
-        <motion.span
+        <m.span
           variants={arrowVariants}
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="inline-flex shrink-0"
         >
           <ArrowUpRight className="size-xl md:size-2xl lg:size-3xl" />
-        </motion.span>
+        </m.span>
       </LinkTag>
     );
   }
@@ -67,38 +96,38 @@ export function Button({
     const viewText = size === "md" ? "b-sm lg:b-md" : "b-xs lg:b-sm";
     const viewGap  = size === "md" ? "gap-xs" : "gap-3xs md:gap-2xs lg:gap-3xs";
     const arrowSize = size === "md" ? "size-xl" : "size-md md:size-lg";
-    const ViewTag = as === "span" ? motion.span : motion.a;
+    const ViewTag = as === "span" ? m.span : isExternalHref(href) ? m.a : MotionLink;
     return (
       <ViewTag
         {...(as === "a" ? { href } : {})}
         initial="rest"
         whileHover="hover"
+        whileTap={{ scale: 0.95 }}
         animate="rest"
         className={`inline-flex items-center ${viewGap} ${viewText} text-text-primary transition-colors hover:text-text-primary-hover ${className}`}
       >
         <span className="[text-box:trim-both_cap_alphabetic]">{label}</span>
-        <motion.span
+        <m.span
           variants={arrowVariantsRight}
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="inline-flex shrink-0"
         >
           <ArrowRight className={arrowSize} />
-        </motion.span>
+        </m.span>
       </ViewTag>
     );
   }
 
   // primary
+  const PrimaryTag = isExternalHref(href) ? m.a : MotionLink;
   return (
-    <motion.a
+    <PrimaryTag
       href={href}
       initial="rest"
       whileHover="hover"
+      whileTap="press"
       animate="rest"
-      variants={{
-        rest: { scale: 1 },
-        hover: { scale: 1.04 },
-      }}
+      variants={primaryScaleVariants}
       transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
       className={`relative inline-flex items-center gap-xs overflow-hidden rounded-full pl-xl pr-lg py-sm b-xs text-text-inverted md:gap-sm md:pl-2xl md:pr-xl md:py-md md:b-sm lg:pl-3xl lg:pr-2xl lg:py-md lg:b-md ${className}`}
       style={{
@@ -107,22 +136,29 @@ export function Button({
       }}
     >
       <span aria-hidden className="absolute inset-0 rounded-full bg-component-bg-button-primary" />
-      <motion.span
+      <m.span
         aria-hidden
         className="absolute inset-0 rounded-full bg-white"
-        variants={{ rest: { opacity: 0 }, hover: { opacity: 0.08 } }}
+        variants={primaryWhiteOverlayVariants}
         transition={{ duration: 0.25 }}
       />
+      {/* Pressed-state tint — mobile tap feedback (also fires on mouse-down) */}
+      <m.span
+        aria-hidden
+        className="absolute inset-0 rounded-full bg-black"
+        variants={primaryPressTintVariants}
+        transition={{ duration: 0.15 }}
+      />
       <span className="relative whitespace-nowrap">{label}</span>
-      <motion.span
+      <m.span
         variants={arrowVariantsRight}
         transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
         className="relative inline-flex shrink-0"
       >
         <ArrowRight className="size-lg md:size-xl lg:size-2xl" />
-      </motion.span>
+      </m.span>
       {/* Glow overlay — tightens and brightens on hover */}
-      <motion.span
+      <m.span
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-[inherit]"
         style={{
@@ -131,6 +167,6 @@ export function Button({
         }}
         transition={{ duration: 0.25 }}
       />
-    </motion.a>
+    </PrimaryTag>
   );
 }

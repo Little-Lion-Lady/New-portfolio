@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 
 // Figma "Header" component. Responsive grid: 4 cols (mobile) / 8 (tablet) / 12 (desktop),
@@ -59,25 +60,27 @@ export function SiteHeader() {
         style={{ background: "linear-gradient(to bottom, var(--bg-primary) 0%, var(--bg-transparency) 100%)", opacity: scrolled ? 1 : 0 }}
       />
       <nav className="relative grid grid-cols-4 items-center gap-lg md:grid-cols-8 lg:grid-cols-12">
-        <a href="/" className="col-start-1 col-span-2 b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-span-2 lg:col-span-2 lg:b-2xs">
+        <Link href="/" className="col-start-1 col-span-2 b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-span-2 lg:col-span-2 lg:b-2xs">
           Maryna Babych
-        </a>
+        </Link>
         <p className="hidden whitespace-nowrap b-3xs text-text-primary md:col-start-3 md:col-span-2 md:block lg:col-start-3 lg:b-2xs">
           Lead Product Designer
         </p>
-        <a
-          href="#work"
-          className="hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover lg:col-start-10 lg:justify-self-start lg:b-2xs"
-        >
-          Work
-        </a>
+        {isAbout && (
+          <Link
+            href="/#work"
+            className="hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover lg:col-start-10 lg:block lg:justify-self-start lg:b-2xs"
+          >
+            Work
+          </Link>
+        )}
         {!isAbout && (
-          <a
+          <Link
             href="/about"
             className="col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-start-7 md:justify-self-start lg:col-start-11 lg:b-2xs"
           >
             About
-          </a>
+          </Link>
         )}
         <ThemeToggle className="col-start-4 justify-self-end md:col-start-8 lg:col-start-12" />
       </nav>

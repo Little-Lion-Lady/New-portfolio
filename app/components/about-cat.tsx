@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Lottie from "lottie-react";
+import { useReducedMotion } from "framer-motion";
+import aboutCatRaw from "@/public/home/about-cat.json";
 import { hex, remapColors, isDarkTheme, type ColorMap } from "./lottie-utils";
+import { useSectionReveal } from "./section-reveal-context";
 
 const DARK_MAP: ColorMap = [
   [hex("#000000"), hex("#BAB3BC")],
@@ -13,15 +16,12 @@ const DARK_MAP: ColorMap = [
 ];
 
 export function AboutCat({ className }: { className?: string }) {
-  const [rawData, setRawData] = useState<object | null>(null);
   const [dark, setDark] = useState(isDarkTheme);
-
-  useEffect(() => {
-    fetch("/home/about-cat.json?v=2")
-      .then((r) => r.json())
-      .then(setRawData)
-      .catch((err) => console.error("[AboutCat] Failed to load animation:", err));
-  }, []);
+  const reducedMotion = useReducedMotion();
+  // Backstory is a scroll-gated (non-immediate) SectionReveal on the homepage,
+  // so this defers the Lottie mount until the section actually scrolls into
+  // view instead of paying its init cost on initial page load.
+  const { active } = useSectionReveal();
 
   useEffect(() => {
     setDark(isDarkTheme());
@@ -33,21 +33,23 @@ export function AboutCat({ className }: { className?: string }) {
     return () => observer.disconnect();
   }, []);
 
-  const animationData = rawData
-    ? dark
-      ? (remapColors(rawData, DARK_MAP) as object)
-      : rawData
-    : null;
-
-  if (!animationData) return null;
+  // Bundled at build time (content-hashed by Next automatically) instead of
+  // fetched at runtime with a hand-maintained ?v=N cache-busting param.
+  const animationData = useMemo(
+    () => (dark ? (remapColors(aboutCatRaw, DARK_MAP) as object) : aboutCatRaw),
+    [dark],
+  );
 
   return (
     <div className={className}>
-      <Lottie
-        animationData={animationData}
-        loop
-        style={{ width: "100%", height: "100%" }}
-      />
+      {active && (
+        <Lottie
+          animationData={animationData}
+          loop
+          autoplay={!reducedMotion}
+          style={{ width: "100%", height: "100%" }}
+        />
+      )}
     </div>
   );
 }

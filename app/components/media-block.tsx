@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { GlassImage } from "./work-image";
 
 // Figma image collages for §02 (100:6005), §04 (100:6193), §06 (495:3594).
@@ -187,11 +188,11 @@ export function PrototypeMedia() {
         <GlassImage src="/home/work/basis/BS17.jpg" alt={BASIS_ALT} className="h-[220px] w-1/4 md:h-[367px] md:w-[168px] md:shrink-0 lg:aspect-[180/367] lg:h-auto lg:w-auto lg:flex-1 lg:shrink" />
       </div>
       <div className="flex gap-xs md:w-[155px] md:shrink-0 md:flex-col md:gap-[10px] lg:w-[243px]">
-        <div className="flex-1 aspect-[243/160] overflow-hidden rounded-lg md:aspect-auto md:h-[108px] md:flex-none lg:h-[160px]">
-          <img src="/home/work/basis/BS18.jpg" alt="Basis prototype testing participant" className="h-full w-full object-cover" />
+        <div className="relative flex-1 aspect-[243/160] overflow-hidden rounded-lg md:aspect-auto md:h-[108px] md:flex-none lg:h-[160px]">
+          <Image src="/home/work/basis/BS18.jpg" alt="Basis prototype testing participant" fill quality={100} sizes="243px" className="object-cover" />
         </div>
-        <div className="flex-1 aspect-[243/160] overflow-hidden rounded-lg md:aspect-auto md:h-[105px] md:flex-none lg:h-[160px]">
-          <img src="/home/work/basis/BS19.jpg" alt="Basis prototype testing participant" className="h-full w-full object-cover" />
+        <div className="relative flex-1 aspect-[243/160] overflow-hidden rounded-lg md:aspect-auto md:h-[105px] md:flex-none lg:h-[160px]">
+          <Image src="/home/work/basis/BS19.jpg" alt="Basis prototype testing participant" fill quality={100} sizes="243px" className="object-cover" />
         </div>
       </div>
     </div>

@@ -72,7 +72,7 @@ export function HeroText({ className }: { className?: string }) {
       </p>
 
       <RevealWords
-        as="p"
+        as="h1"
         className="w-full"
         style={{
           ...TEXT_STYLE,
