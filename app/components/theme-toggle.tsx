@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import { MoonIcon, SunIcon } from "./icons";
+import { useInitialIsDark } from "./theme-context";
 
 const STORAGE_KEY = "theme";
 
@@ -18,15 +19,23 @@ function resolveTheme(): "dark" | "light" {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
+// Cookie is read server-side (via InitialThemeContext) on the next request,
+// so it's kept in sync with whatever theme is currently shown — including
+// the OS-driven default, not just an explicit user choice — so a returning
+// visitor's server render always matches what they last saw.
+function setThemeCookie(theme: "dark" | "light") {
+  document.cookie = `${STORAGE_KEY}=${theme}; path=/; max-age=31536000; samesite=lax`;
+}
+
 function applyTheme(theme: "dark" | "light") {
   document.documentElement.setAttribute("data-theme", theme);
 }
 
-// Matches the layout.tsx beforeInteractive script's own fallback so the very
-// first client render already shows the correct icon instead of always
-// starting at "light" and flipping a beat later once an effect resolves it.
-// Returns false during SSR (no DOM to read) — the mismatch that produces on
-// the client's first paint is silenced by suppressHydrationWarning below.
+// Fallback for when there's no "theme" cookie yet (brand-new visitor, or a
+// pre-cookie localStorage visitor on their first post-migration load) — reads
+// whatever the beforeInteractive script already applied, or OS preference.
+// Returns false during SSR (no DOM to read); this only runs client-side when
+// InitialThemeContext is undefined, so server and client agree on that path too.
 function computeInitialIsDark(): boolean {
   if (typeof document === "undefined") return false;
   const attr = document.documentElement.getAttribute("data-theme");
@@ -36,14 +45,17 @@ function computeInitialIsDark(): boolean {
 }
 
 // Light/dark theme toggle.
-// - Initial render reads the already-applied data-theme (or OS preference) synchronously.
-// - On click, saves the new preference to localStorage so it survives
-//   navigation (ThemeToggle remounts per page) and page refreshes.
+// - Initial render trusts the server-read "theme" cookie (InitialThemeContext)
+//   so it matches the SSR'd HTML exactly; falls back to computeInitialIsDark
+//   only when there's no cookie yet, which server and client agree is false.
+// - On click, saves the new preference to the cookie + localStorage so it
+//   survives navigation (ThemeToggle remounts per page) and page refreshes.
 // - Subscribes to OS changes only when the user hasn't made a manual choice.
 // - Sets data-theme on <html>; globals.css resolves all tokens from it.
 // Visual matches the Figma toggle: 24×20 pill, border-highlight, 16px icon.
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const [isDark, setIsDark] = useState(computeInitialIsDark);
+  const initialFromServer = useInitialIsDark();
+  const [isDark, setIsDark] = useState(() => initialFromServer ?? computeInitialIsDark());
 
   useEffect(() => {
     const theme = resolveTheme();
@@ -53,6 +65,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
     setIsDark(theme === "dark");
     applyTheme(theme);
+    setThemeCookie(theme);
 
     if (manual) return;
 
@@ -62,6 +75,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       const next = e.matches ? "dark" : "light";
       setIsDark(e.matches);
       applyTheme(next);
+      setThemeCookie(next);
     };
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
@@ -72,6 +86,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     const theme = next ? "dark" : "light";
     setIsDark(next);
     applyTheme(theme);
+    setThemeCookie(theme);
     try { localStorage.setItem(STORAGE_KEY, theme); } catch { /* ignore */ }
   };
 
