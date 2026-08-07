@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import Script from "next/script";
 import { LazyMotion, domAnimation } from "framer-motion";
 import { Analytics } from "@vercel/analytics/next";
+import { InitialThemeProvider } from "./components/theme-context";
 import "./globals.css";
 
 // Both fonts come from the geist package (local woff2, no network request).
@@ -21,18 +23,27 @@ export const metadata: Metadata = {
     "Portfolio of Maryna Babych, Lead Product Designer based in Auckland, New Zealand. 9 years crafting award-winning digital experiences.",
 };
 
-// First-time visitors get no data-theme attribute, which lets the CSS
-// prefers-color-scheme media query in globals.css handle the default with no
-// flash and no inline <script>. ThemeToggle (built later) adds a client-side
-// session override.
-export default function RootLayout({
+// The "theme" cookie (set by ThemeToggle) is the source of truth read here on
+// the server, so the very first render already has the right data-theme
+// attribute and ThemeToggle's icon matches on both server and client passes —
+// no more guessing client-side, which is what caused the hydration mismatch.
+// First-time visitors have no cookie: they get no data-theme attribute, which
+// lets the CSS prefers-color-scheme media query in globals.css handle the
+// default with no flash. The beforeInteractive script below only exists to
+// migrate visitors who saved a preference before this cookie existed.
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const themeCookie = cookieStore.get("theme")?.value;
+  const theme = themeCookie === "dark" || themeCookie === "light" ? themeCookie : undefined;
+
   return (
     <html
       lang="en"
+      data-theme={theme}
       className={[
         GeistSans.variable,
         GeistMono.variable,
@@ -41,19 +52,22 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* Apply saved theme before first paint to prevent flash.
-            beforeInteractive runs before the page is hydrated so data-theme
-            is set before any CSS tokens resolve. */}
-        <Script id="theme-init" strategy="beforeInteractive">{`(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`}</Script>
+        {/* One-time migration for visitors who saved a theme in localStorage
+            before the "theme" cookie existed: mirrors it into the cookie (so
+            the next request's SSR picks it up) and applies it before first
+            paint to prevent flash on this load. */}
+        <Script id="theme-init" strategy="beforeInteractive">{`(function(){try{var t=localStorage.getItem('theme');if((t==='dark'||t==='light')&&!/(?:^|; )theme=/.test(document.cookie)){document.cookie='theme='+t+'; path=/; max-age=31536000; samesite=lax';document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`}</Script>
       </head>
       <body className="min-h-full flex flex-col">
         {/* domAnimation covers everything the site uses (hover/tap/animate/
             AnimatePresence) without drag/layout — smaller than importing the
             full `motion` feature set on every page. `m.*` components below
             read features from this provider instead of bundling their own. */}
-        <LazyMotion features={domAnimation} strict>
-          {children}
-        </LazyMotion>
+        <InitialThemeProvider initialIsDark={theme === "dark" ? true : theme === "light" ? false : undefined}>
+          <LazyMotion features={domAnimation} strict>
+            {children}
+          </LazyMotion>
+        </InitialThemeProvider>
         <Analytics />
       </body>
     </html>
