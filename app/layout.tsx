@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import Script from "next/script";
 import { LazyMotion, domAnimation } from "framer-motion";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 // Both fonts come from the geist package (local woff2, no network request).
@@ -53,6 +54,7 @@ export default function RootLayout({
         <LazyMotion features={domAnimation} strict>
           {children}
         </LazyMotion>
+        <Analytics />
       </body>
     </html>
   );

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@firecms/neat": "^1.0.1",
+    "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.38.0",
     "geist": "^1.7.0",
     "lottie-react": "^2.4.1",
