@@ -1030,3 +1030,18 @@ h1.d-sm {
     line-height: clamp(var(--line-height-body-sm), 1.923vw + 12.31px, var(--line-height-body-md));
   }
 }
+
+/* ── Artwork marquee track (ArtworkStrip) ─────────────────────────────────────
+   The track renders its image list twice back-to-back; translating exactly
+   -50% of that doubled-width track equals one full set's width, so the loop
+   seam is invisible. Paused via animation-play-state (toggled from JS on
+   hover) rather than swapping the animation on/off, so it resumes from
+   wherever it stopped instead of jumping back to the start.
+   ──────────────────────────────────────────────────────────────────────────── */
+@keyframes artwork-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.artwork-marquee-track {
+  animation: artwork-marquee 36s linear infinite;
+}

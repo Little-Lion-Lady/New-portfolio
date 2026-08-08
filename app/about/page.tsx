@@ -11,7 +11,7 @@ import { Divider } from "../components/divider";
 import { ArrowUpRight } from "../components/icons";
 import { BioCollage } from "../components/bio-collage";
 import { CaseStudyNav } from "../components/case-study-nav";
-import { GlassImage } from "../components/work-image";
+import { ArtworkStrip } from "../components/artwork-strip";
 
 const experience = [
   { role: "Lead Product Designer", org: "First Table | Marketplace", project: "First Table app", year: "25’ – Now" },
@@ -204,18 +204,11 @@ export default function About() {
           </p>
         </Reveal>
 
-        {/* Image strip — a horizontal peek/scroll strip of 7 original artworks. */}
+        {/* Image strip — continuous right-to-left marquee of 7 original
+            artworks; falls back to a manual scroll strip for reduced-motion.
+            See ArtworkStrip for the full-bleed/loop/pause mechanics. */}
         <Reveal index={2} delay={0.5} className="w-full">
-          <div className="-mx-sm -my-sm flex w-full gap-sm overflow-x-auto p-sm md:gap-lg lg:gap-xl">
-            {artwork.map((name) => (
-              <GlassImage
-                key={name}
-                src={`/home/about/${name}.jpg`}
-                alt="Original artwork by Maryna Babych"
-                className="h-[300px] w-[210px] shrink-0 md:h-[600px] md:w-[420px] lg:h-[600px] lg:w-[420px]"
-              />
-            ))}
-          </div>
+          <ArtworkStrip names={artwork} />
         </Reveal>
       </SectionReveal>
 
