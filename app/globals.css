@@ -233,8 +233,8 @@
      tokens in Figma for this — dark-mode value is pending, currently unchanged. */
   --utility-inverses-glass: var(--colour-base-white-50);
 
-  /* Insight band glass fill. TODO: same as above — dark-mode value pending. */
-  --utility-white-50: var(--colour-base-white-50);
+  /* Figma "Utility/inverses/white" — Insight card's opaque inner fill. */
+  --utility-inverses-white: var(--colour-base-white);
 
   /* ----------------------------------------------------------
      4. COMPONENT TOKENS — light mode
@@ -399,7 +399,7 @@
 
     /* Figma "Utility/inverses" collection, dark mode: glass = Blue/200-50. */
     --utility-inverses-glass: var(--colour-blue-200-50);
-    --utility-white-50: var(--colour-base-white-50);
+    --utility-inverses-white: var(--colour-blue-950);
 
     --component-bg-button-primary: var(--colour-base-white);
     --component-bg-button-hover:   var(--colour-blue-100);
@@ -509,7 +509,7 @@
 
   /* Figma "Utility/inverses" collection, dark mode: glass = Blue/200-50. */
   --utility-inverses-glass: var(--colour-blue-200-50);
-  --utility-white-50: var(--colour-base-white-50);
+  --utility-inverses-white: var(--colour-blue-950);
 
   --component-bg-button-primary: var(--colour-base-white);
   --component-bg-button-hover:   var(--colour-blue-100);
@@ -631,8 +631,8 @@
   /* Carousel glass fill */
   --color-utility-inverses-glass: var(--utility-inverses-glass);
 
-  /* Insight band glass fill */
-  --color-utility-white-50: var(--utility-white-50);
+  /* Insight card opaque inner fill */
+  --color-utility-inverses-white: var(--utility-inverses-white);
 
   /* Component */
   --color-component-bg-button-primary: var(--component-bg-button-primary);
