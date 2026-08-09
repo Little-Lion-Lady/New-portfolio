@@ -48,6 +48,9 @@ export function GlassImage({
   quality = 100,
   padding = PADDING_CLASS,
   sizes = "100vw",
+  aspectRatio,
+  frameAspectRatio,
+  objectPosition,
   children,
 }: {
   src: string;
@@ -57,15 +60,49 @@ export function GlassImage({
   /** Override the default responsive padding (e.g. a fixed "p-3xs" mini frame). */
   padding?: string;
   sizes?: string;
+  /**
+   * Source photo's true W/H ratio (e.g. "260/460"). When set, the inner
+   * frame is sized to match the photo exactly instead of stretching to fill
+   * the outer box — outer height then follows from padding + this ratio, so
+   * object-cover never crops the image. Omit for the default "crop to fill
+   * the given box" behaviour (carousels, collages designed around a crop).
+   */
+  aspectRatio?: string;
+  /**
+   * Same idea as `aspectRatio`, but applied to the outer (padded) frame
+   * instead of the inner photo box. Use this — paired with a `flex-[ratio]`
+   * className instead of a fixed width — for a "justified row" of images
+   * that must all share one height with no cropping: flex-basis:0 +
+   * flex-grow proportional to each image's own ratio, with the shared
+   * aspect-ratio on every flex item, makes the browser resolve one common
+   * row height and correct, undistorted widths for every image at once.
+   * (Ignores a few px of ratio skew from the frame's own padding — visually
+   * negligible, and the only way to keep the row's height-matching intact.)
+   */
+  frameAspectRatio?: string;
+  /** object-position for the cropped photo (e.g. "left", "top"). Defaults to center. */
+  objectPosition?: string;
   /** Optional overlay content stacked on top of the image (e.g. a decorative icon). */
   children?: ReactNode;
 }) {
   return (
     <div
       className={`flex flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] ${padding} shadow-[0_2px_10px_var(--shadows-shadow-02)] ${className}`}
+      style={frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
     >
-      <div className="relative h-full w-full flex-1 overflow-hidden rounded-xs">
-        <Image src={src} alt={alt} fill quality={quality} sizes={sizes} className="object-cover" />
+      <div
+        className={aspectRatio ? "relative w-full overflow-hidden rounded-xs" : "relative h-full w-full flex-1 overflow-hidden rounded-xs"}
+        style={aspectRatio ? { aspectRatio } : undefined}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          quality={quality}
+          sizes={sizes}
+          className="object-cover"
+          style={objectPosition ? { objectPosition } : undefined}
+        />
         {children}
       </div>
     </div>

@@ -10,15 +10,20 @@ const COVID_ALT = "NZ COVID Tracer app screen";
 export function ApproachMedia() {
   return (
     <div className="flex flex-col gap-xs md:flex-row md:items-stretch md:gap-md lg:gap-lg">
+      {/* MOH4 + MOH5 share one row height: flex-grow proportional to each
+          image's own ratio (flex-basis 0) + matching frameAspectRatio makes
+          the browser resolve a common height and correct, uncropped widths. */}
       <GlassImage
         src="/home/work/covid-tracer/MOH4.jpg"
         alt={COVID_ALT}
-        className="mx-auto h-[290px] w-[165px] shrink-0 md:mx-0 lg:h-[500px] lg:w-[332px]"
+        frameAspectRatio="260/460"
+        className="mx-auto w-[165px] shrink-0 md:mx-0 md:w-auto md:shrink md:flex-[0.5652]"
       />
       <GlassImage
         src="/home/work/covid-tracer/MOH5.jpg"
         alt={COVID_ALT}
-        className="h-[140px] w-full md:h-[290px] md:flex-1 lg:h-[500px]"
+        frameAspectRatio="1256/460"
+        className="w-full md:w-auto md:flex-[2.7304]"
       />
     </div>
   );
@@ -30,7 +35,8 @@ export function FlowDiagram() {
     <GlassImage
       src="/home/work/covid-tracer/MOH6.jpg"
       alt={COVID_ALT}
-      className="h-[112px] w-full md:h-[330px] lg:h-[540px]"
+      aspectRatio="1560/513"
+      className="w-full"
     />
   );
 }
@@ -43,7 +49,8 @@ export function DesignMedia() {
         <GlassImage
           src="/home/work/covid-tracer/MOH7.jpg"
           alt={COVID_ALT}
-          className="h-[308px] flex-[5] md:h-[400px] lg:h-[1024px] lg:flex-1"
+          aspectRatio="873/969"
+          className="flex-[5] self-start lg:flex-1"
         />
         <div className="flex flex-[4] flex-col gap-xs md:gap-md lg:flex-1 lg:gap-xl">
           <GlassImage
@@ -61,7 +68,8 @@ export function DesignMedia() {
       <GlassImage
         src="/home/work/covid-tracer/MOH10.jpg"
         alt={COVID_ALT}
-        className="aspect-[1584/790] w-full"
+        aspectRatio="1560/768"
+        className="w-full"
       />
     </div>
   );
@@ -74,35 +82,75 @@ export function OutcomeMedia() {
     <div className="flex flex-col gap-xs md:gap-md lg:gap-xl">
       {/* Row 1 — stacks through tablet, side-by-side only at desktop */}
       <div className="flex flex-col gap-xs md:gap-md lg:flex-row lg:items-stretch lg:gap-lg">
+        {/* MOH12 + MOH13 share one row height from lg up — same justified-row
+            technique as MOH4/MOH5 above. */}
         <GlassImage
           src="/home/work/covid-tracer/MOH12.jpg"
           alt={COVID_ALT}
-          className="h-[244px] w-full md:h-[600px] lg:h-[444px] lg:flex-1"
+          frameAspectRatio="647/420"
+          className="w-full lg:w-auto lg:flex-[1.5405]"
         />
         <GlassImage
           src="/home/work/covid-tracer/MOH13.jpg"
           alt={COVID_ALT}
-          className="h-[220px] w-full md:h-[480px] lg:h-[444px] lg:flex-1"
+          frameAspectRatio="884/420"
+          className="w-full lg:w-auto lg:flex-[2.1048]"
         />
       </div>
-      {/* Row 2 */}
-      <div className="flex flex-col gap-xs md:flex-row md:items-stretch md:gap-md lg:gap-lg">
-        <div className="flex gap-xs md:gap-md lg:gap-xl">
+      {/* Row 2 — MOH14, MOH15 and MOH16 all share one row height from md up.
+          Nesting MOH14+MOH15 in their own sub-row and stretching that whole
+          sub-row against MOH16 doesn't resolve correctly: the outer stretch
+          gives the sub-row a height taken from its own aspect-ratio, but
+          when that gets rounded up to match MOH16's taller hypothetical
+          height, the sub-row's *own* children re-stretch to the new (taller)
+          height and overflow the sub-row's already-fixed width — MOH15 spills
+          under MOH16. A flat, single-level row (all three as direct
+          flex-basis:0 siblings) resolves one consistent height for all three
+          at once, same as the MOH4/MOH5 and MOH12/MOH13 pairs above — so md+
+          uses that flat row, and only mobile (where MOH14/MOH15 must stay
+          paired above MOH16) keeps the nested layout. */}
+      <div className="flex flex-col gap-xs md:hidden">
+        <div className="flex gap-xs">
           <GlassImage
             src="/home/work/covid-tracer/MOH14.jpg"
             alt={COVID_ALT}
-            className="h-[300px] w-1/2 md:h-[494px] md:w-[250px]"
+            frameAspectRatio="226/457"
+            className="flex-[0.4945]"
           />
           <GlassImage
             src="/home/work/covid-tracer/MOH15.jpg"
             alt={COVID_ALT}
-            className="h-[300px] w-1/2 md:h-[494px] md:w-[250px]"
+            frameAspectRatio="226/458"
+            className="flex-[0.4934]"
           />
         </div>
         <GlassImage
           src="/home/work/covid-tracer/MOH16.jpg"
           alt={COVID_ALT}
-          className="h-[300px] w-full md:h-[494px] md:flex-1"
+          frameAspectRatio="1013/470"
+          objectPosition="left"
+          className="w-full"
+        />
+      </div>
+      <div className="hidden md:flex md:items-stretch md:gap-md lg:gap-lg">
+        <GlassImage
+          src="/home/work/covid-tracer/MOH14.jpg"
+          alt={COVID_ALT}
+          frameAspectRatio="226/457"
+          className="flex-[0.4945]"
+        />
+        <GlassImage
+          src="/home/work/covid-tracer/MOH15.jpg"
+          alt={COVID_ALT}
+          frameAspectRatio="226/458"
+          className="flex-[0.4934]"
+        />
+        <GlassImage
+          src="/home/work/covid-tracer/MOH16.jpg"
+          alt={COVID_ALT}
+          frameAspectRatio="1013/470"
+          objectPosition="left"
+          className="flex-[2.1553]"
         />
       </div>
     </div>

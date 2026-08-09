@@ -277,7 +277,8 @@ export default function CovidTracer() {
           <GlassImage
             src="/home/work/covid-tracer/MOH11.jpg"
             alt="NZ COVID Tracer app screen"
-            className="h-[300px] w-full lg:col-start-1 lg:col-span-6 lg:row-start-1 lg:h-[500px]"
+            aspectRatio="758/474"
+            className="w-full self-start lg:col-start-1 lg:col-span-6 lg:row-start-1"
           />
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
