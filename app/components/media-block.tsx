@@ -190,33 +190,30 @@ export function ProcessMedia() {
   );
 }
 
-// §06 Solution design — row of two shots, then (mobile/tablet only) two more side by side.
-// Figma's desktop composition drops the second row entirely.
+// §06 Solution design — row of two shots.
 export function SolutionMedia() {
   return (
     <div className="flex flex-col gap-xs">
-      <div className="flex flex-col gap-xs md:flex-row md:items-stretch lg:h-[580px] lg:gap-lg">
+      {/* BS12 (near-square, 1866×1812) and BS13 (wide, 1600×1092) share one
+          row height from md up via the justified-row technique: flex-basis:0
+          + flex-grow proportional to each image's own ratio, with a matching
+          frameAspectRatio on each. A fixed width on BS12 (the old approach)
+          stretched BS13's outer frame to match BS12's tall height while its
+          inner photo only filled its own shorter aspect-derived height,
+          leaving BS13 visibly padded with empty space — flex-grow removes
+          that gap by giving both a shared height and proportional width. */}
+      <div className="flex flex-col gap-xs md:flex-row md:items-stretch lg:gap-lg">
         <GlassImage
           src="/home/work/basis/BS12.jpg"
           alt={BASIS_ALT}
-          className="h-[224px] w-full md:h-[456px] md:w-[327px] md:shrink-0 lg:h-full lg:w-[646px]"
+          frameAspectRatio="1866/1812"
+          className="w-full md:w-auto md:flex-[1.0298]"
         />
         <GlassImage
           src="/home/work/basis/BS13.jpg"
           alt={BASIS_ALT}
-          className="mx-auto h-[224px] w-[299px] md:mx-0 md:h-[456px] md:w-auto md:flex-1 lg:h-full"
-        />
-      </div>
-      <div className="flex flex-col gap-xs md:flex-row md:items-stretch lg:hidden">
-        <GlassImage
-          src="/home/work/basis/BS12.jpg"
-          alt={BASIS_ALT}
-          className="mx-auto h-[288px] w-[295px] md:mx-0 md:h-[584px] md:w-auto md:flex-1"
-        />
-        <GlassImage
-          src="/home/work/basis/BS13.jpg"
-          alt={BASIS_ALT}
-          className="h-[246px] w-full md:h-[584px] md:w-[260px] md:shrink-0"
+          frameAspectRatio="1600/1092"
+          className="w-full md:mx-0 md:w-auto md:flex-[1.4652]"
         />
       </div>
     </div>
@@ -229,11 +226,19 @@ export function SolutionMedia() {
 export function PrototypeMedia() {
   return (
     <div className="flex flex-col gap-xs md:flex-row md:items-end md:justify-between md:gap-xl lg:gap-2xl">
-      <div className="flex gap-xs overflow-hidden md:gap-xl lg:max-w-[1183px] lg:flex-1 lg:gap-xs">
-        <GlassImage src="/home/work/basis/BS14.jpg" alt={BASIS_ALT} className="h-[220px] w-1/4 md:h-[367px] md:w-[168px] md:shrink-0 lg:aspect-[180/367] lg:h-auto lg:w-auto lg:flex-1 lg:shrink" />
-        <GlassImage src="/home/work/basis/BS15.jpg" alt={BASIS_ALT} className="h-[220px] w-1/4 md:h-[367px] md:w-[168px] md:shrink-0 lg:aspect-[180/367] lg:h-auto lg:w-auto lg:flex-1 lg:shrink" />
-        <GlassImage src="/home/work/basis/BS16.jpg" alt={BASIS_ALT} className="h-[220px] w-1/4 md:h-[367px] md:w-[168px] md:shrink-0 lg:aspect-[180/367] lg:h-auto lg:w-auto lg:flex-1 lg:shrink" />
-        <GlassImage src="/home/work/basis/BS17.jpg" alt={BASIS_ALT} className="h-[220px] w-1/4 md:h-[367px] md:w-[168px] md:shrink-0 lg:aspect-[180/367] lg:h-auto lg:w-auto lg:flex-1 lg:shrink" />
+      {/* BS14–BS17 are all effectively the same 219×478 ratio, so a single
+          aspectRatio (inner-box, no-crop) per image plus width-only classes
+          is enough — height always derives correctly from whatever width
+          each breakpoint's layout resolves to. Fixed at 168/390px wide each,
+          four of them don't fit one row from tablet up without squeezing —
+          so md+ wraps into a 2×2 grid instead of cropping/squishing to fit.
+          Each image is sized to ~70% of its grid cell (roughly a 30%
+          reduction) and centred, so the pair doesn't dominate the section. */}
+      <div className="flex gap-xs overflow-hidden md:grid md:grid-cols-2 md:gap-xl lg:max-w-[1183px] lg:flex-1 lg:gap-xs">
+        <GlassImage src="/home/work/basis/BS14.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="w-1/4 md:w-[70%] md:mx-auto" />
+        <GlassImage src="/home/work/basis/BS15.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="w-1/4 md:w-[70%] md:mx-auto" />
+        <GlassImage src="/home/work/basis/BS16.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="w-1/4 md:w-[70%] md:mx-auto" />
+        <GlassImage src="/home/work/basis/BS17.jpg" alt={BASIS_ALT} aspectRatio="219/477" className="w-1/4 md:w-[70%] md:mx-auto" />
       </div>
       <div className="flex gap-xs md:w-[155px] md:shrink-0 md:flex-col md:gap-[10px] lg:w-[243px]">
         <div className="relative flex-1 aspect-[243/160] overflow-hidden rounded-lg md:aspect-auto md:h-[108px] md:flex-none lg:h-[160px]">
@@ -254,12 +259,28 @@ export function PrototypeMedia() {
 const OUTCOME_ROW1 = ["BS21", "BS22", "BS23", "BS24"];
 const OUTCOME_ROW2 = ["BS25", "BS26", "BS27", "BS28", "BS29"];
 
+// All nine strip photos are ~390×844 (BS29 is 390×853) — near-identical
+// ratios, so independent per-image aspectRatio (width-driven, no crop)
+// naturally gives matching heights too, with no justified-row trick needed.
+const OUTCOME_STRIP_RATIO: Record<string, string> = {
+  BS21: "390/844",
+  BS22: "390/844",
+  BS23: "390/844",
+  BS24: "390/844",
+  BS25: "390/844",
+  BS26: "390/844",
+  BS27: "390/844",
+  BS28: "390/844",
+  BS29: "390/853",
+};
+
 function OutcomeStripImage({ name }: { name: string }) {
   return (
     <GlassImage
       src={`/home/work/basis/${name}.jpg`}
       alt={BASIS_ALT}
-      className="h-[300px] w-[220px] shrink-0 md:h-[454px] md:w-[330px] lg:h-[840px] lg:w-[390px]"
+      aspectRatio={OUTCOME_STRIP_RATIO[name]}
+      className="w-[220px] shrink-0 md:w-[281px] lg:w-[332px]"
     />
   );
 }
@@ -268,8 +289,12 @@ export function BasisOutcomeMedia() {
   return (
     <div className="flex flex-col gap-xl md:gap-2xl">
       <GlassImage src="/home/work/basis/BS20.jpg" alt={BASIS_ALT} className="h-[198px] w-full md:h-[331px] lg:h-[540px]" />
-      {/* Mobile — single continuous scroll strip (unchanged behaviour) */}
-      <div className="flex gap-xs overflow-x-auto md:hidden">
+      {/* Mobile — single continuous scroll strip. overflow-x-auto forces
+          overflow-y to auto too (can't have one axis scrollable and the
+          other visible), which clips each card's box-shadow at the top/
+          bottom edge — py-sm gives the shadow's ~10px blur room to render
+          inside the scroll box instead of being cut off. */}
+      <div className="flex gap-xs overflow-x-auto py-sm md:hidden">
         {[...OUTCOME_ROW1, ...OUTCOME_ROW2].map((name) => (
           <OutcomeStripImage key={name} name={name} />
         ))}
