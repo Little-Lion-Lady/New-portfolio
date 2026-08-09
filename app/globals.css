@@ -397,8 +397,8 @@
     --shadows-shadow-02: var(--colour-blue-100-10);
     --shadows-glow-01:   var(--colour-blue-100);
 
-    /* TODO: pending the new purple/inverses dark value from Figma. */
-    --utility-inverses-glass: var(--colour-base-white-50);
+    /* Figma "Utility/inverses" collection, dark mode: glass = Blue/200-50. */
+    --utility-inverses-glass: var(--colour-blue-200-50);
     --utility-white-50: var(--colour-base-white-50);
 
     --component-bg-button-primary: var(--colour-base-white);
@@ -507,8 +507,8 @@
   --shadows-shadow-02: var(--colour-blue-100-10);
   --shadows-glow-01:   var(--colour-blue-100);
 
-  /* TODO: pending the new purple/inverses dark value from Figma. */
-  --utility-inverses-glass: var(--colour-base-white-50);
+  /* Figma "Utility/inverses" collection, dark mode: glass = Blue/200-50. */
+  --utility-inverses-glass: var(--colour-blue-200-50);
   --utility-white-50: var(--colour-base-white-50);
 
   --component-bg-button-primary: var(--colour-base-white);

@@ -75,7 +75,15 @@ export default function About() {
               industries and environments, including agencies, startups, and established product
               companies.
             </p>
-            <Button variant="primary" label="Download CV" href="#" className="self-start" />
+            <Button
+              variant="primary"
+              label="Download CV"
+              href="https://drive.google.com/file/d/1IS3YF8ZU8F0Hq9wtomTK1RdZa4r5vrXl/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              external
+              className="self-start"
+            />
           </div>
 
           {/* Experience + Recognition tables */}
@@ -125,19 +133,19 @@ export default function About() {
                     {/* Mobile: award + year↗ on one row, project (tertiary) below */}
                     <div className="flex flex-col gap-sm md:hidden">
                       <div className="flex items-start justify-between">
-                        <p className="b-xs text-text-secondary">{a.award}</p>
-                        <div className="flex items-center gap-3xs text-text-secondary shrink-0 ml-sm">
+                        <p className="b-xs text-text-secondary transition-colors group-hover:text-text-primary">{a.award}</p>
+                        <div className="flex items-center gap-3xs text-text-secondary shrink-0 ml-sm transition-colors group-hover:text-text-primary">
                           <p className="b-xs">{a.year}</p>
                           <ArrowUpRight className="size-sm transition-transform duration-200 ease-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px] group-hover:scale-[1.1]" />
                         </div>
                       </div>
-                      <p className="b-xs text-text-tertiary">{a.project}</p>
+                      <p className="b-xs text-text-tertiary transition-colors group-hover:text-text-primary">{a.project}</p>
                     </div>
                     {/* Tablet: 3-col. Desktop: 6-col (project 1-3 | award 4-5 | year↗ 6) */}
                     <div className="hidden md:grid md:grid-cols-3 md:gap-x-lg md:items-start lg:grid-cols-6">
-                      <p className="b-sm text-text-secondary md:col-span-1 lg:col-span-3">{a.project}</p>
-                      <p className="b-sm text-text-secondary md:col-span-1 lg:col-span-2">{a.award}</p>
-                      <div className="flex items-center justify-end gap-3xs text-text-secondary md:col-span-1 lg:col-start-6">
+                      <p className="b-sm text-text-secondary transition-colors md:col-span-1 lg:col-span-3 group-hover:text-text-primary">{a.project}</p>
+                      <p className="b-sm text-text-secondary transition-colors md:col-span-1 lg:col-span-2 group-hover:text-text-primary">{a.award}</p>
+                      <div className="flex items-center justify-end gap-3xs text-text-secondary transition-colors md:col-span-1 lg:col-start-6 group-hover:text-text-primary">
                         <p className="b-sm">{a.year}</p>
                         <ArrowUpRight className="size-lg transition-transform duration-200 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:scale-[1.1]" />
                       </div>

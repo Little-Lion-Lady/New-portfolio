@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { GlassImage } from "./work-image";
 
@@ -26,7 +25,6 @@ const BLEED_CLASS = "-mx-md md:-mx-xl lg:-mx-5xl";
 // unreachable for them, since there'd be no scroll and no motion to reveal it.
 export function ArtworkStrip({ names }: { names: string[] }) {
   const reducedMotion = useReducedMotion();
-  const [paused, setPaused] = useState(false);
 
   if (reducedMotion) {
     return (
@@ -41,13 +39,8 @@ export function ArtworkStrip({ names }: { names: string[] }) {
   }
 
   return (
-    <div className={`${BLEED_CLASS} overflow-hidden`}>
-      <div
-        className="artwork-marquee-track -my-md flex w-max gap-sm py-md md:gap-lg lg:gap-xl"
-        style={{ animationPlayState: paused ? "paused" : "running" }}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
+    <div className={`${BLEED_CLASS} -my-md overflow-hidden py-md`}>
+      <div className="artwork-marquee-track flex w-max gap-sm md:gap-lg lg:gap-xl">
         {names.map((name) => (
           <Card key={`${name}-a`} name={name} />
         ))}

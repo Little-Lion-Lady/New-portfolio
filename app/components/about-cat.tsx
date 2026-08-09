@@ -8,11 +8,10 @@ import { hex, remapColors, isDarkTheme, type ColorMap } from "./lottie-utils";
 import { useSectionReveal } from "./section-reveal-context";
 
 const DARK_MAP: ColorMap = [
-  [hex("#000000"), hex("#BAB3BC")],
-  [hex("#19161C"), hex("#BAB3BC")],
-  [hex("#BB9AFF"), hex("#0B0A4A")],
+  [hex("#000000"), hex("#FFFFFF")],
+  [hex("#19161C"), hex("#FFFFFF")],
   [hex("#FFFFFF"), hex("#3744FF")],
-  [hex("#FF0000"), hex("#150DF7")],
+  [hex("#BB9AFF"), hex("#A473FF")],
 ];
 
 export function AboutCat({ className }: { className?: string }) {

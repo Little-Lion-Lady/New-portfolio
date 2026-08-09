@@ -1,9 +1,9 @@
 "use client";
 
 import { m } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "./icons";
+import { GlassImage } from "./work-image";
 
 const MotionLink = m.create(Link);
 
@@ -65,11 +65,13 @@ export function CaseStudyNav({
     >
       {/* Thumbnail */}
       <div className="shrink-0 md:col-start-1 md:col-span-2 lg:pr-xl">
-        <div className="h-[80px] w-[80px] overflow-hidden rounded-sm border border-border-overlay bg-utility-inverses-glass p-3xs shadow-[0_2px_10px_var(--shadows-shadow-02)] backdrop-blur-[10px] md:h-[80px] md:w-full lg:h-[140px]">
-          <div className="relative h-full w-full overflow-hidden rounded-xs border border-border-overlay">
-            <Image src={image.src} alt={image.alt} fill quality={100} sizes="140px" className="object-cover" />
-          </div>
-        </div>
+        <GlassImage
+          src={image.src}
+          alt={image.alt}
+          padding="p-3xs"
+          sizes="140px"
+          className="h-[80px] w-[80px] md:h-[80px] md:w-full lg:h-[140px]"
+        />
       </div>
 
       {/* Text column — on mobile this also holds the View label; from md it flattens

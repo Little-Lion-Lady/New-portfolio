@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 
 export type WorkImageData = { src: string; alt: string; quality?: number };
 export type WorkImageSize = "md" | "lg";
@@ -45,18 +46,27 @@ export function GlassImage({
   alt,
   className = "",
   quality = 100,
+  padding = PADDING_CLASS,
+  sizes = "100vw",
+  children,
 }: {
   src: string;
   alt: string;
   className?: string;
   quality?: number;
+  /** Override the default responsive padding (e.g. a fixed "p-3xs" mini frame). */
+  padding?: string;
+  sizes?: string;
+  /** Optional overlay content stacked on top of the image (e.g. a decorative icon). */
+  children?: ReactNode;
 }) {
   return (
     <div
-      className={`flex flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass ${PADDING_CLASS} shadow-[0_2px_10px_var(--shadows-shadow-02)] backdrop-blur-[10px] ${className}`}
+      className={`flex flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] ${padding} shadow-[0_2px_10px_var(--shadows-shadow-02)] ${className}`}
     >
-      <div className="relative h-full w-full flex-1 overflow-hidden rounded-xs border border-border-overlay">
-        <Image src={src} alt={alt} fill quality={quality} sizes="100vw" className="object-cover" />
+      <div className="relative h-full w-full flex-1 overflow-hidden rounded-xs">
+        <Image src={src} alt={alt} fill quality={quality} sizes={sizes} className="object-cover" />
+        {children}
       </div>
     </div>
   );
@@ -86,13 +96,13 @@ export function WorkImage({
         isLast ? "" : getMarginClass(total)
       }`}
     >
-      <div
-        className={`flex h-full w-full flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass ${PADDING_CLASS} shadow-[0_2px_10px_var(--shadows-shadow-02)] backdrop-blur-[10px]`}
-      >
-        <div className="relative h-full w-full flex-1 overflow-hidden rounded-xs border border-border-overlay">
-          <Image src={src} alt={alt} fill quality={quality} sizes="(min-width: 1024px) 560px, (min-width: 768px) 370px, 250px" className="object-cover" />
-        </div>
-      </div>
+      <GlassImage
+        src={src}
+        alt={alt}
+        quality={quality}
+        sizes="(min-width: 1024px) 560px, (min-width: 768px) 370px, 250px"
+        className="h-full w-full"
+      />
     </div>
   );
 }

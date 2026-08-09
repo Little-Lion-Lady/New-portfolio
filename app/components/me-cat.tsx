@@ -7,11 +7,10 @@ import meCatRaw from "@/public/home/me-cat.json";
 import { hex, remapColors, isDarkTheme, type ColorMap } from "./lottie-utils";
 
 const DARK_MAP: ColorMap = [
-  [hex("#000000"), hex("#BAB3BC")],
-  [hex("#19161C"), hex("#BAB3BC")],
+  [hex("#000000"), hex("#FFFFFF")],
+  [hex("#19161C"), hex("#FFFFFF")],
   [hex("#FFFFFF"), hex("#3744FF")],
-  [hex("#BA9AFF"), hex("#0B0A4A")],
-  [hex("#FFE600"), hex("#FFE600")],
+  [hex("#BB9AFF"), hex("#A473FF")],
 ];
 
 export function MeCat({ className }: { className?: string }) {

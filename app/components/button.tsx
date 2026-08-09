@@ -58,6 +58,7 @@ export function Button({
   target,
   rel,
   as = "a",
+  external = false,
 }: {
   label: string;
   href?: string;
@@ -68,6 +69,8 @@ export function Button({
   rel?: string;
   /** Render as a plain (non-link) element — use when nesting inside an outer <a>. */
   as?: "a" | "span";
+  /** Primary variant only — swaps the arrow icon/motion to the diagonal "external link" style used by the link variant. */
+  external?: boolean;
 }) {
   if (variant === "link") {
     const LinkTag = as === "span" ? m.span : isExternalHref(href) ? m.a : MotionLink;
@@ -123,6 +126,8 @@ export function Button({
   return (
     <PrimaryTag
       href={href}
+      target={target}
+      rel={rel}
       initial="rest"
       whileHover="hover"
       whileTap="press"
@@ -150,13 +155,19 @@ export function Button({
         transition={{ duration: 0.15 }}
       />
       <span className="relative whitespace-nowrap">{label}</span>
-      <m.span
-        variants={arrowVariantsRight}
-        transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-        className="relative inline-flex shrink-0"
-      >
-        <ArrowRight className="size-lg md:size-xl lg:size-2xl" />
-      </m.span>
+      {external ? (
+        <span className="relative inline-flex shrink-0">
+          <ArrowUpRight className="size-lg md:size-xl lg:size-2xl" />
+        </span>
+      ) : (
+        <m.span
+          variants={arrowVariantsRight}
+          transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+          className="relative inline-flex shrink-0"
+        >
+          <ArrowRight className="size-lg md:size-xl lg:size-2xl" />
+        </m.span>
+      )}
       {/* Glow overlay — tightens and brightens on hover */}
       <m.span
         aria-hidden

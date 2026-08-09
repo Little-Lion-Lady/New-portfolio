@@ -7,12 +7,10 @@ import heroCatRaw from "@/public/home/hero-cat.json";
 import { hex, remapColors, isDarkTheme, type ColorMap } from "./lottie-utils";
 
 const DARK_MAP: ColorMap = [
-  [hex("#000000"), hex("#BAB3BC")],
+  [hex("#000000"), hex("#FFFFFF")],
   [hex("#565656"), hex("#8AA7FF")],
-  [hex("#BB9AFF"), hex("#0B0A4A")],
   [hex("#FFFFFF"), hex("#3744FF")],
-  [hex("#FF1539"), hex("#150DF7")],
-  [hex("#FF0000"), hex("#150DF7")],
+  [hex("#BB9AFF"), hex("#A473FF")],
 ];
 
 export function HeroCat({ className }: { className?: string }) {
