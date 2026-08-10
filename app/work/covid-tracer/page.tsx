@@ -281,7 +281,13 @@ export default function CovidTracer() {
             className="w-full self-start lg:col-start-1 lg:col-span-6 lg:row-start-1"
           />
         </Reveal>
-        <Reveal index={2} delay={0.6} className="w-full">
+        {/* The outer SectionReveal's gap-r-xl (40/72/80px) separates every
+            child uniformly, but OutcomeMedia's own row gap between MOH12 and
+            MOH13 is only gap-xs/md:gap-md (8/16px) — so the MOH11→MOH12 gap
+            was much bigger than the MOH12→MOH13 gap on mobile/tablet.
+            Negative margin pulls it down to match; lg is left alone (its
+            own row layout wasn't part of this request). */}
+        <Reveal index={2} delay={0.6} className="w-full -mt-[32px] md:-mt-[56px] lg:mt-0">
           <OutcomeMedia />
         </Reveal>
       </SectionReveal>

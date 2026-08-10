@@ -82,10 +82,10 @@ export default function Home() {
               roles="UX/UI, Research, Product strategy"
               href="/work/covid-tracer"
               images={[
-                { src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" },
+                { src: "/home/work/covid-tracer/MOH0.jpg", alt: "NZ COVID Tracer app screen" },
+                { src: "/home/work/covid-tracer/MOH1.5.jpg", alt: "NZ COVID Tracer app screen" },
                 { src: "/home/work/covid-tracer/MOH2.jpg", alt: "NZ COVID Tracer app screen" },
                 { src: "/home/work/covid-tracer/MOH3.jpg", alt: "NZ COVID Tracer app screen" },
-                { src: "/home/work/covid-tracer/MOH4.jpg", alt: "NZ COVID Tracer app screen" },
               ]}
             />
           </Reveal>

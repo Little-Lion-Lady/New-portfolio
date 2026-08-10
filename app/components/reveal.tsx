@@ -44,6 +44,14 @@ function useIsFirefox() {
   return useSyncExternalStore(subscribeNoop, getIsFirefoxSnapshot, getIsFirefoxServerSnapshot);
 }
 
+// Every "visible" state below animates filter TO blur(0px) and then, via
+// transitionEnd, snaps it to `none` once the transition settles. A resting
+// filter value of blur(0px) (rather than no filter at all) forces the
+// browser to clip this element's subtree to its own box — overriding any
+// descendant's overflow:visible — which silently cuts off box-shadows that
+// bleed past its edges (e.g. GlassImage cards). transitionEnd removes the
+// filter after animating through it, so the entrance blur is unaffected but
+// nothing is left clipping shadows at rest.
 const variants: Variants = {
   hidden: { opacity: 0, y: 16, filter: "blur(20px)" },
   visible: (custom: { i?: number; delay?: number } = {}) => ({
@@ -55,6 +63,7 @@ const variants: Variants = {
       ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       delay: (custom.i ?? 0) * 0.06 + (custom.delay ?? 0),
     },
+    transitionEnd: { filter: "none" },
   }),
 };
 
@@ -68,6 +77,7 @@ const variantsNoY: Variants = {
       ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       delay: (custom.i ?? 0) * 0.06 + (custom.delay ?? 0),
     },
+    transitionEnd: { filter: "none" },
   }),
 };
 
@@ -82,13 +92,14 @@ const wordVariants: Variants = {
       ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
       delay: i * 0.06,
     },
+    transitionEnd: { filter: "none" },
   }),
 };
 
 // For prefers-reduced-motion — instant, no animation.
 const reducedVariants: Variants = {
   hidden: { opacity: 0, filter: "blur(0px)" },
-  visible: { opacity: 1, filter: "blur(0px)", transition: { duration: 0.01 } },
+  visible: { opacity: 1, filter: "blur(0px)", transition: { duration: 0.01 }, transitionEnd: { filter: "none" } },
 };
 
 // For Firefox — opacity + y only (no blur). filter:blur(0px) must be explicit
@@ -105,6 +116,7 @@ const ffVariants: Variants = {
       ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       delay: (custom.i ?? 0) * 0.06 + (custom.delay ?? 0),
     },
+    transitionEnd: { filter: "none" },
   }),
 };
 
@@ -118,6 +130,7 @@ const ffVariantsNoY: Variants = {
       ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       delay: (custom.i ?? 0) * 0.06 + (custom.delay ?? 0),
     },
+    transitionEnd: { filter: "none" },
   }),
 };
 
@@ -131,6 +144,7 @@ const ffWordVariants: Variants = {
       ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
       delay: i * 0.06,
     },
+    transitionEnd: { filter: "none" },
   }),
 };
 
@@ -140,6 +154,7 @@ const blurVariants: Variants = {
     filter: "blur(0px)",
     opacity: 1,
     transition: { duration: 0.6, ease: [0.445, 0.05, 0.55, 0.95] as [number, number, number, number] },
+    transitionEnd: { filter: "none" },
   },
 };
 
