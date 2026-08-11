@@ -6,7 +6,7 @@ import { WorkItem } from "./components/work-item";
 import { Button } from "./components/button";
 import { SectionReveal } from "./components/section-reveal-context";
 import { Reveal } from "./components/reveal";
-import { HeroCat, AboutCat } from "./components/dynamic-visuals";
+import { HeroCat, AboutCat, Star } from "./components/dynamic-visuals";
 import { HeroText } from "./components/hero-text";
 import { Divider } from "./components/divider";
 
@@ -32,7 +32,12 @@ export default function Home() {
               mobile  296px → -ml-[15px]
               tablet  636px → -ml-[32px]
               desktop 42vw  → -ml-[2.1vw] */}
-        <Reveal as="div" delay={2} noY className="flex h-[calc(100%/3)] items-end">
+        <Reveal as="div" delay={2} noY className="relative flex h-[calc(100%/3)] items-end">
+          {/* Third twinkle star — sits underneath the hero text, at the top of this row */}
+          <Star
+            variant={3}
+            className="pointer-events-none absolute left-[3%] top-0 w-8 md:left-[2%] md:w-11 lg:left-[2%] lg:w-14"
+          />
           <Divider className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
           <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[15px] max-w-[296px] md:-ml-[32px] md:max-w-[636px] md:min-h-[200px] md:max-h-[280px] lg:-ml-[1.8vw] lg:max-w-[36vw] lg:min-h-[300px]" />
         </Reveal>
