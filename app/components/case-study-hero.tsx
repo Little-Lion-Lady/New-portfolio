@@ -1,5 +1,6 @@
 import { Reveal, RevealWords } from "./reveal";
 import { WorkImage, type WorkImageData } from "./work-image";
+import { TitleStars } from "./title-stars";
 
 // Figma "Hero" (393:15572 desktop / tablet / mobile).
 // Title (two-tone, fluid) + description (lead + body) + meta + image carousel.
@@ -45,14 +46,16 @@ export function CaseStudyHero({
       {/* Title + description (inner Hero block) */}
       <div className="flex w-full flex-col gap-4xl pt-2xl lg:gap-9xl lg:pt-8xl">
         {/* Title — two lines, fluid, revealed word-by-word */}
-        <h1 className="case-hero-title flex flex-col gap-3xs whitespace-nowrap md:gap-xs">
-          <RevealWords as="span" className="block text-text-primary-highlight">
-            {titleTop}
-          </RevealWords>
-          <RevealWords as="span" startIndex={topWordCount} className="block text-text-primary-overlay">
-            {titleBottom}
-          </RevealWords>
-        </h1>
+        <TitleStars>
+          <h1 className="case-hero-title flex flex-col gap-3xs whitespace-nowrap md:gap-xs">
+            <RevealWords as="span" className="block text-text-primary-highlight">
+              {titleTop}
+            </RevealWords>
+            <RevealWords as="span" startIndex={topWordCount} className="block text-text-primary-overlay">
+              {titleBottom}
+            </RevealWords>
+          </h1>
+        </TitleStars>
 
         {/* Description — stacked on mobile/tablet, grid (meta | text) on desktop.
             Text then meta reveal with a 0.3s stagger. */}

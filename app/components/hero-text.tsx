@@ -162,11 +162,11 @@ export function HeroText({ className }: { className?: string }) {
           >
             <Star
               variant={1}
-              className="absolute -top-[18px] left-[22px] w-9 md:-top-[24px] md:left-[28px] md:w-12 lg:-top-[30px] lg:left-[36px] lg:w-16"
+              className="absolute top-[2px] left-[22px] w-9 md:top-[4px] md:left-[28px] md:w-12 lg:top-[6px] lg:left-[36px] lg:w-16"
             />
             <Star
               variant={2}
-              className="absolute top-[2px] -left-[8px] w-9 md:top-[4px] md:-left-[12px] md:w-12 lg:top-[6px] lg:-left-[16px] lg:w-16"
+              className="absolute -top-[18px] -left-[8px] w-9 md:-top-[24px] md:-left-[12px] md:w-12 lg:-top-[30px] lg:-left-[16px] lg:w-16"
             />
           </m.div>
         )}
