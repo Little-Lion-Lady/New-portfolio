@@ -12,6 +12,7 @@ import { ArrowUpRight } from "../components/icons";
 import { BioCollage } from "../components/bio-collage";
 import { CaseStudyNav } from "../components/case-study-nav";
 import { ArtworkStrip } from "../components/artwork-strip";
+import { TitleStars } from "../components/title-stars";
 
 const experience = [
   { role: "Lead Product Designer", org: "First Table | Marketplace", project: "First Table app", year: "25’ – Now" },
@@ -46,7 +47,9 @@ export default function About() {
 
         {/* Hero — shorter than home, text positioned in lower 2/3 of gradient */}
         <section className="relative z-10 pb-2xl pt-[100px] md:pt-[128px] lg:pt-[160px]">
-          <RevealWords as="h1" className="about-hero-title text-text-primary-highlight">who am I?</RevealWords>
+          <TitleStars>
+            <RevealWords as="h1" className="about-hero-title text-text-primary-highlight">who am I?</RevealWords>
+          </TitleStars>
         </section>
       </div>
 
@@ -68,7 +71,8 @@ export default function About() {
               <span className="text-text-highlight-dark">strategic</span>, and{" "}
               <span className="text-text-highlight-dark">creative thinker</span>, blending
               human-centred design with technology to create experiences that positively impact lives.
-              With <span className="text-text-highlight-dark">9 years</span> of experience in product
+              With <span className="text-text-highlight-dark">9 years</span>{" "}
+              of experience in product
               design, I&apos;ve delivered{" "}
               <span className="text-text-highlight-dark">award-winning</span>,{" "}
               <span className="text-text-highlight-dark">impactful</span> designs across a variety of
