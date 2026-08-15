@@ -84,8 +84,10 @@ export function CaseStudyHero({
       </div>
 
       {/* Image carousel — 3 tilted WorkImage cards (same fan pattern as the home
-          carousel), lg size on desktop. */}
-      <Reveal noY immediate delay={0.6} className="flex w-full items-center justify-center">
+          carousel), lg size on desktop. Last in the hero sequence: title+stars →
+          description → meta → images, 0.3s apart (the stacked mobile/tablet
+          order, which is also the DOM order). */}
+      <Reveal noY immediate delay={0.9} className="flex w-full items-center justify-center">
         {images.map((image, i) => (
           <WorkImage key={image.src} src={image.src} alt={image.alt} index={i} total={3} size="lg" />
         ))}
