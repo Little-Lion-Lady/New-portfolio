@@ -59,9 +59,9 @@ export function TitleStars({ children }: { children: ReactNode }) {
         }
       });
       const r = lastOnLine1.getBoundingClientRect();
-      // RevealWords staggers each word by 0.06s and animates over 0.6s, so
-      // the last word on line 1 finishes at roughly this offset.
-      const delay = lastIndex * 0.06 + 0.6;
+      // RevealWords staggers each word by 0.06s; the stars come in while that
+      // word is still fading up rather than waiting for it to land.
+      const delay = lastIndex * 0.06 + 0.2;
       setAnchor({ top: r.top - boxRect.top, left: r.right - boxRect.left, delay });
     };
 
