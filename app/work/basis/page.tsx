@@ -200,7 +200,7 @@ export default function Basis() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <KeyParagraph lead="Three questions that framed every design decision." className="lg:max-w-[916px]">
-            From the research findings, I generated four HMW statements to frame the design
+            From the research findings, I generated three HMW statements to frame the design
             space, then translated them directly into testable hypotheses with defined success
             metrics.
           </KeyParagraph>
