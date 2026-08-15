@@ -20,9 +20,19 @@
     normally.
 */
 
-import React, { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { m, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
+
+// Published by every <Reveal> to its subtree so nested animations (e.g. the
+// per-card rotation in <TiltIn>) can fire on the same trigger and the same
+// delay as the fade, instead of running their own in-view observer.
+type RevealTriggerValue = { active: boolean; delay: number };
+const RevealTriggerContext = createContext<RevealTriggerValue | null>(null);
+
+export function useRevealTrigger() {
+  return useContext(RevealTriggerContext);
+}
 
 // SSR-safe Firefox detection, computed once and shared across every Reveal/
 // RevealWords instance (a page can render dozens) instead of once per
@@ -199,6 +209,13 @@ export function Reveal({
 
   const Component = m[as] as typeof m.div;
 
+  // Same delay the variants above apply, shared with the subtree so nested
+  // animations start in step with this fade.
+  const trigger = useMemo(
+    () => ({ active: shouldAnimate, delay: index * 0.06 + delay }),
+    [shouldAnimate, index, delay],
+  );
+
   return (
     <Component
       ref={ref as unknown as React.RefObject<HTMLDivElement>}
@@ -209,7 +226,7 @@ export function Reveal({
       animate={shouldAnimate ? "visible" : "hidden"}
       variants={reducedMotion ? reducedVariants : isFF ? (noY ? ffVariantsNoY : ffVariants) : blur ? blurVariants : noY ? variantsNoY : variants}
     >
-      {children}
+      <RevealTriggerContext.Provider value={trigger}>{children}</RevealTriggerContext.Provider>
     </Component>
   );
 }

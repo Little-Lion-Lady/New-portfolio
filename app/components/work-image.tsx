@@ -127,8 +127,6 @@ export function WorkImage({
   size = "md",
   tilt = true,
   quality = 100,
-  revealDelay = 0,
-  immediate = false,
 }: {
   src: string;
   alt: string;
@@ -137,17 +135,11 @@ export function WorkImage({
   size?: WorkImageSize;
   tilt?: boolean;
   quality?: number;
-  /** Delay before the rotate-into-place reveal, to line up with a parent Reveal. */
-  revealDelay?: number;
-  /** Reveal on mount instead of waiting for the card to scroll into view. */
-  immediate?: boolean;
 }) {
   const isLast = index === total - 1;
   return (
     <TiltIn
       offset={tilt ? getTiltOffset(index, total) : 0}
-      delay={revealDelay + index * 0.08}
-      immediate={immediate}
       className={`shrink-0 ${isLast ? "" : getMarginClass(total)}`}
     >
       <div className={`${getSizeClass(total, size)} ${tilt ? getRotateClass(total, index) : ""}`}>
