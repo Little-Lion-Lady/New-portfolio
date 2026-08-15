@@ -40,7 +40,7 @@ function getMarginClass(quantity: 3 | 4) {
 // edges, easing to none at the centre. Cards left of centre start clockwise of
 // their resting tilt (positive) so they turn anti-clockwise into place; cards
 // right of centre start anti-clockwise and turn clockwise.
-function getTiltOffset(index: number, total: number, max = 8) {
+function getTiltOffset(index: number, total: number, max = 12) {
   const centre = (total - 1) / 2;
   return ((centre - index) / centre) * max;
 }
