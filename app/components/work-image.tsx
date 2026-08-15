@@ -36,13 +36,13 @@ function getMarginClass(quantity: 3 | 4) {
   return quantity === 4 ? "-mr-[80px]" : "-mr-[40px] md:-mr-[80px] lg:-mr-[72px]";
 }
 
-// Reveal start offset for card `index` of `total`: full swing at the outer
-// edges, easing to none at the centre. Cards left of centre start clockwise of
+// Reveal start offset for card `index` of `total` — full swing on every card,
+// split at the cluster's midpoint. Cards in the left half start clockwise of
 // their resting tilt (positive) so they turn anti-clockwise into place; cards
-// right of centre start anti-clockwise and turn clockwise.
-function getTiltOffset(index: number, total: number, max = 12) {
-  const centre = (total - 1) / 2;
-  return ((centre - index) / centre) * max;
+// in the right half start anti-clockwise and turn clockwise. With an odd
+// count the middle card goes with the left half.
+function getTiltOffset(index: number, total: number, max = 15) {
+  return index < total / 2 ? max : -max;
 }
 
 // Glass-frame padding scales with platform: mobile 6px, tablet 8px, desktop 12px.
