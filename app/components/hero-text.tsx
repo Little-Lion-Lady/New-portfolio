@@ -14,8 +14,8 @@ const TEXT_STYLE = {
 
 const HL = { color: "var(--text-primary-highlight)" };
 
-// Matches RevealWords' own blur-in look, timed via `custom` so the stars
-// settle right as the last word of line 1 finishes animating in.
+// Matches RevealWords' own blur-in look, timed via `custom` so the stars come
+// in over the last word of line 1. Kept in step with TitleStars.
 const STAR_VARIANTS: Variants = {
   hidden: { opacity: 0, y: 8, filter: "blur(16px)" },
   visible: (delay: number = 0) => ({
@@ -23,7 +23,7 @@ const STAR_VARIANTS: Variants = {
     y: 0,
     filter: "blur(0px)",
     transition: {
-      duration: 0.6,
+      duration: 0.8,
       ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       delay,
     },
@@ -98,9 +98,10 @@ export function HeroText({ className }: { className?: string }) {
         }
       });
       const r = lastOnLine1.getBoundingClientRect();
-      // RevealWords staggers each word by 0.06s and animates over 0.6s, so
-      // the last word on line 1 finishes at roughly this offset.
-      const delay = lastIndex * 0.06 + 0.6;
+      // RevealWords staggers each word by 0.06s; the stars come in while that
+      // word is still fading up rather than waiting for it to land. Matches
+      // TitleStars, which does the same for the case-study and About heroes.
+      const delay = lastIndex * 0.06 + 0.2;
       setStarAnchor({ top: r.top - boxRect.top, left: r.right - boxRect.left, delay });
     };
 
