@@ -13,7 +13,7 @@ const STAR_VARIANTS: Variants = {
     y: 0,
     filter: "blur(0px)",
     transition: {
-      duration: 0.6,
+      duration: 0.8,
       ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       delay,
     },
