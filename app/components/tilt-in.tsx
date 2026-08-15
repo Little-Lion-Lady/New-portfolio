@@ -53,7 +53,7 @@ export function TiltIn({
       className={className}
       initial={{ rotate: offset }}
       animate={{ rotate: shouldAnimate ? 0 : offset }}
-      transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94], delay }}
+      transition={{ duration: 0.45, ease: [0.86, 0, 0.07, 1], delay }}
     >
       {children}
     </m.div>
