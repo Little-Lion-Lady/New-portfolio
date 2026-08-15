@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { TiltIn } from "./tilt-in";
 
 export type WorkImageData = { src: string; alt: string; quality?: number };
 export type WorkImageSize = "md" | "lg";
@@ -33,6 +34,15 @@ function getRotateClass(quantity: 3 | 4, index: number) {
 // 3-image items tighten the overlap on mobile, loosen slightly on desktop.
 function getMarginClass(quantity: 3 | 4) {
   return quantity === 4 ? "-mr-[80px]" : "-mr-[40px] md:-mr-[80px] lg:-mr-[72px]";
+}
+
+// Reveal start offset for card `index` of `total`: full swing at the outer
+// edges, easing to none at the centre. Cards left of centre start clockwise of
+// their resting tilt (positive) so they turn anti-clockwise into place; cards
+// right of centre start anti-clockwise and turn clockwise.
+function getTiltOffset(index: number, total: number, max = 8) {
+  const centre = (total - 1) / 2;
+  return ((centre - index) / centre) * max;
 }
 
 // Glass-frame padding scales with platform: mobile 6px, tablet 8px, desktop 12px.
@@ -117,6 +127,8 @@ export function WorkImage({
   size = "md",
   tilt = true,
   quality = 100,
+  revealDelay = 0,
+  immediate = false,
 }: {
   src: string;
   alt: string;
@@ -125,21 +137,28 @@ export function WorkImage({
   size?: WorkImageSize;
   tilt?: boolean;
   quality?: number;
+  /** Delay before the rotate-into-place reveal, to line up with a parent Reveal. */
+  revealDelay?: number;
+  /** Reveal on mount instead of waiting for the card to scroll into view. */
+  immediate?: boolean;
 }) {
   const isLast = index === total - 1;
   return (
-    <div
-      className={`shrink-0 ${getSizeClass(total, size)} ${tilt ? getRotateClass(total, index) : ""} ${
-        isLast ? "" : getMarginClass(total)
-      }`}
+    <TiltIn
+      offset={tilt ? getTiltOffset(index, total) : 0}
+      delay={revealDelay + index * 0.08}
+      immediate={immediate}
+      className={`shrink-0 ${isLast ? "" : getMarginClass(total)}`}
     >
-      <GlassImage
-        src={src}
-        alt={alt}
-        quality={quality}
-        sizes="(min-width: 1024px) 560px, (min-width: 768px) 370px, 250px"
-        className="h-full w-full"
-      />
-    </div>
+      <div className={`${getSizeClass(total, size)} ${tilt ? getRotateClass(total, index) : ""}`}>
+        <GlassImage
+          src={src}
+          alt={alt}
+          quality={quality}
+          sizes="(min-width: 1024px) 560px, (min-width: 768px) 370px, 250px"
+          className="h-full w-full"
+        />
+      </div>
+    </TiltIn>
   );
 }

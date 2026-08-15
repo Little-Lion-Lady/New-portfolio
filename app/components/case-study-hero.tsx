@@ -87,7 +87,16 @@ export function CaseStudyHero({
           carousel), lg size on desktop. */}
       <Reveal noY immediate delay={0.6} className="flex w-full items-center justify-center">
         {images.map((image, i) => (
-          <WorkImage key={image.src} src={image.src} alt={image.alt} index={i} total={3} size="lg" />
+          <WorkImage
+            key={image.src}
+            src={image.src}
+            alt={image.alt}
+            index={i}
+            total={3}
+            size="lg"
+            immediate
+            revealDelay={0.6}
+          />
         ))}
       </Reveal>
     </div>
