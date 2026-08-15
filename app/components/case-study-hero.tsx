@@ -58,19 +58,19 @@ export function CaseStudyHero({
         </TitleStars>
 
         {/* Description — stacked on mobile/tablet, grid (meta | text) on desktop.
-            Text, meta and images all reveal together 1s in — over the tail of
+            Text, meta and images all reveal together 0.8s in — over the tail of
             the word-by-word title — with the same 16px y-lift the home page
             uses. */}
         <div className="flex flex-col gap-3xl md:gap-4xl lg:grid lg:grid-cols-12 lg:gap-x-lg">
           {/* Text block (desktop: right, c7-12) */}
-          <Reveal immediate delay={1} className="flex flex-col gap-xl lg:col-start-7 lg:col-span-6 lg:justify-center">
+          <Reveal immediate delay={0.8} className="flex flex-col gap-xl lg:col-start-7 lg:col-span-6 lg:justify-center">
             <p className="b-sm text-text-primary-highlight lg:b-md">{lead}</p>
             <p className="b-xs text-text-secondary md:b-sm lg:b-md">{description}</p>
           </Reveal>
 
           {/* Meta block (desktop: left, c2-6) — in step with the text block.
               Always a single column (meta rows then recognition rows stacked). */}
-          <Reveal immediate delay={1} className="flex flex-col gap-sm md:gap-md lg:col-start-1 lg:col-span-5 lg:row-start-1 lg:gap-lg">
+          <Reveal immediate delay={0.8} className="flex flex-col gap-sm md:gap-md lg:col-start-1 lg:col-span-5 lg:row-start-1 lg:gap-lg">
             <div className="flex flex-col gap-sm md:gap-md lg:gap-lg">
               {meta.map((m, i) => (
                 <MetaRow key={i} label={m.label} value={m.value} />
@@ -88,7 +88,7 @@ export function CaseStudyHero({
       {/* Image carousel — 3 tilted WorkImage cards (same fan pattern as the home
           carousel), lg size on desktop. Reveals with the description and meta —
           title+stars first, then everything else together. */}
-      <Reveal immediate delay={1} className="flex w-full items-center justify-center">
+      <Reveal immediate delay={0.8} className="flex w-full items-center justify-center">
         {images.map((image, i) => (
           <WorkImage key={image.src} src={image.src} alt={image.alt} index={i} total={3} size="lg" />
         ))}
