@@ -49,7 +49,7 @@ const deferred = [
 const journeySteps = [
   {
     title: "Research",
-    body: "Heuristic evaluation and baseline usability test across onboarding and in-app BT surfaces. Identified six critical failures.",
+    body: "Understanding competitive landscape, key user pain points and gains to define value proposition",
   },
   {
     title: "Align",
@@ -184,12 +184,12 @@ export default function Basis() {
         </Reveal>
       </SectionReveal>
 
-      {/* Insight — between 03 and 04 (placeholder copy carried from Covid Tracer) */}
+      {/* Insight — between 03 and 04 */}
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
         <Insight>
-          The problem wasn’t awareness. It was comprehension and confidence. Redesign needed
-          to answer one question faster: “Is this safe and does it work?” Reassure first.
-          Explain second. Ask third.
+          Users expected safety by default — it wasn’t a differentiator. The real value was the
+          financial control electricity gave them over their spending. Safety had to disappear
+          into infrastructure for that control to feel trustworthy.
         </Insight>
       </Reveal>
 
@@ -222,7 +222,7 @@ export default function Basis() {
           />
           <Divider />
           <Hypothesis
-            label="H2"
+            label="H3"
             believe="An automation feature that lets users schedule and manage electricity supply will result in a 10–15% reduction in bills."
             because="Strategic power-down during peak pricing hours optimises consumption without requiring ongoing effort."
             metric="Users who engage with insights 3x/month will show a 10% bill reduction within 6 months."
