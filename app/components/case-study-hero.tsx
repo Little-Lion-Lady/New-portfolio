@@ -45,13 +45,17 @@ export function CaseStudyHero({
     <div className="flex w-full flex-col gap-3xl md:gap-6xl">
       {/* Title + description (inner Hero block) */}
       <div className="flex w-full flex-col gap-4xl pt-2xl lg:gap-9xl lg:pt-8xl">
-        {/* Title — two lines, fluid, revealed word-by-word */}
+        {/* Title — two lines, fluid, revealed word-by-word. `immediate` (like the
+            rest of the hero) so it reveals on mount: an in-view trigger only
+            fires once scroll restoration settles, which on a client-side nav
+            from the bottom of another page landed the title *after* everything
+            else instead of first. */}
         <TitleStars>
           <h1 className="case-hero-title flex flex-col gap-3xs whitespace-nowrap md:gap-xs">
-            <RevealWords as="span" className="block text-text-primary-highlight">
+            <RevealWords immediate as="span" className="block text-text-primary-highlight">
               {titleTop}
             </RevealWords>
-            <RevealWords as="span" startIndex={topWordCount} className="block text-text-primary-overlay">
+            <RevealWords immediate as="span" startIndex={topWordCount} className="block text-text-primary-overlay">
               {titleBottom}
             </RevealWords>
           </h1>

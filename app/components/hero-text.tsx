@@ -77,6 +77,7 @@ export function HeroText({ className }: { className?: string }) {
           the rendered text at every breakpoint. */}
       <TitleStars placement="hero" className="relative w-full">
         <RevealWords
+          immediate
           as="h1"
           className="w-full"
           style={{
