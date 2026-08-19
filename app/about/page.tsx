@@ -48,7 +48,7 @@ export default function About() {
         {/* Hero — shorter than home, text positioned in lower 2/3 of gradient */}
         <section className="relative z-10 pb-2xl pt-[100px] md:pt-[128px] lg:pt-[160px]">
           <TitleStars>
-            <RevealWords as="h1" className="about-hero-title text-text-primary-highlight">who am I?</RevealWords>
+            <RevealWords immediate as="h1" className="about-hero-title text-text-primary-highlight">who am I?</RevealWords>
           </TitleStars>
         </section>
       </div>

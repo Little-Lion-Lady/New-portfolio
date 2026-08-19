@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { TiltIn } from "./tilt-in";
 
 export type WorkImageData = { src: string; alt: string; quality?: number };
 export type WorkImageSize = "md" | "lg";
@@ -33,6 +34,15 @@ function getRotateClass(quantity: 3 | 4, index: number) {
 // 3-image items tighten the overlap on mobile, loosen slightly on desktop.
 function getMarginClass(quantity: 3 | 4) {
   return quantity === 4 ? "-mr-[80px]" : "-mr-[40px] md:-mr-[80px] lg:-mr-[72px]";
+}
+
+// Reveal start offset for card `index` of `total` — full swing on every card,
+// split at the cluster's midpoint. Cards in the left half start clockwise of
+// their resting tilt (positive) so they turn anti-clockwise into place; cards
+// in the right half start anti-clockwise and turn clockwise. With an odd
+// count the middle card goes with the left half.
+function getTiltOffset(index: number, total: number, max = 15) {
+  return index < total / 2 ? max : -max;
 }
 
 // Glass-frame padding scales with platform: mobile 6px, tablet 8px, desktop 12px.
@@ -128,18 +138,19 @@ export function WorkImage({
 }) {
   const isLast = index === total - 1;
   return (
-    <div
-      className={`shrink-0 ${getSizeClass(total, size)} ${tilt ? getRotateClass(total, index) : ""} ${
-        isLast ? "" : getMarginClass(total)
-      }`}
+    <TiltIn
+      offset={tilt ? getTiltOffset(index, total) : 0}
+      className={`shrink-0 ${isLast ? "" : getMarginClass(total)}`}
     >
-      <GlassImage
-        src={src}
-        alt={alt}
-        quality={quality}
-        sizes="(min-width: 1024px) 560px, (min-width: 768px) 370px, 250px"
-        className="h-full w-full"
-      />
-    </div>
+      <div className={`${getSizeClass(total, size)} ${tilt ? getRotateClass(total, index) : ""}`}>
+        <GlassImage
+          src={src}
+          alt={alt}
+          quality={quality}
+          sizes="(min-width: 1024px) 560px, (min-width: 768px) 370px, 250px"
+          className="h-full w-full"
+        />
+      </div>
+    </TiltIn>
   );
 }

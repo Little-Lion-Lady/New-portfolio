@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { m, useReducedMotion, type Variants } from "framer-motion";
 import { Star } from "./dynamic-visuals";
 
-// Matches RevealWords' own blur-in look, timed via `custom` so the stars
-// settle right as the last word of line 1 finishes animating in.
+// Matches RevealWords' own blur-in look, timed via `custom` so the stars come
+// in over the last word of line 1.
 const STAR_VARIANTS: Variants = {
   hidden: { opacity: 0, y: 8, filter: "blur(16px)" },
   visible: (delay: number = 0) => ({
@@ -13,7 +13,7 @@ const STAR_VARIANTS: Variants = {
     y: 0,
     filter: "blur(0px)",
     transition: {
-      duration: 0.6,
+      duration: 0.8,
       ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       delay,
     },
@@ -21,13 +21,40 @@ const STAR_VARIANTS: Variants = {
   }),
 };
 
+// Star offsets relative to the anchor word's top-right corner. The home hero
+// runs at a much larger fluid font size than the case-study/About titles, so
+// each placement carries its own nudge; everything else about the cluster —
+// timing, anchoring, motion — is shared.
+const PLACEMENTS = {
+  title: {
+    one: "absolute -top-[8px] left-[14px] w-9 md:-top-[4px] md:left-[28px] md:w-12 lg:-top-[4px] lg:left-[36px] lg:w-16",
+    two: "absolute -top-[22px] -left-[6px] w-9 md:-top-[32px] md:-left-[12px] md:w-12 lg:-top-[40px] lg:-left-[16px] lg:w-16",
+  },
+  hero: {
+    one: "absolute top-[2px] left-[22px] w-9 md:top-[4px] md:left-[28px] md:w-12 lg:top-[6px] lg:left-[36px] lg:w-16",
+    two: "absolute -top-[18px] -left-[8px] w-9 md:-top-[24px] md:-left-[12px] md:w-12 lg:-top-[30px] lg:-left-[16px] lg:w-16",
+  },
+} as const;
+
 /*
   Wraps a RevealWords heading and clusters two twinkle stars around the
-  top-right corner of its last word on line 1 — the same treatment the home
-  hero uses. Anchors to the word's own rect rather than the wrapper's corner,
-  so the cluster follows the text as it re-wraps across breakpoints.
+  top-right corner of its last word on line 1. Anchors to the word's own rect
+  rather than the wrapper's corner, so the cluster follows the text as it
+  re-wraps across breakpoints (or as the home hero refits its font size).
+
+  Single source of truth for every header's stars — the home hero, the About
+  hero and both case-study titles.
 */
-export function TitleStars({ children }: { children: ReactNode }) {
+export function TitleStars({
+  children,
+  placement = "title",
+  className = "relative",
+}: {
+  children: ReactNode;
+  /** Star offsets to use — "hero" for the fluid home headline, "title" otherwise. */
+  placement?: keyof typeof PLACEMENTS;
+  className?: string;
+}) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [anchor, setAnchor] = useState<{ top: number; left: number; delay: number } | null>(null);
   const reducedMotion = useReducedMotion();
@@ -39,13 +66,16 @@ export function TitleStars({ children }: { children: ReactNode }) {
     const measure = () => {
       const heading = box.querySelector("h1, h2");
       if (!heading) return;
-      // RevealWords wraps each word in an inline-block span. A heading may also
-      // wrap each *line* in its own block-level span (the case-study title
-      // does), and those stretch to the full container width — so walk down to
-      // the leaf spans, which are always the words themselves.
-      const words = Array.from(heading.querySelectorAll("span")).filter(
-        (el) => !el.firstElementChild,
-      );
+      // RevealWords wraps each word in an inline-block span — that style is
+      // what identifies a word token. Selecting on it skips both the
+      // block-level per-line spans some headings add (the case-study title)
+      // and the inline highlight spans nested inside a word (the home hero).
+      let words = Array.from(heading.querySelectorAll<HTMLElement>('span[style*="inline-block"]'));
+      if (!words.length) {
+        words = Array.from(heading.querySelectorAll<HTMLElement>("span")).filter(
+          (el) => !el.firstElementChild,
+        );
+      }
       if (!words.length) return;
 
       const boxRect = box.getBoundingClientRect();
@@ -59,9 +89,9 @@ export function TitleStars({ children }: { children: ReactNode }) {
         }
       });
       const r = lastOnLine1.getBoundingClientRect();
-      // RevealWords staggers each word by 0.06s and animates over 0.6s, so
-      // the last word on line 1 finishes at roughly this offset.
-      const delay = lastIndex * 0.06 + 0.6;
+      // RevealWords staggers each word by 0.06s; the stars come in while that
+      // word is still fading up rather than waiting for it to land.
+      const delay = lastIndex * 0.06 + 0.2;
       setAnchor({ top: r.top - boxRect.top, left: r.right - boxRect.left, delay });
     };
 
@@ -73,8 +103,10 @@ export function TitleStars({ children }: { children: ReactNode }) {
     return () => ro.disconnect();
   }, []);
 
+  const stars = PLACEMENTS[placement];
+
   return (
-    <div ref={boxRef} className="relative">
+    <div ref={boxRef} className={className}>
       {children}
       {anchor && (
         <m.div
@@ -85,14 +117,8 @@ export function TitleStars({ children }: { children: ReactNode }) {
           custom={anchor.delay}
           variants={STAR_VARIANTS}
         >
-          <Star
-            variant={1}
-            className="absolute -top-[8px] left-[14px] w-9 md:-top-[4px] md:left-[28px] md:w-12 lg:-top-[4px] lg:left-[36px] lg:w-16"
-          />
-          <Star
-            variant={2}
-            className="absolute -top-[22px] -left-[6px] w-9 md:-top-[32px] md:-left-[12px] md:w-12 lg:-top-[40px] lg:-left-[16px] lg:w-16"
-          />
+          <Star variant={1} className={stars.one} />
+          <Star variant={2} className={stars.two} />
         </m.div>
       )}
     </div>

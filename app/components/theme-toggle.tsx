@@ -31,23 +31,12 @@ function applyTheme(theme: "dark" | "light") {
   document.documentElement.setAttribute("data-theme", theme);
 }
 
-// Fallback for when there's no "theme" cookie yet (brand-new visitor, or a
-// pre-cookie localStorage visitor on their first post-migration load) — reads
-// whatever the beforeInteractive script already applied, or OS preference.
-// Returns false during SSR (no DOM to read); this only runs client-side when
-// InitialThemeContext is undefined, so server and client agree on that path too.
-function computeInitialIsDark(): boolean {
-  if (typeof document === "undefined") return false;
-  const attr = document.documentElement.getAttribute("data-theme");
-  if (attr === "dark") return true;
-  if (attr === "light") return false;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
 // Light/dark theme toggle.
 // - Initial render trusts the server-read "theme" cookie (InitialThemeContext)
-//   so it matches the SSR'd HTML exactly; falls back to computeInitialIsDark
-//   only when there's no cookie yet, which server and client agree is false.
+//   so it matches the SSR'd HTML exactly. With no cookie yet (first visit) it
+//   renders the same `false` the server did and corrects in the effect below —
+//   reading data-theme/matchMedia during that first client render is what
+//   caused the hydration mismatch for dark-OS first-time visitors.
 // - On click, saves the new preference to the cookie + localStorage so it
 //   survives navigation (ThemeToggle remounts per page) and page refreshes.
 // - Subscribes to OS changes only when the user hasn't made a manual choice.
@@ -55,7 +44,7 @@ function computeInitialIsDark(): boolean {
 // Visual matches the Figma toggle: 24×20 pill, border-highlight, 16px icon.
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const initialFromServer = useInitialIsDark();
-  const [isDark, setIsDark] = useState(() => initialFromServer ?? computeInitialIsDark());
+  const [isDark, setIsDark] = useState(() => initialFromServer ?? false);
 
   useEffect(() => {
     const theme = resolveTheme();
