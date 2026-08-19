@@ -189,10 +189,9 @@ export function ProcessMedia() {
     <div className="flex flex-col gap-xs lg:gap-lg">
       <GlassImage src="/home/work/basis/BS8.jpg" alt={BASIS_ALT} className="aspect-[3168/1235] w-full" />
       {/* BS9's real ratio is 1600×1395 — aspect-[1600/1395] replaces the
-          mobile/tablet fixed heights (306/524px) that were cropping it.
-          Desktop keeps its own lg:h-[1414px]: an explicit height still wins
-          over aspect-ratio for that axis, so lg is unaffected. */}
-      <GlassImage src="/home/work/basis/BS9.jpg" alt={BASIS_ALT} className="aspect-[1600/1395] w-full lg:h-[1414px]" />
+          fixed heights (306/524px mobile/tablet, 1414px desktop) that were
+          cropping it at every breakpoint. */}
+      <GlassImage src="/home/work/basis/BS9.jpg" alt={BASIS_ALT} className="aspect-[1600/1395] w-full" />
     </div>
   );
 }
@@ -237,15 +236,19 @@ export function PrototypeMedia() {
           aspectRatio (inner-box, no-crop) per image plus width-only classes
           is enough — height always derives correctly from whatever width
           each breakpoint's layout resolves to. Always a single row of four
-          (w-1/4 each) at every breakpoint — no 2×2 grid fallback. lg:flex-1
-          is needed once the outer container becomes lg:flex-row: without it
-          this div has no width source of its own (children are all
-          percentage-based, so they can't contribute one), and collapses to 0. */}
-      <div className="flex gap-xs overflow-hidden lg:flex-1">
-        <GlassImage src="/home/work/basis/BS14.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="w-1/4" />
-        <GlassImage src="/home/work/basis/BS15.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="w-1/4" />
-        <GlassImage src="/home/work/basis/BS16.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="w-1/4" />
-        <GlassImage src="/home/work/basis/BS17.jpg" alt={BASIS_ALT} aspectRatio="219/477" className="w-1/4" />
+          at every breakpoint — no 2×2 grid fallback. flex-1 (not w-1/4) so
+          gap-xs is subtracted from the available width instead of added on
+          top of four 25% bases, which doesn't overflow and so doesn't need
+          overflow-hidden to hide it — a fix that was also clipping every
+          card's drop shadow. lg:flex-1 on the row itself is still needed
+          once the outer container becomes lg:flex-row: without it this div
+          has no width source of its own (children are all flex-basis:0, so
+          they can't contribute one), and collapses to 0. */}
+      <div className="flex gap-xs lg:flex-1">
+        <GlassImage src="/home/work/basis/BS14.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
+        <GlassImage src="/home/work/basis/BS15.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
+        <GlassImage src="/home/work/basis/BS16.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
+        <GlassImage src="/home/work/basis/BS17.jpg" alt={BASIS_ALT} aspectRatio="219/477" className="flex-1" />
       </div>
       {/* max-w-[190px] on mobile/tablet caps each participant photo's width;
           lg's own layout (fixed 243px column, flex-none) needs it
