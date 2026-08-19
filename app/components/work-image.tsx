@@ -21,13 +21,13 @@ function getSizeClass(quantity: 3 | 4, size: WorkImageSize) {
     : "size-[250px] md:size-[370px] lg:h-[400px] lg:w-[560px]";
 }
 
-// Card 1 is always tilted +5deg; cards 2–3 tilt tighter on tablet/mobile than
-// desktop when there are only 3 images; card 4 (4-image items only) is -6deg.
+// Card 1 is always tilted +2deg; cards 2–3 tilt tighter on tablet/mobile than
+// desktop when there are only 3 images; card 4 (4-image items only) is -3deg.
 function getRotateClass(quantity: 3 | 4, index: number) {
   if (quantity === 4) {
-    return ["rotate-5", "-rotate-5", "rotate-6", "-rotate-6"][index];
+    return ["rotate-2", "-rotate-2", "rotate-3", "-rotate-3"][index];
   }
-  return ["rotate-5", "-rotate-6 lg:-rotate-5", "rotate-6 lg:rotate-4"][index];
+  return ["rotate-2", "-rotate-3 lg:-rotate-2", "rotate-3 lg:rotate-2"][index];
 }
 
 // Overlap between cards — 4-image items overlap -80px at every breakpoint;
@@ -41,7 +41,7 @@ function getMarginClass(quantity: 3 | 4) {
 // their resting tilt (positive) so they turn anti-clockwise into place; cards
 // in the right half start anti-clockwise and turn clockwise. With an odd
 // count the middle card goes with the left half.
-function getTiltOffset(index: number, total: number, max = 15) {
+function getTiltOffset(index: number, total: number, max = 8) {
   return index < total / 2 ? max : -max;
 }
 

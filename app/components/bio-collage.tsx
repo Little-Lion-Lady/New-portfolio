@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { GlassImage } from "./work-image";
+import { TiltIn } from "./tilt-in";
 import { MeCat } from "./dynamic-visuals";
 import { isDarkTheme } from "./lottie-utils";
 import { useInitialIsDark } from "./theme-context";
@@ -32,13 +33,15 @@ export function BioCollage() {
   return (
     <div className="relative flex h-[314.422px] w-full items-center justify-center md:h-[496.967px] lg:h-[496.967px]">
       <div className="mr-[-56px] flex h-[314.422px] w-[220.524px] shrink-0 items-center justify-center md:h-[521.941px] md:w-[366.07px] lg:h-[521.941px] lg:w-[366.07px]">
-        <div className="rotate-4">
-          <GlassImage
-            src="/home/about/ME1.JPG"
-            alt="Maryna Babych"
-            className="h-[301.205px] w-[200px] md:h-[500px] md:w-[332px] lg:h-[500px] lg:w-[332px]"
-          />
-        </div>
+        <TiltIn offset={8}>
+          <div className="rotate-4">
+            <GlassImage
+              src="/home/about/ME1.JPG"
+              alt="Maryna Babych"
+              className="h-[301.205px] w-[200px] md:h-[500px] md:w-[332px] lg:h-[500px] lg:w-[332px]"
+            />
+          </div>
+        </TiltIn>
       </div>
       <div className="flex h-[295.054px] w-[233.946px] shrink-0 items-center justify-center md:h-[489.79px] md:w-[388.351px] lg:h-[489.79px] lg:w-[388.351px]">
         {/* rounded-sm bg-bg-primary backer — same shape/rotation as the frame
@@ -49,19 +52,21 @@ export function BioCollage() {
             translucent glass something page-coloured to blend with instead,
             so it renders identically to every other (non-overlapping) glass
             card rather than needing an opaque one-off variant. */}
-        <div className="-rotate-[7.56deg] rounded-sm bg-bg-primary">
-          <GlassImage
-            src={dark ? "/home/about/ABOUT2_Dark.jpg" : "/home/about/ABOUT2.jpg"}
-            alt=""
-            className="h-[271.084px] w-[200px] md:h-[450px] md:w-[332px] lg:h-[450px] lg:w-[332px]"
-          >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="-rotate-7">
-                <MeCat className="w-[140px] md:w-[200px] lg:w-[200px]" />
+        <TiltIn offset={-8}>
+          <div className="-rotate-[7.56deg] rounded-sm bg-bg-primary">
+            <GlassImage
+              src={dark ? "/home/about/ABOUT2_Dark.jpg" : "/home/about/ABOUT2.jpg"}
+              alt=""
+              className="h-[271.084px] w-[200px] md:h-[450px] md:w-[332px] lg:h-[450px] lg:w-[332px]"
+            >
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="-rotate-7">
+                  <MeCat className="w-[140px] md:w-[200px] lg:w-[200px]" />
+                </div>
               </div>
-            </div>
-          </GlassImage>
-        </div>
+            </GlassImage>
+          </div>
+        </TiltIn>
       </div>
     </div>
   );
