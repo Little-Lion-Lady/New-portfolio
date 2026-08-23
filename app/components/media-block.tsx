@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { GlassImage } from "./work-image";
+import { GlassFrame, GlassImage } from "./work-image";
+import { LoopingVideo } from "./looping-video";
 
 // Figma image collages for §02 (100:6005), §04 (100:6193), §06 (495:3594).
 // Corner radius follows Figma: main image blocks are sharp; §06 phone frames are rounded.
@@ -406,11 +407,73 @@ export function FTDesignSystemMedia() {
 
 // §04 Redesign — the rebuilt core flow across the top, then three component
 // details. Details stack on mobile (each keeps its own Figma height), sit in a
-// single row from tablet up.
-const REDESIGN_DETAILS = [
-  { src: `${FT}/9a.jpg`, alt: "First Table region picker", ratio: "aspect-[361/363]" },
-  { src: `${FT}/9b.jpg`, alt: "First Table restaurant card", ratio: "aspect-[361/279]" },
-  { src: `${FT}/9c.jpg`, alt: "First Table navigation and tab components", ratio: "aspect-[361/210]" },
+// single row from tablet up. Each detail frame is a flat Blue-100 fill with the
+// component's screen recording looping on top, centred; the third frame stacks
+// two. Video widths are a share of the frame so they scale with it — taken from
+// each recording's size against its Figma still.
+// Each recording is a white card on its own, so it gets the card's rounding and
+// shadow here rather than in the file. video3/video4 carry a 2px black sliver
+// along one edge from the capture — the box ratio is a couple of px tighter than
+// the source and object-position pins the opposite edge, cropping it off.
+const DETAIL_CARD = "rounded-sm shadow-[0_2px_10px_var(--shadows-shadow-02)]";
+
+type DetailVideo = {
+  src: string;
+  label: string;
+  width: string;
+  aspectRatio: string;
+  objectPosition?: string;
+};
+
+const REDESIGN_DETAILS: {
+  key: string;
+  ratio: string;
+  videos: DetailVideo[];
+}[] = [
+  {
+    key: "region-picker",
+    ratio: "aspect-[361/363]",
+    videos: [
+      {
+        src: `${FT}/video1.mp4`,
+        label: "First Table region picker",
+        width: "w-[77%]",
+        aspectRatio: "696/762",
+      },
+    ],
+  },
+  {
+    key: "restaurant-card",
+    ratio: "aspect-[361/279]",
+    videos: [
+      {
+        src: `${FT}/video2.mp4`,
+        label: "First Table restaurant card",
+        width: "w-[67%]",
+        aspectRatio: "696/580",
+      },
+    ],
+  },
+  {
+    key: "nav-and-tabs",
+    ratio: "aspect-[361/210]",
+    videos: [
+      {
+        src: `${FT}/video3.mp4`,
+        label: "First Table bottom navigation bar",
+        width: "w-[80%]",
+        aspectRatio: "782/208",
+        objectPosition: "top",
+      },
+      {
+        src: `${FT}/video4.mp4`,
+        label: "First Table photos and menu tabs",
+        width: "w-[80%]",
+        aspectRatio: "778/202",
+        objectPosition: "left",
+      },
+    ],
+  },
 ];
 
 export function FTRedesignMedia() {
@@ -424,13 +487,22 @@ export function FTRedesignMedia() {
       />
       <div className="flex flex-col gap-md md:flex-row md:items-start lg:gap-lg">
         {REDESIGN_DETAILS.map((d) => (
-          <GlassImage
-            key={d.src}
-            src={d.src}
-            alt={d.alt}
-            sizes="(min-width: 768px) 33vw, 100vw"
+          <GlassFrame
+            key={d.key}
             className={`w-full ${d.ratio} md:aspect-[304/502] md:flex-1 lg:aspect-[514/502]`}
-          />
+            innerClassName="flex flex-col items-center justify-center gap-sm bg-utility-blue-100 md:gap-lg lg:gap-3xl"
+          >
+            {d.videos.map((v) => (
+              <LoopingVideo
+                key={v.src}
+                src={v.src}
+                label={v.label}
+                aspectRatio={v.aspectRatio}
+                objectPosition={v.objectPosition}
+                className={`${v.width} ${DETAIL_CARD}`}
+              />
+            ))}
+          </GlassFrame>
         ))}
       </div>
     </div>

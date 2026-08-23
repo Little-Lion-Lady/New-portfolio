@@ -48,6 +48,36 @@ function getTiltOffset(index: number, total: number, max = 8) {
 // Glass-frame padding scales with platform: mobile 6px, tablet 8px, desktop 12px.
 const PADDING_CLASS = "p-2xs md:p-xs lg:p-sm";
 
+// The frosted card chrome shared by GlassImage and GlassFrame.
+const FRAME_CLASS =
+  "flex flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] shadow-[0_2px_10px_var(--shadows-shadow-02)]";
+
+// The same glass card as GlassImage, but holding arbitrary content instead of a
+// photo — used where the frame wraps something that isn't a next/image (e.g. the
+// First Table §04 component recordings on a flat colour fill). Size it with
+// `className` (width + aspect-*) exactly as you would a GlassImage.
+export function GlassFrame({
+  className = "",
+  padding = PADDING_CLASS,
+  innerClassName = "",
+  children,
+}: {
+  className?: string;
+  /** Override the default responsive padding (e.g. a fixed "p-3xs" mini frame). */
+  padding?: string;
+  /** Classes for the inner (clipped, rounded) box — background, layout, etc. */
+  innerClassName?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div className={`${FRAME_CLASS} ${padding} ${className}`}>
+      <div className={`relative h-full w-full flex-1 overflow-hidden rounded-xs ${innerClassName}`}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 // A single flat glass-frame image — same treatment as WorkImage's card, but no
 // rotation/overlap math. Used for case-study media collages where each image
 // gets its own arbitrary size via `className`.
@@ -97,7 +127,7 @@ export function GlassImage({
 }) {
   return (
     <div
-      className={`flex flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] ${padding} shadow-[0_2px_10px_var(--shadows-shadow-02)] ${className}`}
+      className={`${FRAME_CLASS} ${padding} ${className}`}
       style={frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
     >
       <div
