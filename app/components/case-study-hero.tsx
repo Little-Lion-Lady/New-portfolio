@@ -14,7 +14,9 @@ function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start">
       <p className="b-2xs whitespace-nowrap text-text-tertiary lg:b-sm">{label}</p>
-      <p className="b-2xs whitespace-nowrap text-text-secondary lg:b-sm">{value}</p>
+      {/* Value wraps rather than clipping — First Table's Scope line is long
+          enough to run past the mobile gutter (it overflows in Figma too). */}
+      <p className="b-2xs min-w-0 text-text-secondary lg:b-sm">{value}</p>
     </div>
   );
 }

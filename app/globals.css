@@ -757,6 +757,22 @@
    @utility so they live in Tailwind's utilities layer and override defaults.
    ============================================================ */
 
+/* `dark:` variant — matches the same two selectors the token blocks above use
+   (prefers-color-scheme with no explicit choice, plus [data-theme="dark"]),
+   so a `dark:` utility stays in step with the ThemeToggle. Tailwind's stock
+   `dark:` only looks at prefers-color-scheme and would ignore the toggle.
+   Used for theme-swapped image assets (e.g. the First Table §03 token sheet). */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme="light"]):not([data-theme="dark"]) *) {
+      @slot;
+    }
+  }
+  &:where([data-theme="dark"] *) {
+    @slot;
+  }
+}
+
 /* Display — Geist, 115% (d-xs 110%, d-2xs 120%) */
 @utility d-2xl {
   font-family: var(--font-family-body);

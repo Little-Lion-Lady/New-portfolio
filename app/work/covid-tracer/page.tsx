@@ -309,9 +309,9 @@ export default function CovidTracer() {
       {/* Case study nav */}
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
         <CaseStudyNav
-          title="Basis Home app"
-          href="/work/basis"
-          image={{ src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" }}
+          title="First Table booking app"
+          href="/work/first-table"
+          image={{ src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" }}
         />
       </Reveal>
 

@@ -334,3 +334,171 @@ export function BasisOutcomeMedia() {
     </div>
   );
 }
+
+/* ── FIRST TABLE case study media blocks ────────────────────────────────── */
+
+// Figma "Case Study 3" (1394:101589). Every block below uses the Figma frame
+// ratio per breakpoint (mobile 393 / tablet 1024 / desktop 1728 artboards) via
+// aspect-* on the outer glass frame, so the photo crops exactly as designed.
+const FT_ALT = "First Table app screen";
+const FT = "/home/work/firsttable";
+
+// §01 Problem — one full-width screenshot below the stats + key paragraph.
+export function FTProblemMedia() {
+  return (
+    <GlassImage
+      src={`${FT}/4.jpg`}
+      alt={FT_ALT}
+      sizes="100vw"
+      className="w-full aspect-[361/134] md:aspect-[944/318] lg:aspect-[1584/514]"
+    />
+  );
+}
+
+// §02 Research — segmentation charts. Stacked through tablet, side by side at desktop.
+export function FTResearchMedia() {
+  return (
+    <div className="flex flex-col gap-xs md:gap-md lg:flex-row lg:items-start lg:gap-lg">
+      <GlassImage
+        src={`${FT}/5.jpg`}
+        alt="First Table diner segmentation analysis"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        className="w-full aspect-[361/255] md:aspect-[944/628] lg:aspect-[782/502] lg:flex-1"
+      />
+      <GlassImage
+        src={`${FT}/6.jpg`}
+        alt="First Table survey research findings"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        className="w-full aspect-[361/231] md:aspect-[944/569] lg:aspect-[782/502] lg:flex-1"
+      />
+    </div>
+  );
+}
+
+// §03 Design System — component library sheet above the token sheet. The token
+// sheet ships as a light and a dark export (Figma node "8_Light"), so both are
+// rendered and the `dark:` variant (see globals.css) swaps them with the theme.
+export function FTDesignSystemMedia() {
+  const tokenSheet = "w-full aspect-[361/180] md:aspect-[944/437] lg:aspect-[1584/796]";
+  return (
+    <div className="flex flex-col gap-md lg:gap-lg">
+      <GlassImage
+        src={`${FT}/7.jpg`}
+        alt="First Table design system component library"
+        sizes="100vw"
+        className="w-full aspect-[361/227] md:aspect-[944/553] lg:aspect-[1584/993]"
+      />
+      <GlassImage
+        src={`${FT}/8_light.jpg`}
+        alt="First Table design tokens"
+        sizes="100vw"
+        className={`${tokenSheet} dark:hidden`}
+      />
+      <GlassImage
+        src={`${FT}/8_dark.jpg`}
+        alt="First Table design tokens"
+        sizes="100vw"
+        className={`${tokenSheet} hidden dark:flex`}
+      />
+    </div>
+  );
+}
+
+// §04 Redesign — the rebuilt core flow across the top, then three component
+// details. Details stack on mobile (each keeps its own Figma height), sit in a
+// single row from tablet up.
+const REDESIGN_DETAILS = [
+  { src: `${FT}/9a.jpg`, alt: "First Table region picker", ratio: "aspect-[361/363]" },
+  { src: `${FT}/9b.jpg`, alt: "First Table restaurant card", ratio: "aspect-[361/279]" },
+  { src: `${FT}/9c.jpg`, alt: "First Table navigation and tab components", ratio: "aspect-[361/210]" },
+];
+
+export function FTRedesignMedia() {
+  return (
+    <div className="flex flex-col gap-md lg:gap-xl">
+      <GlassImage
+        src={`${FT}/9.jpg`}
+        alt="First Table single-step booking flow"
+        sizes="100vw"
+        className="w-full aspect-[361/148] md:aspect-[944/342] lg:aspect-[1584/609]"
+      />
+      <div className="flex flex-col gap-md md:flex-row md:items-start lg:gap-lg">
+        {REDESIGN_DETAILS.map((d) => (
+          <GlassImage
+            key={d.src}
+            src={d.src}
+            alt={d.alt}
+            sizes="(min-width: 768px) 33vw, 100vw"
+            className={`w-full ${d.ratio} md:aspect-[304/502] md:flex-1 lg:aspect-[514/502]`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// §05 Validation — six A/B test screens (1 col → 2 → 3) above a wider pair.
+const VALIDATION_TESTS = ["10", "11", "12", "13", "14", "15"];
+
+export function FTValidationMedia() {
+  return (
+    <div className="flex flex-col gap-md lg:gap-xl">
+      <div className="grid grid-cols-1 gap-xs md:grid-cols-2 md:gap-md lg:grid-cols-3 lg:gap-x-lg lg:gap-y-xl">
+        {VALIDATION_TESTS.map((n) => (
+          <GlassImage
+            key={n}
+            src={`${FT}/${n}.jpg`}
+            alt="First Table A/B test variant"
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            className="w-full aspect-[361/270] md:aspect-[464/400] lg:aspect-[514/400]"
+          />
+        ))}
+      </div>
+      <div className="flex flex-col gap-xs md:gap-md lg:flex-row lg:items-start lg:gap-lg">
+        <GlassImage
+          src={`${FT}/16.jpg`}
+          alt="First Table usability research session"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="w-full aspect-[361/214] md:aspect-[944/473] lg:aspect-[782/473] lg:flex-1"
+        />
+        <GlassImage
+          src={`${FT}/17.jpg`}
+          alt="First Table experiment results"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="w-full aspect-[361/210] md:aspect-[944/473] lg:aspect-[782/473] lg:flex-1"
+        />
+      </div>
+    </div>
+  );
+}
+
+// §06 Outcome — two centred rows of shipped app screens (4 above 5). Both rows
+// are wider than the content column at every breakpoint, so they bleed evenly
+// past both edges exactly as in Figma (<body> already clips overflow-x).
+const OUTCOME_ROW_1 = ["18", "19", "20", "21"];
+const OUTCOME_ROW_2 = ["22", "23", "24", "25", "26"];
+
+function FTOutcomeScreen({ name }: { name: string }) {
+  return (
+    <GlassImage
+      src={`${FT}/${name}.jpg`}
+      alt={FT_ALT}
+      sizes="390px"
+      className="w-[212px] shrink-0 aspect-[212/456] md:w-[390px] md:aspect-[390/840]"
+    />
+  );
+}
+
+export function FTOutcomeMedia() {
+  return (
+    <div className="flex flex-col items-center gap-3xl">
+      {[OUTCOME_ROW_1, OUTCOME_ROW_2].map((row, i) => (
+        <div key={i} className="flex justify-center gap-lg">
+          {row.map((name) => (
+            <FTOutcomeScreen key={name} name={name} />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
