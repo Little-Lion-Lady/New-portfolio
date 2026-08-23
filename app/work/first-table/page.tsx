@@ -122,7 +122,7 @@ const journeySteps = [
     body: "IA restructure, booking flow reduction, timeslot UX, map rebuild, new party size and booking window features",
   },
   {
-    title: "Validation + Validation",
+    title: "Validation",
     body: "150+ A/B tests per year, continuous usability research, staged rollout across 4 markets",
   },
 ];
@@ -216,7 +216,7 @@ export default function FirstTable() {
           <Stats className="md:grid-cols-3">
             <Stat size="lg" tone="highlight-subtle" value="400k+" label="Transaction analysed" />
             <Stat size="lg" tone="highlight-subtle" value="10k" label="User survey responses" />
-            <Stat size="lg" tone="highlight-subtle" value="5" label="user groups idntified" />
+            <Stat size="lg" tone="highlight-subtle" value="5" label="user groups identified" />
           </Stats>
           <FTResearchMedia />
         </Reveal>
@@ -348,7 +348,7 @@ export default function FirstTable() {
       {/* 08 — Journey */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="08" name="Journey" />
+          <SectionHeader number="07" name="Journey" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <Journey steps={journeySteps} />
