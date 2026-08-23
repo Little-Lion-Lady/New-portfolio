@@ -214,7 +214,7 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-4xl">
           <Stats className="md:grid-cols-3">
-            <Stat size="lg" tone="highlight-subtle" value="400k+" label="Transaction analysed" />
+            <Stat size="lg" tone="highlight-subtle" value="400k+" label="Transactions analysed" />
             <Stat size="lg" tone="highlight-subtle" value="10k" label="User survey responses" />
             <Stat size="lg" tone="highlight-subtle" value="5" label="user groups identified" />
           </Stats>
