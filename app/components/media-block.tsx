@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { GlassImage } from "./work-image";
+import { GlassFrame, GlassImage } from "./work-image";
+import { LoopingVideo } from "./looping-video";
 
 // Figma image collages for §02 (100:6005), §04 (100:6193), §06 (495:3594).
 // Corner radius follows Figma: main image blocks are sharp; §06 phone frames are rounded.
@@ -331,6 +332,248 @@ export function BasisOutcomeMedia() {
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ── FIRST TABLE case study media blocks ────────────────────────────────── */
+
+// Figma "Case Study 3" (1394:101589). Every block below uses the Figma frame
+// ratio per breakpoint (mobile 393 / tablet 1024 / desktop 1728 artboards) via
+// aspect-* on the outer glass frame, so the photo crops exactly as designed.
+const FT_ALT = "First Table app screen";
+const FT = "/home/work/firsttable";
+
+// §01 Problem — one full-width screenshot below the stats + key paragraph.
+export function FTProblemMedia() {
+  return (
+    <GlassImage
+      src={`${FT}/4.jpg`}
+      darkSrc={`${FT}/4_dark.jpg`}
+      alt={FT_ALT}
+      sizes="100vw"
+      className="w-full aspect-[361/134] md:aspect-[944/318] lg:aspect-[1584/514]"
+    />
+  );
+}
+
+// §02 Research — segmentation charts. Stacked through tablet, side by side at desktop.
+export function FTResearchMedia() {
+  return (
+    <div className="flex flex-col gap-xs md:gap-md lg:flex-row lg:items-start lg:gap-lg">
+      <GlassImage
+        src={`${FT}/5.jpg`}
+        darkSrc={`${FT}/5_dark.jpg`}
+        alt="First Table diner segmentation analysis"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        className="w-full aspect-[361/255] md:aspect-[944/628] lg:aspect-[782/502] lg:flex-1"
+      />
+      <GlassImage
+        src={`${FT}/6.jpg`}
+        alt="First Table survey research findings"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        className="w-full aspect-[361/231] md:aspect-[944/569] lg:aspect-[782/502] lg:flex-1"
+      />
+    </div>
+  );
+}
+
+// §03 Design System — component library sheet above the token sheet. The token
+// sheet ships as a light and a dark export (Figma node "8_Light"), so both are
+// rendered and the `dark:` variant (see globals.css) swaps them with the theme.
+export function FTDesignSystemMedia() {
+  const tokenSheet = "w-full aspect-[361/180] md:aspect-[944/437] lg:aspect-[1584/796]";
+  return (
+    <div className="flex flex-col gap-md lg:gap-lg">
+      <GlassImage
+        src={`${FT}/7.jpg`}
+        darkSrc={`${FT}/7_dark.jpg`}
+        alt="First Table design system component library"
+        sizes="100vw"
+        className="w-full aspect-[361/227] md:aspect-[944/553] lg:aspect-[1584/993]"
+      />
+      <GlassImage
+        src={`${FT}/8_light.jpg`}
+        darkSrc={`${FT}/8_dark.jpg`}
+        alt="First Table design tokens"
+        sizes="100vw"
+        className={tokenSheet}
+      />
+    </div>
+  );
+}
+
+// §04 Redesign — the rebuilt core flow across the top, then three component
+// details. Details stack on mobile (each keeps its own Figma height), sit in a
+// single row from tablet up. Each detail frame is a flat Blue-100 fill with the
+// component's screen recording looping on top, centred; the third frame stacks
+// two. Video widths are a share of the frame so they scale with it — taken from
+// each recording's size against its Figma still.
+// Each recording is a white card on its own, so it gets the card's rounding and
+// shadow here rather than in the file. video3/video4 carry a 2px black sliver
+// along one edge from the capture — the box ratio is a couple of px tighter than
+// the source and object-position pins the opposite edge, cropping it off.
+const DETAIL_CARD = "rounded-sm shadow-[0_2px_10px_var(--shadows-shadow-02)]";
+
+type DetailVideo = {
+  src: string;
+  label: string;
+  width: string;
+  aspectRatio: string;
+  objectPosition?: string;
+};
+
+const REDESIGN_DETAILS: {
+  key: string;
+  ratio: string;
+  videos: DetailVideo[];
+}[] = [
+  {
+    key: "region-picker",
+    ratio: "aspect-[361/363]",
+    videos: [
+      {
+        src: `${FT}/video1.mp4`,
+        label: "First Table region picker",
+        width: "w-[77%]",
+        aspectRatio: "696/762",
+      },
+    ],
+  },
+  {
+    key: "restaurant-card",
+    ratio: "aspect-[361/279]",
+    videos: [
+      {
+        src: `${FT}/video2.mp4`,
+        label: "First Table restaurant card",
+        width: "w-[67%]",
+        aspectRatio: "696/580",
+      },
+    ],
+  },
+  {
+    key: "nav-and-tabs",
+    ratio: "aspect-[361/210]",
+    videos: [
+      {
+        src: `${FT}/video3.mp4`,
+        label: "First Table bottom navigation bar",
+        width: "w-[80%]",
+        aspectRatio: "782/208",
+        objectPosition: "top",
+      },
+      {
+        src: `${FT}/video4.mp4`,
+        label: "First Table photos and menu tabs",
+        width: "w-[80%]",
+        aspectRatio: "778/202",
+        objectPosition: "left",
+      },
+    ],
+  },
+];
+
+export function FTRedesignMedia() {
+  return (
+    <div className="flex flex-col gap-md lg:gap-xl">
+      <GlassImage
+        src={`${FT}/9.jpg`}
+        darkSrc={`${FT}/9_dark.jpg`}
+        alt="First Table single-step booking flow"
+        sizes="100vw"
+        className="w-full aspect-[361/148] md:aspect-[944/342] lg:aspect-[1584/609]"
+      />
+      <div className="flex flex-col gap-md md:flex-row md:items-start lg:gap-lg">
+        {REDESIGN_DETAILS.map((d) => (
+          <GlassFrame
+            key={d.key}
+            className={`w-full ${d.ratio} md:aspect-[304/502] md:flex-1 lg:aspect-[514/502]`}
+            innerClassName="flex flex-col items-center justify-center gap-sm bg-component-bg-detail-frame md:gap-lg lg:gap-3xl"
+          >
+            {d.videos.map((v) => (
+              <LoopingVideo
+                key={v.src}
+                src={v.src}
+                label={v.label}
+                aspectRatio={v.aspectRatio}
+                objectPosition={v.objectPosition}
+                className={`${v.width} ${DETAIL_CARD}`}
+              />
+            ))}
+          </GlassFrame>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// §05 Validation — six A/B test screens (1 col → 2 → 3) above a wider pair.
+const VALIDATION_TESTS = ["10", "11", "12", "13", "14", "15"];
+
+export function FTValidationMedia() {
+  return (
+    <div className="flex flex-col gap-md lg:gap-xl">
+      <div className="grid grid-cols-1 gap-xs md:grid-cols-2 md:gap-md lg:grid-cols-3 lg:gap-x-lg lg:gap-y-xl">
+        {VALIDATION_TESTS.map((n) => (
+          <GlassImage
+            key={n}
+            src={`${FT}/${n}.jpg`}
+            darkSrc={`${FT}/${n}_dark.jpg`}
+            alt="First Table A/B test variant"
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            className="w-full aspect-[361/270] md:aspect-[464/400] lg:aspect-[514/400]"
+          />
+        ))}
+      </div>
+      <div className="flex flex-col gap-xs md:gap-md lg:flex-row lg:items-start lg:gap-lg">
+        <GlassImage
+          src={`${FT}/16.jpg`}
+          darkSrc={`${FT}/16_dark.jpg`}
+          alt="First Table usability research session"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="w-full aspect-[361/214] md:aspect-[944/473] lg:aspect-[782/473] lg:flex-1"
+        />
+        <GlassImage
+          src={`${FT}/17.jpg`}
+          darkSrc={`${FT}/17_dark.jpg`}
+          alt="First Table experiment results"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="w-full aspect-[361/210] md:aspect-[944/473] lg:aspect-[782/473] lg:flex-1"
+        />
+      </div>
+    </div>
+  );
+}
+
+// §06 Outcome — two centred rows of shipped app screens (4 above 5). Both rows
+// are wider than the content column at every breakpoint, so they bleed evenly
+// past both edges exactly as in Figma (<body> already clips overflow-x).
+const OUTCOME_ROW_1 = ["18", "19", "20", "21"];
+const OUTCOME_ROW_2 = ["22", "23", "24", "25", "26"];
+
+function FTOutcomeScreen({ name }: { name: string }) {
+  return (
+    <GlassImage
+      src={`${FT}/${name}_light.jpg`}
+      darkSrc={`${FT}/${name}_dark.jpg`}
+      alt={FT_ALT}
+      sizes="390px"
+      className="w-[212px] shrink-0 aspect-[212/456] md:w-[390px] md:aspect-[390/840]"
+    />
+  );
+}
+
+export function FTOutcomeMedia() {
+  return (
+    <div className="flex flex-col items-center gap-3xl">
+      {[OUTCOME_ROW_1, OUTCOME_ROW_2].map((row, i) => (
+        <div key={i} className="flex justify-center gap-lg">
+          {row.map((name) => (
+            <FTOutcomeScreen key={name} name={name} />
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

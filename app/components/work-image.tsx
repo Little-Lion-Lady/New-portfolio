@@ -1,6 +1,5 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { TiltIn } from "./tilt-in";
 
 export type WorkImageData = { src: string; alt: string; quality?: number };
 export type WorkImageSize = "md" | "lg";
@@ -36,23 +35,45 @@ function getMarginClass(quantity: 3 | 4) {
   return quantity === 4 ? "-mr-[80px]" : "-mr-[40px] md:-mr-[80px] lg:-mr-[72px]";
 }
 
-// Reveal start offset for card `index` of `total` — full swing on every card,
-// split at the cluster's midpoint. Cards in the left half start clockwise of
-// their resting tilt (positive) so they turn anti-clockwise into place; cards
-// in the right half start anti-clockwise and turn clockwise. With an odd
-// count the middle card goes with the left half.
-function getTiltOffset(index: number, total: number, max = 8) {
-  return index < total / 2 ? max : -max;
-}
-
 // Glass-frame padding scales with platform: mobile 6px, tablet 8px, desktop 12px.
 const PADDING_CLASS = "p-2xs md:p-xs lg:p-sm";
+
+// The frosted card chrome shared by GlassImage and GlassFrame.
+const FRAME_CLASS =
+  "flex flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] shadow-[0_2px_10px_var(--shadows-shadow-02)]";
+
+// The same glass card as GlassImage, but holding arbitrary content instead of a
+// photo — used where the frame wraps something that isn't a next/image (e.g. the
+// First Table §04 component recordings on a flat colour fill). Size it with
+// `className` (width + aspect-*) exactly as you would a GlassImage.
+export function GlassFrame({
+  className = "",
+  padding = PADDING_CLASS,
+  innerClassName = "",
+  children,
+}: {
+  className?: string;
+  /** Override the default responsive padding (e.g. a fixed "p-3xs" mini frame). */
+  padding?: string;
+  /** Classes for the inner (clipped, rounded) box — background, layout, etc. */
+  innerClassName?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div className={`${FRAME_CLASS} ${padding} ${className}`}>
+      <div className={`relative h-full w-full flex-1 overflow-hidden rounded-xs ${innerClassName}`}>
+        {children}
+      </div>
+    </div>
+  );
+}
 
 // A single flat glass-frame image — same treatment as WorkImage's card, but no
 // rotation/overlap math. Used for case-study media collages where each image
 // gets its own arbitrary size via `className`.
 export function GlassImage({
   src,
+  darkSrc,
   alt,
   className = "",
   quality = 100,
@@ -64,6 +85,13 @@ export function GlassImage({
   children,
 }: {
   src: string;
+  /**
+   * Optional dark-theme export of the same shot. When set, both files are
+   * rendered into the one frame and the `dark:` variant (see globals.css)
+   * swaps them with the theme — the frame chrome, sizing and ratio stay
+   * shared, so only the photo changes. Omit where only one export exists.
+   */
+  darkSrc?: string;
   alt: string;
   className?: string;
   quality?: number;
@@ -97,7 +125,7 @@ export function GlassImage({
 }) {
   return (
     <div
-      className={`flex flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] ${padding} shadow-[0_2px_10px_var(--shadows-shadow-02)] ${className}`}
+      className={`${FRAME_CLASS} ${padding} ${className}`}
       style={frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
     >
       <div
@@ -110,9 +138,20 @@ export function GlassImage({
           fill
           quality={quality}
           sizes={sizes}
-          className="object-cover"
+          className={`object-cover${darkSrc ? " dark:hidden" : ""}`}
           style={objectPosition ? { objectPosition } : undefined}
         />
+        {darkSrc && (
+          <Image
+            src={darkSrc}
+            alt={alt}
+            fill
+            quality={quality}
+            sizes={sizes}
+            className="hidden object-cover dark:block"
+            style={objectPosition ? { objectPosition } : undefined}
+          />
+        )}
         {children}
       </div>
     </div>
@@ -138,10 +177,7 @@ export function WorkImage({
 }) {
   const isLast = index === total - 1;
   return (
-    <TiltIn
-      offset={tilt ? getTiltOffset(index, total) : 0}
-      className={`shrink-0 ${isLast ? "" : getMarginClass(total)}`}
-    >
+    <div className={`shrink-0 ${isLast ? "" : getMarginClass(total)}`}>
       <div className={`${getSizeClass(total, size)} ${tilt ? getRotateClass(total, index) : ""}`}>
         <GlassImage
           src={src}
@@ -151,6 +187,6 @@ export function WorkImage({
           className="h-full w-full"
         />
       </div>
-    </TiltIn>
+    </div>
   );
 }

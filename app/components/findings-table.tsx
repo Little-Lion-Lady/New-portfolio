@@ -6,20 +6,26 @@ import { Divider } from "./divider";
 //   tablet/desktop — 12-col grid: finding c1-5 · arrow c6-7 · decision c8-12
 // Header text is text-primary-highlight (B-xs→B-sm→B-md); row text is text-secondary
 // (B-xs→B-xs→B-sm); arrow is text-tertiary. Rows separated by dividers (gap-xl).
+// Column headings default to the COVID Tracer §04 wording; First Table §04 relabels
+// them "Friction point" / "Solution".
 export function FindingsTable({
   rows,
+  findingLabel = "Finding",
+  decisionLabel = "Design decision",
 }: {
   rows: { finding: string; decision: string }[];
+  findingLabel?: string;
+  decisionLabel?: string;
 }) {
   return (
     <div className="flex flex-col gap-2xl lg:gap-3xl">
       {/* Header */}
       <div className="grid grid-cols-1 md:grid-cols-12 md:gap-x-lg">
         <p className="b-xs text-text-primary-highlight md:col-span-5 md:b-sm lg:b-md">
-          Finding
+          {findingLabel}
         </p>
         <p className="hidden text-text-primary-highlight md:col-start-8 md:col-span-5 md:block md:b-sm lg:b-md">
-          Design decision
+          {decisionLabel}
         </p>
       </div>
 

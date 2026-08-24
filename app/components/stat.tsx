@@ -6,15 +6,26 @@ import type { ReactNode } from "react";
 //   sm (§05 Validation, §06 Outcome) number B-md→B-lg→D-xs (24/32/44) · label B-xs (16)
 //   outcome (Basis §07)             number D-xs→D-sm→D-md (44/60/80; medium on desktop) ·
 //                                   label B-xs→B-sm→B-md · sublabel B-2xs→B-sm→B-sm (sentence case)
-// Number colour: text-primary by default, text-highlight-dark for the red "alert" variant.
+// Number colour: text-primary by default. `highlight` is the red "alert" variant
+// (text-highlight-dark); `tone` picks a specific token when a section mixes more
+// than one (First Table §01 runs primary / highlight / highlight-dark across its
+// three stats, §02 uses highlight-subtle throughout).
 // Label + sublabel are text-tertiary.
 // Optional sublabel (§07 Outcome "Measured over 6-month pilot") — a second caption line.
+const TONE_CLASS = {
+  primary: "text-text-primary",
+  highlight: "text-text-highlight",
+  "highlight-dark": "text-text-highlight-dark",
+  "highlight-subtle": "text-text-highlight-subtle",
+} as const;
+
 export function Stat({
   value,
   label,
   sublabel,
   size = "lg",
   highlight = false,
+  tone,
   className = "",
 }: {
   value: ReactNode;
@@ -22,6 +33,7 @@ export function Stat({
   sublabel?: string;
   size?: "lg" | "sm" | "outcome";
   highlight?: boolean;
+  tone?: keyof typeof TONE_CLASS;
   className?: string;
 }) {
   const numberClass =
@@ -41,7 +53,7 @@ export function Stat({
     <div className={`flex flex-col justify-center ${outerGap} ${className}`}>
       <p
         className={`${numberClass} ${
-          highlight ? "text-text-highlight-dark" : "text-text-primary"
+          TONE_CLASS[tone ?? (highlight ? "highlight-dark" : "primary")]
         }`}
       >
         {value}

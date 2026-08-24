@@ -59,7 +59,7 @@ export function CaseStudyNav({
       href={href}
       initial="rest"
       whileHover="hover"
-      whileTap={{ scale: 0.95 }}
+      whileTap={{ scale: 0.98 }}
       animate="rest"
       className="group flex w-full items-center gap-lg md:grid md:grid-cols-9 md:items-center lg:grid-cols-12 lg:items-center"
     >

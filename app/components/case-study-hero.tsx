@@ -14,7 +14,9 @@ function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start">
       <p className="b-2xs whitespace-nowrap text-text-tertiary lg:b-sm">{label}</p>
-      <p className="b-2xs whitespace-nowrap text-text-secondary lg:b-sm">{value}</p>
+      {/* Value wraps rather than clipping — First Table's Scope line is long
+          enough to run past the mobile gutter (it overflows in Figma too). */}
+      <p className="b-2xs min-w-0 text-text-secondary lg:b-sm">{value}</p>
     </div>
   );
 }
@@ -94,7 +96,15 @@ export function CaseStudyHero({
           title+stars first, then everything else together. */}
       <Reveal immediate delay={0.6} className="flex w-full items-center justify-center">
         {images.map((image, i) => (
-          <WorkImage key={image.src} src={image.src} alt={image.alt} index={i} total={3} size="lg" />
+          <WorkImage
+            key={image.src}
+            src={image.src}
+            alt={image.alt}
+            index={i}
+            total={3}
+            size="lg"
+            quality={image.quality}
+          />
         ))}
       </Reveal>
     </div>
