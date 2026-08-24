@@ -243,6 +243,11 @@
   --component-bg-button-hover:   var(--colour-gray-light-900);
   --component-bg-button-pressed: var(--colour-gray-light-800);
 
+  /* First Table §04 component-detail frames — the flat fill the screen
+     recordings sit on. Not part of the Figma primitive ramps: supplied
+     directly as light #E2E9F7 / dark #001C34. */
+  --component-bg-detail-frame: #E2E9F7;
+
   /* ----------------------------------------------------------
      3. UTILITY SCALES — light values (auto-invert in dark blocks)
      ---------------------------------------------------------- */
@@ -405,6 +410,8 @@
     --component-bg-button-hover:   var(--colour-blue-100);
     --component-bg-button-pressed: var(--colour-blue-200);
 
+    --component-bg-detail-frame: #001C34;
+
     --utility-gray-50:  var(--colour-gray-light-950);
     --utility-gray-100: var(--colour-gray-light-900);
     --utility-gray-200: var(--colour-gray-light-800);
@@ -514,6 +521,8 @@
   --component-bg-button-primary: var(--colour-base-white);
   --component-bg-button-hover:   var(--colour-blue-100);
   --component-bg-button-pressed: var(--colour-blue-200);
+
+  --component-bg-detail-frame: #001C34;
 
   --utility-gray-50:  var(--colour-gray-light-950);
   --utility-gray-100: var(--colour-gray-light-900);
@@ -638,6 +647,7 @@
   --color-component-bg-button-primary: var(--component-bg-button-primary);
   --color-component-bg-button-hover:   var(--component-bg-button-hover);
   --color-component-bg-button-pressed: var(--component-bg-button-pressed);
+  --color-component-bg-detail-frame:   var(--component-bg-detail-frame);
 
   /* Utility scales */
   --color-utility-gray-50:  var(--utility-gray-50);

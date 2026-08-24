@@ -349,6 +349,7 @@ export function FTProblemMedia() {
   return (
     <GlassImage
       src={`${FT}/4.jpg`}
+      darkSrc={`${FT}/4_dark.jpg`}
       alt={FT_ALT}
       sizes="100vw"
       className="w-full aspect-[361/134] md:aspect-[944/318] lg:aspect-[1584/514]"
@@ -362,6 +363,7 @@ export function FTResearchMedia() {
     <div className="flex flex-col gap-xs md:gap-md lg:flex-row lg:items-start lg:gap-lg">
       <GlassImage
         src={`${FT}/5.jpg`}
+        darkSrc={`${FT}/5_dark.jpg`}
         alt="First Table diner segmentation analysis"
         sizes="(min-width: 1024px) 50vw, 100vw"
         className="w-full aspect-[361/255] md:aspect-[944/628] lg:aspect-[782/502] lg:flex-1"
@@ -385,21 +387,17 @@ export function FTDesignSystemMedia() {
     <div className="flex flex-col gap-md lg:gap-lg">
       <GlassImage
         src={`${FT}/7.jpg`}
+        darkSrc={`${FT}/7_dark.jpg`}
         alt="First Table design system component library"
         sizes="100vw"
         className="w-full aspect-[361/227] md:aspect-[944/553] lg:aspect-[1584/993]"
       />
       <GlassImage
         src={`${FT}/8_light.jpg`}
+        darkSrc={`${FT}/8_dark.jpg`}
         alt="First Table design tokens"
         sizes="100vw"
-        className={`${tokenSheet} dark:hidden`}
-      />
-      <GlassImage
-        src={`${FT}/8_dark.jpg`}
-        alt="First Table design tokens"
-        sizes="100vw"
-        className={`${tokenSheet} hidden dark:flex`}
+        className={tokenSheet}
       />
     </div>
   );
@@ -481,6 +479,7 @@ export function FTRedesignMedia() {
     <div className="flex flex-col gap-md lg:gap-xl">
       <GlassImage
         src={`${FT}/9.jpg`}
+        darkSrc={`${FT}/9_dark.jpg`}
         alt="First Table single-step booking flow"
         sizes="100vw"
         className="w-full aspect-[361/148] md:aspect-[944/342] lg:aspect-[1584/609]"
@@ -490,7 +489,7 @@ export function FTRedesignMedia() {
           <GlassFrame
             key={d.key}
             className={`w-full ${d.ratio} md:aspect-[304/502] md:flex-1 lg:aspect-[514/502]`}
-            innerClassName="flex flex-col items-center justify-center gap-sm bg-utility-blue-100 md:gap-lg lg:gap-3xl"
+            innerClassName="flex flex-col items-center justify-center gap-sm bg-component-bg-detail-frame md:gap-lg lg:gap-3xl"
           >
             {d.videos.map((v) => (
               <LoopingVideo
@@ -520,6 +519,7 @@ export function FTValidationMedia() {
           <GlassImage
             key={n}
             src={`${FT}/${n}.jpg`}
+            darkSrc={`${FT}/${n}_dark.jpg`}
             alt="First Table A/B test variant"
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
             className="w-full aspect-[361/270] md:aspect-[464/400] lg:aspect-[514/400]"
@@ -529,12 +529,14 @@ export function FTValidationMedia() {
       <div className="flex flex-col gap-xs md:gap-md lg:flex-row lg:items-start lg:gap-lg">
         <GlassImage
           src={`${FT}/16.jpg`}
+          darkSrc={`${FT}/16_dark.jpg`}
           alt="First Table usability research session"
           sizes="(min-width: 1024px) 50vw, 100vw"
           className="w-full aspect-[361/214] md:aspect-[944/473] lg:aspect-[782/473] lg:flex-1"
         />
         <GlassImage
           src={`${FT}/17.jpg`}
+          darkSrc={`${FT}/17_dark.jpg`}
           alt="First Table experiment results"
           sizes="(min-width: 1024px) 50vw, 100vw"
           className="w-full aspect-[361/210] md:aspect-[944/473] lg:aspect-[782/473] lg:flex-1"
@@ -553,7 +555,8 @@ const OUTCOME_ROW_2 = ["22", "23", "24", "25", "26"];
 function FTOutcomeScreen({ name }: { name: string }) {
   return (
     <GlassImage
-      src={`${FT}/${name}.jpg`}
+      src={`${FT}/${name}_light.jpg`}
+      darkSrc={`${FT}/${name}_dark.jpg`}
       alt={FT_ALT}
       sizes="390px"
       className="w-[212px] shrink-0 aspect-[212/456] md:w-[390px] md:aspect-[390/840]"

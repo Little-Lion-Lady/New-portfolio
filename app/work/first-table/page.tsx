@@ -45,7 +45,7 @@ const findings = [
   {
     label: "Finding 1",
     title: "Who drives the business",
-    body: "Loyal Regulars are 14–19% of the customer base but deliver 28–37% of revenue in every market. Retaining them is the business model.",
+    body: "Loyal Regulars are 14–19% of the customer base but drive a disproportionate share of revenue in every market. Retaining them is the business model.",
   },
   {
     label: "Finding 2",
@@ -55,12 +55,12 @@ const findings = [
   {
     label: "Finding 3",
     title: "The lapsed segment is recoverable",
-    body: "A large segment booked intensely for a few months, then went quiet. 80% hadn’t switched to a rival. 90% could name something that would bring them back. This is a reactivation problem, not a churn one.",
+    body: "A large segment booked intensely for a few months, then went quiet. The vast majority hadn’t switched to a rival. 90% could name something that would bring them back. This is a reactivation problem, not a churn one.",
   },
   {
     label: "Finding 4",
     title: "Forgetting is the real drop-off",
-    body: "Most users don’t abandon First Table. They just stop thinking about it. The habit never forms. Re-engagement mechanics are the lever rather not better discounts.",
+    body: "Most users don’t abandon First Table. They just stop thinking about it. The habit never forms. Re-engagement mechanics are the lever, not better discounts.",
   },
 ];
 
@@ -77,28 +77,28 @@ const systemPrinciples = [
   },
   {
     title: "Accessibility-led design",
-    body: "Rebuilt components to WCAG 2.1 AA baseline; accessibility notes embedded in component documentation, not added post-hoc",
+    body: "Rebuilt components to WCAG 2.1 AA baseline; accessibility notes embedded in component documentation, not added post-hoc.",
   },
 ];
 
 const frictionPoints = [
   {
     finding: "Four-step booking flow created unnecessary drop-off before commitment",
-    decision: "Cut the booking flow to a single step — from browse to confirmed in one action",
+    decision: "Cut the booking flow to a single step, from browse to confirmed in one action",
   },
   {
     finding:
-      "Timeslot selection was ambiguous — diners weren’t sure what they’d committed to before confirming",
+      "Timeslot selection was ambiguous, so diners weren’t sure what they’d committed to before confirming",
     decision:
       "Rebuilt timeslot display with clear state feedback; added week-view browsing alongside specific time search",
   },
   {
     finding:
-      "The map didn’t serve spontaneous diners — finding something nearby required too many steps",
+      "The map didn’t serve spontaneous diners, who needed too many steps to find something nearby",
     decision: "Rebuilt the map as a first-class discovery surface for diners out and about",
   },
   {
-    finding: "Solo and group bookings were unsupported — the product was turning away real demand",
+    finding: "Solo and group bookings were unsupported, so the product was turning away real demand",
     decision: "Extended party size options to include solo diners and larger groups",
   },
   {
@@ -115,7 +115,7 @@ const journeySteps = [
   },
   {
     title: "Design System",
-    body: "Token architecture, component library, accessibility uplift, Figma CodeConnect integration — foundation before UI",
+    body: "Token architecture, component library, accessibility uplift and Figma CodeConnect integration, all in place before any UI work",
   },
   {
     title: "Redesign",
@@ -130,7 +130,7 @@ const journeySteps = [
 export const metadata: Metadata = {
   title: "First Table booking app — Maryna Babych",
   description:
-    "First Table had a product people loved and an experience that was holding them back. I and the development team rebuilt the design system and native app from the ground up. In six months, sign-ups were up 51%, bookings up 62%, and conversion up 12%.",
+    "First Table had a product people loved and an experience that was holding them back. The development team and I rebuilt the design system and native app from the ground up. In six months, onboarding completion was up 21% and conversion up 12%.",
 };
 
 export default function FirstTable() {
@@ -144,8 +144,8 @@ export default function FirstTable() {
           <CaseStudyHero
             titleTop="First Table"
             titleBottom="booking app"
-            lead="A full rebuild that drove 62% more bookings."
-            description="First Table had a product people loved and an experience that was holding them back. I and the development team rebuilt the design system and native app from the ground up. In six months, sign-ups were up 51%, bookings up 62%, and conversion up 12%."
+            lead="A full rebuild of the booking experience."
+            description="First Table had a product people loved and an experience that was holding them back. The development team and I rebuilt the design system and native app from the ground up. In six months, onboarding completion was up 21% and conversion up 12%."
             meta={[
               { label: "Role_", value: "Lead Product Designer" },
               {
@@ -160,22 +160,33 @@ export default function FirstTable() {
             images={[
               { src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" },
               { src: "/home/work/firsttable/FT2.jpg", alt: "First Table app screen" },
-              { src: "/home/work/firsttable/FT3.jpg", alt: "First Table app screen" },
+              { src: "/home/work/firsttable/3.jpg", alt: "First Table app screen" },
             ]}
           />
         </section>
       </div>
 
-      {/* 01 — Problem */}
+      {/* 01 — Journey */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="01" name="Problem" />
+          <SectionHeader number="01" name="Journey" />
+        </Reveal>
+        <Reveal index={1} delay={0.6} className="w-full">
+          <Journey steps={journeySteps} />
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* 02 — Problem */}
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+        <Reveal index={0} delay={0.6} className="w-full">
+          <SectionHeader number="02" name="Problem" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
-          <Stats className="md:grid-cols-3">
+          <Stats className="md:grid-cols-2">
             <Stat size="lg" value="1.7M" label="App users" />
-            <Stat size="lg" tone="highlight" value="7.50%" label="Conversion rate through booking flow" />
-            <Stat size="lg" tone="highlight-dark" value="1.2" label="bookings per user per year" />
+            <Stat size="lg" tone="highlight-dark" value="1.2" label="Bookings per user per year" />
           </Stats>
           <KeyParagraph className="lg:max-w-[916px]">
             When I joined First Table as the founding design team member, the product had real
@@ -199,10 +210,10 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 02 — Research */}
+      {/* 03 — Research */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="02" name="Research" />
+          <SectionHeader number="03" name="Research" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph lead="Understanding diner motivation" className="lg:max-w-[916px]">
@@ -216,7 +227,7 @@ export default function FirstTable() {
           <Stats className="md:grid-cols-3">
             <Stat size="lg" tone="highlight-subtle" value="400k+" label="Transactions analysed" />
             <Stat size="lg" tone="highlight-subtle" value="10k" label="User survey responses" />
-            <Stat size="lg" tone="highlight-subtle" value="5" label="user groups identified" />
+            <Stat size="lg" tone="highlight-subtle" value="5" label="User groups identified" />
           </Stats>
           <FTResearchMedia />
         </Reveal>
@@ -242,17 +253,17 @@ export default function FirstTable() {
         </Insight>
       </Reveal>
 
-      {/* 03 — Design System */}
+      {/* 04 — Design System */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="03" name="Design System" />
+          <SectionHeader number="04" name="Design System" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph className="lg:max-w-[916px]">
-            Before touching a single screen, I led the creation of a new design system. The goal
-            was to align design and engineering on shared tokens, accessible components, and
-            consistent patterns. Without that foundation, any UI work would compound the
-            inconsistency we were trying to fix.
+            Running in parallel with the research, and before touching a single screen, I led
+            the creation of a new design system. The goal was to align design and engineering
+            on shared tokens, accessible components, and consistent patterns. Without that
+            foundation, any UI work would compound the inconsistency we were trying to fix.
           </KeyParagraph>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
@@ -272,10 +283,10 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 04 — Redesign */}
+      {/* 05 — Redesign */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="04" name="Redesign" />
+          <SectionHeader number="05" name="Redesign" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph className="lg:max-w-[953px]">
@@ -299,17 +310,17 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 05 — Validation */}
+      {/* 06 — Validation */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="05" name="Validation" />
+          <SectionHeader number="06" name="Validation" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph lead="150+ A/B tests run" className="lg:max-w-[953px]">
             No change shipped on intuition alone. The work was shaped by continuous usability
             research and 150+ A/B tests a year. With 1.5 million monthly active users, every
             design decision was checked against real behaviour before it landed in production.
-            Losing variants got cut. Winners got built on
+            Losing variants got cut. Winners got built on.
           </KeyParagraph>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
@@ -319,15 +330,15 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 06 — Outcome */}
+      {/* 07 — Outcome */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="06" name="Outcome" />
+          <SectionHeader number="07" name="Outcome" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <Stats className="md:grid-cols-3">
             <Stat size="outcome" value="+51%" label="Sign-ups increase" />
-            <Stat size="outcome" value="+21%" label="onboarding completion" />
+            <Stat size="outcome" value="+21%" label="Onboarding completion" />
             <Stat size="outcome" value="+12.3%" label="Conversion rate increase" />
           </Stats>
         </Reveal>
@@ -340,18 +351,6 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={3} delay={0.6} className="w-full">
           <FTOutcomeMedia />
-        </Reveal>
-      </SectionReveal>
-
-      <Divider />
-
-      {/* 08 — Journey */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
-        <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="07" name="Journey" />
-        </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full">
-          <Journey steps={journeySteps} />
         </Reveal>
       </SectionReveal>
 

@@ -96,7 +96,15 @@ export function CaseStudyHero({
           title+stars first, then everything else together. */}
       <Reveal immediate delay={0.6} className="flex w-full items-center justify-center">
         {images.map((image, i) => (
-          <WorkImage key={image.src} src={image.src} alt={image.alt} index={i} total={3} size="lg" />
+          <WorkImage
+            key={image.src}
+            src={image.src}
+            alt={image.alt}
+            index={i}
+            total={3}
+            size="lg"
+            quality={image.quality}
+          />
         ))}
       </Reveal>
     </div>

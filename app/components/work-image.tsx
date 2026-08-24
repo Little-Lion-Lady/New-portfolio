@@ -1,6 +1,5 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { TiltIn } from "./tilt-in";
 
 export type WorkImageData = { src: string; alt: string; quality?: number };
 export type WorkImageSize = "md" | "lg";
@@ -34,15 +33,6 @@ function getRotateClass(quantity: 3 | 4, index: number) {
 // 3-image items tighten the overlap on mobile, loosen slightly on desktop.
 function getMarginClass(quantity: 3 | 4) {
   return quantity === 4 ? "-mr-[80px]" : "-mr-[40px] md:-mr-[80px] lg:-mr-[72px]";
-}
-
-// Reveal start offset for card `index` of `total` — full swing on every card,
-// split at the cluster's midpoint. Cards in the left half start clockwise of
-// their resting tilt (positive) so they turn anti-clockwise into place; cards
-// in the right half start anti-clockwise and turn clockwise. With an odd
-// count the middle card goes with the left half.
-function getTiltOffset(index: number, total: number, max = 8) {
-  return index < total / 2 ? max : -max;
 }
 
 // Glass-frame padding scales with platform: mobile 6px, tablet 8px, desktop 12px.
@@ -83,6 +73,7 @@ export function GlassFrame({
 // gets its own arbitrary size via `className`.
 export function GlassImage({
   src,
+  darkSrc,
   alt,
   className = "",
   quality = 100,
@@ -94,6 +85,13 @@ export function GlassImage({
   children,
 }: {
   src: string;
+  /**
+   * Optional dark-theme export of the same shot. When set, both files are
+   * rendered into the one frame and the `dark:` variant (see globals.css)
+   * swaps them with the theme — the frame chrome, sizing and ratio stay
+   * shared, so only the photo changes. Omit where only one export exists.
+   */
+  darkSrc?: string;
   alt: string;
   className?: string;
   quality?: number;
@@ -140,9 +138,20 @@ export function GlassImage({
           fill
           quality={quality}
           sizes={sizes}
-          className="object-cover"
+          className={`object-cover${darkSrc ? " dark:hidden" : ""}`}
           style={objectPosition ? { objectPosition } : undefined}
         />
+        {darkSrc && (
+          <Image
+            src={darkSrc}
+            alt={alt}
+            fill
+            quality={quality}
+            sizes={sizes}
+            className="hidden object-cover dark:block"
+            style={objectPosition ? { objectPosition } : undefined}
+          />
+        )}
         {children}
       </div>
     </div>
@@ -168,10 +177,7 @@ export function WorkImage({
 }) {
   const isLast = index === total - 1;
   return (
-    <TiltIn
-      offset={tilt ? getTiltOffset(index, total) : 0}
-      className={`shrink-0 ${isLast ? "" : getMarginClass(total)}`}
-    >
+    <div className={`shrink-0 ${isLast ? "" : getMarginClass(total)}`}>
       <div className={`${getSizeClass(total, size)} ${tilt ? getRotateClass(total, index) : ""}`}>
         <GlassImage
           src={src}
@@ -181,6 +187,6 @@ export function WorkImage({
           className="h-full w-full"
         />
       </div>
-    </TiltIn>
+    </div>
   );
 }

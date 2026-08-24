@@ -105,10 +105,22 @@ export default function Basis() {
         </section>
       </div>
 
-      {/* 01 — Problem */}
+      {/* 01 — Journey */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="01" name="Problem" />
+          <SectionHeader number="01" name="Journey" />
+        </Reveal>
+        <Reveal index={1} delay={0.6} className="w-full">
+          <Journey steps={journeySteps} />
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* 02 — Problem */}
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+        <Reveal index={0} delay={0.6} className="w-full">
+          <SectionHeader number="02" name="Problem" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full lg:grid lg:grid-cols-12 lg:gap-x-lg">
           <KeyParagraph lead="A hardware product and a blank slate." className="lg:col-start-1 lg:col-span-6">
@@ -129,10 +141,10 @@ export default function Basis() {
 
       <Divider />
 
-      {/* 02 — Approach */}
+      {/* 03 — Approach */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="02" name="Approach" />
+          <SectionHeader number="03" name="Approach" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl lg:max-w-[916px]">
           <KeyParagraph lead="Before design, I needed a filter for every decision.">
@@ -156,10 +168,10 @@ export default function Basis() {
 
       <Divider />
 
-      {/* 03 — Research */}
+      {/* 04 — Research */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="03" name="Research" />
+          <SectionHeader number="04" name="Research" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="lg:max-w-[916px]">
           <KeyParagraph lead="The research shifted our entire framing">
@@ -193,10 +205,10 @@ export default function Basis() {
         </Insight>
       </Reveal>
 
-      {/* 04 — Design brief */}
+      {/* 05 — Design brief */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="04" name="Design brief" />
+          <SectionHeader number="05" name="Design brief" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <KeyParagraph lead="Three questions that framed every design decision." className="lg:max-w-[916px]">
@@ -232,10 +244,10 @@ export default function Basis() {
 
       <Divider />
 
-      {/* 05 — Process */}
+      {/* 06 — Process */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="05" name="Process" />
+          <SectionHeader number="06" name="Process" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <KeyParagraph lead="Three paths. One that served both users and the business." className="lg:max-w-[916px]">
@@ -274,10 +286,10 @@ export default function Basis() {
 
       <Divider />
 
-      {/* 06 — Solution design */}
+      {/* 07 — Solution design */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="06" name="Solution design" />
+          <SectionHeader number="07" name="Solution design" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <KeyParagraph lead="Three principles that every screen had to pass." className="lg:max-w-[916px]">
@@ -321,10 +333,10 @@ export default function Basis() {
 
       <Divider />
 
-      {/* 07 — Outcome */}
+      {/* 08 — Outcome */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="07" name="Outcome" />
+          <SectionHeader number="08" name="Outcome" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <div className="flex w-full flex-col gap-3xl md:grid md:grid-cols-8 md:gap-lg lg:grid-cols-12">
@@ -354,18 +366,6 @@ export default function Basis() {
             </KeyParagraph>
           </div>
           <BasisOutcomeMedia />
-        </Reveal>
-      </SectionReveal>
-
-      <Divider />
-
-      {/* 08 — Journey */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
-        <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="08" name="Journey" />
-        </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full">
-          <Journey steps={journeySteps} />
         </Reveal>
       </SectionReveal>
 

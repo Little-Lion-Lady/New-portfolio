@@ -54,13 +54,13 @@ export default function Home() {
             <WorkItem
               number="SW/01"
               name="First Table app"
-              description="A ground-up redesign of First Table, the app that gives diners 50% off their first table of the night, now used by 1.5 million people. In the six months since launch, sign-ups are up 51%, bookings up 62%, and conversion up 12.3%."
+              description="A ground-up redesign of First Table, the app that gives diners 50% off their first table of the night, now used by 1.5 million people. In the six months since launch, sign-ups are up 51% and conversion up 12.3%."
               roles="UX/UI, Design system, Research"
               href="/work/first-table"
               images={[
                 { src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" },
                 { src: "/home/work/firsttable/FT2.jpg", alt: "First Table app screen" },
-                { src: "/home/work/firsttable/FT3.jpg", alt: "First Table app screen" },
+                { src: "/home/work/firsttable/3.jpg", alt: "First Table app screen" },
               ]}
             />
           </Reveal>

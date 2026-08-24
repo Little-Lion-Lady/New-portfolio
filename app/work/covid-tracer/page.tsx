@@ -115,10 +115,22 @@ export default function CovidTracer() {
         </section>
       </div>
 
-      {/* 01 — Problem */}
+      {/* 01 — Journey */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="01" name="Problem" />
+          <SectionHeader number="01" name="Journey" />
+        </Reveal>
+        <Reveal index={1} delay={0.6} className="w-full">
+          <Journey steps={journeySteps} />
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* 02 — Problem */}
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+        <Reveal index={0} delay={0.6} className="w-full">
+          <SectionHeader number="02" name="Problem" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <Stats className="md:grid-cols-3">
@@ -137,10 +149,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 02 — Approach */}
+      {/* 03 — Approach */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="02" name="Approach" />
+          <SectionHeader number="03" name="Approach" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <KeyParagraph className="lg:max-w-[916px]">
@@ -181,10 +193,10 @@ export default function CovidTracer() {
         </Insight>
       </Reveal>
 
-      {/* 03 — Design brief */}
+      {/* 04 — Design brief */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="03" name="Design brief" />
+          <SectionHeader number="04" name="Design brief" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <KeyParagraph className="lg:max-w-[916px]">
@@ -214,10 +226,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 04 — Design */}
+      {/* 05 — Design */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="04" name="Design" />
+          <SectionHeader number="05" name="Design" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <FindingsTable rows={findings} />
@@ -230,10 +242,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 05 — Validation */}
+      {/* 06 — Validation */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="05" name="Validation" />
+          <SectionHeader number="06" name="Validation" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <KeyParagraph lead="Two rounds. Each one answered a specific question.">
@@ -252,10 +264,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 06 — Outcome */}
+      {/* 07 — Outcome */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="06" name="Outcome" />
+          <SectionHeader number="07" name="Outcome" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg lg:grid lg:grid-cols-12 lg:gap-x-lg">
           {/* Content (desktop: right) */}
@@ -289,18 +301,6 @@ export default function CovidTracer() {
             own row layout wasn't part of this request). */}
         <Reveal index={2} delay={0.6} className="w-full -mt-[32px] md:-mt-[56px] lg:mt-0">
           <OutcomeMedia />
-        </Reveal>
-      </SectionReveal>
-
-      <Divider />
-
-      {/* 07 — Journey */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
-        <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="07" name="Journey" />
-        </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full">
-          <Journey steps={journeySteps} />
         </Reveal>
       </SectionReveal>
 
