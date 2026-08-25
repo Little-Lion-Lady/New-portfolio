@@ -130,7 +130,7 @@ const journeySteps = [
 export const metadata: Metadata = {
   title: "First Table booking app — Maryna Babych",
   description:
-    "First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months in, onboarding completion was up 21% and conversion up 12%.",
+    "First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months in, onboarding completion was up 21% and conversion up 12.3%.",
 };
 
 export default function FirstTable() {
@@ -145,7 +145,7 @@ export default function FirstTable() {
             titleTop="First Table"
             titleBottom="booking app"
             lead="A full rebuild of the booking app."
-            description="First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months in, onboarding completion was up 21% and conversion up 12%."
+            description="First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months in, onboarding completion was up 21% and conversion up 12.3%."
             meta={[
               { label: "Role_", value: "Lead Product Designer" },
               {

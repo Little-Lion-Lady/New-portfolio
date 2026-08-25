@@ -76,9 +76,6 @@ const GRADIENT_TOKENS = [
 const DISPLAY_STYLES: Array<[string, string]> = [
   ["d-2xl", "224"], ["d-xl", "142"], ["d-lg", "124"], ["d-md", "80"], ["d-sm", "60"], ["d-xs", "44"], ["d-2xs", "32"],
 ];
-const MONO_STYLES: Array<[string, string]> = [
-  ["m-xl", "32"], ["m-lg", "24"], ["m-md", "20"], ["m-sm", "16"], ["m-xs", "14"], ["m-2xs", "12"],
-];
 const BODY_STYLES: Array<[string, string]> = [
   ["b-xl", "44"], ["b-lg", "32"], ["b-md", "24"], ["b-sm", "20"], ["b-xs", "16"], ["b-2xs", "14"], ["b-3xs", "12"],
 ];
@@ -420,18 +417,6 @@ export default function DesignSystem() {
             <div key={cls} className="flex items-baseline gap-md border-b border-border-overlay pb-2xs">
               <span className="m-2xs text-text-tertiary w-[var(--size-40)] shrink-0">{`${cls} · ${px}px`}</span>
               <span className={`${cls} truncate`}>Refined</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-lg">
-        <SectionTitle>Typography — mono (Geist Mono)</SectionTitle>
-        <div className="flex flex-col gap-md">
-          {MONO_STYLES.map(([cls, px]) => (
-            <div key={cls} className="flex items-baseline gap-md border-b border-border-overlay pb-2xs">
-              <span className="m-2xs text-text-tertiary w-[var(--size-40)] shrink-0">{`${cls} · ${px}px`}</span>
-              <span className={cls}>The quick brown fox jumps over the lazy dog</span>
             </div>
           ))}
         </div>
