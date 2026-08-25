@@ -10,21 +10,27 @@ const COVID_ALT = "NZ COVID Tracer app screen";
 // §02 Approach — a phone screen beside a wide screenshot. Stacks on mobile.
 export function ApproachMedia() {
   return (
-    <div className="flex flex-col gap-xs md:flex-row md:items-stretch md:gap-md lg:gap-lg">
+    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col md:flex-row md:items-stretch">
       {/* MOH4 + MOH5 share one row height: flex-grow proportional to each
           image's own ratio (flex-basis 0) + matching frameAspectRatio makes
-          the browser resolve a common height and correct, uncropped widths. */}
+          the browser resolve a common height and correct, uncropped widths.
+          min-w-0 on both is load-bearing: a flex item's default min-width:auto
+          is transferred from its aspect-ratio, which lets MOH5 claim its full
+          1256/460 width instead of its flex share and push the row past the
+          page padding (Safari does this; Chrome squeezes it instead). With
+          min-w-0 the flex ratios always win and the row can never overflow —
+          the inner box already clips the few px of ratio skew. */}
       <GlassImage
         src="/home/work/covid-tracer/MOH4.jpg"
         alt={COVID_ALT}
         frameAspectRatio="260/460"
-        className="mx-auto w-[165px] shrink-0 md:mx-0 md:w-auto md:shrink md:flex-[0.5652]"
+        className="mx-auto w-[165px] shrink-0 md:mx-0 md:w-auto md:min-w-0 md:shrink md:flex-[0.5652]"
       />
       <GlassImage
         src="/home/work/covid-tracer/MOH5.jpg"
         alt={COVID_ALT}
         frameAspectRatio="1256/460"
-        className="w-full md:w-auto md:flex-[2.7304]"
+        className="w-full md:w-auto md:min-w-0 md:flex-[2.7304]"
       />
     </div>
   );
@@ -45,7 +51,7 @@ export function FlowDiagram() {
 // §04 Design — big image beside a stacked pair, then a wide full-width shot below.
 export function DesignMedia() {
   return (
-    <div className="flex flex-col gap-xs md:gap-md lg:gap-xl">
+    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
       <div className="flex gap-xs md:gap-md lg:gap-lg">
         <GlassImage
           src="/home/work/covid-tracer/MOH7.jpg"
@@ -53,7 +59,7 @@ export function DesignMedia() {
           aspectRatio="873/969"
           className="flex-[5] self-start lg:flex-1"
         />
-        <div className="flex flex-[4] flex-col gap-xs md:gap-md lg:flex-1 lg:gap-xl">
+        <div className="flex gap-xs md:gap-md lg:gap-lg flex-[4] flex-col lg:flex-1">
           <GlassImage
             src="/home/work/covid-tracer/MOH8.jpg"
             alt={COVID_ALT}
@@ -80,9 +86,9 @@ export function DesignMedia() {
 // (A third image, the section's "headline" shot, is inline in page.tsx.)
 export function OutcomeMedia() {
   return (
-    <div className="flex flex-col gap-xs md:gap-md lg:gap-xl">
+    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
       {/* Row 1 — stacks through tablet, side-by-side only at desktop */}
-      <div className="flex flex-col gap-xs md:gap-md lg:flex-row lg:items-stretch lg:gap-lg">
+      <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:flex-row lg:items-stretch">
         {/* MOH12 + MOH13 share one row height from lg up — same justified-row
             technique as MOH4/MOH5 above. */}
         <GlassImage
@@ -111,7 +117,7 @@ export function OutcomeMedia() {
           uses that flat row, and only mobile (where MOH14/MOH15 must stay
           paired above MOH16) keeps the nested layout. */}
       <div className="flex flex-col gap-xs md:hidden">
-        <div className="flex gap-xs">
+        <div className="flex gap-xs md:gap-md lg:gap-lg">
           <GlassImage
             src="/home/work/covid-tracer/MOH14.jpg"
             alt={COVID_ALT}
@@ -166,8 +172,8 @@ const BASIS_ALT = "Basis home app screen";
 // Column stacks above the detail image through tablet, sits beside it only from desktop up.
 export function ResearchMedia() {
   return (
-    <div className="flex flex-col gap-xs lg:flex-row lg:items-stretch lg:gap-lg">
-      <div className="flex flex-col gap-3xs lg:w-1/3 lg:gap-xs">
+    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:flex-row lg:items-stretch">
+      <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:w-1/3">
         <GlassImage src="/home/work/basis/BS4.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
         <GlassImage src="/home/work/basis/BS5.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
         <GlassImage src="/home/work/basis/BS6.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
@@ -187,7 +193,7 @@ export function ResearchMedia() {
 // §05 Process — a wide flow diagram above a taller detail shot.
 export function ProcessMedia() {
   return (
-    <div className="flex flex-col gap-xs lg:gap-lg">
+    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
       <GlassImage src="/home/work/basis/BS8.jpg" alt={BASIS_ALT} className="aspect-[3168/1235] w-full" />
       {/* BS9's real ratio is 1600×1395 — aspect-[1600/1395] replaces the
           fixed heights (306/524px mobile/tablet, 1414px desktop) that were
@@ -200,7 +206,7 @@ export function ProcessMedia() {
 // §06 Solution design — row of two shots.
 export function SolutionMedia() {
   return (
-    <div className="flex flex-col gap-xs">
+    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
       {/* BS12 (near-square, 1866×1812) and BS13 (wide, 1600×1092) share one
           row height from md up via the justified-row technique: flex-basis:0
           + flex-grow proportional to each image's own ratio, with a matching
@@ -209,7 +215,7 @@ export function SolutionMedia() {
           inner photo only filled its own shorter aspect-derived height,
           leaving BS13 visibly padded with empty space — flex-grow removes
           that gap by giving both a shared height and proportional width. */}
-      <div className="flex flex-col gap-xs lg:flex-row lg:items-stretch lg:gap-lg">
+      <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:flex-row lg:items-stretch">
         <GlassImage
           src="/home/work/basis/BS12.jpg"
           alt={BASIS_ALT}
@@ -245,7 +251,7 @@ export function PrototypeMedia() {
           once the outer container becomes lg:flex-row: without it this div
           has no width source of its own (children are all flex-basis:0, so
           they can't contribute one), and collapses to 0. */}
-      <div className="flex gap-xs lg:flex-1">
+      <div className="flex gap-xs md:gap-md lg:gap-lg lg:flex-1">
         <GlassImage src="/home/work/basis/BS14.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
         <GlassImage src="/home/work/basis/BS15.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
         <GlassImage src="/home/work/basis/BS16.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
@@ -257,7 +263,7 @@ export function PrototypeMedia() {
           arbitrary mobile value (computed max-width stuck at 0px) — an
           arbitrary lg value of its own avoids that named-vs-arbitrary-value
           ordering conflict. */}
-      <div className="flex justify-center gap-xs lg:w-[243px] lg:shrink-0 lg:flex-col lg:gap-[10px]">
+      <div className="flex justify-center gap-xs md:gap-md lg:gap-lg lg:w-[243px] lg:shrink-0 lg:flex-col">
         <div className="relative max-w-[190px] flex-1 aspect-[243/160] overflow-hidden rounded-lg lg:aspect-auto lg:h-[160px] lg:max-w-[400px] lg:flex-none">
           <Image src="/home/work/basis/BS18.jpg" alt="Basis prototype testing participant" fill quality={100} sizes="243px" className="object-cover" />
         </div>
@@ -360,7 +366,7 @@ export function FTProblemMedia() {
 // §02 Research — segmentation charts. Stacked through tablet, side by side at desktop.
 export function FTResearchMedia() {
   return (
-    <div className="flex flex-col gap-xs md:gap-md lg:flex-row lg:items-start lg:gap-lg">
+    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:flex-row lg:items-start">
       <GlassImage
         src={`${FT}/5.jpg`}
         darkSrc={`${FT}/5_dark.jpg`}
@@ -384,7 +390,7 @@ export function FTResearchMedia() {
 export function FTDesignSystemMedia() {
   const tokenSheet = "w-full aspect-[361/180] md:aspect-[944/437] lg:aspect-[1584/796]";
   return (
-    <div className="flex flex-col gap-md lg:gap-lg">
+    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
       <GlassImage
         src={`${FT}/7.jpg`}
         darkSrc={`${FT}/7_dark.jpg`}
@@ -413,7 +419,7 @@ export function FTDesignSystemMedia() {
 // shadow here rather than in the file. video3/video4 carry a 2px black sliver
 // along one edge from the capture — the box ratio is a couple of px tighter than
 // the source and object-position pins the opposite edge, cropping it off.
-const DETAIL_CARD = "rounded-sm shadow-[0_2px_10px_var(--shadows-shadow-02)]";
+const DETAIL_CARD = "rounded-sm shadow-[0_2px_20px_var(--shadows-shadow-02)]";
 
 type DetailVideo = {
   src: string;
@@ -476,7 +482,7 @@ const REDESIGN_DETAILS: {
 
 export function FTRedesignMedia() {
   return (
-    <div className="flex flex-col gap-md lg:gap-xl">
+    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
       <GlassImage
         src={`${FT}/9.jpg`}
         darkSrc={`${FT}/9_dark.jpg`}
@@ -484,7 +490,7 @@ export function FTRedesignMedia() {
         sizes="100vw"
         className="w-full aspect-[361/148] md:aspect-[944/342] lg:aspect-[1584/609]"
       />
-      <div className="flex flex-col gap-md md:flex-row md:items-start lg:gap-lg">
+      <div className="flex gap-xs md:gap-md lg:gap-lg flex-col md:flex-row md:items-start">
         {REDESIGN_DETAILS.map((d) => (
           <GlassFrame
             key={d.key}
@@ -513,8 +519,8 @@ const VALIDATION_TESTS = ["10", "11", "12", "13", "14", "15"];
 
 export function FTValidationMedia() {
   return (
-    <div className="flex flex-col gap-md lg:gap-xl">
-      <div className="grid grid-cols-1 gap-xs md:grid-cols-2 md:gap-md lg:grid-cols-3 lg:gap-x-lg lg:gap-y-xl">
+    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
+      <div className="grid gap-xs md:gap-md lg:gap-lg grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {VALIDATION_TESTS.map((n) => (
           <GlassImage
             key={n}
@@ -526,7 +532,7 @@ export function FTValidationMedia() {
           />
         ))}
       </div>
-      <div className="flex flex-col gap-xs md:gap-md lg:flex-row lg:items-start lg:gap-lg">
+      <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:flex-row lg:items-start">
         <GlassImage
           src={`${FT}/16.jpg`}
           darkSrc={`${FT}/16_dark.jpg`}

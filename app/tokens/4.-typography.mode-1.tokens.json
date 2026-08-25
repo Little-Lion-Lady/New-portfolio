@@ -1,0 +1,122 @@
+{
+  "fontFamily": {
+    "fontFamilyDisplay": {
+      "$type": "string",
+      "$value": "Geist Pixel"
+    },
+    "fontFamilyBody": {
+      "$type": "string",
+      "$value": "Geist"
+    }
+  },
+  "fontWeight": {
+    "light": {
+      "$type": "string",
+      "$value": "300"
+    },
+    "regular": {
+      "$type": "string",
+      "$value": "400"
+    },
+    "medium": {
+      "$type": "string",
+      "$value": "500"
+    }
+  },
+  "fontSize": {
+    "text3xs": {
+      "$type": "dimension",
+      "$value": "12px"
+    },
+    "text2xs": {
+      "$type": "dimension",
+      "$value": "14px"
+    },
+    "textXs": {
+      "$type": "dimension",
+      "$value": "16px"
+    },
+    "textSm": {
+      "$type": "dimension",
+      "$value": "20px"
+    },
+    "textMd": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "textLg": {
+      "$type": "dimension",
+      "$value": "28px"
+    },
+    "textXl": {
+      "$type": "dimension",
+      "$value": "32px"
+    },
+    "text2xl": {
+      "$type": "dimension",
+      "$value": "44px"
+    },
+    "display2xs": {
+      "$type": "dimension",
+      "$value": "32px"
+    },
+    "displayXs": {
+      "$type": "dimension",
+      "$value": "44px"
+    },
+    "displaySm": {
+      "$type": "dimension",
+      "$value": "60px"
+    },
+    "displayMd": {
+      "$type": "dimension",
+      "$value": "80px"
+    },
+    "displayLg": {
+      "$type": "dimension",
+      "$value": "124px"
+    },
+    "displayXl": {
+      "$type": "dimension",
+      "$value": "142px"
+    },
+    "display2xl": {
+      "$type": "dimension",
+      "$value": "224px"
+    }
+  },
+  "lineHeight": {
+    "body3xs": {
+      "$type": "dimension",
+      "$value": "22px"
+    },
+    "body2xs": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "bodyXs": {
+      "$type": "dimension",
+      "$value": "26px"
+    },
+    "bodySm": {
+      "$type": "dimension",
+      "$value": "32px"
+    },
+    "bodyMd": {
+      "$type": "dimension",
+      "$value": "36px"
+    },
+    "bodyLg": {
+      "$type": "dimension",
+      "$value": "48px"
+    },
+    "bodyXl": {
+      "$type": "dimension",
+      "$value": "56px"
+    },
+    "labelXs": {
+      "$type": "dimension",
+      "$value": "17px"
+    }
+  }
+}

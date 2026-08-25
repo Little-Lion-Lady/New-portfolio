@@ -7,7 +7,7 @@ import { TitleStars } from "./title-stars";
 const TEXT_STYLE = {
   fontFamily: "var(--font-family-body)",
   fontWeight: "var(--font-weight-medium)",
-  lineHeight: 1.2,
+  lineHeight: 1.15,
   letterSpacing: "-0.02em",
 } as const;
 
@@ -40,7 +40,11 @@ export function HeroText({ className }: { className?: string }) {
       for (let i = 0; i < 24; i++) {
         const mid = (lo + hi) / 2;
         probe.style.fontSize = `${mid}px`;
-        probe.scrollHeight <= availH ? (lo = mid) : (hi = mid);
+        if (probe.scrollHeight <= availH) {
+          lo = mid;
+        } else {
+          hi = mid;
+        }
       }
       setFontSize(lo);
     };

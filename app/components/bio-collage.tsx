@@ -1,34 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { GlassImage } from "./work-image";
 import { TiltIn } from "./tilt-in";
 import { MeCat } from "./dynamic-visuals";
-import { isDarkTheme } from "./lottie-utils";
 import { useInitialIsDark } from "./theme-context";
+import { useIsDark } from "./use-is-dark";
 
 // Figma "02 Biography" image collage (node 1144:9241/9251/18610) — two tilted
 // glass-frame photo cards with the cat illustration layered on top. Outer wrapper divs are the post-rotation
 // bounding boxes Figma computes, so flex layout reserves the right footprint
 // for each tilted card without any manual offset math.
 export function BioCollage() {
-  // Same fix as ThemeToggle's hydration mismatch: seed from the server-read
-  // theme cookie (matches SSR exactly) instead of guessing client-side via
-  // isDarkTheme() on mount, which can already disagree with the server by
+  // Unlike the Lottie visuals this one is server-rendered, so the SSR and
+  // hydration passes must use the server-read theme cookie rather than the
+  // live DOM: guessing client-side can already disagree with the server by
   // the time hydration runs (e.g. a returning dark-mode visitor) and — unlike
   // a plain re-render — React won't patch a hydration-mismatched <img src>.
-  const initialFromServer = useInitialIsDark();
-  const [dark, setDark] = useState(() => initialFromServer ?? false);
-
-  useEffect(() => {
-    setDark(isDarkTheme());
-    const observer = new MutationObserver(() => setDark(isDarkTheme()));
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-    return () => observer.disconnect();
-  }, []);
+  // Passing it as the server snapshot keeps that guarantee; any correction
+  // after hydration arrives as an ordinary re-render, which does patch src.
+  const dark = useIsDark(useInitialIsDark() ?? false);
 
   return (
     <div className="relative flex h-[314.422px] w-full items-center justify-center md:h-[496.967px] lg:h-[496.967px]">
@@ -44,16 +34,18 @@ export function BioCollage() {
         </TiltIn>
       </div>
       <div className="flex h-[295.054px] w-[233.946px] shrink-0 items-center justify-center md:h-[489.79px] md:w-[388.351px] lg:h-[489.79px] lg:w-[388.351px]">
-        {/* rounded-sm bg-bg-primary backer — same shape/rotation as the frame
+        {/* Radius-matched bg-bg-primary backer — same shape/rotation as the frame
             itself, sitting directly behind it. This card overlaps the photo
             card behind it, and the glass frame's translucent bg would
             otherwise blend with the photo instead of the plain page bg,
             bleeding its colours through at the seam. The backer gives the
             translucent glass something page-coloured to blend with instead,
             so it renders identically to every other (non-overlapping) glass
-            card rather than needing an opaque one-off variant. */}
+            card rather than needing an opaque one-off variant. Its radius has to
+            track GlassImage's own outer radius (sm on mobile, md from md up),
+            or the flatter backer corners poke out past the frame. */}
         <TiltIn offset={-8}>
-          <div className="-rotate-[7.56deg] rounded-sm bg-bg-primary">
+          <div className="-rotate-[7.56deg] rounded-sm bg-bg-primary md:rounded-md">
             <GlassImage
               src={dark ? "/home/about/ABOUT2_Dark.jpg" : "/home/about/ABOUT2.jpg"}
               alt=""

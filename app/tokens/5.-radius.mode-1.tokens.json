@@ -1,0 +1,34 @@
+{
+  "size2xs": {
+    "$type": "dimension",
+    "$value": "{size.2}"
+  },
+  "sizeXs": {
+    "$type": "dimension",
+    "$value": "{size.4}"
+  },
+  "sizeSm": {
+    "$type": "dimension",
+    "$value": "{size.6}"
+  },
+  "sizeMd": {
+    "$type": "dimension",
+    "$value": "{size.7}"
+  },
+  "sizeLg": {
+    "$type": "dimension",
+    "$value": "{size.8}"
+  },
+  "sizeXl": {
+    "$type": "dimension",
+    "$value": "{size.9}"
+  },
+  "size2xl": {
+    "$type": "dimension",
+    "$value": "{size.10}"
+  },
+  "sizeFull": {
+    "$type": "dimension",
+    "$value": "{size.80}"
+  }
+}

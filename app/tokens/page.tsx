@@ -76,9 +76,6 @@ const GRADIENT_TOKENS = [
 const DISPLAY_STYLES: Array<[string, string]> = [
   ["d-2xl", "224"], ["d-xl", "142"], ["d-lg", "124"], ["d-md", "80"], ["d-sm", "60"], ["d-xs", "44"], ["d-2xs", "32"],
 ];
-const MONO_STYLES: Array<[string, string]> = [
-  ["m-xl", "32"], ["m-lg", "24"], ["m-md", "20"], ["m-sm", "16"], ["m-xs", "14"], ["m-2xs", "12"],
-];
 const BODY_STYLES: Array<[string, string]> = [
   ["b-xl", "44"], ["b-lg", "32"], ["b-md", "24"], ["b-sm", "20"], ["b-xs", "16"], ["b-2xs", "14"], ["b-3xs", "12"],
 ];
@@ -289,7 +286,10 @@ export default function DesignSystem() {
         </Demo>
 
         <Demo name="Gradient backdrop" full>
-          <div className="relative h-[320px] w-full overflow-hidden rounded-[var(--size-6)]">
+          {/* Contained preview, not a page backdrop: gutter 0 so the gradient
+              fills this box exactly instead of overhanging it and relying on
+              overflow-hidden to clip the excess. */}
+          <div className="[--page-gutter:0px] relative h-[320px] w-full overflow-hidden rounded-[var(--size-6)]">
             <GradientBg height="320px" fullWidth />
           </div>
         </Demo>

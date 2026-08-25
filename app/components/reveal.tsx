@@ -20,7 +20,7 @@
     normally.
 */
 
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
+import React, { createContext, useContext, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { m, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
 
@@ -52,6 +52,21 @@ function subscribeNoop() {
 }
 function useIsFirefox() {
   return useSyncExternalStore(subscribeNoop, getIsFirefoxSnapshot, getIsFirefoxServerSnapshot);
+}
+
+// Has this component committed on the client yet? `immediate` reveals need one
+// render in the hidden state before they animate, which is what the old
+// useState(false) + setState-in-effect pair bought. Same trick as
+// useIsFirefox above: the server snapshot is false and the client snapshot is
+// true, so the value flips across hydration with no extra state.
+function getMountedSnapshot() {
+  return true;
+}
+function getMountedServerSnapshot() {
+  return false;
+}
+export function useHasMounted() {
+  return useSyncExternalStore(subscribeNoop, getMountedSnapshot, getMountedServerSnapshot);
 }
 
 // Every "visible" state below animates filter TO blur(0px) and then, via
@@ -201,10 +216,7 @@ export function Reveal({
   // `immediate` (prop or inherited from an immediate SectionReveal) reveals on
   // mount and ignores the in-view gate, so all content appears at once on load.
   const isImmediate = immediate || ctxImmediate;
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    if (isImmediate) setMounted(true);
-  }, [isImmediate]);
+  const mounted = useHasMounted();
   const shouldAnimate = isImmediate ? mounted : active && inView;
 
   const Component = m[as] as typeof m.div;
@@ -254,10 +266,7 @@ export function RevealWords({
   const isFF = useIsFirefox();
   const { active, immediate: ctxImmediate } = useSectionReveal();
   const isImmediate = immediate || ctxImmediate;
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    if (isImmediate) setMounted(true);
-  }, [isImmediate]);
+  const mounted = useHasMounted();
   const shouldAnimate = isImmediate ? mounted : active && inView;
 
   // Tokenise: string nodes → individual words (trailing space preserved so

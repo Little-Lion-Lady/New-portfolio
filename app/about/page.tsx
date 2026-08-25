@@ -34,12 +34,12 @@ const artwork = ["ART1", "ART2", "ART3", "ART4", "ART5", "ART6", "ART7"];
 export const metadata: Metadata = {
   title: "About — Maryna Babych",
   description:
-    "I'm a passionate, strategic, and creative thinker, blending human-centred design with technology to create experiences that positively impact lives. With 9 years of experience in product design, I've delivered award-winning, impactful designs across a variety of industries and environments.",
+    "I've been designing products since 2018: agency work including the NZ COVID Tracer app, then a startup, and now a marketplace. I spend as much time on understanding the people I'm designing for as on design craft, and I hold both to the same standard. Maryna Babych, Lead Product Designer in Auckland, New Zealand.",
 };
 
 export default function About() {
   return (
-    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
       {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
       <div>
         <GradientBg height="350px" fullWidth scaleX={2} />
@@ -53,7 +53,7 @@ export default function About() {
         </section>
       </div>
 
-      <Divider />
+      <Divider tone="primary" />
 
       {/* 01 — Overview */}
       <SectionReveal as="section" immediate className="flex flex-col gap-r-xl">
@@ -67,17 +67,18 @@ export default function About() {
           {/* Description + CV button */}
           <div className="flex flex-col gap-r-xl wide:flex-[5]">
             <p className="b-xs text-text-secondary md:b-sm wide:b-lg">
-              I&apos;m a <span className="text-text-highlight-dark">passionate</span>,{" "}
-              <span className="text-text-highlight-dark">strategic</span>, and{" "}
-              <span className="text-text-highlight-dark">creative thinker</span>, blending
-              human-centred design with technology to create experiences that positively impact lives.
-              With <span className="text-text-highlight-dark">9 years</span>{" "}
-              of experience in product
-              design, I&apos;ve delivered{" "}
-              <span className="text-text-highlight-dark">award-winning</span>,{" "}
-              <span className="text-text-highlight-dark">impactful</span> designs across a variety of
-              industries and environments, including agencies, startups, and established product
-              companies.
+              I&apos;ve been designing products since 2018. Agency work taught me to move fast and
+              not to be afraid of making mistakes or asking questions. Product work taught me how
+              to advocate for users and to own things past launch. So I care as much about{" "}
+              <span className="text-text-highlight-dark">understanding the people</span>{" "}
+              I&apos;m designing for as I do about{" "}
+              <span className="text-text-highlight-dark">design craft</span>. My favourite part is{" "}
+              <span className="text-text-highlight-dark">working it out with product and engineering</span>:{" "}
+              what&apos;s possible, what isn&apos;t, before I fall for something nobody can build.
+              Whatever we ship still has to{" "}
+              <span className="text-text-highlight-dark">be delightful</span> and{" "}
+              <span className="text-text-highlight-dark">easy to use</span>. That part I
+              don&apos;t budge on.
             </p>
             <Button
               variant="primary"
@@ -182,9 +183,9 @@ export default function About() {
           {/* Bio text */}
           <div className="order-1 flex flex-col gap-lg lg:gap-xl md:order-2 wide:flex-[6]">
             <p className="b-xs text-text-secondary md:b-sm lg:b-md">
-              I grew up in Kyiv, Ukraine, and at 17 I made the leap to New Zealand&mdash;a
-              life-changing move that instilled in me persistence and self-motivation. It also gave me
-              the chance to explore the iconic Lord of the Rings filming locations I had always
+              I grew up in Kyiv, Ukraine, and at 17, I made the leap to New Zealand&mdash;a
+              life-changing move that instilled in me persistence and self-motivation. It also gave
+              me the chance to explore the iconic Lord of the Rings filming locations I had always
               dreamed of visiting.
             </p>
             <p className="b-xs text-text-secondary md:b-sm lg:b-md">
@@ -192,8 +193,7 @@ export default function About() {
               drawing, and reading hard sci-fi and fantasy novels.
             </p>
             <p className="b-xs text-text-tertiary md:b-sm lg:b-md">
-              Bonus points: I&apos;m first-aid trained, so I&apos;m fully prepared to survive the
-              zombie apocalypse.
+              I&apos;m also first-aid trained, so I&apos;m set for the zombie apocalypse.
             </p>
           </div>
         </Reveal>

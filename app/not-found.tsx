@@ -5,7 +5,7 @@ import { Reveal, RevealWords } from "./components/reveal";
 
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-svh flex-col bg-bg-primary px-md pt-[56px] md:px-xl md:pt-[64px] lg:px-5xl lg:pt-[72px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex min-h-svh flex-col bg-bg-primary px-md pt-[56px] md:px-xl md:pt-[64px] lg:px-5xl lg:pt-[72px]">
       <GradientBg />
       <SiteHeader />
 
@@ -25,17 +25,17 @@ export default function NotFound() {
           </div>
 
           {/* Tablet: 9-col grid stagger */}
-          <div className="hidden grid-cols-9 gap-x-[20px] md:grid lg:hidden">
+          <div className="hidden grid-cols-9 gap-x-lg md:grid lg:hidden">
             <RevealWords as="h1" className="col-[1/span_4] d-lg leading-[0.9] whitespace-nowrap text-text-primary-highlight">Oops</RevealWords>
             <RevealWords as="p" startIndex={1} className="col-[2/span_8] d-lg leading-[0.9] whitespace-nowrap text-text-highlight-dark">404 error</RevealWords>
           </div>
 
           {/* Desktop: 12-col grid stagger, fluid D-xl → D-2xl */}
-          <div className="hidden grid-cols-12 gap-x-[20px] lg:grid">
+          <div className="hidden grid-cols-12 gap-x-lg lg:grid">
             <RevealWords
               as="h1"
               className="col-[1/span_5] d-xl leading-[0.9] whitespace-nowrap text-text-primary-highlight"
-              style={{ fontSize: "clamp(142px, 22.7px + 11.65vw, 224px)" }}
+              style={{ fontSize: "clamp(var(--font-size-display-xl), 22.7px + 11.65vw, var(--font-size-display-2xl))" }}
             >
               Oops
             </RevealWords>
@@ -43,7 +43,7 @@ export default function NotFound() {
               as="p"
               startIndex={1}
               className="col-[3/span_10] d-xl leading-[0.9] whitespace-nowrap text-text-highlight-dark"
-              style={{ fontSize: "clamp(142px, 22.7px + 11.65vw, 224px)" }}
+              style={{ fontSize: "clamp(var(--font-size-display-xl), 22.7px + 11.65vw, var(--font-size-display-2xl))" }}
             >
               404 error
             </RevealWords>
@@ -64,7 +64,7 @@ export default function NotFound() {
         </div>
 
         {/* Tablet: flex row, button ml-auto */}
-        <div className="mt-8xl hidden items-center gap-x-[20px] md:flex lg:hidden">
+        <div className="mt-8xl hidden items-center gap-x-lg md:flex lg:hidden">
           <Reveal index={0} delay={0.5} as="p" className="w-[258px] b-md text-text-secondary">Are you lost?</Reveal>
           <Reveal index={1} delay={0.5} as="p" className="w-[258px] b-md text-text-secondary">I can fix this</Reveal>
           <Reveal index={2} delay={0.5} className="ml-auto">
@@ -73,7 +73,7 @@ export default function NotFound() {
         </div>
 
         {/* Desktop: fills remaining ~30svh, flex-1 centers helper vertically */}
-        <div className="hidden flex-1 items-center gap-x-[20px] lg:flex">
+        <div className="hidden flex-1 items-center gap-x-lg lg:flex">
           <div className="flex-1" />
           <Reveal index={0} delay={0.5} as="p" className="w-[258px] lg:b-md text-text-secondary">Are you lost?</Reveal>
           <Reveal index={1} delay={0.5} as="p" className="w-[258px] lg:b-md text-text-secondary">I can fix this</Reveal>

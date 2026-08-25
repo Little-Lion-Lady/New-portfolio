@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 // Figma "Column" (393:7160 §02 "Blocker" / 393:15762 §03 "How might we").
 // A labelled row: short label + a text block (optional bold title + body).
 //   mobile  — stacked (flex-col, gap-lg)
-//   tablet  — 9-col grid: label c1 · text c3-9
+//   tablet  — 9-col grid: label c1 · text c4-9 (Figma 393:15680)
 //   desktop — 12-col grid: label c1-2 · text c3-9
 // Label is text-primary-highlight; title text-primary; body text-secondary.
 // Text scale B-xs→B-sm→B-md (16/20/24); labelClassName overrides the label scale
@@ -28,14 +28,14 @@ export function Column({
   const scale = "b-xs md:b-sm lg:b-md";
   return (
     <div
-      className={`flex flex-col gap-lg md:grid md:grid-cols-9 md:gap-x-xl lg:grid-cols-12 lg:gap-x-lg ${className}`}
+      className={`flex flex-col gap-md md:grid md:grid-cols-9 md:gap-x-xl lg:grid-cols-12 lg:gap-x-lg ${className}`}
     >
       <p
         className={`${labelClassName ?? scale} text-text-primary-highlight md:col-start-1 md:col-span-1 lg:col-span-2 whitespace-nowrap`}
       >
         {label}
       </p>
-      <div className="flex flex-col gap-md md:col-start-3 md:col-span-7 md:gap-lg lg:col-start-3 lg:col-span-7 lg:gap-xl">
+      <div className="flex flex-col gap-md md:col-start-4 md:col-span-6 lg:col-start-3 lg:col-span-7 lg:gap-lg">
         {title && <p className={`${scale} text-text-primary`}>{title}</p>}
         {ordered ? (
           <ol className={`${scale} flex list-decimal flex-col gap-md pl-xl text-text-secondary md:gap-lg`}>

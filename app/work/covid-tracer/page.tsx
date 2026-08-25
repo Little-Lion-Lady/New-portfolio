@@ -25,48 +25,48 @@ import { GlassImage } from "../../components/work-image";
 
 const findings = [
   {
-    finding: "No system visibility — users couldn’t tell if BT was active",
+    finding: "Nothing in the app told users whether Bluetooth Tracing was on",
     decision:
-      "Persistent BT status indicator on dashboard, always visible regardless of screen state",
+      "Status indicator on the dashboard, visible in every screen state",
   },
   {
-    finding: "Action relied on memory rather than choice or clear prompt",
+    finding: "Turning it on relied on memory, not on a prompt",
     decision:
-      "Single action per onboarding screen — one decision at a time, no competing CTAs",
+      "One action per onboarding screen, with no competing CTAs",
   },
   {
-    finding: "Too much information upfront, overloading users before trust established",
+    finding: "Too much information upfront, before any trust was established",
     decision:
-      "Value prop screen leads with benefit (“Trace your encounters”), mechanics collapsed below fold",
+      "Lead screen opens with the benefit (“Trace your encounters”) and drops the mechanics below the fold",
   },
   {
-    finding: "Landing page lacked focus — 38.7% success rate, 17/31 dropped at screen 1",
+    finding: "Unfocused landing page: 38.7% success rate, 17 of 31 dropped at screen 1",
     decision:
-      "Redesigned to single primary CTA with supporting context collapsed — BT enable action unmissable",
+      "Rebuilt around one primary CTA, with the supporting detail collapsed",
   },
   {
-    finding: "No path for users who already had BT on — flow assumed new state",
+    finding: "No path for users who already had Bluetooth on; the flow assumed a fresh install",
     decision:
-      "Separate flows for new users and existing users with BT already enabled — context-aware entry",
+      "Separate flows for new users and for users who already had it enabled",
   },
 ];
 
 const journeySteps = [
   {
     title: "Audit & Benchmark",
-    body: "Heuristic evaluation and baseline usability test across onboarding and in-app BT surfaces. Identified six critical failures.",
+    body: "Heuristic review and a baseline usability test, covering onboarding and the in-app Bluetooth screens. Six things were clearly broken.",
   },
   {
     title: "Design",
-    body: "Collaborative ideation with PO, design, dev, and MoH PO. Every decision mapped to a finding.",
+    body: "Worked through options with our PO, designers, devs and the Ministry’s PO. Every decision traced back to a finding.",
   },
   {
     title: "Test",
-    body: "Two rounds of user testing. Each with a specific question and a clear “therefore.”",
+    body: "Two rounds of user testing, each with one question to answer and a clear “therefore.”",
   },
   {
     title: "Ship",
-    body: "Delivered over two agile sprints with Ministry of Health approval at each stage.",
+    body: "Shipped over two sprints, with Ministry of Health sign-off at each stage.",
   },
 ];
 
@@ -80,12 +80,12 @@ function StatArrow() {
 export const metadata: Metadata = {
   title: "NZ Covid Tracer app — Maryna Babych",
   description:
-    "2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million had Bluetooth Tracing enabled, which allowed frictionless contact tracing that would kerb the spread. I diagnosed it as a UX failure and redesigned the experience to close that gap.",
+    "2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million turned on Bluetooth Tracing, the part that logged contacts automatically. People couldn't tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding to close the gap.",
 };
 
 export default function CovidTracer() {
   return (
-    <main className="relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-3xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-3xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
       {/* Gradient + header + hero grouped so gap-r-xl isn't inserted between them */}
       <div>
         <GradientBg height="647px" fullWidth />
@@ -95,7 +95,7 @@ export default function CovidTracer() {
             titleTop="NZ Covid"
             titleBottom="Tracer App"
             lead="How I closed a 1.4 million user gap during the COVID-19 pandemic"
-            description="2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million had Bluetooth Tracing enabled, which allowed frictionless contact tracing that would kerb the spread. I diagnosed it as a UX failure and redesigned the experience to close that gap."
+            description="2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million turned on Bluetooth Tracing, the part that logged contacts automatically. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding to close the gap."
             meta={[
               { label: "Role_", value: "Senior Product Designer" },
               { label: "Scope_", value: "Strategy·UX/UI·Research" },
@@ -136,13 +136,12 @@ export default function CovidTracer() {
           <Stats className="md:grid-cols-3">
             <Stat size="lg" value="2.7M" label="Unique app installs" />
             <Stat size="lg" value="95%" label="Devices capable of BT Tracing" />
-            <Stat size="lg" value="49%" label="Users enabled BT tracing" highlight />
+            <Stat size="lg" value="49%" label="Users with BT Tracing enabled" highlight />
           </Stats>
           <KeyParagraph className="lg:max-w-[916px]">
-            Bluetooth Tracing was opt-in, invisible, and poorly explained. Users didn’t
-            understand what it did, couldn’t see whether it was working, and had no
-            compelling reason to turn it on. The onboarding flow asked for trust before
-            establishing it. That was the failure to fix.
+            Bluetooth Tracing was opt-in and badly explained. People didn’t know what it
+            did, and once they were through onboarding there was nothing on screen to tell
+            them whether it was running. The flow asked for trust before it had earned any.
           </KeyParagraph>
         </Reveal>
       </SectionReveal>
@@ -156,9 +155,9 @@ export default function CovidTracer() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <KeyParagraph className="lg:max-w-[916px]">
-            Through a heuristic audit and early benchmarking, I found the drop-off wasn’t
-            random. Two distinct failures were responsible for nearly half of eligible users
-            not enabling a feature that would protect their community.
+            A heuristic audit and some early benchmarking showed the drop-off clustered in
+            two places. Between them, those two failures accounted for nearly half of
+            eligible users never switching Bluetooth Tracing on.
           </KeyParagraph>
           <ApproachMedia />
         </Reveal>
@@ -167,18 +166,17 @@ export default function CovidTracer() {
             <Stat size="lg" highlight value="18%" label="Mislick rate on primary CTA" />
             <Stat size="lg" highlight value="38.7%" label="Avg task success rate" />
             <Stat size="lg" highlight value="47" label="Usability score" />
-            <Stat size="lg" highlight value="55%" label="Users drop off at screen 1" />
+            <Stat size="lg" highlight value="55%" label="Users dropped off at screen 1" />
           </Stats>
           <div className="flex flex-col gap-r-md">
             <Column label="Blocker 1" title="The app asked for trust before earning it">
-              Onboarding used technical language, no clear calls to action, and frontloaded
-              too much information. Users arrived at the BT screen without understanding what
-              they were being asked to do — or why it mattered.
+              Onboarding led with technical language and too much of it, and no screen had an
+              obvious next step. By the time people reached the Bluetooth screen, they didn’t
+              know what they were agreeing to.
             </Column>
             <Column label="Blocker 2" title="BT status was invisible once you were in the app">
-              Existing users had no way to tell if Bluetooth Tracing was active. There was no
-              persistent indicator, no reminder, and the action to enable it relied on users
-              remembering where to find it — not on the app surfacing it.
+              Nothing in the app showed whether Bluetooth Tracing was on. Turning it on meant
+              remembering it existed and going to look for it in settings.
             </Column>
           </div>
         </Reveal>
@@ -187,8 +185,8 @@ export default function CovidTracer() {
       {/* Insight — between 02 and 03, no dividers */}
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
         <Insight>
-          The problem wasn’t awareness. It was comprehension and confidence. Redesign needed
-          to answer one question faster: “Is this safe and does it work?” Reassure first.
+          People had heard of Bluetooth Tracing. They just couldn’t tell whether it was safe
+          or whether it worked. The redesign had to answer that faster. Reassure first.
           Explain second. Ask third.
         </Insight>
       </Reveal>
@@ -200,8 +198,8 @@ export default function CovidTracer() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <KeyParagraph className="lg:max-w-[916px]">
-            The discovery findings translated into a single HMW and two testable hypotheses
-            with defined success metrics — set before any design decisions were made.
+            The findings gave us one How Might We and two testable hypotheses. We set the
+            success metrics before making any design decisions.
           </KeyParagraph>
           <Column label="How might we" labelClassName="b-xs md:b-sm lg:b-sm">
             improve Bluetooth Tracing feature acquisition for both new and existing users?
@@ -210,16 +208,16 @@ export default function CovidTracer() {
         <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-md">
           <Hypothesis
             label="H1"
-            believe="increasing the visual affordance of Bluetooth Tracing will drive acquisition"
-            because="users need a clear, persistent cue — not a buried setting they have to remember to find."
-            metric="BT daily active users grow by 30% within one month of launch."
+            believe="making Bluetooth Tracing visible in the app will get more people to turn it on"
+            because="people need a cue they can’t miss, not a setting they have to remember to go and find."
+            metric="Bluetooth Tracing daily active users grow 30% within a month of launch."
           />
           <Divider />
           <Hypothesis
             label="H2"
-            believe="improving how Contact Tracing is explained will lift acquisition across both new and existing users"
-            because="users will understand what they’re enabling — and why it’s worth it."
-            metric="Daily BT active devices grow while poster scans remain stable or also increase."
+            believe="explaining Contact Tracing better will lift take-up among new and existing users alike"
+            because="people will know what they’re switching on, and what they get for it."
+            metric="Daily Bluetooth-active devices grow while poster scans hold steady or rise."
           />
         </Reveal>
       </SectionReveal>
@@ -234,7 +232,7 @@ export default function CovidTracer() {
         <Reveal index={1} delay={0.6} className="w-full">
           <FindingsTable rows={findings} />
         </Reveal>
-        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-xs md:gap-md lg:gap-xl">
+        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-xs md:gap-md lg:gap-lg">
           <FlowDiagram />
           <DesignMedia />
         </Reveal>
@@ -249,9 +247,8 @@ export default function CovidTracer() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <KeyParagraph lead="Two rounds. Each one answered a specific question.">
-            I ran two rounds of user testing against the redesign. Each round had a clear
-            “therefore” — findings fed directly into the next iteration rather than being
-            logged and filed.
+            Each round had a clear “therefore”. Findings went straight into the next
+            iteration instead of being logged and filed.
           </KeyParagraph>
           <Stats className="md:grid-cols-2 lg:grid-cols-4">
             <Stat size="sm" value="18% → 5.3%" label="Mislick rate reduction" />
@@ -273,16 +270,16 @@ export default function CovidTracer() {
           {/* Content (desktop: right) */}
           <div className="flex flex-col gap-2xl lg:col-start-8 lg:col-span-5">
             <KeyParagraph>
-              Both hypotheses validated within one month of launch. While at the end of my
-              tenure on the project the app rating score doubled.
+              Both hypotheses were validated within a month of launch. By the time I left the
+              project, the app’s rating had doubled.
             </KeyParagraph>
             <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-x-lg gap-y-3xl">
               <Stat size="sm" highlight value="1,494,077" label="Daily active BT devices" />
               <StatArrow />
-              <Stat size="sm" highlight value="2,006,506" label="Mislick rate reduction" />
+              <Stat size="sm" highlight value="2,006,506" label="34% growth" />
               <Stat size="sm" highlight value="618,344" label="Daily poster scans" />
               <StatArrow />
-              <Stat size="sm" highlight value="672,605" label="26% growth" />
+              <Stat size="sm" highlight value="672,605" label="9% growth" />
             </div>
           </div>
           {/* Headline image (desktop: left) */}

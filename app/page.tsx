@@ -13,7 +13,7 @@ import { Divider } from "./components/divider";
 export default function Home() {
   return (
     // Full-bleed on tablet/mobile (no page padding); desktop keeps px-5xl/py-3xl. Section gap = --2xl.
-    <main className="relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
       {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
       <div>
         <GradientBg scaleClassName="lg:[transform:scaleX(1.5)]" />
@@ -38,7 +38,7 @@ export default function Home() {
             variant={3}
             className="pointer-events-none absolute left-[3%] top-0 w-8 md:left-[2%] md:w-11 lg:left-[2%] lg:w-14"
           />
-          <Divider className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
+          <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
           <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[15px] max-w-[296px] md:-ml-[32px] md:max-w-[636px] md:min-h-[200px] md:max-h-[280px] lg:-ml-[1.8vw] lg:max-w-[36vw] lg:min-h-[300px]" />
         </Reveal>
         </section>
@@ -50,7 +50,11 @@ export default function Home() {
           <SectionHeader number="01" name="Selected works" />
         </Reveal>
         <div className="flex w-full flex-col gap-r-3xl">
-          <Reveal index={1} className="w-full">
+          {/* SW/01 waits for the section heading to be most of the way through
+              its 600ms fade. index alone only buys 60ms, which reads as the two
+              arriving together. SW/02+ keep the plain index stagger — they sit
+              far enough down that each fires on its own in-view trigger. */}
+          <Reveal index={1} delay={0.3} className="w-full">
             <WorkItem
               number="SW/01"
               name="First Table app"

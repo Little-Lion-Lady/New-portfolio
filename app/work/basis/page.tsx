@@ -77,7 +77,7 @@ export const metadata: Metadata = {
 
 export default function Basis() {
   return (
-    <main className="relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-3xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-3xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
       {/* Gradient + header + hero grouped so gap-r-xl isn't inserted between them */}
       <div>
         <GradientBg height="647px" />
