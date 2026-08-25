@@ -29,7 +29,7 @@ export function ArtworkStrip({ names }: { names: string[] }) {
   if (reducedMotion) {
     return (
       <div className={BLEED_CLASS}>
-        <div className="-my-md flex w-full gap-sm overflow-x-auto py-md md:gap-lg lg:gap-xl">
+        <div className="-my-md flex w-full gap-xs overflow-x-auto py-md md:gap-md lg:gap-lg">
           {names.map((name) => (
             <Card key={name} name={name} />
           ))}
@@ -40,7 +40,7 @@ export function ArtworkStrip({ names }: { names: string[] }) {
 
   return (
     <div className={`${BLEED_CLASS} -my-md overflow-hidden py-md`}>
-      <div className="artwork-marquee-track flex w-max gap-sm md:gap-lg lg:gap-xl">
+      <div className="artwork-marquee-track flex w-max gap-xs md:gap-md lg:gap-lg">
         {names.map((name) => (
           <Card key={`${name}-a`} name={name} />
         ))}

@@ -34,7 +34,7 @@ const artwork = ["ART1", "ART2", "ART3", "ART4", "ART5", "ART6", "ART7"];
 export const metadata: Metadata = {
   title: "About — Maryna Babych",
   description:
-    "I'm a passionate, strategic, and creative thinker, blending human-centred design with technology to create experiences that positively impact lives. With 9 years of experience in product design, I've delivered award-winning, impactful designs across a variety of industries and environments.",
+    "Agency, startup, marketplace. The constraints change, the job doesn't: find the real problem, make it small enough to ship, and leave the team a system they can keep building on. Maryna Babych, Lead Product Designer in Auckland, New Zealand.",
 };
 
 export default function About() {
@@ -67,17 +67,13 @@ export default function About() {
           {/* Description + CV button */}
           <div className="flex flex-col gap-r-xl wide:flex-[5]">
             <p className="b-xs text-text-secondary md:b-sm wide:b-lg">
-              I&apos;m a <span className="text-text-highlight-dark">passionate</span>,{" "}
-              <span className="text-text-highlight-dark">strategic</span>, and{" "}
-              <span className="text-text-highlight-dark">creative thinker</span>, blending
-              human-centred design with technology to create experiences that positively impact lives.
-              With <span className="text-text-highlight-dark">9 years</span>{" "}
-              of experience in product
-              design, I&apos;ve delivered{" "}
-              <span className="text-text-highlight-dark">award-winning</span>,{" "}
-              <span className="text-text-highlight-dark">impactful</span> designs across a variety of
-              industries and environments, including agencies, startups, and established product
-              companies.
+              Agency, startup, marketplace. The constraints change, the job doesn&apos;t: find{" "}
+              <span className="text-text-highlight-dark">the real problem</span>, make it{" "}
+              <span className="text-text-highlight-dark">small enough to ship</span>, and leave the
+              team a system they can{" "}
+              <span className="text-text-highlight-dark">keep building on</span>. I&apos;ve spent as
+              much time in research and design systems as on the surface, because the interface is
+              usually the last and easiest part to get right.
             </p>
             <Button
               variant="primary"

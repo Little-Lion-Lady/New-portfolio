@@ -1,0 +1,30 @@
+{
+  "3xl": {
+    "$type": "dimension",
+    "$value": "{spacing7xl}"
+  },
+  "2xl": {
+    "$type": "dimension",
+    "$value": "{spacing6xl}"
+  },
+  "xl": {
+    "$type": "dimension",
+    "$value": "{spacing5xl}"
+  },
+  "lg": {
+    "$type": "dimension",
+    "$value": "{spacing3xl}"
+  },
+  "md": {
+    "$type": "dimension",
+    "$value": "{spacing2xl}"
+  },
+  "sm": {
+    "$type": "dimension",
+    "$value": "{spacingMd}"
+  },
+  "xs": {
+    "$type": "dimension",
+    "$value": "{spacingXs}"
+  }
+}

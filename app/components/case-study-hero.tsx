@@ -69,8 +69,8 @@ export function CaseStudyHero({
             uses. */}
         <div className="flex flex-col gap-3xl md:gap-4xl lg:grid lg:grid-cols-12 lg:gap-x-lg">
           {/* Text block (desktop: right, c7-12) */}
-          <Reveal immediate delay={0.6} className="flex flex-col gap-xl lg:col-start-7 lg:col-span-6 lg:justify-center">
-            <p className="b-sm text-text-primary-highlight lg:b-md">{lead}</p>
+          <Reveal immediate delay={0.6} className="flex flex-col gap-md md:gap-lg lg:col-start-7 lg:col-span-6 lg:justify-center lg:gap-xl">
+            <p className="b-xs text-text-primary-highlight md:b-sm lg:b-md">{lead}</p>
             <p className="b-xs text-text-secondary md:b-sm lg:b-md">{description}</p>
           </Reveal>
 

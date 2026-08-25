@@ -4,7 +4,8 @@ import type { ReactNode } from "react";
 //   optional label line   — text-tertiary caption above the lead (§06 "What broke")
 //   optional lead line   — text-primary-highlight (#0f1117), the dark opener
 //   body paragraph(s)    — text-secondary, may contain text-highlight-dark spans
-// Responsive body scale B-xs→B-sm→B-md (16/20/24); inter-line gap md→lg (16/20).
+// Responsive body scale B-xs→B-sm→B-md (16/20/24); inter-line gap sm→md (12/16/16,
+// Figma "Key paragraph" 430:16066 Size=md, which shares the cap-trim basis of b-*).
 export function KeyParagraph({
   label,
   lead,
@@ -17,7 +18,7 @@ export function KeyParagraph({
   className?: string;
 }) {
   return (
-    <div className={`flex flex-col items-start gap-md md:gap-lg ${className}`}>
+    <div className={`flex flex-col items-start gap-sm md:gap-md ${className}`}>
       {label && (
         <p className="b-xs text-text-tertiary md:b-sm lg:b-md">{label}</p>
       )}

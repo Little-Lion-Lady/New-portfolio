@@ -7,7 +7,7 @@ import { TitleStars } from "./title-stars";
 const TEXT_STYLE = {
   fontFamily: "var(--font-family-body)",
   fontWeight: "var(--font-weight-medium)",
-  lineHeight: 1.2,
+  lineHeight: 1.15,
   letterSpacing: "-0.02em",
 } as const;
 

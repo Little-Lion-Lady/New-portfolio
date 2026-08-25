@@ -50,16 +50,16 @@
 
   /* Colour — Orange */
   --colour-orange-50:  #fdf6ef;
-  --colour-orange-100: #fae9da;
-  --colour-orange-200: #f5d0b3;
-  --colour-orange-300: #eca877;
-  --colour-orange-400: #e68651;
-  --colour-orange-500: #e0682f;
-  --colour-orange-600: #d15025;
-  --colour-orange-700: #ae3c20;
-  --colour-orange-800: #8b3221;
-  --colour-orange-900: #702b1e;
-  --colour-orange-950: #3c140e;
+  --colour-orange-100: #ffd9b8;
+  --colour-orange-200: #ffb982;
+  --colour-orange-300: #fe9448;
+  --colour-orange-400: #f56c20;
+  --colour-orange-500: #e05f22;
+  --colour-orange-600: #e94a15;
+  --colour-orange-700: #ae2d0e;
+  --colour-orange-800: #8b1d08;
+  --colour-orange-900: #701604;
+  --colour-orange-950: #3c0801;
 
   /* Colour — Red (light family) */
   --colour-red-light-50:  #fff0f0;
@@ -92,9 +92,9 @@
   --colour-blue-100: #d6e4ff;
   --colour-blue-200: #b6cbff;
   --colour-blue-300: #8aa7ff;
-  --colour-blue-400: #5c75ff;
-  --colour-blue-500: #3744ff;
-  --colour-blue-600: #1a15ff;
+  --colour-blue-400: #7388ff;
+  --colour-blue-500: #4d58ff;
+  --colour-blue-600: #3744ff;
   --colour-blue-700: #150df7;
   --colour-blue-800: #100dc6;
   --colour-blue-900: #14159b;
@@ -105,7 +105,14 @@
   --colour-base-black: #000000;
   --colour-base-white-transparent: rgba(255, 255, 255, 0);
   --colour-base-black-transparent: rgba(0, 0, 0, 0);
+  --colour-base-white-10: rgba(255, 255, 255, 0.1);
+  --colour-base-white-25: rgba(255, 255, 255, 0.25);
   --colour-base-white-50: rgba(255, 255, 255, 0.5);
+  --colour-base-white-70: rgba(255, 255, 255, 0.7);
+  --colour-base-black-10: rgba(0, 0, 0, 0.1);
+  --colour-base-black-25: rgba(0, 0, 0, 0.25);
+  --colour-base-black-50: rgba(0, 0, 0, 0.5);
+  --colour-base-black-70: rgba(0, 0, 0, 0.7);
 
   /* Colour — opacity-suffixed primitives */
   --colour-gray-light-950-50: rgba(15, 17, 23, 0.5);
@@ -180,7 +187,7 @@
   /* Typography — line heights (body) */
   --line-height-body-xl:  56px;
   --line-height-body-lg:  48px;
-  --line-height-body-md:  40px;
+  --line-height-body-md:  36px;
   --line-height-body-sm:  32px;
   --line-height-body-xs:  26px;
   --line-height-body-2xs: 24px;
@@ -221,7 +228,7 @@
   --text-primary-highlight: var(--colour-gray-light-950);
 
   --border-primary:   var(--colour-gray-light-200);
-  --border-secondary: var(--colour-gray-dark-200);
+  --border-secondary: var(--colour-gray-light-100);
   --border-highlight: var(--colour-gray-light-600);
   --border-overlay:   var(--colour-gray-light-950-10);
 
@@ -353,7 +360,7 @@
   --rspace-xs:  var(--spacing-xs);   /* mobile 8  */
   --rspace-sm:  var(--spacing-md);   /* mobile 16 */
   --rspace-md:  var(--spacing-xl);   /* mobile 24 */
-  --rspace-lg:  var(--spacing-3xl);  /* mobile 40 */
+  --rspace-lg:  var(--spacing-2xl);  /* mobile 32 */
   --rspace-xl:  var(--spacing-3xl);  /* mobile 40 (Figma) */
   --rspace-2xl: var(--spacing-4xl);  /* mobile 64 */
   --rspace-3xl: var(--spacing-5xl);  /* mobile 72 */
@@ -396,14 +403,19 @@
     --border-primary:   var(--colour-gray-dark-700);
     --border-secondary: var(--colour-gray-dark-900);
     --border-highlight: var(--colour-gray-dark-100);
-    --border-overlay:   var(--colour-gray-light-50-30);
+    /* Overlay chrome stays dark in dark mode, same as shadow-02 below:
+       the glass frame's hairline is gray-light-950-10 in both themes. */
+    --border-overlay:   var(--colour-gray-light-950-10);
 
     --shadows-shadow-01: var(--colour-blue-200-50);
-    --shadows-shadow-02: var(--colour-blue-100-10);
+    /* Drop shadows stay dark in dark mode — shadow-02 is mode-invariant
+       (Figma #0f11171a), so glass frames and cards cast a shadow rather
+       than the light-blue glow the blue-100 value produced. */
+    --shadows-shadow-02: var(--colour-base-black);
     --shadows-glow-01:   var(--colour-blue-100);
 
-    /* Figma "Utility/inverses" collection, dark mode: glass = Blue/200-50. */
-    --utility-inverses-glass: var(--colour-blue-200-50);
+    /* Figma "Utility/inverses" collection, dark mode: glass = base/White-10. */
+    --utility-inverses-glass: var(--colour-base-white-10);
     --utility-inverses-white: var(--colour-blue-950);
 
     --component-bg-button-primary: var(--colour-base-white);
@@ -508,14 +520,18 @@
   --border-primary:   var(--colour-gray-dark-700);
   --border-secondary: var(--colour-gray-dark-900);
   --border-highlight: var(--colour-gray-dark-100);
-  --border-overlay:   var(--colour-gray-light-50-30);
+  /* Overlay chrome stays dark in dark mode, same as shadow-02 below:
+     the glass frame's hairline is gray-light-950-10 in both themes. */
+  --border-overlay:   var(--colour-gray-light-950-10);
 
   --shadows-shadow-01: var(--colour-blue-200-50);
-  --shadows-shadow-02: var(--colour-blue-100-10);
+  /* Figma dark mode: shadow-02 is Base/black at full opacity — the
+     effect's softness comes from the 20px blur, not from alpha. */
+  --shadows-shadow-02: var(--colour-base-black);
   --shadows-glow-01:   var(--colour-blue-100);
 
-  /* Figma "Utility/inverses" collection, dark mode: glass = Blue/200-50. */
-  --utility-inverses-glass: var(--colour-blue-200-50);
+  /* Figma "Utility/inverses" collection, dark mode: glass = base/White-10. */
+  --utility-inverses-glass: var(--colour-base-white-10);
   --utility-inverses-white: var(--colour-blue-950);
 
   --component-bg-button-primary: var(--colour-base-white);
@@ -897,7 +913,15 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-family-body);
-  overflow-x: hidden;
+  /* `clip`, not `hidden`: `hidden` makes <body> its own scroll container, and
+     the Reveal components' hidden state (translateY(16px)) leaves 16px of
+     vertical overflow inside it. The first wheel gesture then latches onto
+     <body>, spends itself scrolling those 16px, and never reaches the
+     viewport — so the first scroll on the home page appeared stuck and only
+     the second one moved the page. `clip` hides the same horizontal bleed
+     without creating a scroll container. (html's own overflow-x propagates
+     to the viewport and still handles page-level horizontal clipping.) */
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -959,7 +983,7 @@ body {
     --rspace-xs:  var(--spacing-xs);   /* 8   */
     --rspace-sm:  var(--spacing-md);   /* 16  */
     --rspace-md:  var(--spacing-2xl);  /* 32  */
-    --rspace-lg:  var(--spacing-4xl);  /* 64  */
+    --rspace-lg:  var(--spacing-3xl);  /* 40  */
     --rspace-xl:  var(--spacing-5xl);  /* 72 (Figma) */
     --rspace-2xl: var(--spacing-6xl);  /* 80  */
     --rspace-3xl: var(--spacing-7xl);  /* 96  */

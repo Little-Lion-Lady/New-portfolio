@@ -2,7 +2,9 @@ import type { ReactNode } from "react";
 
 // Figma "Stat container" (393:7120) + "Stats" row. A big number + caption.
 // Sizes (number / label scales per breakpoint, from resolved tokens):
-//   lg (§01 Problem, §02 Approach)  number B-lg→D-xs→D-sm (32/44/60) · label B-xs→B-xs→B-sm
+//   lg (§01 Problem, §02 Approach)  number B-lg→D-xs→D-sm (32/44/60) · label B-xs→B-sm→B-sm
+//                                   (Figma "Stat container" 393:15661 Size=md — the variant
+//                                    the page compositions instance, not Size=lg)
 //   sm (§05 Validation, §06 Outcome) number B-md→B-lg→D-xs (24/32/44) · label B-xs (16)
 //   outcome (Basis §07)             number D-xs→D-sm→D-md (44/60/80; medium on desktop) ·
 //                                   label B-xs→B-sm→B-md · sublabel B-2xs→B-sm→B-sm (sentence case)
@@ -42,11 +44,14 @@ export function Stat({
       : size === "sm"
         ? "b-md md:b-lg lg:d-xs"
         : "d-xs md:d-sm lg:d-md";
-  const labelClass = size === "outcome" ? "b-xs md:b-sm lg:b-md" : "b-xs lg:b-sm";
+  // Figma Size=md labels are B-sm at BOTH tablet and desktop (code had 16/16/20).
+  // Figma Size=sm drops to B-2xs (14) on mobile — cap height 10 there vs 11.4 for B-xs.
+  const labelClass =
+    size === "outcome" ? "b-xs md:b-sm lg:b-md" : size === "lg" ? "b-xs md:b-sm" : "b-2xs md:b-xs lg:b-sm";
   const sublabelClass = size === "outcome" ? "b-2xs md:b-sm" : "b-2xs uppercase";
   // number → label-group gap, and label → sublabel gap
   const outerGap =
-    size === "outcome" ? "gap-sm lg:gap-xl" : "gap-xs md:gap-md lg:gap-lg";
+    size === "outcome" ? "gap-sm lg:gap-xl" : "gap-sm md:gap-md lg:gap-lg";
   const labelGap = size === "outcome" ? "gap-sm md:gap-md" : "gap-3xs";
 
   return (

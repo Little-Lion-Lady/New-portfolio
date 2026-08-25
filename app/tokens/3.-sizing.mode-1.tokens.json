@@ -1,0 +1,62 @@
+{
+  "size3xs": {
+    "$type": "dimension",
+    "$value": "{size.2}"
+  },
+  "size2xs": {
+    "$type": "dimension",
+    "$value": "{size.3}"
+  },
+  "sizeXs": {
+    "$type": "dimension",
+    "$value": "{size.4}"
+  },
+  "sizeSm": {
+    "$type": "dimension",
+    "$value": "{size.6}"
+  },
+  "sizeMd": {
+    "$type": "dimension",
+    "$value": "{size.7}"
+  },
+  "sizeLg": {
+    "$type": "dimension",
+    "$value": "{size.8}"
+  },
+  "sizeXl": {
+    "$type": "dimension",
+    "$value": "{size.9}"
+  },
+  "size2xl": {
+    "$type": "dimension",
+    "$value": "{size.10}"
+  },
+  "size3xl": {
+    "$type": "dimension",
+    "$value": "{size.11}"
+  },
+  "size4xl": {
+    "$type": "dimension",
+    "$value": "{size.15}"
+  },
+  "size5xl": {
+    "$type": "dimension",
+    "$value": "{size.16}"
+  },
+  "size6xl": {
+    "$type": "dimension",
+    "$value": "{size.17}"
+  },
+  "size7xl": {
+    "$type": "dimension",
+    "$value": "{size.18}"
+  },
+  "size8xl": {
+    "$type": "dimension",
+    "$value": "{size.32}"
+  },
+  "size9xl": {
+    "$type": "dimension",
+    "$value": "{size.40}"
+  }
+}

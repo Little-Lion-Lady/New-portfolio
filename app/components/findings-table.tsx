@@ -3,8 +3,10 @@ import { Divider } from "./divider";
 
 // Figma §04 "Header" (100:6144) + "List"/"Row" (100:6153). A Finding → Design decision table.
 //   mobile  — each row stacks: finding · ↓ · decision (header shows "Finding" only)
-//   tablet/desktop — 12-col grid: finding c1-5 · arrow c6-7 · decision c8-12
-// Header text is text-primary-highlight (B-xs→B-sm→B-md); row text is text-secondary
+//   tablet  — 9-col grid:  finding c1-4 · arrow c5   · decision c6-9
+//   desktop — 12-col grid: finding c1-5 · arrow c6-7 · decision c8-12
+// Header text is text-primary-highlight (B-xs→B-xs→B-md — tablet matches mobile);
+// row text is text-secondary
 // (B-xs→B-xs→B-sm); arrow is text-tertiary. Rows separated by dividers (gap-xl).
 // Column headings default to the COVID Tracer §04 wording; First Table §04 relabels
 // them "Friction point" / "Solution".
@@ -18,30 +20,30 @@ export function FindingsTable({
   decisionLabel?: string;
 }) {
   return (
-    <div className="flex flex-col gap-2xl lg:gap-3xl">
+    <div className="flex flex-col gap-xl md:gap-2xl lg:gap-3xl">
       {/* Header */}
-      <div className="grid grid-cols-1 md:grid-cols-12 md:gap-x-lg">
-        <p className="b-xs text-text-primary-highlight md:col-span-5 md:b-sm lg:b-md">
+      <div className="grid grid-cols-1 md:grid-cols-9 md:gap-x-lg lg:grid-cols-12">
+        <p className="b-xs text-text-primary-highlight md:col-span-4 lg:col-span-5 lg:b-md">
           {findingLabel}
         </p>
-        <p className="hidden text-text-primary-highlight md:col-start-8 md:col-span-5 md:block md:b-sm lg:b-md">
+        <p className="hidden text-text-primary-highlight md:col-start-6 md:col-span-4 md:block md:b-xs lg:col-start-8 lg:col-span-5 lg:b-md">
           {decisionLabel}
         </p>
       </div>
 
       {/* Rows */}
-      <div className="flex flex-col gap-xl">
+      <div className="flex flex-col gap-xl md:gap-lg lg:gap-xl">
         {rows.map((row, i) => (
           <Fragment key={i}>
-            <div className="grid grid-cols-1 gap-lg md:grid-cols-12 md:gap-x-lg md:gap-y-0">
-              <p className="b-xs text-text-secondary md:col-span-5 lg:b-sm">
+            <div className="grid grid-cols-1 gap-md md:grid-cols-9 md:gap-x-lg md:gap-y-0 lg:grid-cols-12">
+              <p className="b-xs text-text-secondary md:col-span-4 lg:col-span-5 lg:b-sm">
                 {row.finding}
               </p>
-              <p className="b-xs text-text-tertiary md:col-start-6 md:col-span-2 md:text-center lg:b-sm">
+              <p className="b-xs text-text-tertiary md:col-start-5 md:col-span-1 md:text-center lg:col-start-6 lg:col-span-2 lg:b-sm">
                 <span className="md:hidden">↓</span>
                 <span className="hidden md:inline">→</span>
               </p>
-              <p className="b-xs text-text-secondary md:col-start-8 md:col-span-5 lg:b-sm">
+              <p className="b-xs text-text-secondary md:col-start-6 md:col-span-4 lg:col-start-8 lg:col-span-5 lg:b-sm">
                 {row.decision}
               </p>
             </div>

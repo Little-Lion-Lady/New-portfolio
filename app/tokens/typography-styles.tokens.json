@@ -1,0 +1,195 @@
+{
+  "d2xl": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{fontFamily.fontFamilyBody}",
+      "fontSize": "{fontSize.display2xl}",
+      "fontWeight": "Medium",
+      "lineHeight": "115%"
+    }
+  },
+  "dXl": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{fontFamily.fontFamilyBody}",
+      "fontSize": "{fontSize.displayXl}",
+      "fontWeight": "Medium",
+      "lineHeight": "115%"
+    }
+  },
+  "dLg": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{fontFamily.fontFamilyBody}",
+      "fontSize": "{fontSize.displayLg}",
+      "fontWeight": "Medium",
+      "lineHeight": "115%"
+    }
+  },
+  "dMd": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{fontFamily.fontFamilyBody}",
+      "fontSize": "{fontSize.displayMd}",
+      "fontWeight": "Medium",
+      "lineHeight": "115%"
+    }
+  },
+  "dSm": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{fontFamily.fontFamilyBody}",
+      "fontSize": "{fontSize.displaySm}",
+      "fontWeight": "Regular",
+      "lineHeight": "115%"
+    }
+  },
+  "dXs": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{fontFamily.fontFamilyBody}",
+      "fontSize": "{fontSize.displayXs}",
+      "fontWeight": "Regular",
+      "lineHeight": "110%"
+    }
+  },
+  "d2xs": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{fontFamily.fontFamilyBody}",
+      "fontSize": "{fontSize.display2xs}",
+      "fontWeight": "Regular",
+      "lineHeight": "120%"
+    }
+  },
+  "bXl": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{fontFamily.fontFamilyBody}",
+      "fontSize": "{fontSize.text2xl}",
+      "fontWeight": "Regular",
+      "lineHeight": "{lineHeight.bodyXl}"
+    }
+  },
+  "bLg": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{fontFamily.fontFamilyBody}",
+      "fontSize": "{fontSize.textXl}",
+      "fontWeight": "Regular",
+      "lineHeight": "{lineHeight.bodyLg}"
+    }
+  },
+  "bMd": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "{fontFamily.fontFamilyBody}",
+      "fontSize": "{fontSize.textMd}",
+      "fontWeight": "Regular",
+      "lineHeight": "{lineHeight.bodyMd}"
+    }
+  },
+  "bSm": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Geist",
+      "fontSize": "{fontSize.textSm}",
+      "fontWeight": "Regular",
+      "lineHeight": "{lineHeight.bodySm}"
+    }
+  },
+  "bXs": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Geist",
+      "fontSize": "{fontSize.textXs}",
+      "fontWeight": "Regular",
+      "lineHeight": "{lineHeight.bodyXs}"
+    }
+  },
+  "b2xs": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Geist",
+      "fontSize": "{fontSize.text2xs}",
+      "fontWeight": "Regular",
+      "lineHeight": "{lineHeight.body2xs}"
+    }
+  },
+  "b3xs": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Geist",
+      "fontSize": "{fontSize.text3xs}",
+      "fontWeight": "Regular",
+      "lineHeight": "{lineHeight.body3xs}"
+    }
+  },
+  "newFolder": {
+    "d2xl": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{fontFamily.fontFamilyDisplay}",
+        "fontSize": "{fontSize.display2xl}",
+        "fontWeight": "Circle",
+        "lineHeight": "110%"
+      }
+    }
+  },
+  "eightShapesSpecs": {
+    "title": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": 14,
+        "fontWeight": "Medium",
+        "lineHeight": "auto"
+      }
+    },
+    "heading": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": 12,
+        "fontWeight": "Medium",
+        "lineHeight": "auto"
+      }
+    },
+    "label": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": 10,
+        "fontWeight": "Medium",
+        "lineHeight": "auto"
+      }
+    },
+    "body": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": 10,
+        "fontWeight": "Regular",
+        "lineHeight": "auto"
+      }
+    },
+    "muted": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": 10,
+        "fontWeight": "Regular",
+        "lineHeight": "auto"
+      }
+    },
+    "caption": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "Inter",
+        "fontSize": 9,
+        "fontWeight": "Regular",
+        "lineHeight": "auto"
+      }
+    }
+  }
+}

@@ -234,7 +234,7 @@ export default function CovidTracer() {
         <Reveal index={1} delay={0.6} className="w-full">
           <FindingsTable rows={findings} />
         </Reveal>
-        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-xs md:gap-md lg:gap-xl">
+        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-xs md:gap-md lg:gap-lg">
           <FlowDiagram />
           <DesignMedia />
         </Reveal>

@@ -68,7 +68,7 @@ export function CaseStudyNav({
         <GlassImage
           src={image.src}
           alt={image.alt}
-          padding="p-3xs"
+          mini
           sizes="140px"
           className="h-[80px] w-[80px] md:h-[80px] md:w-full lg:h-[140px]"
         />

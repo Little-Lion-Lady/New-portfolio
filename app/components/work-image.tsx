@@ -35,12 +35,31 @@ function getMarginClass(quantity: 3 | 4) {
   return quantity === 4 ? "-mr-[80px]" : "-mr-[40px] md:-mr-[80px] lg:-mr-[72px]";
 }
 
-// Glass-frame padding scales with platform: mobile 6px, tablet 8px, desktop 12px.
-const PADDING_CLASS = "p-2xs md:p-xs lg:p-sm";
+// Figma "Image wrapper" (1144:7939), one variant per platform. Frame thickness
+// is the component's padding; the outer/inner radii are a fixed pair per
+// variant (inner is always one step down so the corners stay concentric).
+//
+//   Platform      thickness            radius (outer / inner)
+//   mobile        spacing-3xs   4px    radius-sm 12 / radius-xs  8
+//   tablet        spacing-2xs   6px    radius-md 16 / radius-sm 12
+//   desktop       spacing-2xs   6px    radius-md 16 / radius-sm 12
+//   mini          spacing-3xs   4px    radius-sm 12 / radius-xs  8
+//
+// Mobile and mini now resolve to the same 4 / 12 / 8 numbers; they stay
+// separate because `mini` applies at every breakpoint, not just below md.
+const PADDING_CLASS = "p-3xs md:p-2xs";
+const RADIUS_CLASS = "rounded-sm md:rounded-md";
+const INNER_RADIUS_CLASS = "rounded-xs md:rounded-sm";
 
-// The frosted card chrome shared by GlassImage and GlassFrame.
+// Platform=mini — the compact frame used by the case-study footer nav.
+const MINI_PADDING_CLASS = "p-3xs";
+const MINI_RADIUS_CLASS = "rounded-sm";
+const MINI_INNER_RADIUS_CLASS = "rounded-xs";
+
+// The frosted card chrome shared by GlassImage and GlassFrame. Radius is
+// applied separately so the mini variant can swap the whole pair at once.
 const FRAME_CLASS =
-  "flex flex-col rounded-sm border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] shadow-[0_2px_10px_var(--shadows-shadow-02)]";
+  "flex flex-col border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] shadow-[0_2px_20px_var(--shadows-shadow-02)]";
 
 // The same glass card as GlassImage, but holding arbitrary content instead of a
 // photo — used where the frame wraps something that isn't a next/image (e.g. the
@@ -48,20 +67,26 @@ const FRAME_CLASS =
 // `className` (width + aspect-*) exactly as you would a GlassImage.
 export function GlassFrame({
   className = "",
-  padding = PADDING_CLASS,
+  mini = false,
+  padding,
   innerClassName = "",
   children,
 }: {
   className?: string;
-  /** Override the default responsive padding (e.g. a fixed "p-3xs" mini frame). */
+  /** Figma's Platform=mini variant — 4px frame, 12/8 radii. */
+  mini?: boolean;
+  /** Override the variant's frame thickness. Radius still follows `mini`. */
   padding?: string;
   /** Classes for the inner (clipped, rounded) box — background, layout, etc. */
   innerClassName?: string;
   children?: ReactNode;
 }) {
+  const pad = padding ?? (mini ? MINI_PADDING_CLASS : PADDING_CLASS);
+  const radius = mini ? MINI_RADIUS_CLASS : RADIUS_CLASS;
+  const innerRadius = mini ? MINI_INNER_RADIUS_CLASS : INNER_RADIUS_CLASS;
   return (
-    <div className={`${FRAME_CLASS} ${padding} ${className}`}>
-      <div className={`relative h-full w-full flex-1 overflow-hidden rounded-xs ${innerClassName}`}>
+    <div className={`${FRAME_CLASS} ${radius} ${pad} ${className}`}>
+      <div className={`relative h-full w-full flex-1 overflow-hidden ${innerRadius} ${innerClassName}`}>
         {children}
       </div>
     </div>
@@ -77,7 +102,8 @@ export function GlassImage({
   alt,
   className = "",
   quality = 100,
-  padding = PADDING_CLASS,
+  mini = false,
+  padding,
   sizes = "100vw",
   aspectRatio,
   frameAspectRatio,
@@ -95,7 +121,9 @@ export function GlassImage({
   alt: string;
   className?: string;
   quality?: number;
-  /** Override the default responsive padding (e.g. a fixed "p-3xs" mini frame). */
+  /** Figma's Platform=mini variant — 4px frame, 12/8 radii. */
+  mini?: boolean;
+  /** Override the variant's frame thickness. Radius still follows `mini`. */
   padding?: string;
   sizes?: string;
   /**
@@ -123,13 +151,16 @@ export function GlassImage({
   /** Optional overlay content stacked on top of the image (e.g. a decorative icon). */
   children?: ReactNode;
 }) {
+  const pad = padding ?? (mini ? MINI_PADDING_CLASS : PADDING_CLASS);
+  const radius = mini ? MINI_RADIUS_CLASS : RADIUS_CLASS;
+  const innerRadius = mini ? MINI_INNER_RADIUS_CLASS : INNER_RADIUS_CLASS;
   return (
     <div
-      className={`${FRAME_CLASS} ${padding} ${className}`}
+      className={`${FRAME_CLASS} ${radius} ${pad} ${className}`}
       style={frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
     >
       <div
-        className={aspectRatio ? "relative w-full overflow-hidden rounded-xs" : "relative h-full w-full flex-1 overflow-hidden rounded-xs"}
+        className={`${aspectRatio ? "relative w-full overflow-hidden" : "relative h-full w-full flex-1 overflow-hidden"} ${innerRadius}`}
         style={aspectRatio ? { aspectRatio } : undefined}
       >
         <Image
