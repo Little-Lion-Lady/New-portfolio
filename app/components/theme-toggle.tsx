@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import { MoonIcon, SunIcon } from "./icons";
 import { useInitialIsDark } from "./theme-context";
+import { useIsDark } from "./use-is-dark";
 
 const STORAGE_KEY = "theme";
 
@@ -34,17 +35,21 @@ function applyTheme(theme: "dark" | "light") {
 // Light/dark theme toggle.
 // - Initial render trusts the server-read "theme" cookie (InitialThemeContext)
 //   so it matches the SSR'd HTML exactly. With no cookie yet (first visit) it
-//   renders the same `false` the server did and corrects in the effect below —
-//   reading data-theme/matchMedia during that first client render is what
-//   caused the hydration mismatch for dark-OS first-time visitors.
+//   renders the same `false` the server did, then useSyncExternalStore swaps
+//   to the live attribute once hydration finishes — reading data-theme or
+//   matchMedia during that first client render is what caused the hydration
+//   mismatch for dark-OS first-time visitors.
 // - On click, saves the new preference to the cookie + localStorage so it
 //   survives navigation (ThemeToggle remounts per page) and page refreshes.
 // - Subscribes to OS changes only when the user hasn't made a manual choice.
 // - Sets data-theme on <html>; globals.css resolves all tokens from it.
 // Visual matches the Figma toggle: 24×20 pill, border-highlight, 16px icon.
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const initialFromServer = useInitialIsDark();
-  const [isDark, setIsDark] = useState(() => initialFromServer ?? false);
+  // `data-theme` on <html> is the single source of truth — globals.css already
+  // resolves every token from it, and applyTheme() below is the only writer.
+  // Reading it through useIsDark means the icon follows the attribute instead
+  // of tracking it in a second piece of state that has to be kept in step.
+  const isDark = useIsDark(useInitialIsDark() ?? false);
 
   useEffect(() => {
     const theme = resolveTheme();
@@ -52,7 +57,6 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       try { return localStorage.getItem(STORAGE_KEY) !== null; } catch { return false; }
     })();
 
-    setIsDark(theme === "dark");
     applyTheme(theme);
     setThemeCookie(theme);
 
@@ -62,7 +66,6 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     const onChange = (e: MediaQueryListEvent) => {
       const next = e.matches ? "dark" : "light";
-      setIsDark(e.matches);
       applyTheme(next);
       setThemeCookie(next);
     };
@@ -71,9 +74,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
   }, []);
 
   const toggle = () => {
-    const next = !isDark;
-    const theme = next ? "dark" : "light";
-    setIsDark(next);
+    const theme = isDark ? "light" : "dark";
     applyTheme(theme);
     setThemeCookie(theme);
     try { localStorage.setItem(STORAGE_KEY, theme); } catch { /* ignore */ }

@@ -426,6 +426,18 @@ export default function DesignSystem() {
       </section>
 
       <section className="flex flex-col gap-lg">
+        <SectionTitle>Typography — mono (Geist Mono)</SectionTitle>
+        <div className="flex flex-col gap-md">
+          {MONO_STYLES.map(([cls, px]) => (
+            <div key={cls} className="flex items-baseline gap-md border-b border-border-overlay pb-2xs">
+              <span className="m-2xs text-text-tertiary w-[var(--size-40)] shrink-0">{`${cls} · ${px}px`}</span>
+              <span className={cls}>The quick brown fox jumps over the lazy dog</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-lg">
         <SectionTitle>Typography — body (Geist)</SectionTitle>
         <div className="flex flex-col gap-md">
           {BODY_STYLES.map(([cls, px]) => (

@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import Lottie from "lottie-react";
 import { useReducedMotion } from "framer-motion";
 import star1Raw from "@/public/home/star1.json";
 import star2Raw from "@/public/home/star2.json";
 import star3Raw from "@/public/home/star3.json";
 import star4Raw from "@/public/home/star4.json";
-import { hex, remapColors, isDarkTheme, type ColorMap } from "./lottie-utils";
+import { hex, remapColors, type ColorMap } from "./lottie-utils";
+import { useIsDark } from "./use-is-dark";
 
 const DARK_MAP: ColorMap = [
   [hex("#000000"), hex("#FFFFFF")],
@@ -24,18 +25,9 @@ export function Star({
   variant?: 1 | 2 | 3 | 4;
   className?: string;
 }) {
-  const [dark, setDark] = useState(isDarkTheme);
+  const dark = useIsDark();
   const reducedMotion = useReducedMotion();
 
-  useEffect(() => {
-    setDark(isDarkTheme());
-    const observer = new MutationObserver(() => setDark(isDarkTheme()));
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-    return () => observer.disconnect();
-  }, []);
 
   const raw = STARS[variant - 1];
   const animationData = useMemo(

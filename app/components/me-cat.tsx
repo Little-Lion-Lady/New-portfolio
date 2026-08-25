@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import Lottie from "lottie-react";
 import { useReducedMotion } from "framer-motion";
 import meCatRaw from "@/public/home/me-cat.json";
-import { hex, remapColors, isDarkTheme, type ColorMap } from "./lottie-utils";
+import { hex, remapColors, type ColorMap } from "./lottie-utils";
+import { useIsDark } from "./use-is-dark";
 
 const DARK_MAP: ColorMap = [
   [hex("#000000"), hex("#FFFFFF")],
@@ -14,18 +15,9 @@ const DARK_MAP: ColorMap = [
 ];
 
 export function MeCat({ className }: { className?: string }) {
-  const [dark, setDark] = useState(isDarkTheme);
+  const dark = useIsDark();
   const reducedMotion = useReducedMotion();
 
-  useEffect(() => {
-    setDark(isDarkTheme());
-    const observer = new MutationObserver(() => setDark(isDarkTheme()));
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-    return () => observer.disconnect();
-  }, []);
 
   // Bundled at build time (content-hashed by Next automatically) instead of
   // fetched at runtime with a hand-maintained ?v=N cache-busting param.

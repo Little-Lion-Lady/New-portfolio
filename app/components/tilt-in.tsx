@@ -16,10 +16,10 @@
   renders a plain div.
 */
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { m, useInView, useReducedMotion } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
-import { useRevealTrigger } from "./reveal";
+import { useHasMounted, useRevealTrigger } from "./reveal";
 
 export function TiltIn({
   offset,
@@ -41,10 +41,7 @@ export function TiltIn({
   const { active, immediate: ctxImmediate } = useSectionReveal();
   const parent = useRevealTrigger();
   const isImmediate = immediate || ctxImmediate;
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    if (isImmediate) setMounted(true);
-  }, [isImmediate]);
+  const mounted = useHasMounted();
   // Inside a Reveal: same trigger, same delay as the fade. Otherwise fall back
   // to this element's own in-view gate.
   const shouldAnimate = parent ? parent.active : isImmediate ? mounted : active && inView;

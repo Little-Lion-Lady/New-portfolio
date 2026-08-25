@@ -40,7 +40,11 @@ export function HeroText({ className }: { className?: string }) {
       for (let i = 0; i < 24; i++) {
         const mid = (lo + hi) / 2;
         probe.style.fontSize = `${mid}px`;
-        probe.scrollHeight <= availH ? (lo = mid) : (hi = mid);
+        if (probe.scrollHeight <= availH) {
+          lo = mid;
+        } else {
+          hi = mid;
+        }
       }
       setFontSize(lo);
     };
