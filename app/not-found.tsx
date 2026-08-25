@@ -5,7 +5,7 @@ import { Reveal, RevealWords } from "./components/reveal";
 
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-svh flex-col bg-bg-primary px-md pt-[56px] md:px-xl md:pt-[64px] lg:px-5xl lg:pt-[72px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex min-h-svh flex-col bg-bg-primary px-md pt-[56px] md:px-xl md:pt-[64px] lg:px-5xl lg:pt-[72px]">
       <GradientBg />
       <SiteHeader />
 

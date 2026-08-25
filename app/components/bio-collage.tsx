@@ -44,16 +44,18 @@ export function BioCollage() {
         </TiltIn>
       </div>
       <div className="flex h-[295.054px] w-[233.946px] shrink-0 items-center justify-center md:h-[489.79px] md:w-[388.351px] lg:h-[489.79px] lg:w-[388.351px]">
-        {/* rounded-sm bg-bg-primary backer — same shape/rotation as the frame
+        {/* Radius-matched bg-bg-primary backer — same shape/rotation as the frame
             itself, sitting directly behind it. This card overlaps the photo
             card behind it, and the glass frame's translucent bg would
             otherwise blend with the photo instead of the plain page bg,
             bleeding its colours through at the seam. The backer gives the
             translucent glass something page-coloured to blend with instead,
             so it renders identically to every other (non-overlapping) glass
-            card rather than needing an opaque one-off variant. */}
+            card rather than needing an opaque one-off variant. Its radius has to
+            track GlassImage's own outer radius (sm on mobile, md from md up),
+            or the flatter backer corners poke out past the frame. */}
         <TiltIn offset={-8}>
-          <div className="-rotate-[7.56deg] rounded-sm bg-bg-primary">
+          <div className="-rotate-[7.56deg] rounded-sm bg-bg-primary md:rounded-md">
             <GlassImage
               src={dark ? "/home/about/ABOUT2_Dark.jpg" : "/home/about/ABOUT2.jpg"}
               alt=""

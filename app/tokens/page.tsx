@@ -289,7 +289,10 @@ export default function DesignSystem() {
         </Demo>
 
         <Demo name="Gradient backdrop" full>
-          <div className="relative h-[320px] w-full overflow-hidden rounded-[var(--size-6)]">
+          {/* Contained preview, not a page backdrop: gutter 0 so the gradient
+              fills this box exactly instead of overhanging it and relying on
+              overflow-hidden to clip the excess. */}
+          <div className="[--page-gutter:0px] relative h-[320px] w-full overflow-hidden rounded-[var(--size-6)]">
             <GradientBg height="320px" fullWidth />
           </div>
         </Demo>

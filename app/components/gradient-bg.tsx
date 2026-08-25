@@ -28,7 +28,10 @@ export function GradientBg({
     <div className="relative">
     <div
       aria-hidden
-      className={`pointer-events-none absolute -left-xl -right-xl -top-xl z-0 pt-lg md:-left-3xl md:-right-3xl md:-top-3xl md:pt-2xl lg:-left-5xl lg:-right-5xl lg:-top-5xl lg:pt-3xl${fullWidth ? "" : " px-lg md:px-2xl lg:px-3xl"}`}
+      // Horizontal bleed lives in .gradient-bleed (globals.css) — it steps from
+      // content-edge on mobile out to the viewport edge at lg, cancelling the
+      // page's own --page-gutter to get there.
+      className={`gradient-bleed pointer-events-none absolute -top-xl z-0 pt-lg md:-top-3xl md:pt-2xl lg:-top-5xl lg:pt-3xl${fullWidth ? "" : " px-lg md:px-2xl lg:px-3xl"}`}
       style={{ height }}
     >
       {/* clip-path rounds match border-radius at each breakpoint so the

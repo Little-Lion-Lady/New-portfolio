@@ -1092,6 +1092,21 @@ h1.d-sm {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
+/* Hero gradient horizontal bleed.
+   Positioned inside the padded content box, so reaching the viewport edge
+   means cancelling the page gutter exactly. That gutter differs per page
+   (home/About step 16>24>72, the case studies 16>40>72), so it's read from
+   --page-gutter, which each <main> declares next to its own px-*. Hardcoding
+   the bleed is what used to push the gradient 8px (mobile) and 16px (tablet)
+   past the viewport, clipping off the rounded top corners.
+   Full bleed at every breakpoint is deliberate: the blur needs to run past
+   the text on both sides so the feathering reads around the copy rather than
+   stopping at a visible margin. */
+.gradient-bleed {
+  left: calc(var(--page-gutter, var(--spacing-5xl)) * -1);
+  right: calc(var(--page-gutter, var(--spacing-5xl)) * -1);
+}
+
 .artwork-marquee-track {
   animation: artwork-marquee 36s linear infinite;
 }

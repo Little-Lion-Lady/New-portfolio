@@ -58,8 +58,10 @@ const MINI_INNER_RADIUS_CLASS = "rounded-xs";
 
 // The frosted card chrome shared by GlassImage and GlassFrame. Radius is
 // applied separately so the mini variant can swap the whole pair at once.
+// Shadow is Figma's 0 2px 10px shadow-02 — every Image wrapper variant
+// (desktop and mini alike) uses the same 10px blur.
 const FRAME_CLASS =
-  "flex flex-col border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] shadow-[0_2px_20px_var(--shadows-shadow-02)]";
+  "flex flex-col border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] shadow-[0_2px_10px_var(--shadows-shadow-02)]";
 
 // The same glass card as GlassImage, but holding arbitrary content instead of a
 // photo — used where the frame wraps something that isn't a next/image (e.g. the
