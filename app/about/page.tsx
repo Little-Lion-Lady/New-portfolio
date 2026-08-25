@@ -46,12 +46,19 @@ export default function About() {
         {/* Hero — shorter than home, text positioned in lower 2/3 of gradient */}
         <section className="relative z-10 pb-2xl pt-[100px] md:pt-[128px] lg:pt-[160px]">
           <TitleStars>
-            <RevealWords immediate as="h1" className="about-hero-title text-text-primary-highlight">who am I?</RevealWords>
+            <RevealWords immediate as="h1" className="about-hero-title text-text-primary-highlight">Who am I?</RevealWords>
           </TitleStars>
         </section>
       </div>
 
-      <Divider tone="primary" />
+      {/* Hero rule — fades in between the title and the Overview header, so the
+          three land in reading order: words from 0s, rule at 0.3s, header at
+          0.5s. `noY` because a 16px lift on a 1px rule reads as a glitch, not a
+          reveal; `immediate` matches the title and header, which both reveal on
+          mount rather than on an in-view trigger. */}
+      <Reveal immediate noY delay={0.3} className="w-full">
+        <Divider />
+      </Reveal>
 
       {/* 01 — Overview */}
       <SectionReveal as="section" immediate className="flex flex-col gap-r-xl">
