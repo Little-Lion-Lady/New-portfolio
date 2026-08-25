@@ -4,100 +4,64 @@ import type { ReactNode } from "react";
 export type WorkImageData = { src: string; alt: string; quality?: number };
 export type WorkImageSize = "md" | "lg";
 
-// Figma "ImageCarousel" component (node 1080:8018) — fixed card dimensions per
-// breakpoint × image count × size, not a flexible/equal-division layout.
+// Figma "Image wrapper" (1144:7939) — one variant per platform, and
+// "Image carousel" (1080:8017 md / 1080:9040 lg), the flat row both the home
+// work section and the case-study heroes use.
+//
 // Tailwind classes are written as literal strings (not built from interpolated
 // values) so the JIT scanner picks up every arbitrary-value token below.
 
-function getSizeClass(quantity: 3 | 4, size: WorkImageSize) {
-  if (quantity === 4) {
-    return size === "lg"
-      ? "size-[220px] md:h-[380px] md:w-[320px] lg:size-[440px]"
-      : "size-[220px] md:h-[380px] md:w-[320px] lg:h-[400px] lg:w-[420px]";
-  }
-  return size === "lg"
-    ? "size-[250px] md:size-[370px] lg:h-[500px] lg:w-[560px]"
-    : "size-[250px] md:size-[370px] lg:h-[400px] lg:w-[560px]";
-}
+// ─── Image wrapper ───────────────────────────────────────────────────────────
 
-// Card 1 is always tilted +2deg; cards 2–3 tilt tighter on tablet/mobile than
-// desktop when there are only 3 images; card 4 (4-image items only) is -3deg.
-function getRotateClass(quantity: 3 | 4, index: number) {
-  if (quantity === 4) {
-    return ["rotate-2", "-rotate-2", "rotate-3", "-rotate-3"][index];
-  }
-  return ["rotate-2", "-rotate-3 lg:-rotate-2", "rotate-3 lg:rotate-2"][index];
-}
-
-// Overlap between cards — 4-image items overlap -80px at every breakpoint;
-// 3-image items tighten the overlap on mobile, loosen slightly on desktop.
-function getMarginClass(quantity: 3 | 4) {
-  return quantity === 4 ? "-mr-[80px]" : "-mr-[40px] md:-mr-[80px] lg:-mr-[72px]";
-}
-
-// Figma "Image wrapper" (1144:7939), one variant per platform. Frame thickness
-// is the component's padding; the outer/inner radii are a fixed pair per
-// variant (inner is always one step down so the corners stay concentric).
+//   Platform   radius
+//   mobile     radius-md  16px
+//   tablet     radius-lg  20px
+//   desktop    radius-xl  24px
+//   mini       radius-xs   8px   (fixed at every breakpoint)
 //
-//   Platform      thickness            radius (outer / inner)
-//   mobile        spacing-3xs   4px    radius-sm 12 / radius-xs  8
-//   tablet        spacing-2xs   6px    radius-md 16 / radius-sm 12
-//   desktop       spacing-2xs   6px    radius-md 16 / radius-sm 12
-//   mini          spacing-3xs   4px    radius-sm 12 / radius-xs  8
+// The card has no inset frame, no border, no glass fill and no drop shadow any
+// more — the photo runs to the card's own edge. What is left is bg-primary
+// behind the photo (visible only through transparent PNGs), a 10px backdrop
+// blur on the photo layer, and a 1px hairline.
 //
-// Mobile and mini now resolve to the same 4 / 12 / 8 numbers; they stay
-// separate because `mini` applies at every breakpoint, not just below md.
-const PADDING_CLASS = "p-3xs md:p-2xs";
-const RADIUS_CLASS = "rounded-sm md:rounded-md";
-const INNER_RADIUS_CLASS = "rounded-xs md:rounded-sm";
+// The hairline is an INSET RING on a separate overlay element, not a border and
+// not a box-shadow on the frame itself: a border would occupy layout space and
+// round on a different radius from the clipped photo, and an inset shadow on
+// the frame paints beneath its own content, so the photo would cover it.
+const FRAME_CLASS = "relative flex flex-col overflow-hidden bg-bg-primary";
+const RADIUS_CLASS = "rounded-md md:rounded-lg lg:rounded-xl";
+const MINI_RADIUS_CLASS = "rounded-xs";
+const RING_CLASS =
+  "pointer-events-none absolute inset-0 rounded-[inherit] shadow-[inset_0_0_0_1px_var(--border-overlay)]";
+const INNER_CLASS = "relative w-full flex-1 overflow-hidden rounded-[inherit] backdrop-blur-[10px]";
 
-// Platform=mini — the compact frame used by the case-study footer nav.
-const MINI_PADDING_CLASS = "p-3xs";
-const MINI_RADIUS_CLASS = "rounded-sm";
-const MINI_INNER_RADIUS_CLASS = "rounded-xs";
-
-// The frosted card chrome shared by GlassImage and GlassFrame. Radius is
-// applied separately so the mini variant can swap the whole pair at once.
-// Shadow is Figma's 0 2px 10px shadow-02 — every Image wrapper variant
-// (desktop and mini alike) uses the same 10px blur.
-const FRAME_CLASS =
-  "flex flex-col border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] shadow-[0_2px_10px_var(--shadows-shadow-02)]";
-
-// The same glass card as GlassImage, but holding arbitrary content instead of a
+// The same card as GlassImage, but holding arbitrary content instead of a
 // photo — used where the frame wraps something that isn't a next/image (e.g. the
 // First Table §04 component recordings on a flat colour fill). Size it with
 // `className` (width + aspect-*) exactly as you would a GlassImage.
 export function GlassFrame({
   className = "",
   mini = false,
-  padding,
   innerClassName = "",
   children,
 }: {
   className?: string;
-  /** Figma's Platform=mini variant — 4px frame, 12/8 radii. */
+  /** Figma's Platform=mini variant — fixed 8px radius at every breakpoint. */
   mini?: boolean;
-  /** Override the variant's frame thickness. Radius still follows `mini`. */
-  padding?: string;
   /** Classes for the inner (clipped, rounded) box — background, layout, etc. */
   innerClassName?: string;
   children?: ReactNode;
 }) {
-  const pad = padding ?? (mini ? MINI_PADDING_CLASS : PADDING_CLASS);
-  const radius = mini ? MINI_RADIUS_CLASS : RADIUS_CLASS;
-  const innerRadius = mini ? MINI_INNER_RADIUS_CLASS : INNER_RADIUS_CLASS;
   return (
-    <div className={`${FRAME_CLASS} ${radius} ${pad} ${className}`}>
-      <div className={`relative h-full w-full flex-1 overflow-hidden ${innerRadius} ${innerClassName}`}>
-        {children}
-      </div>
+    <div className={`${FRAME_CLASS} ${mini ? MINI_RADIUS_CLASS : RADIUS_CLASS} ${className}`}>
+      <div className={`${INNER_CLASS} h-full ${innerClassName}`}>{children}</div>
+      <div aria-hidden className={RING_CLASS} />
     </div>
   );
 }
 
-// A single flat glass-frame image — same treatment as WorkImage's card, but no
-// rotation/overlap math. Used for case-study media collages where each image
-// gets its own arbitrary size via `className`.
+// A single card holding a photo. Used directly by case-study media collages
+// (each image sized arbitrarily via `className`) and by ImageCarousel below.
 export function GlassImage({
   src,
   darkSrc,
@@ -105,8 +69,8 @@ export function GlassImage({
   className = "",
   quality = 100,
   mini = false,
-  padding,
   sizes = "100vw",
+  loading,
   aspectRatio,
   frameAspectRatio,
   objectPosition,
@@ -123,11 +87,16 @@ export function GlassImage({
   alt: string;
   className?: string;
   quality?: number;
-  /** Figma's Platform=mini variant — 4px frame, 12/8 radii. */
+  /** Figma's Platform=mini variant — fixed 8px radius at every breakpoint. */
   mini?: boolean;
-  /** Override the variant's frame thickness. Radius still follows `mini`. */
-  padding?: string;
   sizes?: string;
+  /**
+   * Passed straight to next/image. Set "eager" for anything that a transform
+   * can move outside the viewport — lazy loading keys off intersection, and a
+   * translated card reports no intersection, so it never starts fetching and
+   * shows up as an empty box when the motion brings it back.
+   */
+  loading?: "eager" | "lazy";
   /**
    * Source photo's true W/H ratio (e.g. "260/460"). When set, the inner
    * frame is sized to match the photo exactly instead of stretching to fill
@@ -153,16 +122,13 @@ export function GlassImage({
   /** Optional overlay content stacked on top of the image (e.g. a decorative icon). */
   children?: ReactNode;
 }) {
-  const pad = padding ?? (mini ? MINI_PADDING_CLASS : PADDING_CLASS);
-  const radius = mini ? MINI_RADIUS_CLASS : RADIUS_CLASS;
-  const innerRadius = mini ? MINI_INNER_RADIUS_CLASS : INNER_RADIUS_CLASS;
   return (
     <div
-      className={`${FRAME_CLASS} ${radius} ${pad} ${className}`}
+      className={`${FRAME_CLASS} ${mini ? MINI_RADIUS_CLASS : RADIUS_CLASS} ${className}`}
       style={frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
     >
       <div
-        className={`${aspectRatio ? "relative w-full overflow-hidden" : "relative h-full w-full flex-1 overflow-hidden"} ${innerRadius}`}
+        className={`${INNER_CLASS}${aspectRatio ? "" : " h-full"}`}
         style={aspectRatio ? { aspectRatio } : undefined}
       >
         <Image
@@ -171,6 +137,7 @@ export function GlassImage({
           fill
           quality={quality}
           sizes={sizes}
+          loading={loading}
           className={`object-cover${darkSrc ? " dark:hidden" : ""}`}
           style={objectPosition ? { objectPosition } : undefined}
         />
@@ -181,44 +148,98 @@ export function GlassImage({
             fill
             quality={quality}
             sizes={sizes}
+            loading={loading}
             className="hidden object-cover dark:block"
             style={objectPosition ? { objectPosition } : undefined}
           />
         )}
         {children}
       </div>
+      <div aria-hidden className={RING_CLASS} />
     </div>
   );
 }
 
-export function WorkImage({
-  src,
-  alt,
-  index,
-  total,
+// ─── Image carousel ──────────────────────────────────────────────────────────
+
+// A flat, centred row of fixed-size cards — no tilt, no overlap. The row is
+// wider than the page at every breakpoint (3 × 560 + 2 × 24 = 1728 against a
+// 1648 desktop content width), so `justify-center` lets it bleed symmetrically
+// past the page gutter, exactly as the Figma frames show. <body> carries
+// overflow-x: clip, so the bleed never produces a horizontal scrollbar.
+//
+//   breakpoint   card         gap
+//   mobile       320 × 260    spacing-sm  12px
+//   tablet       400 × 340    spacing-md  16px
+//   desktop      560 × 400    spacing-xl  24px   (size="md")
+//   desktop      560 × 500    spacing-xl  24px   (size="lg", case-study heroes)
+//
+// Only the desktop height differs between the two sizes.
+const CARD_CLASS = {
+  md: "h-[260px] w-[320px] md:h-[340px] md:w-[400px] lg:h-[400px] lg:w-[560px]",
+  lg: "h-[260px] w-[320px] md:h-[340px] md:w-[400px] lg:h-[500px] lg:w-[560px]",
+} as const;
+
+export function ImageCarousel({
+  images,
   size = "md",
-  tilt = true,
-  quality = 100,
+  marquee = false,
+  reverse = false,
+  className = "",
 }: {
-  src: string;
-  alt: string;
-  index: number;
-  total: 3 | 4;
+  images: WorkImageData[];
   size?: WorkImageSize;
-  tilt?: boolean;
-  quality?: number;
+  /**
+   * Loop the row right-to-left forever instead of standing still. The images
+   * are rendered twice back-to-back and the track is translated by exactly
+   * -50%, which lands the duplicate where the original started — so the seam
+   * is invisible and the loop never resets visibly.
+   *
+   * The gap is a per-card margin-right rather than flex `gap`, because `gap`
+   * puts n-1 gaps in a set of n: half of a doubled track would then be
+   * `3w + 2.5g` while one set plus its trailing gap is `3w + 3g`, and the loop
+   * would jump by half a gap every cycle.
+   */
+  marquee?: boolean;
+  /** Run the loop left-to-right instead. Only meaningful with `marquee`. */
+  reverse?: boolean;
+  className?: string;
 }) {
-  const isLast = index === total - 1;
+  const card = (image: WorkImageData, key: string, gap: boolean) => (
+    <GlassImage
+      key={key}
+      src={image.src}
+      alt={image.alt}
+      quality={image.quality}
+      sizes="(min-width: 1024px) 560px, (min-width: 768px) 400px, 320px"
+      loading="eager"
+      className={`shrink-0 ${CARD_CLASS[size]}${gap ? " mr-sm md:mr-md lg:mr-xl" : ""}`}
+    />
+  );
+
+  if (!marquee) {
+    return (
+      <div className={`flex items-center justify-center gap-sm md:gap-md lg:gap-xl ${className}`}>
+        {images.map((image) => card(image, image.src, false))}
+      </div>
+    );
+  }
+
   return (
-    <div className={`shrink-0 ${isLast ? "" : getMarginClass(total)}`}>
-      <div className={`${getSizeClass(total, size)} ${tilt ? getRotateClass(total, index) : ""}`}>
-        <GlassImage
-          src={src}
-          alt={alt}
-          quality={quality}
-          sizes="(min-width: 1024px) 560px, (min-width: 768px) 370px, 250px"
-          className="h-full w-full"
-        />
+    // Bleed out to the viewport edge by growing past the page's own gutter on
+    // both sides. A negative margin does NOT work here: the parent is a
+    // `flex-col items-center` column, so the wrapper is a non-stretched flex
+    // item whose used width is whatever `w-*` says — negative margins would
+    // just shift the box left instead of widening it. Sizing it to
+    // `100% + 2 × gutter` and letting `items-center` centre it lands the edges
+    // exactly on the viewport, which is also where overflow-hidden then clips.
+    <div className={`w-[calc(100%+var(--page-gutter)*2)] overflow-hidden ${className}`}>
+      <div className={`image-marquee-track flex w-max items-center${reverse ? " image-marquee-track--reverse" : ""}`}>
+        {images.map((image) => card(image, `a-${image.src}`, true))}
+        {/* Duplicate set — decorative only, so it stays out of the a11y tree. */}
+        <div aria-hidden className="flex w-max items-center">
+          {images.map((image) => card(image, `b-${image.src}`, true))}
+        </div>
       </div>
     </div>
   );

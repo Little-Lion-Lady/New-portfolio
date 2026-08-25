@@ -1,12 +1,10 @@
-import { GradientBg } from "./components/gradient-bg";
 import { SiteHeader } from "./components/site-header";
 import { Button } from "./components/button";
 import { Reveal, RevealWords } from "./components/reveal";
 
 export default function NotFound() {
   return (
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex min-h-svh flex-col bg-bg-primary px-md pt-[56px] md:px-xl md:pt-[64px] lg:px-5xl lg:pt-[72px]">
-      <GradientBg />
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex min-h-svh flex-col bg-bg-primary px-md pt-[60px] md:px-2xl md:pt-[92px] lg:px-3xl lg:pt-[92px]">
       <SiteHeader />
 
       {/* Full-height content wrapper, sits above gradient */}
