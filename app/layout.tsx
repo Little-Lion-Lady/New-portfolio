@@ -6,6 +6,7 @@ import Script from "next/script";
 import { LazyMotion, domAnimation } from "framer-motion";
 import { Analytics } from "@vercel/analytics/next";
 import { InitialThemeProvider } from "./components/theme-context";
+import { PageCurtain } from "./components/page-curtain";
 import "./globals.css";
 
 // Both fonts come from the geist package (local woff2, no network request).
@@ -66,6 +67,8 @@ export default async function RootLayout({
         <InitialThemeProvider initialIsDark={theme === "dark" ? true : theme === "light" ? false : undefined}>
           <LazyMotion features={domAnimation} strict>
             {children}
+            {/* Route transition: sweeps up over the outgoing page, swaps, sweeps off. */}
+            <PageCurtain />
           </LazyMotion>
         </InitialThemeProvider>
         <Analytics />

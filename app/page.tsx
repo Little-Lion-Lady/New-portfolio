@@ -1,4 +1,3 @@
-import { GradientBg } from "./components/gradient-bg";
 import { SiteHeader } from "./components/site-header";
 import { SiteFooter } from "./components/site-footer";
 import { SectionHeader } from "./components/section-header";
@@ -13,18 +12,17 @@ import { Divider } from "./components/divider";
 export default function Home() {
   return (
     // Full-bleed on tablet/mobile (no page padding); desktop keeps px-5xl/py-3xl. Section gap = --2xl.
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-2xl md:pt-[92px] lg:px-3xl lg:pb-0 lg:pt-[92px]">
       {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
       <div>
-        <GradientBg scaleClassName="lg:[transform:scaleX(1.5)]" />
         <SiteHeader />
 
         {/* Hero — fills the viewport (clamped 640px–1500px).
             Text vertically centered in the top 3/4. Image bottom-aligned in the remaining 1/4. */}
         {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
-        <section className="relative z-10 flex h-[clamp(640px,calc(100svh-56px),1500px)] w-full flex-col md:h-[clamp(640px,calc(100svh-64px),1500px)] lg:h-[clamp(640px,calc(100svh-80px),1500px)]">
+        <section className="relative z-10 flex h-[clamp(640px,calc(100svh-60px),1500px)] w-full flex-col md:h-[clamp(640px,calc(100svh-92px),1500px)] lg:h-[clamp(640px,calc(100svh-100px),1500px)]">
         {/* Text — fits to its bounding box via JS binary search on font-size */}
-        <HeroText className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:py-2xl lg:pt-6xl lg:pb-4xl" />
+        <HeroText className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:pt-3xl md:pb-2xl lg:pt-lg lg:pb-4xl" />
         {/* Image + divider — bottom 1/4.5.
             Divider is flex-1 so it stretches from the left page edge.
             Image pulls left with a negative margin to overlap the divider
@@ -45,11 +43,14 @@ export default function Home() {
       </div>
 
       {/* 01 — Selected works. gap = --xl, pb-3xl. Reveals on scroll, staggered. */}
-      <SectionReveal as="section" id="work" className="relative z-10 flex w-full scroll-mt-[56px] flex-col gap-r-xl pb-3xl md:scroll-mt-[64px] lg:scroll-mt-[72px]">
+      <SectionReveal as="section" id="work" className="relative z-10 flex w-full scroll-mt-[60px] flex-col gap-r-xl pb-3xl md:scroll-mt-[92px] lg:scroll-mt-[92px]">
         <Reveal index={0} className="w-full">
           <SectionHeader number="01" name="Selected works" />
         </Reveal>
-        <div className="flex w-full flex-col gap-r-3xl">
+        {/* Gap between work items — 96/128/224. Was gap-r-3xl (72/96/160); the
+            responsive scale tops out at --spacing-9xl (160), so desktop steps
+            onto the fixed scale's new --spacing-10xl (224). */}
+        <div className="flex w-full flex-col gap-7xl md:gap-8xl lg:gap-10xl">
           {/* SW/01 waits for the section heading to be most of the way through
               its 600ms fade. index alone only buys 60ms, which reads as the two
               arriving together. SW/02+ keep the plain index stagger — they sit
@@ -65,12 +66,16 @@ export default function Home() {
                 { src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" },
                 { src: "/home/work/firsttable/FT2.jpg", alt: "First Table app screen" },
                 { src: "/home/work/firsttable/3.jpg", alt: "First Table app screen" },
+                { src: "/home/work/firsttable/FT3.jpg", alt: "First Table app screen" },
               ]}
             />
           </Reveal>
           <Reveal index={2} className="w-full">
             <WorkItem
               number="SW/02"
+              // Middle item counter-scrolls, so the three rows don't all drift
+              // the same way.
+              reverseMarquee
               name="Basis home app"
               description="Defining and designing the world’s first Smart Electrical Panel companion app to redefine user’s relationship with energy."
               roles="UX/UI, Research, Product strategy"

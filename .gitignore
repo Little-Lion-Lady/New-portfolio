@@ -44,3 +44,9 @@ next-env.d.ts
 # source media kept locally — only the exported .mp4/.jpg are committed
 public/**/*.mov
 public/home/work/firsttable/Screenshots.jpg
+
+# agent skills — installed per-machine with `npx skills add`, kept out of the
+# repo so they can be updated independently of the site
+/.agents/
+/.claude/skills/
+/skills-lock.json

@@ -352,6 +352,7 @@
   --spacing-7xl:  var(--size-18);
   --spacing-8xl:  var(--size-32);
   --spacing-9xl:  var(--size-40);
+  --spacing-10xl: var(--size-56);
 
   /* Responsive spacing scale (Instruction.md "Responsive spaces").
      ONE token that changes value per breakpoint — mobile values here are the
@@ -745,6 +746,7 @@
   --spacing-7xl:  var(--size-18);
   --spacing-8xl:  var(--size-32);
   --spacing-9xl:  var(--size-40);
+  --spacing-10xl: var(--size-56);
 
   /* Responsive spacing — utilities like gap-r-2xl / py-r-md that resolve to the
      breakpoint-aware --rspace-* vars (auto-adjust at md/lg, no prefixes needed). */
@@ -905,7 +907,12 @@
    BASE STYLES
    ============================================================ */
 html {
-  scroll-behavior: smooth;
+  /* Deliberately NOT `scroll-behavior: smooth`. It applies to every
+     programmatic scroll, including the ones the router performs: a browser
+     Back visibly animated the page down to the restored position, and Next's
+     scroll reset animated it up to 0. Navigation should jump, not travel.
+     For a genuine in-page anchor, opt in locally with Tailwind's
+     `scroll-smooth` on the scroll container. */
   overflow-x: hidden;
 }
 
@@ -1107,6 +1114,91 @@ h1.d-sm {
   right: calc(var(--page-gutter, var(--spacing-5xl)) * -1);
 }
 
+/* Duration is per-breakpoint so the strip travels at ~53px/s, matching the work
+   carousels on the home page. A single 36s duration used to make the desktop
+   strip run at 85px/s because the cards double in size at md while the duration
+   stayed put. One doubled track is ~3044px on mobile and ~6088px from md up,
+   and each cycle covers half of that. */
 .artwork-marquee-track {
-  animation: artwork-marquee 36s linear infinite;
+  --artwork-marquee-duration: 29s;
+  animation: artwork-marquee var(--artwork-marquee-duration) linear infinite;
+}
+
+/* lg is within 1% of md (gap-lg vs gap-md over 13 gaps), so it shares this. */
+@media (min-width: 768px) {
+  .artwork-marquee-track { --artwork-marquee-duration: 57s; }
+}
+
+/* ============================================================
+   MOTION TOKENS — transitions.dev scale
+   Only the subset the site actually uses. Reference with var(--…);
+   see .agents/skills/transitions-polish/SKILL.md for the full table.
+   ============================================================ */
+:root {
+  --duration-quick:  150ms; /* modal/dropdown close, text swap */
+  --duration-fast:   250ms; /* icon swap, dropdown/modal open, page slide */
+  --duration-medium: 350ms; /* panel close, toast close */
+  --duration-slow:   400ms; /* panel open, content reveal */
+
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1); /* open/close, slide, resize */
+}
+
+/* Page curtain — route transition panel.
+   Direct child of <body> so `fixed` resolves against the viewport (a filtered
+   or transformed ancestor would trap it). z-index clears the header's z-50.
+   The transform itself is driven by Framer in <PageCurtain>; this rule only
+   owns the surface. */
+.page-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg-primary);
+  will-change: transform, opacity;
+}
+
+/* Soft leading edge — see <CurtainEdge>. Height and offset are set inline from
+   that component so the strip geometry and its gradient stops share one source
+   of truth; only the invariants live here. */
+.page-curtain-feather {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-curtain { display: none; }
+}
+
+/* Work-section image carousel — infinite right-to-left loop.
+   The track renders the image set twice back-to-back; translating exactly -50%
+   of that doubled track equals one full set's width (card + its own trailing
+   margin), so the seam is invisible. Duration is set per breakpoint rather than
+   fixed, so the cards travel at roughly the same speed (~40px/s) at every
+   size: one set is ~996px on mobile, ~1248px on tablet, ~1752px on desktop. */
+@keyframes image-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.image-marquee-track {
+  --image-marquee-duration: 25s;
+  animation: image-marquee var(--image-marquee-duration) linear infinite;
+}
+
+/* Same keyframes played backwards — the row travels left-to-right. */
+.image-marquee-track--reverse {
+  animation-direction: reverse;
+}
+
+@media (min-width: 768px) {
+  .image-marquee-track { --image-marquee-duration: 32s; }
+}
+
+@media (min-width: 1024px) {
+  .image-marquee-track { --image-marquee-duration: 44s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-marquee-track { animation: none; }
 }

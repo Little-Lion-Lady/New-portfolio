@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Button } from "./button";
-import { WorkImage, type WorkImageData, type WorkImageSize } from "./work-image";
+import { ImageCarousel, type WorkImageData, type WorkImageSize } from "./work-image";
 
 // Figma "Work item" component.
 // Layout per breakpoint:
@@ -9,7 +9,7 @@ import { WorkImage, type WorkImageData, type WorkImageSize } from "./work-image"
 //   tablet  — 9-col grid (number c1, name c2-3, desc c5-9 with View inside)
 //   desktop — 12-col grid (number c1, name c3-4, desc c6-11, View standalone c12)
 // Type scales: number/name B-xs→B-sm→B-md; desc/roles/View M-xs→M-sm→M-md.
-// Image carousel: WorkImage cards (frosted glass, tilted, overlapping).
+// Image carousel: a full-bleed row of cards looping right-to-left.
 export function WorkItem({
   number,
   name,
@@ -18,6 +18,7 @@ export function WorkItem({
   href = "#",
   images,
   imageSize = "md",
+  reverseMarquee = false,
   comingSoon = false,
 }: {
   number: string;
@@ -27,10 +28,11 @@ export function WorkItem({
   href?: string;
   images: WorkImageData[];
   imageSize?: WorkImageSize;
+  /** Loop this item's carousel left-to-right, so adjacent items counter-scroll. */
+  reverseMarquee?: boolean;
   comingSoon?: boolean;
 }) {
-  const total = images.length as 3 | 4;
-  const wrapperClassName = "flex w-full flex-col items-center gap-lg md:gap-2xl lg:gap-4xl";
+  const wrapperClassName = "flex w-full flex-col items-center gap-lg md:gap-2xl lg:gap-3xl";
 
   const content = (
     <>
@@ -68,19 +70,7 @@ export function WorkItem({
       </div>
 
       {/* Image carousel */}
-      <div className="flex w-full items-center justify-center">
-        {images.map((image, i) => (
-          <WorkImage
-            key={image.src}
-            src={image.src}
-            alt={image.alt}
-            index={i}
-            total={total}
-            size={imageSize}
-            quality={image.quality}
-          />
-        ))}
-      </div>
+      <ImageCarousel images={images} size={imageSize} marquee reverse={reverseMarquee} />
     </>
   );
 

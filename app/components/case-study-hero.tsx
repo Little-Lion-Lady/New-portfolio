@@ -1,5 +1,5 @@
 import { Reveal, RevealWords } from "./reveal";
-import { WorkImage, type WorkImageData } from "./work-image";
+import { ImageCarousel, type WorkImageData } from "./work-image";
 import { TitleStars } from "./title-stars";
 
 // Figma "Hero" (393:15572 desktop / tablet / mobile).
@@ -8,8 +8,8 @@ import { TitleStars } from "./title-stars";
 //              revealed word-by-word (RevealWords), matching the About hero
 //   layout   — mobile/tablet stack text→meta; desktop 12-col grid (meta c2-6 | text c7-12)
 //   meta     — always a single column (meta rows then recognition rows stacked)
-//   images   — 3 WorkImage cards (same glass-frame treatment as the home carousel),
-//              size="lg" on desktop, untilted (flat, still overlapping)
+//   images   — ImageCarousel (same cards as the home work section), size="lg" so
+//              the desktop cards are 500px tall instead of 400px
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start">
@@ -91,21 +91,10 @@ export function CaseStudyHero({
         </div>
       </div>
 
-      {/* Image carousel — 3 tilted WorkImage cards (same fan pattern as the home
-          carousel), lg size on desktop. Reveals with the description and meta —
-          title+stars first, then everything else together. */}
-      <Reveal immediate delay={0.6} className="flex w-full items-center justify-center">
-        {images.map((image, i) => (
-          <WorkImage
-            key={image.src}
-            src={image.src}
-            alt={image.alt}
-            index={i}
-            total={3}
-            size="lg"
-            quality={image.quality}
-          />
-        ))}
+      {/* Image carousel. Reveals with the description and meta — title+stars
+          first, then everything else together. */}
+      <Reveal immediate delay={0.6} className="w-full">
+        <ImageCarousel images={images} size="lg" />
       </Reveal>
     </div>
   );

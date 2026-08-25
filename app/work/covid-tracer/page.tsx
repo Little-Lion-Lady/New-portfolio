@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { GradientBg } from "../../components/gradient-bg";
 import { SiteHeader } from "../../components/site-header";
 import { SiteFooter } from "../../components/site-footer";
 import { SectionHeader } from "../../components/section-header";
@@ -85,10 +84,9 @@ export const metadata: Metadata = {
 
 export default function CovidTracer() {
   return (
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[56px] text-text-primary md:px-3xl md:pt-[64px] lg:px-5xl lg:pb-0 lg:pt-[72px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-2xl md:pt-[92px] lg:px-3xl lg:pb-0 lg:pt-[92px]">
       {/* Gradient + header + hero grouped so gap-r-xl isn't inserted between them */}
       <div>
-        <GradientBg height="647px" fullWidth />
         <SiteHeader />
         <section className="relative z-10">
           <CaseStudyHero
