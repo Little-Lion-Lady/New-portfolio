@@ -172,8 +172,8 @@ const BASIS_ALT = "Basis home app screen";
 // Column stacks above the detail image through tablet, sits beside it only from desktop up.
 export function ResearchMedia() {
   return (
-    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:flex-row lg:items-stretch">
-      <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:w-1/3">
+    <div className="flex gap-sm md:gap-md lg:gap-md flex-col lg:flex-row lg:items-stretch">
+      <div className="flex gap-sm md:gap-md lg:gap-md flex-col lg:w-1/3">
         <GlassImage src="/home/work/basis/BS4.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
         <GlassImage src="/home/work/basis/BS5.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
         <GlassImage src="/home/work/basis/BS6.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
@@ -193,7 +193,7 @@ export function ResearchMedia() {
 // §05 Process — a wide flow diagram above a taller detail shot.
 export function ProcessMedia() {
   return (
-    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
+    <div className="flex gap-sm md:gap-md lg:gap-md flex-col">
       <GlassImage src="/home/work/basis/BS8.jpg" alt={BASIS_ALT} className="aspect-[3168/1235] w-full" />
       {/* BS9's real ratio is 1600×1395 — aspect-[1600/1395] replaces the
           fixed heights (306/524px mobile/tablet, 1414px desktop) that were
@@ -326,13 +326,13 @@ export function BasisOutcomeMedia() {
         ))}
       </div>
       {/* Tablet/desktop — two stacked rows, centred, no horizontal scroll */}
-      <div className="hidden flex-col items-center gap-xs md:flex md:gap-lg">
-        <div className="flex justify-center gap-xs md:gap-lg">
+      <div className="hidden flex-col items-center gap-sm md:flex md:gap-md">
+        <div className="flex justify-center gap-sm md:gap-md">
           {OUTCOME_ROW1.map((name) => (
             <OutcomeStripImage key={name} name={name} />
           ))}
         </div>
-        <div className="flex justify-center gap-xs md:gap-lg">
+        <div className="flex justify-center gap-sm md:gap-md">
           {OUTCOME_ROW2.map((name) => (
             <OutcomeStripImage key={name} name={name} />
           ))}
@@ -366,7 +366,7 @@ export function FTProblemMedia() {
 // §02 Research — segmentation charts. Stacked through tablet, side by side at desktop.
 export function FTResearchMedia() {
   return (
-    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:flex-row lg:items-start">
+    <div className="flex gap-sm md:gap-md lg:gap-md flex-col lg:flex-row lg:items-start">
       <GlassImage
         src={`${FT}/5.jpg`}
         darkSrc={`${FT}/5_dark.jpg`}
@@ -390,7 +390,7 @@ export function FTResearchMedia() {
 export function FTDesignSystemMedia() {
   const tokenSheet = "w-full aspect-[361/180] md:aspect-[944/437] lg:aspect-[1584/796]";
   return (
-    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
+    <div className="flex gap-sm md:gap-md lg:gap-md flex-col">
       <GlassImage
         src={`${FT}/7.jpg`}
         darkSrc={`${FT}/7_dark.jpg`}
@@ -482,7 +482,7 @@ const REDESIGN_DETAILS: {
 
 export function FTRedesignMedia() {
   return (
-    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
+    <div className="flex gap-sm md:gap-md lg:gap-md flex-col">
       <GlassImage
         src={`${FT}/9.jpg`}
         darkSrc={`${FT}/9_dark.jpg`}
@@ -490,7 +490,7 @@ export function FTRedesignMedia() {
         sizes="100vw"
         className="w-full aspect-[361/148] md:aspect-[944/342] lg:aspect-[1584/609]"
       />
-      <div className="flex gap-xs md:gap-md lg:gap-lg flex-col md:flex-row md:items-start">
+      <div className="flex gap-sm md:gap-md lg:gap-md flex-col md:flex-row md:items-start">
         {REDESIGN_DETAILS.map((d) => (
           <GlassFrame
             key={d.key}
@@ -519,8 +519,8 @@ const VALIDATION_TESTS = ["10", "11", "12", "13", "14", "15"];
 
 export function FTValidationMedia() {
   return (
-    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
-      <div className="grid gap-xs md:gap-md lg:gap-lg grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <div className="flex gap-sm md:gap-md lg:gap-md flex-col">
+      <div className="grid gap-sm md:gap-md lg:gap-md grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {VALIDATION_TESTS.map((n) => (
           <GlassImage
             key={n}
@@ -532,7 +532,7 @@ export function FTValidationMedia() {
           />
         ))}
       </div>
-      <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:flex-row lg:items-start">
+      <div className="flex gap-sm md:gap-md lg:gap-md flex-col lg:flex-row lg:items-start">
         <GlassImage
           src={`${FT}/16.jpg`}
           darkSrc={`${FT}/16_dark.jpg`}
