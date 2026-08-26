@@ -4,7 +4,9 @@
 //   tablet/desktop — steps sit in a 4-col row; connector is a horizontal line above the text
 // Dot = 24px filled circle (component-bg-button-primary) with an 8px page-bg centre (ring).
 // Title text-primary-highlight, body text-secondary; type B-2xs→B-xs→B-sm.
-// Step text stack: 12 / 12 / 16 (Figma _Step base 436:16155).
+// Step text stack sits at gap 0 (Figma _Step base 436:16155): under standard
+// trim the B-2xs/B-xs/B-sm line box already carries the leading that the old
+// 12/12/16 gap was stacking on top of.
 function StepDot() {
   return (
     <div className="flex size-[16px] shrink-0 items-center justify-center rounded-full bg-component-bg-button-primary md:size-[24px]">
@@ -22,7 +24,7 @@ function Step({ title, body, isLast = false }: { title: string; body: string; is
         {!isLast && <div className="w-[var(--size-1)] flex-1 bg-border-highlight md:h-[var(--size-1)] md:w-auto" />}
       </div>
       {/* Text */}
-      <div className="flex flex-1 flex-col gap-sm pb-sm pt-4xs md:flex-none md:pb-xl lg:gap-md">
+      <div className="flex flex-1 flex-col pb-md pt-4xs md:flex-none md:pb-xl">
         <p className="b-2xs text-text-primary-highlight md:b-xs lg:b-sm">{title}</p>
         <p className="b-2xs text-text-secondary md:b-xs lg:b-sm">{body}</p>
       </div>
@@ -36,7 +38,7 @@ export function Journey({
   steps: { title: string; body: string }[];
 }) {
   return (
-    <div className="flex flex-col gap-sm md:grid md:grid-flow-col md:auto-cols-fr md:gap-md lg:gap-lg">
+    <div className="flex flex-col gap-3xs md:grid md:grid-flow-col md:auto-cols-fr md:gap-lg">
       {steps.map((s, i) => (
         <Step key={i} title={s.title} body={s.body} isLast={i === steps.length - 1} />
       ))}
