@@ -64,7 +64,7 @@ export function CaseStudyNav({
       className="group flex w-full items-center gap-lg md:grid md:grid-cols-9 md:items-center lg:grid-cols-12 lg:items-center"
     >
       {/* Thumbnail */}
-      <div className="shrink-0 md:col-start-1 md:col-span-2 lg:pr-xl">
+      <div className="shrink-0 md:col-start-1 md:col-span-2 md:pr-md lg:pr-2xl">
         <GlassImage
           src={image.src}
           alt={image.alt}
@@ -78,7 +78,7 @@ export function CaseStudyNav({
           (lg:contents) so subtitle/heading become direct grid cells on desktop. */}
       <div className="flex min-w-0 flex-1 flex-col gap-md md:col-start-3 md:col-span-4 md:self-center lg:contents">
         <div className="flex flex-col lg:contents">
-          <p className="b-xs text-text-tertiary lg:b-md lg:col-start-3 lg:col-span-2 lg:self-center">
+          <p className="b-xs text-text-tertiary md:b-sm lg:b-md lg:col-start-3 lg:col-span-2 lg:self-center">
             Next<span className="lg:hidden"> case study</span>
           </p>
           <p className="b-xs text-text-primary md:b-sm lg:b-md lg:col-start-6 lg:col-span-4 lg:self-center">

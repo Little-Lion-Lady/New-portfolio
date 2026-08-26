@@ -4,8 +4,9 @@ import type { ReactNode } from "react";
 // A bordered, fully-rounded pill with a centered label.
 //   default  — body text, sentence case (problem constraints)
 //   deferred — uppercase + line-through (V2 backlog items)
-// Padding scales responsively (mobile px-md/py-sm → desktop px-xl/py-lg); border is
-// border-primary, radius is full (Figma 56px on a ~60px pill). Text is text-secondary.
+// Padding per Figma "Content" (547:26283): px 16/24/24, py 4/6/8. Border is
+// border-primary, radius full (Figma 56px, taller than the pill). Text is
+// text-secondary at B-xs through tablet, B-sm on desktop.
 export function Tag({
   children,
   deferred = false,
@@ -14,7 +15,7 @@ export function Tag({
   deferred?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-center overflow-clip rounded-full border border-border-primary px-md py-sm md:px-lg md:py-md lg:px-xl lg:py-lg">
+    <div className="flex items-center justify-center overflow-clip rounded-full border border-border-primary px-md py-3xs md:px-xl md:py-2xs lg:py-xs">
       <p
         className={`b-xs whitespace-nowrap text-center text-text-secondary ${
           deferred ? "line-through" : "lg:b-sm"

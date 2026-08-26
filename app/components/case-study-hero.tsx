@@ -44,9 +44,9 @@ export function CaseStudyHero({
   const topWordCount = titleTop.trim().split(/\s+/).length;
 
   return (
-    <div className="flex w-full flex-col gap-3xl md:gap-6xl">
+    <div className="flex w-full flex-col gap-r-lg">
       {/* Title + description (inner Hero block) */}
-      <div className="flex w-full flex-col gap-4xl pt-2xl lg:gap-9xl lg:pt-8xl">
+      <div className="flex w-full flex-col gap-3xl pt-2xl md:pt-sm lg:gap-7xl lg:pt-3xl">
         {/* Title — two lines, fluid, revealed word-by-word. `immediate` (like the
             rest of the hero) so it reveals on mount: an in-view trigger only
             fires once scroll restoration settles, which on a client-side nav
@@ -54,7 +54,7 @@ export function CaseStudyHero({
             else instead of first. */}
         <TitleStars>
           <h1 className="case-hero-title flex flex-col whitespace-nowrap">
-            <RevealWords immediate as="span" className="block text-text-primary-highlight">
+            <RevealWords immediate as="span" className="block text-text-primary-highlight [margin-bottom:-0.0909em] md:[margin-bottom:-0.2em] lg:[margin-bottom:-0.2857em]">
               {titleTop}
             </RevealWords>
             <RevealWords immediate as="span" startIndex={topWordCount} className="block text-text-primary-overlay">
@@ -69,14 +69,14 @@ export function CaseStudyHero({
             uses. */}
         <div className="flex flex-col gap-3xl md:gap-4xl lg:grid lg:grid-cols-12 lg:gap-x-lg">
           {/* Text block (desktop: right, c7-12) */}
-          <Reveal immediate delay={0.6} className="flex flex-col gap-md md:gap-lg lg:col-start-7 lg:col-span-6 lg:justify-center lg:gap-xl">
+          <Reveal immediate delay={0.6} className="flex flex-col lg:col-start-7 lg:col-span-6 lg:justify-center">
             <p className="b-xs text-text-primary-highlight md:b-sm lg:b-md">{lead}</p>
             <p className="b-xs text-text-secondary md:b-sm lg:b-md">{description}</p>
           </Reveal>
 
           {/* Meta block (desktop: left, c2-6) — in step with the text block.
               Always a single column (meta rows then recognition rows stacked). */}
-          <Reveal immediate delay={0.6} className="flex flex-col gap-sm md:gap-md lg:col-start-1 lg:col-span-5 lg:row-start-1 lg:gap-lg">
+          <Reveal immediate delay={0.6} className="flex flex-col lg:col-start-1 lg:col-span-5 lg:row-start-1">
             <div className="flex flex-col">
               {meta.map((m, i) => (
                 <MetaRow key={i} label={m.label} value={m.value} />

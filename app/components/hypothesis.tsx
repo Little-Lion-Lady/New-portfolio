@@ -20,7 +20,7 @@ export function Hypothesis({
 }) {
   return (
     <div className="flex flex-col gap-xs md:grid md:grid-cols-9 md:gap-lg lg:grid-cols-12">
-      <p className="b-xs uppercase text-text-tertiary md:col-start-1 md:col-span-1 md:b-sm lg:col-span-2">
+      <p className="b-sm uppercase text-text-tertiary md:col-start-1 md:col-span-1 lg:col-span-2 lg:b-md">
         {label}
       </p>
 
