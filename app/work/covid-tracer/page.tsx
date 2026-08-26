@@ -114,7 +114,7 @@ export default function CovidTracer() {
       </div>
 
       {/* 01 — Journey */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="01" name="Journey" />
         </Reveal>
@@ -126,11 +126,11 @@ export default function CovidTracer() {
       <Divider />
 
       {/* 02 — Problem */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="02" name="Problem" />
         </Reveal>
-        <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
+        <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <Stats className="md:grid-cols-3">
             <Stat size="lg" value="2.7M" label="Unique app installs" />
             <Stat size="lg" value="95%" label="Devices capable of BT Tracing" />
@@ -147,7 +147,7 @@ export default function CovidTracer() {
       <Divider />
 
       {/* 03 — Approach */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg pb-xl">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="03" name="Approach" />
         </Reveal>
@@ -159,7 +159,7 @@ export default function CovidTracer() {
           </KeyParagraph>
           <ApproachMedia />
         </Reveal>
-        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-4xl">
+        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-lg">
           <Stats className="md:grid-cols-2 lg:grid-cols-4">
             <Stat size="lg" highlight value="18%" label="Mislick rate on primary CTA" />
             <Stat size="lg" highlight value="38.7%" label="Avg task success rate" />
@@ -190,7 +190,7 @@ export default function CovidTracer() {
       </Reveal>
 
       {/* 04 — Design brief */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="04" name="Design brief" />
         </Reveal>
@@ -223,14 +223,14 @@ export default function CovidTracer() {
       <Divider />
 
       {/* 05 — Design */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="05" name="Design" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <FindingsTable rows={findings} />
         </Reveal>
-        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-xs md:gap-md lg:gap-lg">
+        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-lg">
           <FlowDiagram />
           <DesignMedia />
         </Reveal>
@@ -239,7 +239,7 @@ export default function CovidTracer() {
       <Divider />
 
       {/* 06 — Validation */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="06" name="Validation" />
         </Reveal>
@@ -260,13 +260,13 @@ export default function CovidTracer() {
       <Divider />
 
       {/* 07 — Outcome */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="07" name="Outcome" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg lg:grid lg:grid-cols-12 lg:gap-x-lg">
           {/* Content (desktop: right) */}
-          <div className="flex flex-col gap-2xl lg:col-start-8 lg:col-span-5">
+          <div className="flex flex-col gap-3xl md:gap-xl lg:gap-3xl lg:col-start-8 lg:col-span-5">
             <KeyParagraph>
               Both hypotheses were validated within a month of launch. By the time I left the
               project, the app’s rating had doubled.
@@ -288,7 +288,7 @@ export default function CovidTracer() {
             className="w-full self-start lg:col-start-1 lg:col-span-6 lg:row-start-1"
           />
         </Reveal>
-        {/* The outer SectionReveal's gap-r-xl (40/72/80px) separates every
+        {/* The outer SectionReveal's gap-r-lg (32/40/64px) separates every
             child uniformly, but OutcomeMedia's own row gap between MOH12 and
             MOH13 is only gap-xs/md:gap-md (8/16px) — so the MOH11→MOH12 gap
             was much bigger than the MOH12→MOH13 gap on mobile/tablet.
