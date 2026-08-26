@@ -53,7 +53,7 @@ export function CaseStudyHero({
             from the bottom of another page landed the title *after* everything
             else instead of first. */}
         <TitleStars>
-          <h1 className="case-hero-title flex flex-col gap-3xs whitespace-nowrap md:gap-xs">
+          <h1 className="case-hero-title flex flex-col whitespace-nowrap">
             <RevealWords immediate as="span" className="block text-text-primary-highlight">
               {titleTop}
             </RevealWords>

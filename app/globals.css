@@ -1001,16 +1001,17 @@ h1.d-sm {
 }
 
 /* ── About page: fluid hero title ──────────────────────────────────────────
-   Mobile  : D-xs fixed (44 px / lh 1.10)
+   Mobile  : D-sm fixed (60 px / lh 1.15, regular 400 — D-sm is the one
+             display step that isn't medium)
    Tablet  : D-sm → D-md  (60 → 80 px, fluid via vw)
    Desktop : D-lg → D-xl  (124 → 142 px, fluid via vw)
-   All display sizes share lh 1.15; D-xs uses 1.10.
+   Every step is lh 1.15 since the standard-trim pass.
    ────────────────────────────────────────────────────────────────────────── */
 .about-hero-title {
   font-family: var(--font-family-body);
-  font-weight: 500;
-  font-size: var(--font-size-display-xs);   /* 44 px */
-  line-height: 1.10;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-display-sm);   /* 60 px */
+  line-height: 1.15;
 }
 @media (min-width: 768px) {
   .about-hero-title {
@@ -1037,25 +1038,29 @@ h1.d-sm {
 /* ── Case study hero title (Figma "Hero content" D-xs→D-md→D-2xl) ───────────
    Mobile  : D-xs  44 px / lh 1.10
    Tablet  : D-md  80 px / lh 1.15
-   Desktop : fluid D-lg → D-2xl (124 → 224) so the nowrap lines never overflow
-             between the 1024 px breakpoint and the 1728 px Figma frame.
+   Desktop : 121.6 px / lh 1.15. Figma draws D-2xl (224) on its 1728 frame,
+             but the two lines are `whitespace-nowrap`, so the size is held
+             down to keep the longest title inside a 1024 px viewport.
+   Line height carries the whole stack: Figma's standard-trim pass dropped the
+   gap between the two lines to 0, so lh is what separates them. Under the old
+   cap trim this was lh 0.8 plus an explicit gap on the <h1>.
    ────────────────────────────────────────────────────────────────────────── */
 .case-hero-title {
   font-family: var(--font-family-body);
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-display-xs);   /* 44 */
-  line-height: 0.8;
+  line-height: 1.10;
 }
 @media (min-width: 768px) {
   .case-hero-title {
     font-size: var(--font-size-display-md); /* 80 */
-    line-height: 0.8;
+    line-height: 1.15;
   }
 }
 @media (min-width: 1024px) {
   .case-hero-title {
     font-size: 7.6rem;
-    line-height: 0.8;
+    line-height: 1.15;
   }
 }
 
