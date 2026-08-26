@@ -235,6 +235,7 @@ export default function FirstTable() {
               label={f.label}
               title={f.title}
               labelClassName="b-xs md:b-sm lg:b-sm"
+              textClassName="b-xs md:b-sm"
             >
               {f.body}
             </Column>
@@ -297,6 +298,7 @@ export default function FirstTable() {
             rows={frictionPoints}
             findingLabel="Friction point"
             decisionLabel="Solution"
+            headerClassName="b-xs"
           />
         </Reveal>
         <Reveal index={3} delay={0.6} className="w-full">

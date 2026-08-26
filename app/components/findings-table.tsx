@@ -16,19 +16,21 @@ export function FindingsTable({
   rows,
   findingLabel = "Finding",
   decisionLabel = "Design decision",
+  headerClassName = "b-xs lg:b-md",
 }: {
   rows: { finding: string; decision: string }[];
   findingLabel?: string;
   decisionLabel?: string;
+  headerClassName?: string;
 }) {
   return (
     <div className="flex flex-col gap-lg">
       {/* Header */}
       <div className="grid grid-cols-1 md:grid-cols-9 md:gap-x-lg lg:grid-cols-12">
-        <p className="b-xs text-text-primary-highlight md:col-span-4 lg:col-span-5 lg:b-md">
+        <p className={`${headerClassName} text-text-primary-highlight md:col-span-4 lg:col-span-5`}>
           {findingLabel}
         </p>
-        <p className="hidden text-text-primary-highlight md:col-start-6 md:col-span-4 md:block md:b-xs lg:col-start-8 lg:col-span-5 lg:b-md">
+        <p className={`hidden text-text-primary-highlight md:col-start-6 md:col-span-4 md:block lg:col-start-8 lg:col-span-5 ${headerClassName}`}>
           {decisionLabel}
         </p>
       </div>

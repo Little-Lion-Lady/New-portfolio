@@ -4,8 +4,10 @@ import type { ReactNode } from "react";
 //   optional label line   — text-tertiary caption above the lead (§06 "What broke")
 //   optional lead line   — text-primary-highlight (#0f1117), the dark opener
 //   body paragraph(s)    — text-secondary, may contain text-highlight-dark spans
-// Responsive body scale B-xs→B-sm→B-md (16/20/24); inter-line gap sm→md (12/16/16,
-// Figma "Key paragraph" 430:16066 Size=md, which shares the cap-trim basis of b-*).
+// Label keeps B-md on desktop (16/20/24); lead and body are B-xs→B-sm→B-sm
+// (16/20/20). The lines stack at gap 0 —
+// Figma "Key paragraph" holds B-sm from tablet up and lets line height do the
+// spacing (it was B-md 24 with a 12/16 gap under cap trim).
 export function KeyParagraph({
   label,
   lead,
@@ -18,14 +20,14 @@ export function KeyParagraph({
   className?: string;
 }) {
   return (
-    <div className={`flex flex-col items-start gap-sm md:gap-md ${className}`}>
+    <div className={`flex flex-col items-start ${className}`}>
       {label && (
         <p className="b-xs text-text-tertiary md:b-sm lg:b-md">{label}</p>
       )}
       {lead && (
-        <p className="b-xs text-text-primary-highlight md:b-sm lg:b-md">{lead}</p>
+        <p className="b-xs text-text-primary-highlight md:b-sm">{lead}</p>
       )}
-      <p className="b-xs text-text-secondary md:b-sm lg:b-md">{children}</p>
+      <p className="b-xs text-text-secondary md:b-sm">{children}</p>
     </div>
   );
 }

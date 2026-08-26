@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 // Each option is a stacked block: label (text-tertiary) · title (text-primary-highlight) ·
 // body (text-secondary), gap-lg. The chosen path carries a solid red "Chosen" badge
 // (bg-text-highlight-dark, text-bg-primary, p-xs, no radius) pinned to its top-right.
-// Text scale B-xs→B-sm→B-md, matching the other body columns.
+// Text scale B-xs→B-xs→B-sm (16/16/20) — Figma holds these at B-xs through tablet.
 export function OptionCard({
   label,
   title,
@@ -16,7 +16,7 @@ export function OptionCard({
   children: ReactNode;
   chosen?: boolean;
 }) {
-  const scale = "b-xs md:b-sm lg:b-md";
+  const scale = "b-xs lg:b-sm";
   return (
     <div className="relative flex flex-col gap-lg">
       {chosen && (

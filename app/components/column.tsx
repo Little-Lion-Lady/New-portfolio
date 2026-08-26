@@ -6,7 +6,9 @@ import type { ReactNode } from "react";
 //   tablet  — 9-col grid: label c1 · text c4-9 (Figma 393:15680)
 //   desktop — 12-col grid: label c1-2 · text c3-9
 // Label is text-primary-highlight; title text-primary; body text-secondary.
-// Text scale B-xs→B-sm→B-md (16/20/24); labelClassName overrides the label scale
+// Text scale B-xs→B-sm→B-md (16/20/24) by default; COVID and First Table use it as
+// drawn, Basis holds the whole block at B-sm via textClassName. labelClassName
+// overrides the label scale independently
 // (e.g. §03 keeps the label at B-sm on desktop).
 // Pass `ordered` instead of children for a numbered list (§04 "How might we" HMW
 // statements 547:10601) — renders a list-decimal <ol> of text-secondary items.
@@ -16,6 +18,7 @@ export function Column({
   children,
   ordered,
   labelClassName,
+  textClassName,
   className = "",
 }: {
   label: string;
@@ -23,9 +26,10 @@ export function Column({
   children?: ReactNode;
   ordered?: string[];
   labelClassName?: string;
+  textClassName?: string;
   className?: string;
 }) {
-  const scale = "b-xs md:b-sm lg:b-md";
+  const scale = textClassName ?? "b-xs md:b-sm lg:b-md";
   return (
     <div
       className={`flex flex-col md:grid md:grid-cols-9 md:gap-x-xl lg:grid-cols-12 lg:gap-x-lg ${className}`}

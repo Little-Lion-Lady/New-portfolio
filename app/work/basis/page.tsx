@@ -104,7 +104,7 @@ export default function Basis() {
       </div>
 
       {/* 01 — Journey */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="01" name="Journey" />
         </Reveal>
@@ -116,7 +116,7 @@ export default function Basis() {
       <Divider />
 
       {/* 02 — Problem */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-6xl">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="02" name="Problem" />
         </Reveal>
@@ -204,7 +204,7 @@ export default function Basis() {
       </Reveal>
 
       {/* 05 — Design brief */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-3xl lg:gap-4xl pb-xl">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="05" name="Design brief" />
         </Reveal>
@@ -214,7 +214,7 @@ export default function Basis() {
             space, then translated them directly into testable hypotheses with defined success
             metrics.
           </KeyParagraph>
-          <Column label="How might we" labelClassName="b-xs md:b-sm lg:b-sm" ordered={hmw} />
+          <Column label="How might we" labelClassName="b-xs md:b-sm lg:b-sm" textClassName="b-xs md:b-sm" ordered={hmw} />
         </Reveal>
         <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-md">
           <Hypothesis
@@ -243,7 +243,7 @@ export default function Basis() {
       <Divider />
 
       {/* 06 — Process */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="06" name="Process" />
         </Reveal>
@@ -285,7 +285,7 @@ export default function Basis() {
       <Divider />
 
       {/* 07 — Solution design */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="07" name="Solution design" />
         </Reveal>
@@ -332,7 +332,7 @@ export default function Basis() {
       <Divider />
 
       {/* 08 — Outcome */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="08" name="Outcome" />
         </Reveal>
