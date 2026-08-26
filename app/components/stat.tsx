@@ -42,22 +42,28 @@ export function Stat({
     size === "lg"
       ? "b-lg md:d-xs lg:d-sm"
       : size === "sm"
-        ? "b-md md:b-lg lg:d-xs"
+        ? "b-md md:d-2xs lg:d-xs"
         : "d-xs md:d-sm lg:d-md";
   // Figma Size=md labels are B-sm at BOTH tablet and desktop (code had 16/16/20).
   // Figma Size=sm drops to B-2xs (14) on mobile — cap height 10 there vs 11.4 for B-xs.
   const labelClass =
-    size === "outcome" ? "b-xs md:b-sm lg:b-md" : size === "lg" ? "b-xs md:b-sm" : "b-2xs md:b-xs lg:b-sm";
+    size === "outcome" ? "b-xs md:b-sm lg:b-md" : size === "lg" ? "b-xs md:b-sm" : "b-2xs md:b-sm";
   const sublabelClass = size === "outcome" ? "b-2xs md:b-sm" : "b-2xs uppercase";
-  // number → label-group gap, and label → sublabel gap
-  const outerGap =
-    size === "outcome" ? "gap-sm lg:gap-xl" : "gap-sm md:gap-md lg:gap-lg";
-  const labelGap = size === "outcome" ? "gap-sm md:gap-md" : "gap-3xs";
+  // Number → label group sits at gap 0 in every Figma variant: the standard-trim
+  // line box already carries the leading that the old 12/16/20 gap was adding on
+  // top of the trimmed cap box. The two smaller sizes pull the label back up on
+  // mobile, where B-lg (32/48) and B-md (24/36) leave the most slack.
+  const numberPull =
+    size === "lg" ? "-mb-xs md:mb-0" : size === "sm" ? "-mb-3xs md:mb-0" : "";
+  // Label → sublabel gap. Size=md (this component's `lg`) is the one variant
+  // Figma steps back down to 12 on desktop rather than holding 16.
+  const labelGap =
+    size === "lg" ? "gap-sm md:gap-md lg:gap-sm" : "gap-sm md:gap-md";
 
   return (
-    <div className={`flex flex-col justify-center ${outerGap} ${className}`}>
+    <div className={`flex flex-col justify-center ${className}`}>
       <p
-        className={`${numberClass} ${
+        className={`${numberClass} ${numberPull} ${
           TONE_CLASS[tone ?? (highlight ? "highlight-dark" : "primary")]
         }`}
       >
