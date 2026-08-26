@@ -108,7 +108,7 @@ export default function About() {
                 {experience.map((e, i) => (
                   <Fragment key={i}>
                     {/* Mobile: role + year on one row, org below, project (tertiary) below */}
-                    <div className="flex flex-col gap-sm md:hidden">
+                    <div className="flex flex-col md:hidden">
                       <div className="flex justify-between">
                         <p className="b-xs text-text-secondary">{e.role}</p>
                         <p className="b-xs text-text-secondary">{e.year}</p>
@@ -141,7 +141,7 @@ export default function About() {
                 {awards.map((a, i) => (
                   <a key={i} href={a.href} target="_blank" rel="noopener noreferrer" className="group">
                     {/* Mobile: award + year↗ on one row, project (tertiary) below */}
-                    <div className="flex flex-col gap-sm md:hidden">
+                    <div className="flex flex-col md:hidden">
                       <div className="flex items-start justify-between">
                         <p className="b-xs text-text-secondary transition-colors group-hover:text-text-primary">{a.award}</p>
                         <div className="flex items-center gap-3xs text-text-secondary shrink-0 ml-sm transition-colors group-hover:text-text-primary">

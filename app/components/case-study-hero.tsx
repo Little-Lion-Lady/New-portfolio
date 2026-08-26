@@ -77,12 +77,12 @@ export function CaseStudyHero({
           {/* Meta block (desktop: left, c2-6) — in step with the text block.
               Always a single column (meta rows then recognition rows stacked). */}
           <Reveal immediate delay={0.6} className="flex flex-col gap-sm md:gap-md lg:col-start-1 lg:col-span-5 lg:row-start-1 lg:gap-lg">
-            <div className="flex flex-col gap-sm md:gap-md lg:gap-lg">
+            <div className="flex flex-col">
               {meta.map((m, i) => (
                 <MetaRow key={i} label={m.label} value={m.value} />
               ))}
             </div>
-            <div className="flex flex-col gap-sm md:gap-md lg:gap-lg">
+            <div className="flex flex-col">
               {recognition.map((r, i) => (
                 <MetaRow key={i} label={r.label} value={r.value} />
               ))}
