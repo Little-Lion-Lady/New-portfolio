@@ -109,7 +109,7 @@ export function Button({
         animate="rest"
         className={`inline-flex items-center ${viewGap} ${viewText} text-text-primary transition-colors hover:text-text-primary-hover ${className}`}
       >
-        <span className="[text-box:trim-both_cap_alphabetic]">{label}</span>
+        <span>{label}</span>
         <m.span
           variants={arrowVariantsRight}
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}

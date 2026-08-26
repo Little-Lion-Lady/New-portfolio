@@ -76,7 +76,7 @@ export function SiteFooter() {
         className="relative col-start-1 col-span-4 row-start-4 md:col-span-3 dt:!col-span-6 dt:row-start-3"
       >
         <FitText
-          className="-ml-md w-screen self-start font-medium leading-[1.15] lowercase tracking-[-0.12em] text-text-highlight pl-md md:-ml-xl md:pl-xl dt:-ml-5xl dt:pl-5xl"
+          className="-ml-[var(--page-gutter)] w-screen self-start font-medium leading-[1.15] lowercase tracking-[-0.12em] text-text-highlight pl-[var(--page-gutter)]"
           heightRatio={0.81}
         >
           get in touch

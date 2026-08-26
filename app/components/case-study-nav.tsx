@@ -22,7 +22,7 @@ function ViewLabel({ size = "sm" }: { size?: "sm" | "md" }) {
     <span
       className={`inline-flex items-center ${viewGap} ${viewText} text-text-primary transition-colors group-hover:text-text-primary-hover`}
     >
-      <span className="[text-box:trim-both_cap_alphabetic]">View</span>
+      <span>View</span>
       <m.span
         variants={arrowVariantsRight}
         transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}

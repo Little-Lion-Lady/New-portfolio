@@ -1,7 +1,7 @@
 {
   "3xl": {
     "$type": "dimension",
-    "$value": "{spacing5xl}"
+    "$value": "{spacing6xl}"
   },
   "2xl": {
     "$type": "dimension",
@@ -21,7 +21,7 @@
   },
   "sm": {
     "$type": "dimension",
-    "$value": "{spacingMd}"
+    "$value": "{spacingLg}"
   },
   "xs": {
     "$type": "dimension",

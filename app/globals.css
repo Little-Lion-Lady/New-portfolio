@@ -359,12 +359,12 @@
      base; the md/lg overrides live in the media queries near the end of file.
      Used for section gaps/padding so layout rhythm adapts automatically. */
   --rspace-xs:  var(--spacing-xs);   /* mobile 8  */
-  --rspace-sm:  var(--spacing-md);   /* mobile 16 */
+  --rspace-sm:  var(--spacing-lg);   /* mobile 20 (Figma) */
   --rspace-md:  var(--spacing-xl);   /* mobile 24 */
   --rspace-lg:  var(--spacing-2xl);  /* mobile 32 */
   --rspace-xl:  var(--spacing-3xl);  /* mobile 40 (Figma) */
   --rspace-2xl: var(--spacing-4xl);  /* mobile 64 */
-  --rspace-3xl: var(--spacing-5xl);  /* mobile 72 */
+  --rspace-3xl: var(--spacing-6xl);  /* mobile 80 (Figma) */
 
   --radius-sm:   var(--size-6);
   --radius-md:   var(--size-7);
@@ -807,49 +807,42 @@
   font-size: var(--font-size-display-2xl);
   line-height: var(--line-height-display-2xl);
   font-weight: var(--font-weight-medium);
-  text-box: trim-both cap alphabetic;
 }
 @utility d-xl {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-xl);
   line-height: var(--line-height-display-xl);
   font-weight: var(--font-weight-medium);
-  text-box: trim-both cap alphabetic;
 }
 @utility d-lg {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-lg);
   line-height: var(--line-height-display-lg);
   font-weight: var(--font-weight-medium);
-  text-box: trim-both cap alphabetic;
 }
 @utility d-md {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-md);
   line-height: var(--line-height-display-md);
   font-weight: var(--font-weight-medium);
-  text-box: trim-both cap alphabetic;
 }
 @utility d-sm {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-sm);
   line-height: var(--line-height-display-sm);
   font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
 }
 @utility d-xs {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-xs);
   line-height: var(--line-height-display-xs);
   font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
 }
 @utility d-2xs {
   font-family: var(--font-family-body);
   font-size: var(--font-size-display-2xs);
   line-height: var(--line-height-display-2xs);
   font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
 }
 
 /* Body — Geist */
@@ -858,49 +851,42 @@
   font-size: var(--font-size-text-2xl);
   line-height: var(--line-height-body-xl);
   font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
 }
 @utility b-lg {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-xl);
   line-height: var(--line-height-body-lg);
   font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
 }
 @utility b-md {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-md);
   line-height: var(--line-height-body-md);
   font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
 }
 @utility b-sm {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-sm);
   line-height: var(--line-height-body-sm);
   font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
 }
 @utility b-xs {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-xs);
   line-height: var(--line-height-body-xs);
   font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
 }
 @utility b-2xs {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-2xs);
   line-height: var(--line-height-body-2xs);
   font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
 }
 @utility b-3xs {
   font-family: var(--font-family-body);
   font-size: var(--font-size-text-3xs);
   line-height: var(--line-height-body-3xs);
   font-weight: var(--font-weight-regular);
-  text-box: trim-both cap alphabetic;
 }
 
 /* ============================================================
@@ -988,12 +974,12 @@ body {
 @media (min-width: 768px) {
   :root {
     --rspace-xs:  var(--spacing-xs);   /* 8   */
-    --rspace-sm:  var(--spacing-md);   /* 16  */
+    --rspace-sm:  var(--spacing-lg);   /* 20 (Figma) */
     --rspace-md:  var(--spacing-2xl);  /* 32  */
     --rspace-lg:  var(--spacing-3xl);  /* 40  */
     --rspace-xl:  var(--spacing-5xl);  /* 72 (Figma) */
     --rspace-2xl: var(--spacing-6xl);  /* 80  */
-    --rspace-3xl: var(--spacing-7xl);  /* 96  */
+    --rspace-3xl: var(--spacing-8xl);  /* 128 (Figma) */
   }
 }
 @media (min-width: 1024px) {
@@ -1025,7 +1011,6 @@ h1.d-sm {
   font-weight: 500;
   font-size: var(--font-size-display-xs);   /* 44 px */
   line-height: 1.10;
-  text-box: trim-both cap alphabetic;
 }
 @media (min-width: 768px) {
   .about-hero-title {
@@ -1060,7 +1045,6 @@ h1.d-sm {
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-display-xs);   /* 44 */
   line-height: 0.8;
-  text-box: trim-both cap alphabetic;
 }
 @media (min-width: 768px) {
   .case-hero-title {

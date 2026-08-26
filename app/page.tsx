@@ -47,10 +47,10 @@ export default function Home() {
         <Reveal index={0} className="w-full">
           <SectionHeader number="01" name="Selected works" />
         </Reveal>
-        {/* Gap between work items — 96/128/224. Was gap-r-3xl (72/96/160); the
-            responsive scale tops out at --spacing-9xl (160), so desktop steps
-            onto the fixed scale's new --spacing-10xl (224). */}
-        <div className="flex w-full flex-col gap-7xl md:gap-8xl lg:gap-10xl">
+        {/* Gap between work items — --3xl (80/128/160). Figma's standard-trim
+            pass rebalanced the responsive 3xl step, so this is back on the
+            token instead of the old fixed 96/128/224 override. */}
+        <div className="flex w-full flex-col gap-r-3xl">
           {/* SW/01 waits for the section heading to be most of the way through
               its 600ms fade. index alone only buys 60ms, which reads as the two
               arriving together. SW/02+ keep the plain index stagger — they sit

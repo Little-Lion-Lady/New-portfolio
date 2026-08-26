@@ -287,8 +287,8 @@ For responsive elements, use **Responsive spaces** tokens
 | `xs` | Tablet | `var(--spacing-xs)` |
 | `xs` | Mobile | `var(--spacing-xs)` |
 | `sm` | Desktop | `var(--spacing-lg)` |
-| `sm` | Tablet | `var(--spacing-md)` |
-| `sm` | Mobile | `var(--spacing-md)` |
+| `sm` | Tablet | `var(--spacing-lg)` |
+| `sm` | Mobile | `var(--spacing-lg)` |
 | `md` | Desktop | `var(--spacing-3xl)` |
 | `md` | Tablet | `var(--spacing-2xl)` |
 | `md` | Mobile | `var(--spacing-xl)` |
@@ -296,14 +296,14 @@ For responsive elements, use **Responsive spaces** tokens
 | `lg` | Tablet | `var(--spacing-4xl)` |
 | `lg` | Mobile | `var(--spacing-3xl)` |
 | `xl` | Desktop | `var(--spacing-6xl)` |
-| `xl` | Tablet | `var(--spacing-4xl)` |
-| `xl` | Mobile | `var(--spacing-2xl)` |
+| `xl` | Tablet | `var(--spacing-5xl)` |
+| `xl` | Mobile | `var(--spacing-3xl)` |
 | `2xl` | Desktop | `var(--spacing-8xl)` |
 | `2xl` | Tablet | `var(--spacing-6xl)` |
 | `2xl` | Mobile | `var(--spacing-4xl)` |
 | `3xl` | Desktop | `var(--spacing-9xl)` |
-| `3xl` | Tablet | `var(--spacing-7xl)` |
-| `3xl` | Mobile | `var(--spacing-5xl)` |
+| `3xl` | Tablet | `var(--spacing-8xl)` |
+| `3xl` | Mobile | `var(--spacing-6xl)` |
 
 ---
 
@@ -340,7 +340,7 @@ One font family — Geist for all text roles (`B-xl` through `B-3xs`, `D-2xl` th
 **Body styles**
 | `b-xl` | `font-family-font-family-body` (Geist) | `font-size-text-2xl` (44px) | `line-height-body-xl` (56px) | `font-weight-regular` (400) |
 | `b-lg` | `font-family-font-family-body` (Geist) | `font-size-text-xl` (32px) | `line-height-body-lg` (48px) | `font-weight-regular` (400) |
-| `b-md` | `font-family-font-family-body` (Geist) | `font-size-text-md` (24px) | `line-height-body-md` (40px) | `font-weight-regular` (400) |
+| `b-md` | `font-family-font-family-body` (Geist) | `font-size-text-md` (24px) | `line-height-body-md` (36px) | `font-weight-regular` (400) |
 | `b-sm` | `font-family-font-family-body` (Geist) | `font-size-text-sm` (20px) | `line-height-body-sm` (32px) | `font-weight-regular` (400) |
 | `b-xs` | `font-family-font-family-body` (Geist) | `font-size-text-xs` (16px) | `line-height-body-xs` (26px) | `font-weight-regular` (400) |
 | `b-2xs` | `font-family-font-family-body` (Geist) | `font-size-text-2xs` (14px) | `line-height-body-2xs` (24px) | `font-weight-regular` (400) |
