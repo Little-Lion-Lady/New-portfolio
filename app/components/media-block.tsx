@@ -172,8 +172,8 @@ const BASIS_ALT = "Basis home app screen";
 // Column stacks above the detail image through tablet, sits beside it only from desktop up.
 export function ResearchMedia() {
   return (
-    <div className="flex gap-sm md:gap-md lg:gap-md flex-col lg:flex-row lg:items-stretch">
-      <div className="flex gap-sm md:gap-md lg:gap-md flex-col lg:w-1/3">
+    <div className="flex gap-r-2xs flex-col lg:flex-row lg:items-stretch">
+      <div className="flex gap-r-2xs flex-col lg:w-1/3">
         <GlassImage src="/home/work/basis/BS4.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
         <GlassImage src="/home/work/basis/BS5.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
         <GlassImage src="/home/work/basis/BS6.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
@@ -193,7 +193,7 @@ export function ResearchMedia() {
 // §05 Process — a wide flow diagram above a taller detail shot.
 export function ProcessMedia() {
   return (
-    <div className="flex gap-sm md:gap-md lg:gap-md flex-col">
+    <div className="flex flex-col gap-2xs md:gap-sm lg:gap-md">
       <GlassImage src="/home/work/basis/BS8.jpg" alt={BASIS_ALT} className="aspect-[3168/1235] w-full" />
       {/* BS9's real ratio is 1600×1395 — aspect-[1600/1395] replaces the
           fixed heights (306/524px mobile/tablet, 1414px desktop) that were
@@ -206,7 +206,7 @@ export function ProcessMedia() {
 // §06 Solution design — row of two shots.
 export function SolutionMedia() {
   return (
-    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
+    <div className="flex gap-r-2xs flex-col">
       {/* BS12 (near-square, 1866×1812) and BS13 (wide, 1600×1092) share one
           row height from md up via the justified-row technique: flex-basis:0
           + flex-grow proportional to each image's own ratio, with a matching
@@ -215,7 +215,7 @@ export function SolutionMedia() {
           inner photo only filled its own shorter aspect-derived height,
           leaving BS13 visibly padded with empty space — flex-grow removes
           that gap by giving both a shared height and proportional width. */}
-      <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:flex-row lg:items-stretch">
+      <div className="flex gap-r-2xs flex-col lg:flex-row lg:items-stretch">
         <GlassImage
           src="/home/work/basis/BS12.jpg"
           alt={BASIS_ALT}
@@ -238,7 +238,7 @@ export function SolutionMedia() {
 // (side by side), pinned to the right of it from tablet up.
 export function PrototypeMedia() {
   return (
-    <div className="flex flex-col gap-xs lg:flex-row lg:items-end lg:justify-between lg:gap-2xl">
+    <div className="flex flex-col gap-r-2xs lg:flex-row lg:items-end lg:justify-between lg:gap-2xl">
       {/* BS14–BS17 are all effectively the same 219×478 ratio, so a single
           aspectRatio (inner-box, no-crop) per image plus width-only classes
           is enough — height always derives correctly from whatever width
@@ -251,7 +251,7 @@ export function PrototypeMedia() {
           once the outer container becomes lg:flex-row: without it this div
           has no width source of its own (children are all flex-basis:0, so
           they can't contribute one), and collapses to 0. */}
-      <div className="flex gap-xs md:gap-md lg:gap-lg lg:flex-1">
+      <div className="flex gap-r-2xs lg:flex-1">
         <GlassImage src="/home/work/basis/BS14.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
         <GlassImage src="/home/work/basis/BS15.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
         <GlassImage src="/home/work/basis/BS16.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
@@ -263,7 +263,7 @@ export function PrototypeMedia() {
           arbitrary mobile value (computed max-width stuck at 0px) — an
           arbitrary lg value of its own avoids that named-vs-arbitrary-value
           ordering conflict. */}
-      <div className="flex justify-center gap-xs md:gap-md lg:gap-lg lg:w-[243px] lg:shrink-0 lg:flex-col">
+      <div className="flex justify-center gap-r-2xs lg:w-[243px] lg:shrink-0 lg:flex-col">
         <div className="relative max-w-[190px] flex-1 aspect-[243/160] overflow-hidden rounded-lg lg:aspect-auto lg:h-[160px] lg:max-w-[400px] lg:flex-none">
           <Image src="/home/work/basis/BS18.jpg" alt="Basis prototype testing participant" fill quality={100} sizes="243px" className="object-cover" />
         </div>
@@ -310,7 +310,7 @@ function OutcomeStripImage({ name }: { name: string }) {
 
 export function BasisOutcomeMedia() {
   return (
-    <div className="flex flex-col gap-xl md:gap-2xl">
+    <div className="flex flex-col gap-r-2xs">
       <GlassImage src="/home/work/basis/BS20.jpg" alt={BASIS_ALT} className="h-[198px] w-full md:h-[331px] lg:h-[540px]" />
       {/* Mobile — single continuous scroll strip, bled full-bleed past
           <main>'s own px-md gutter (-mx-md) so cards aren't cropped at the
@@ -320,19 +320,19 @@ export function BasisOutcomeMedia() {
           the other visible), which clips each card's box-shadow at the top/
           bottom edge — py-sm gives the shadow's ~10px blur room to render
           inside the scroll box instead of being cut off. */}
-      <div className="-mx-md flex gap-xs overflow-x-auto py-sm md:hidden">
+      <div className="-mx-md flex gap-r-2xs overflow-x-auto py-sm md:hidden">
         {[...OUTCOME_ROW1, ...OUTCOME_ROW2].map((name) => (
           <OutcomeStripImage key={name} name={name} />
         ))}
       </div>
       {/* Tablet/desktop — two stacked rows, centred, no horizontal scroll */}
-      <div className="hidden flex-col items-center gap-sm md:flex md:gap-md">
-        <div className="flex justify-center gap-sm md:gap-md">
+      <div className="hidden flex-col items-center gap-r-2xs md:flex">
+        <div className="flex justify-center gap-r-2xs">
           {OUTCOME_ROW1.map((name) => (
             <OutcomeStripImage key={name} name={name} />
           ))}
         </div>
-        <div className="flex justify-center gap-sm md:gap-md">
+        <div className="flex justify-center gap-r-2xs">
           {OUTCOME_ROW2.map((name) => (
             <OutcomeStripImage key={name} name={name} />
           ))}

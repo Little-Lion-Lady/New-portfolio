@@ -38,14 +38,17 @@ export const metadata: Metadata = {
 
 export default function About() {
   return (
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex flex-col gap-3xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:gap-6xl md:px-3xl md:pt-[92px] lg:gap-6xl lg:px-5xl lg:pb-0 lg:pt-[92px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex flex-col gap-3xl bg-bg-primary px-md pb-0 pt-md text-text-primary md:gap-6xl md:px-3xl md:pt-3xl lg:gap-6xl lg:px-3xl lg:pb-0 lg:pt-3xl">
       {/* Gradient + header + hero grouped so the section gap isn't inserted between them */}
       <div>
         <SiteHeader />
 
-        {/* Hero — shorter than home, text positioned in lower 2/3 of gradient */}
-        <section className="relative z-10 pb-2xl pt-[100px] md:pt-[128px] lg:pt-[160px]">
-          <TitleStars>
+        {/* Hero. Figma pads the page itself by spacing-md/3xl/3xl and lets the
+            (absolutely positioned) header overlay it, so the hero's own
+            padding is what places the title: pt 80/128/160 on the section,
+            plus the Hero-text-container's own 0/24/32 on TitleStars. */}
+        <section className="relative z-10 pb-6xl pt-6xl md:pb-5xl md:pt-8xl lg:pb-8xl lg:pt-9xl">
+          <TitleStars className="relative md:pt-xl lg:pt-2xl">
             <RevealWords immediate as="h1" className="about-hero-title text-text-primary-highlight">Who am I?</RevealWords>
           </TitleStars>
         </section>
@@ -60,18 +63,20 @@ export default function About() {
         <Divider />
       </Reveal>
 
-      {/* 01 — Overview */}
-      <SectionReveal as="section" immediate className="flex flex-col gap-r-xl">
+      {/* 01 — Overview. Figma closes the section with pb --lg/--xl/--lg
+          (32/72/64) before the next rule. */}
+      <SectionReveal as="section" immediate className="flex flex-col gap-r-xl pb-r-lg md:pb-r-xl lg:pb-r-lg">
         <Reveal index={0} delay={0.5} className="w-full">
           <SectionHeader number="01" name="Overview" />
         </Reveal>
 
-        {/* Desktop: description left (~5/11) + history right (~6/11).
-            Tablet/mobile: stacked (description → history). */}
-        <Reveal index={1} delay={0.5} className="flex flex-col gap-r-2xl wide:flex-row wide:items-start wide:gap-r-xl">
+        {/* Desktop: Figma's 12-column content grid (20px gutters) — description
+            in columns 1-5, history in 7-12, so column 6 is left empty.
+            Tablet/mobile: stacked (description → history), gap 80/40. */}
+        <Reveal index={1} delay={0.5} className="flex flex-col gap-3xl md:gap-6xl wide:grid wide:grid-cols-12 wide:items-start wide:gap-lg">
           {/* Description + CV button */}
-          <div className="flex flex-col gap-r-xl wide:flex-[5]">
-            <p className="b-xs text-text-secondary md:b-sm wide:b-lg">
+          <div className="flex flex-col gap-3xl md:pb-2xl wide:col-start-1 wide:col-span-5">
+            <p className="b-xs text-text-secondary md:b-sm">
               I&apos;ve been designing products since 2018. Agency work taught me to move fast and
               not to be afraid of making mistakes or asking questions. Product work taught me how
               to advocate for users and to own things past launch. So I care as much about{" "}
@@ -97,14 +102,14 @@ export default function About() {
           </div>
 
           {/* Experience + Recognition tables */}
-          <div className="flex flex-col gap-r-xl wide:flex-[6]">
+          <div className="flex flex-col gap-r-xl wide:col-start-7 wide:col-span-6">
             {/* ── Experience ── */}
-            <div className="flex flex-col gap-xl">
+            <div className="flex flex-col gap-r-sm">
               <div>
-                <p className="b-xs md:b-sm text-text-primary mb-lg">Experience</p>
+                <p className="b-xs md:b-sm text-text-primary mb-sm">Experience</p>
                 <Divider />
               </div>
-              <div className="flex flex-col gap-xl">
+              <div className="flex flex-col gap-md md:gap-sm lg:gap-md">
                 {experience.map((e, i) => (
                   <Fragment key={i}>
                     {/* Mobile: role + year on one row, org below, project (tertiary) below */}
@@ -119,11 +124,11 @@ export default function About() {
                     {/* Tablet: 3-col (role+org | project | year).
                         Desktop: 6-col (role+org 1-2 | project 3-4 | year 6). */}
                     <div className="hidden md:grid md:grid-cols-3 md:gap-x-lg md:items-start lg:grid-cols-6">
-                      <div className="flex flex-col gap-md md:col-span-1 lg:col-span-3">
+                      <div className="flex flex-col md:col-span-1 lg:col-span-2">
                         <p className="b-sm text-text-secondary">{e.role}</p>
                         <p className="b-sm text-text-tertiary">{e.org}</p>
                       </div>
-                      <p className="b-sm text-text-secondary md:col-span-1 lg:col-start-4 lg:col-span-2">{e.project}</p>
+                      <p className="b-sm text-text-secondary md:col-span-1 lg:col-start-3 lg:col-span-2">{e.project}</p>
                       <p className="b-sm text-text-secondary text-right md:col-span-1 lg:col-start-6">{e.year}</p>
                     </div>
                   </Fragment>
@@ -132,12 +137,12 @@ export default function About() {
             </div>
 
             {/* ── Recognition ── */}
-            <div className="flex flex-col gap-xl">
+            <div className="flex flex-col gap-r-sm">
               <div>
-                <p className="b-xs md:b-sm text-text-primary mb-lg">Recognition</p>
+                <p className="b-xs md:b-sm text-text-primary mb-sm">Recognition</p>
                 <Divider />
               </div>
-              <div className="flex flex-col gap-xl">
+              <div className="flex flex-col gap-md md:gap-xs lg:gap-sm">
                 {awards.map((a, i) => (
                   <a key={i} href={a.href} target="_blank" rel="noopener noreferrer" className="group">
                     {/* Mobile: award + year↗ on one row, project (tertiary) below */}
@@ -151,11 +156,12 @@ export default function About() {
                       </div>
                       <p className="b-xs text-text-tertiary transition-colors group-hover:text-text-primary">{a.project}</p>
                     </div>
-                    {/* Tablet: 3-col. Desktop: 6-col (project 1-3 | award 4-5 | year↗ 6) */}
-                    <div className="hidden md:grid md:grid-cols-3 md:gap-x-lg md:items-start lg:grid-cols-6">
-                      <p className="b-sm text-text-secondary transition-colors md:col-span-1 lg:col-span-3 group-hover:text-text-primary">{a.project}</p>
-                      <p className="b-sm text-text-secondary transition-colors md:col-span-1 lg:col-span-2 group-hover:text-text-primary">{a.award}</p>
-                      <div className="flex items-center justify-end gap-3xs text-text-secondary transition-colors md:col-span-1 lg:col-start-6 group-hover:text-text-primary">
+                    {/* Tablet and desktop share Figma's 6-col awards grid
+                        (project 1-2 | award 3-5 | year↗ 6). */}
+                    <div className="hidden md:grid md:grid-cols-6 md:gap-x-lg md:items-start">
+                      <p className="b-sm text-text-secondary transition-colors md:col-span-2 group-hover:text-text-primary">{a.project}</p>
+                      <p className="b-sm text-text-secondary transition-colors md:col-start-3 md:col-span-3 group-hover:text-text-primary">{a.award}</p>
+                      <div className="flex items-center justify-end gap-3xs text-text-secondary transition-colors md:col-start-6 group-hover:text-text-primary">
                         <p className="b-sm">{a.year}</p>
                         <ArrowUpRight className="size-lg transition-transform duration-200 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:scale-[1.1]" />
                       </div>
@@ -176,28 +182,30 @@ export default function About() {
           <SectionHeader number="02" name="Biography" />
         </Reveal>
 
-        {/* Mobile:  text first (order-1), images below (order-2).
-            Tablet:  images first (order-1), text below (order-2) — stacked.
-            Desktop: images left (order-1), text right (order-2) — side by side. */}
-        <Reveal index={1} delay={0.5} className="flex flex-col gap-r-xl wide:flex-row wide:items-start">
+        {/* Mobile:  images, then text, stacked with a 40px gap.
+            Tablet:  Figma's 9-col grid — images 1-4, text 5-9.
+            Desktop: the 12-col page grid — images 1-5, text 7-12.
+            Paragraph spacing is one blank line in Figma, so the gap between
+            <p>s is exactly the body line-height at each step. */}
+        <Reveal index={1} delay={0.5} className="flex flex-col gap-3xl md:grid md:grid-cols-9 md:items-start md:gap-lg wide:grid-cols-12">
           {/* Images */}
-          <div className="order-2 md:order-1 wide:flex-[5]">
+          <div className="md:col-start-1 md:col-span-4 wide:col-span-5">
             <BioCollage />
           </div>
 
           {/* Bio text */}
-          <div className="order-1 flex flex-col gap-lg lg:gap-xl md:order-2 wide:flex-[6]">
-            <p className="b-xs text-text-secondary md:b-sm lg:b-md">
+          <div className="flex flex-col gap-[var(--line-height-body-xs)] md:col-start-5 md:col-span-5 md:gap-[var(--line-height-body-sm)] wide:col-start-7 wide:col-span-6">
+            <p className="b-xs text-text-secondary md:b-sm">
               I grew up in Kyiv, Ukraine, and at 17, I made the leap to New Zealand&mdash;a
               life-changing move that instilled in me persistence and self-motivation. It also gave
               me the chance to explore the iconic Lord of the Rings filming locations I had always
               dreamed of visiting.
             </p>
-            <p className="b-xs text-text-secondary md:b-sm lg:b-md">
+            <p className="b-xs text-text-secondary md:b-sm">
               When I&apos;m not deep in design work, you can find me enjoying live music, cycling,
               drawing, and reading hard sci-fi and fantasy novels.
             </p>
-            <p className="b-xs text-text-tertiary md:b-sm lg:b-md">
+            <p className="b-xs text-text-tertiary md:b-sm">
               I&apos;m also first-aid trained, so I&apos;m set for the zombie apocalypse.
             </p>
           </div>
@@ -212,8 +220,10 @@ export default function About() {
           <SectionHeader number="03" name="Artwork" />
         </Reveal>
 
-        <Reveal index={1} delay={0.5} className="w-full">
-          <p className="b-xs text-text-secondary md:b-sm lg:b-md">
+        {/* Figma holds this paragraph to 7 of the 12 desktop columns; tablet
+            and mobile run it full width. */}
+        <Reveal index={1} delay={0.5} className="w-full wide:grid wide:grid-cols-12 wide:gap-x-lg">
+          <p className="b-xs text-text-secondary md:b-sm wide:col-span-7">
             I&apos;ve been creating art for as long as I can remember. While I began by honing my
             digital skills, working in the tech industry inspired me to explore traditional mediums.
             Art is still a big part of my life and a way to unwind and express my creativity in my

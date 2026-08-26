@@ -41,8 +41,10 @@ export function Column({
       </p>
       <div className="flex flex-col md:col-start-4 md:col-span-6 lg:col-start-3 lg:col-span-7">
         {title && <p className={`${scale} text-text-primary`}>{title}</p>}
+        {/* The ordered list stacks at gap 0 — Figma's items carry mb-0, and the
+            B-xs/B-sm line box already supplies the separation. */}
         {ordered ? (
-          <ol className={`${scale} flex list-decimal flex-col gap-md pl-xl text-text-secondary md:gap-lg`}>
+          <ol className={`${scale} flex list-decimal flex-col pl-xl text-text-secondary`}>
             {ordered.map((item, i) => (
               <li key={i}>{item}</li>
             ))}

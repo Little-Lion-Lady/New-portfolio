@@ -84,7 +84,7 @@ export const metadata: Metadata = {
 
 export default function CovidTracer() {
   return (
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-3xl md:pt-[92px] lg:px-5xl lg:pb-0 lg:pt-[92px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-3xl md:pt-[92px] lg:px-3xl lg:pb-0 lg:pt-[92px]">
       {/* Gradient + header + hero grouped so gap-r-xl isn't inserted between them */}
       <div>
         <SiteHeader />
@@ -136,7 +136,7 @@ export default function CovidTracer() {
             <Stat size="lg" value="95%" label="Devices capable of BT Tracing" />
             <Stat size="lg" value="49%" label="Users with BT Tracing enabled" highlight />
           </Stats>
-          <KeyParagraph className="lg:max-w-[916px]">
+          <KeyParagraph className="lg:max-w-[953px]">
             Bluetooth Tracing was opt-in and badly explained. People didn’t know what it
             did, and once they were through onboarding there was nothing on screen to tell
             them whether it was running. The flow asked for trust before it had earned any.
@@ -152,7 +152,7 @@ export default function CovidTracer() {
           <SectionHeader number="03" name="Approach" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
-          <KeyParagraph className="lg:max-w-[916px]">
+          <KeyParagraph className="lg:max-w-[953px]">
             A heuristic audit and some early benchmarking showed the drop-off clustered in
             two places. Between them, those two failures accounted for nearly half of
             eligible users never switching Bluetooth Tracing on.
@@ -194,16 +194,21 @@ export default function CovidTracer() {
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="04" name="Design brief" />
         </Reveal>
-        <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
-          <KeyParagraph className="lg:max-w-[916px]">
+        <Reveal index={1} delay={0.6} className="w-full">
+          <KeyParagraph className="lg:max-w-[953px]">
             The findings gave us one How Might We and two testable hypotheses. We set the
             success metrics before making any design decisions.
           </KeyParagraph>
+        </Reveal>
+        {/* Figma groups the How-Might-We with the hypotheses it produced, and
+            sets that group off from the key paragraph by the section gap.
+            The Column→hypotheses gap is a literal 32/40/40 — it tracks --lg on
+            mobile/tablet but --md on desktop, so no single token covers it. */}
+        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-2xl md:gap-3xl">
           <Column label="How might we" labelClassName="b-xs md:b-sm lg:b-sm">
             improve Bluetooth Tracing feature acquisition for both new and existing users?
           </Column>
-        </Reveal>
-        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-md">
+          <div className="flex w-full flex-col gap-r-md">
           <Hypothesis
             label="H1"
             believe="making Bluetooth Tracing visible in the app will get more people to turn it on"
@@ -217,6 +222,7 @@ export default function CovidTracer() {
             because="people will know what they’re switching on, and what they get for it."
             metric="Daily Bluetooth-active devices grow while poster scans hold steady or rise."
           />
+          </div>
         </Reveal>
       </SectionReveal>
 
@@ -227,12 +233,15 @@ export default function CovidTracer() {
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="05" name="Design" />
         </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full">
+        {/* Figma sets the findings table only --sm (16/20/20) above the media,
+            not the section gap, and the two media blocks only --2xs (6/8/12)
+            apart — so both live in one group under the section header. */}
+        <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-sm">
           <FindingsTable rows={findings} />
-        </Reveal>
-        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-lg">
-          <FlowDiagram />
-          <DesignMedia />
+          <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-2xs">
+            <FlowDiagram />
+            <DesignMedia />
+          </Reveal>
         </Reveal>
       </SectionReveal>
 
@@ -243,7 +252,7 @@ export default function CovidTracer() {
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="06" name="Validation" />
         </Reveal>
-        <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
+        <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg">
           <KeyParagraph lead="Two rounds. Each one answered a specific question.">
             Each round had a clear “therefore”. Findings went straight into the next
             iteration instead of being logged and filed.
@@ -264,9 +273,11 @@ export default function CovidTracer() {
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="07" name="Outcome" />
         </Reveal>
-        <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg lg:grid lg:grid-cols-12 lg:gap-x-lg">
-          {/* Content (desktop: right) */}
-          <div className="flex flex-col gap-3xl md:gap-xl lg:gap-3xl lg:col-start-8 lg:col-span-5">
+        {/* Tablet uses Figma's 9-col grid (image 1-3, content 5-9); desktop the
+            12-col page grid (image 1-6, content 8-12). */}
+        <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg md:grid md:grid-cols-9 md:gap-x-lg lg:grid-cols-12">
+          {/* Content (tablet/desktop: right) */}
+          <div className="flex flex-col gap-3xl md:gap-xl md:col-start-5 md:col-span-5 md:row-start-1 lg:gap-3xl lg:col-start-8 lg:col-span-5">
             <KeyParagraph>
               Both hypotheses were validated within a month of launch. By the time I left the
               project, the app’s rating had doubled.
@@ -285,7 +296,7 @@ export default function CovidTracer() {
             src="/home/work/covid-tracer/MOH11.jpg"
             alt="NZ COVID Tracer app screen"
             aspectRatio="758/474"
-            className="w-full self-start lg:col-start-1 lg:col-span-6 lg:row-start-1"
+            className="w-full self-start md:col-start-1 md:col-span-3 md:row-start-1 lg:col-span-6"
           />
         </Reveal>
         {/* The outer SectionReveal's gap-r-lg (32/40/64px) separates every

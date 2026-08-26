@@ -44,7 +44,7 @@
     },
     "textPrimaryOverlay": {
       "$type": "color",
-      "$value": "{colour.grayDark.5060}"
+      "$value": "{colour.blue.20070}"
     },
     "textSecondary": {
       "$type": "color",
@@ -52,11 +52,11 @@
     },
     "textTertiary": {
       "$type": "color",
-      "$value": "{colour.grayDark.400}"
+      "$value": "{colour.grayDark.500}"
     },
     "textQuaternary": {
       "$type": "color",
-      "$value": "{colour.grayDark.500}"
+      "$value": "{colour.grayDark.600}"
     },
     "textDecorative": {
       "$type": "color",
@@ -82,11 +82,11 @@
   "border": {
     "borderPrimary": {
       "$type": "color",
-      "$value": "{colour.grayDark.700}"
+      "$value": "{colour.grayDark.600}"
     },
     "borderSecondary": {
       "$type": "color",
-      "$value": "{colour.grayDark.900}"
+      "$value": "{colour.grayDark.700}"
     },
     "borderHighlight": {
       "$type": "color",
@@ -431,7 +431,7 @@
       },
       "white": {
         "$type": "color",
-        "$value": "{colour.blue.950}"
+        "$value": "{colour.blue.90020}"
       },
       "orange": {
         "$type": "color",

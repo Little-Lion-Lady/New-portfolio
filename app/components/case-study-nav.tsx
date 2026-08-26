@@ -76,7 +76,7 @@ export function CaseStudyNav({
 
       {/* Text column — on mobile this also holds the View label; from md it flattens
           (lg:contents) so subtitle/heading become direct grid cells on desktop. */}
-      <div className="flex min-w-0 flex-1 flex-col gap-md md:col-start-3 md:col-span-4 md:self-center lg:contents">
+      <div className="flex min-w-0 flex-1 flex-col gap-3xs md:col-start-3 md:col-span-4 md:self-center lg:contents">
         <div className="flex flex-col lg:contents">
           <p className="b-xs text-text-tertiary md:b-sm lg:b-md lg:col-start-3 lg:col-span-2 lg:self-center">
             Next<span className="lg:hidden"> case study</span>

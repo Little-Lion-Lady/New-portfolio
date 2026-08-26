@@ -43,6 +43,7 @@ export function GlassFrame({
   className = "",
   mini = false,
   innerClassName = "",
+  radiusClassName,
   children,
 }: {
   className?: string;
@@ -50,10 +51,17 @@ export function GlassFrame({
   mini?: boolean;
   /** Classes for the inner (clipped, rounded) box — background, layout, etc. */
   innerClassName?: string;
+  /**
+   * Replaces the default radius ramp for instances Figma overrides (e.g. the
+   * §02 Biography cards, which run one step larger on mobile/tablet). Written
+   * as a replacement rather than an override so the winner never depends on
+   * Tailwind's utility ordering.
+   */
+  radiusClassName?: string;
   children?: ReactNode;
 }) {
   return (
-    <div className={`${FRAME_CLASS} ${mini ? MINI_RADIUS_CLASS : RADIUS_CLASS} ${className}`}>
+    <div className={`${FRAME_CLASS} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)} ${className}`}>
       <div className={`${INNER_CLASS} h-full ${innerClassName}`}>{children}</div>
       <div aria-hidden className={RING_CLASS} />
     </div>
@@ -74,6 +82,7 @@ export function GlassImage({
   aspectRatio,
   frameAspectRatio,
   objectPosition,
+  radiusClassName,
   children,
 }: {
   src: string;
@@ -119,12 +128,14 @@ export function GlassImage({
   frameAspectRatio?: string;
   /** object-position for the cropped photo (e.g. "left", "top"). Defaults to center. */
   objectPosition?: string;
+  /** Replaces the default radius ramp — see GlassFrame's own `radiusClassName`. */
+  radiusClassName?: string;
   /** Optional overlay content stacked on top of the image (e.g. a decorative icon). */
   children?: ReactNode;
 }) {
   return (
     <div
-      className={`${FRAME_CLASS} ${mini ? MINI_RADIUS_CLASS : RADIUS_CLASS} ${className}`}
+      className={`${FRAME_CLASS} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)} ${className}`}
       style={frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
     >
       <div

@@ -134,7 +134,7 @@ export const metadata: Metadata = {
 
 export default function FirstTable() {
   return (
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-5xl)] relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-3xl md:pt-[92px] lg:px-5xl lg:pb-0 lg:pt-[92px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-3xl md:pt-[92px] lg:px-3xl lg:pb-0 lg:pt-[92px]">
       {/* Gradient + header + hero grouped so gap-r-xl isn't inserted between them */}
       <div>
         <SiteHeader />
@@ -186,7 +186,7 @@ export default function FirstTable() {
             <Stat size="lg" value="1.7M" label="App users" />
             <Stat size="lg" tone="highlight-dark" value="1.2" label="Bookings per user per year" />
           </Stats>
-          <KeyParagraph className="lg:max-w-[916px]">
+          <KeyParagraph className="lg:max-w-[953px]">
             I joined First Table as its first designer. The product itself worked. People knew
             what it was for, the community was there, and the restaurants were real. The app
             was the part letting it down: inconsistent, inaccessible, and a slog to get
@@ -213,7 +213,7 @@ export default function FirstTable() {
           <SectionHeader number="03" name="Research" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
-          <KeyParagraph lead="Understanding diner motivation" className="lg:max-w-[916px]">
+          <KeyParagraph lead="Understanding diner motivation" className="lg:max-w-[953px]">
             Before redesigning anything I wanted to know who we were designing for. We ran a
             behavioural segmentation study over the last 13 months of bookings, then added
             survey research to get at what the numbers couldn’t tell us: why people book, and
@@ -257,7 +257,7 @@ export default function FirstTable() {
           <SectionHeader number="04" name="Design System" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
-          <KeyParagraph className="lg:max-w-[916px]">
+          <KeyParagraph className="lg:max-w-[953px]">
             Alongside the research, before touching a single screen, I built a new design
             system. Design and engineering needed to be working from the same tokens, the same
             components, the same patterns. Without that, any UI work would only add to the

@@ -157,7 +157,7 @@ export function Button({
       <span className="relative whitespace-nowrap">{label}</span>
       {external ? (
         <span className="relative inline-flex shrink-0">
-          <ArrowUpRight className="size-lg md:size-xl lg:size-2xl" />
+          <ArrowUpRight className="size-xl lg:size-2xl" />
         </span>
       ) : (
         <m.span

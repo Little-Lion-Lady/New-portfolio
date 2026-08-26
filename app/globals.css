@@ -127,6 +127,7 @@
   --colour-gray-dark-950-50:  rgba(10, 9, 10, 0.5);
   --colour-blue-100-10: rgba(214, 228, 255, 0.1);
   --colour-blue-200-50: rgba(182, 203, 255, 0.5);
+  --colour-blue-200-70: rgba(182, 203, 255, 0.7);
 
   /* Size scale (numeric primitives) */
   --size-0: 0px;
@@ -357,14 +358,16 @@
   /* Responsive spacing scale (Instruction.md "Responsive spaces").
      ONE token that changes value per breakpoint — mobile values here are the
      base; the md/lg overrides live in the media queries near the end of file.
-     Used for section gaps/padding so layout rhythm adapts automatically. */
+     Used for section gaps/padding so layout rhythm adapts automatically.
+     Values mirror app/tokens/6.-responsive-spaces.*.tokens.json one-for-one. */
+  --rspace-2xs: var(--spacing-2xs);  /* mobile 6  */
   --rspace-xs:  var(--spacing-xs);   /* mobile 8  */
-  --rspace-sm:  var(--spacing-lg);   /* mobile 20 (Figma) */
+  --rspace-sm:  var(--spacing-md);   /* mobile 16 */
   --rspace-md:  var(--spacing-xl);   /* mobile 24 */
   --rspace-lg:  var(--spacing-2xl);  /* mobile 32 */
-  --rspace-xl:  var(--spacing-3xl);  /* mobile 40 (Figma) */
+  --rspace-xl:  var(--spacing-3xl);  /* mobile 40 */
   --rspace-2xl: var(--spacing-4xl);  /* mobile 64 */
-  --rspace-3xl: var(--spacing-6xl);  /* mobile 80 (Figma) */
+  --rspace-3xl: var(--spacing-6xl);  /* mobile 80 */
 
   --radius-sm:   var(--size-6);
   --radius-md:   var(--size-7);
@@ -389,8 +392,8 @@
 
     --text-primary:           var(--colour-gray-light-100);
     --text-secondary:         var(--colour-gray-dark-200);
-    --text-tertiary:          var(--colour-gray-dark-400);
-    --text-quaternary:        var(--colour-gray-dark-500);
+    --text-tertiary:          var(--colour-gray-dark-500);
+    --text-quaternary:        var(--colour-gray-dark-600);
     --text-decorative:        var(--colour-gray-dark-700);
     --text-highlight:         var(--colour-blue-500);
     --text-highlight-dark:    var(--colour-blue-300);
@@ -398,11 +401,11 @@
     --text-inverted:          var(--colour-blue-950);
     --text-primary-hover:     var(--colour-gray-dark-300);
     --text-primary-pressed:   var(--colour-gray-dark-400);
-    --text-primary-overlay:   var(--colour-gray-dark-50-60);
+    --text-primary-overlay:   var(--colour-blue-200-70);
     --text-primary-highlight: var(--colour-base-white);
 
-    --border-primary:   var(--colour-gray-dark-700);
-    --border-secondary: var(--colour-gray-dark-900);
+    --border-primary:   var(--colour-gray-dark-600);
+    --border-secondary: var(--colour-gray-dark-700);
     --border-highlight: var(--colour-gray-dark-100);
     /* Overlay chrome stays dark in dark mode, same as shadow-02 below:
        the glass frame's hairline is gray-light-950-10 in both themes. */
@@ -506,8 +509,8 @@
 
   --text-primary:           var(--colour-gray-light-100);
   --text-secondary:         var(--colour-gray-dark-200);
-  --text-tertiary:          var(--colour-gray-dark-400);
-  --text-quaternary:        var(--colour-gray-dark-500);
+  --text-tertiary:          var(--colour-gray-dark-500);
+  --text-quaternary:        var(--colour-gray-dark-600);
   --text-decorative:        var(--colour-gray-dark-700);
   --text-highlight:         var(--colour-blue-500);
   --text-highlight-dark:    var(--colour-blue-300);
@@ -515,11 +518,11 @@
   --text-inverted:          var(--colour-blue-950);
   --text-primary-hover:     var(--colour-gray-dark-300);
   --text-primary-pressed:   var(--colour-gray-dark-400);
-  --text-primary-overlay:   var(--colour-gray-dark-50-60);
+  --text-primary-overlay:   var(--colour-blue-200-70);
   --text-primary-highlight: var(--colour-base-white);
 
-  --border-primary:   var(--colour-gray-dark-700);
-  --border-secondary: var(--colour-gray-dark-900);
+  --border-primary:   var(--colour-gray-dark-600);
+  --border-secondary: var(--colour-gray-dark-700);
   --border-highlight: var(--colour-gray-dark-100);
   /* Overlay chrome stays dark in dark mode, same as shadow-02 below:
      the glass frame's hairline is gray-light-950-10 in both themes. */
@@ -750,6 +753,7 @@
 
   /* Responsive spacing — utilities like gap-r-2xl / py-r-md that resolve to the
      breakpoint-aware --rspace-* vars (auto-adjust at md/lg, no prefixes needed). */
+  --spacing-r-2xs: var(--rspace-2xs);
   --spacing-r-xs:  var(--rspace-xs);
   --spacing-r-sm:  var(--rspace-sm);
   --spacing-r-md:  var(--rspace-md);
@@ -978,18 +982,20 @@ body {
    ============================================================ */
 @media (min-width: 768px) {
   :root {
-    --rspace-xs:  var(--spacing-xs);   /* 8   */
-    --rspace-sm:  var(--spacing-lg);   /* 20 (Figma) */
+    --rspace-2xs: var(--spacing-xs);   /* 8   */
+    --rspace-xs:  var(--spacing-sm);   /* 12  */
+    --rspace-sm:  var(--spacing-lg);   /* 20  */
     --rspace-md:  var(--spacing-2xl);  /* 32  */
     --rspace-lg:  var(--spacing-3xl);  /* 40  */
-    --rspace-xl:  var(--spacing-5xl);  /* 72 (Figma) */
+    --rspace-xl:  var(--spacing-5xl);  /* 72  */
     --rspace-2xl: var(--spacing-6xl);  /* 80  */
-    --rspace-3xl: var(--spacing-8xl);  /* 128 (Figma) */
+    --rspace-3xl: var(--spacing-8xl);  /* 128 */
   }
 }
 @media (min-width: 1024px) {
   :root {
-    --rspace-xs:  var(--spacing-sm);   /* 12  */
+    --rspace-2xs: var(--spacing-sm);   /* 12  */
+    --rspace-xs:  var(--spacing-md);   /* 16  */
     --rspace-sm:  var(--spacing-lg);   /* 20  */
     --rspace-md:  var(--spacing-3xl);  /* 40  */
     --rspace-lg:  var(--spacing-4xl);  /* 64  */

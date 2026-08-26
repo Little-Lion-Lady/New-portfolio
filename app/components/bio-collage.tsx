@@ -1,64 +1,57 @@
-"use client";
-
-import { GlassImage } from "./work-image";
-import { TiltIn } from "./tilt-in";
+import { GlassFrame, GlassImage } from "./work-image";
 import { MeCat } from "./dynamic-visuals";
-import { useInitialIsDark } from "./theme-context";
-import { useIsDark } from "./use-is-dark";
 
-// Figma "02 Biography" image collage (node 1144:9241/9251/18610) — two tilted
-// glass-frame photo cards with the cat illustration layered on top. Outer wrapper divs are the post-rotation
-// bounding boxes Figma computes, so flex layout reserves the right footprint
-// for each tilted card without any manual offset math.
+// Figma "02 Biography" image container — 1144:18610 (mobile), 1523:63351
+// (tablet), 1144:9241 (desktop).
+//
+// Two equal-width cards side by side: gap = responsive 2xs (6 / 8 / 12), radius
+// size-lg on mobile and size-xl from tablet up (one step larger than the shared
+// Image wrapper default, hence the radiusClassName override). Container height
+// is Figma's own: 267.319 / 384 / 496.967.
+//
+// The right-hand card is not a photo — it's a flat blue-200 → red-200 gradient
+// with the cat drawn over it, so it's built from the tokens rather than the
+// baked ABOUT2.jpg/ABOUT2_Dark.jpg pair. Both primitives are mode-invariant, so
+// one gradient covers light and dark.
+//
+// Tablet is the only step where the two cards don't share a height: both are
+// 300px tall inside a 384px container, with the right card bottom-aligned so it
+// sits 84px lower than the left.
+const CARD_RADIUS = "rounded-lg md:rounded-xl";
+const CARD_HEIGHT = "h-full md:h-[300px] lg:h-full";
+
 export function BioCollage() {
-  // Unlike the Lottie visuals this one is server-rendered, so the SSR and
-  // hydration passes must use the server-read theme cookie rather than the
-  // live DOM: guessing client-side can already disagree with the server by
-  // the time hydration runs (e.g. a returning dark-mode visitor) and — unlike
-  // a plain re-render — React won't patch a hydration-mismatched <img src>.
-  // Passing it as the server snapshot keeps that guarantee; any correction
-  // after hydration arrives as an ordinary re-render, which does patch src.
-  const dark = useIsDark(useInitialIsDark() ?? false);
-
   return (
-    <div className="relative flex h-[314.422px] w-full items-center justify-center md:h-[496.967px] lg:h-[496.967px]">
-      <div className="mr-[-56px] flex h-[314.422px] w-[220.524px] shrink-0 items-center justify-center md:h-[521.941px] md:w-[366.07px] lg:h-[521.941px] lg:w-[366.07px]">
-        <TiltIn offset={8}>
-          <div className="rotate-4">
-            <GlassImage
-              src="/home/about/ME1.JPG"
-              alt="Maryna Babych"
-              className="h-[301.205px] w-[200px] md:h-[500px] md:w-[332px] lg:h-[500px] lg:w-[332px]"
-            />
+    <div className="relative flex h-[267.319px] w-full items-stretch gap-r-2xs md:h-[384px] lg:h-[496.967px]">
+      <GlassImage
+        src="/home/about/ME1.JPG"
+        alt="Maryna Babych"
+        radiusClassName={CARD_RADIUS}
+        sizes="(min-width: 1400px) 320px, (min-width: 768px) 200px, 50vw"
+        className={`flex-1 self-start ${CARD_HEIGHT}`}
+      />
+
+      {/* Bottom-aligned on tablet; full height everywhere else. */}
+      <div className="flex flex-1 flex-col justify-end">
+        <GlassFrame
+          radiusClassName={CARD_RADIUS}
+          className={CARD_HEIGHT}
+          innerClassName="bg-gradient-to-b from-[var(--colour-blue-200)] to-[var(--colour-red-light-200)]"
+        >
+          {/* Cat overlay — a child of the card, so it is positioned and clipped
+              by the frame rather than floating over the whole collage.
+              It is given a box with BOTH a width and a height (as a share of
+              the card) and `fit`, so the animation is contained by that box:
+              its height is whatever the box allows, never whatever the export's
+              own ratio dictates. Widths are Figma's painted sizes; the height
+              caps are the slack the -7° rotation needs for its bounding box to
+              stay inside the frame. Figma leaves the cat upright on mobile. */}
+          <div className="pointer-events-none absolute left-[51%] top-[59%] h-[80%] w-[94%] -translate-x-1/2 -translate-y-1/2 md:left-1/2 md:top-[57%] md:h-[70%] md:w-[86%] lg:top-[54%] lg:h-[60%] lg:w-[77%]">
+            <div className="h-full w-full md:-rotate-7">
+              <MeCat fit className="h-full w-full" />
+            </div>
           </div>
-        </TiltIn>
-      </div>
-      <div className="flex h-[295.054px] w-[233.946px] shrink-0 items-center justify-center md:h-[489.79px] md:w-[388.351px] lg:h-[489.79px] lg:w-[388.351px]">
-        {/* Radius-matched bg-bg-primary backer — same shape/rotation as the frame
-            itself, sitting directly behind it. This card overlaps the photo
-            card behind it, and the glass frame's translucent bg would
-            otherwise blend with the photo instead of the plain page bg,
-            bleeding its colours through at the seam. The backer gives the
-            translucent glass something page-coloured to blend with instead,
-            so it renders identically to every other (non-overlapping) glass
-            card rather than needing an opaque one-off variant. Its radius has to
-            track GlassImage's own outer radius (sm on mobile, md from md up),
-            or the flatter backer corners poke out past the frame. */}
-        <TiltIn offset={-8}>
-          <div className="-rotate-[7.56deg] rounded-sm bg-bg-primary md:rounded-md">
-            <GlassImage
-              src={dark ? "/home/about/ABOUT2_Dark.jpg" : "/home/about/ABOUT2.jpg"}
-              alt=""
-              className="h-[271.084px] w-[200px] md:h-[450px] md:w-[332px] lg:h-[450px] lg:w-[332px]"
-            >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="-rotate-7">
-                  <MeCat className="w-[140px] md:w-[200px] lg:w-[200px]" />
-                </div>
-              </div>
-            </GlassImage>
-          </div>
-        </TiltIn>
+        </GlassFrame>
       </div>
     </div>
   );

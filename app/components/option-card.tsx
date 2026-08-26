@@ -1,10 +1,17 @@
 import type { ReactNode } from "react";
 
-// Figma §05 "Process" option columns (547:10653/10657/10661) + "Chosen" tag (547:10665).
-// Each option is a stacked block: label (text-tertiary) · title (text-primary-highlight) ·
-// body (text-secondary), gap-lg. The chosen path carries a solid red "Chosen" badge
-// (bg-text-highlight-dark, text-bg-primary, p-xs, no radius) pinned to its top-right.
-// Text scale B-xs→B-xs→B-sm (16/16/20) — Figma holds these at B-xs through tablet.
+// Figma Basis §06 "Process" option columns (mobile 1523:63206 / tablet 1144:11953 /
+// desktop 1144:10787) + the "Chosen" tag.
+//
+// Each option is a label above a Figma "Key paragraph": the label is text-tertiary
+// and steps up to B-sm on desktop, while the title/body pair inside the key
+// paragraph stays B-xs at every breakpoint and stacks at gap 0 (line height does
+// the spacing). Label → pair is spacing-xs (8) until desktop, where it opens to
+// spacing-lg (20); desktop also pads each column 20 on the right.
+//
+// The tag is a solid red chip pinned to the column's top-right —
+// bg-text-highlight-dark, text-bg-primary, 8px of horizontal padding and none
+// vertical (its height is the text's own line box), no radius.
 export function OptionCard({
   label,
   title,
@@ -16,17 +23,19 @@ export function OptionCard({
   children: ReactNode;
   chosen?: boolean;
 }) {
-  const scale = "b-xs lg:b-sm";
   return (
-    <div className="relative flex flex-col gap-lg">
+    <div className="relative flex flex-col gap-xs lg:gap-lg lg:pr-lg">
       {chosen && (
-        <span className="absolute right-0 top-0 z-10 flex items-center justify-center bg-text-highlight-dark p-xs text-bg-primary">
-          <span className="b-xs md:b-sm">Chosen</span>
+        <span className="absolute right-0 top-0 z-10 flex items-center justify-center bg-text-highlight-dark px-xs text-bg-primary">
+          <span className="b-xs lg:b-sm">Chosen</span>
         </span>
       )}
-      <p className={`${scale} text-text-tertiary`}>{label}</p>
-      <p className={`${scale} text-text-primary-highlight`}>{title}</p>
-      <p className={`${scale} text-text-secondary`}>{children}</p>
+      <p className="b-xs text-text-tertiary lg:b-sm">{label}</p>
+      {/* Figma "Key paragraph" — gap 0, B-xs throughout. */}
+      <div className="flex flex-col">
+        <p className="b-xs text-text-primary-highlight">{title}</p>
+        <p className="b-xs text-text-secondary">{children}</p>
+      </div>
     </div>
   );
 }

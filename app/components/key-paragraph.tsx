@@ -11,21 +11,34 @@ import type { ReactNode } from "react";
 export function KeyParagraph({
   label,
   lead,
+  leadTone = "highlight",
   children,
   className = "",
 }: {
   label?: ReactNode;
   lead?: ReactNode;
+  /**
+   * Lead colour. Most instances use text-primary-highlight (#0f1117); a few
+   * section openers are drawn in text-primary (#3b414e) instead, and the Basis
+   * §03 vision quote is text-highlight-dark.
+   */
+  leadTone?: "highlight" | "primary" | "accent";
   children: ReactNode;
   className?: string;
 }) {
+  const leadClass =
+    leadTone === "primary"
+      ? "text-text-primary"
+      : leadTone === "accent"
+        ? "text-text-highlight-dark"
+        : "text-text-primary-highlight";
   return (
     <div className={`flex flex-col items-start ${className}`}>
       {label && (
         <p className="b-xs text-text-tertiary md:b-sm lg:b-md">{label}</p>
       )}
       {lead && (
-        <p className="b-xs text-text-primary-highlight md:b-sm">{lead}</p>
+        <p className={`b-xs md:b-sm ${leadClass}`}>{lead}</p>
       )}
       <p className="b-xs text-text-secondary md:b-sm">{children}</p>
     </div>
