@@ -25,6 +25,10 @@
   },
   "xs": {
     "$type": "dimension",
+    "$value": "{spacingSm}"
+  },
+  "2xs": {
+    "$type": "dimension",
     "$value": "{spacingXs}"
   }
 }

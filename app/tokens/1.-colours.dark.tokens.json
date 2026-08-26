@@ -28,7 +28,7 @@
   "text": {
     "textPrimary": {
       "$type": "color",
-      "$value": "{colour.grayLight.100}"
+      "$value": "{colour.grayLight.200}"
     },
     "textPrimaryHover": {
       "$type": "color",
@@ -48,7 +48,7 @@
     },
     "textSecondary": {
       "$type": "color",
-      "$value": "{colour.grayDark.200}"
+      "$value": "{colour.grayDark.300}"
     },
     "textTertiary": {
       "$type": "color",

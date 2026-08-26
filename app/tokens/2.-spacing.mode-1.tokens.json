@@ -66,5 +66,9 @@
   "spacing9xl": {
     "$type": "dimension",
     "$value": "{size.40}"
+  },
+  "spacing10xl": {
+    "$type": "dimension",
+    "$value": "{size.56}"
   }
 }

@@ -37,7 +37,7 @@ export function WorkItem({
   const content = (
     <>
       {/* Text container: stack (mobile) → 9-col grid (tablet) → 12-col grid (desktop) */}
-      <div className="flex w-full flex-col gap-lg md:grid md:grid-cols-9 md:items-start md:gap-lg lg:grid-cols-12 lg:items-start">
+      <div className="flex w-full flex-col gap-xs md:grid md:grid-cols-9 md:items-start md:gap-lg lg:grid-cols-12 lg:items-start">
         {/* number + name — one row on mobile; individual grid cells on md+ (via contents) */}
         <div className="flex items-center gap-xl md:contents">
           <p className="b-xs text-text-primary md:col-start-1 md:b-xs lg:b-sm">{number}</p>
@@ -47,8 +47,8 @@ export function WorkItem({
         </div>
 
         {/* description block — holds desc + roles, and the View label on mobile/tablet */}
-        <div className="flex flex-col gap-sm md:col-start-5 md:col-span-5 md:gap-xs lg:col-start-6 lg:col-span-6 lg:gap-md lg:self-start">
-          <div className="flex flex-col gap-lg lg:gap-xl">
+        <div className="flex flex-col gap-xs md:col-start-5 md:col-span-5 lg:col-start-6 lg:col-span-6 lg:self-start">
+          <div className="flex flex-col gap-xs">
             <p className="b-xs text-text-primary lg:b-sm">{description}</p>
             <p className="b-xs text-text-tertiary lg:b-sm">{roles}</p>
             {comingSoon && <p className="b-xs text-text-tertiary lg:b-sm">COMING SOON</p>}

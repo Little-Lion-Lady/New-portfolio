@@ -451,7 +451,7 @@
       },
       "glass": {
         "$type": "color",
-        "$value": "{colour.base.white50}"
+        "$value": "{colour.grayLight.5030}"
       }
     },
     "gradient": {

@@ -773,9 +773,14 @@
   --radius-full: 9999px;
 
   /* Custom desktop breakpoint — 1350px instead of lg (1024px).
-     Naming it "dt" keeps it distinct from the built-in lg/xl. */
-  --breakpoint-dt: 1350px;
-  --breakpoint-wide: 1400px;
+     Naming it "dt" keeps it distinct from the built-in lg/xl.
+     Declared in rem, not px: Tailwind sorts breakpoint variants by value and
+     can't compare px against the built-ins' rem, so a px value here sorts
+     BEFORE md/lg. Every `dt:` utility that overrode an `md:`/`lg:` one was
+     then dead at >=1350px, since same-specificity rules are won by whichever
+     is emitted last. 84.375rem = 1350px, 87.5rem = 1400px. */
+  --breakpoint-dt: 84.375rem;
+  --breakpoint-wide: 87.5rem;
 }
 
 /* ============================================================

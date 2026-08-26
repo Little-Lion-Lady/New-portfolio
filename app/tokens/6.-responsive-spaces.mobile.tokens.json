@@ -21,10 +21,14 @@
   },
   "sm": {
     "$type": "dimension",
-    "$value": "{spacingLg}"
+    "$value": "{spacingMd}"
   },
   "xs": {
     "$type": "dimension",
     "$value": "{spacingXs}"
+  },
+  "2xs": {
+    "$type": "dimension",
+    "$value": "{spacing2xs}"
   }
 }

@@ -81,7 +81,7 @@ export function Button({
         whileHover="hover"
         whileTap={{ scale: 0.95 }}
         animate="rest"
-        className={`inline-flex items-center gap-2xs d-2xs text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-xs md:d-xs ${className}`}
+        className={`inline-flex items-center gap-xs d-2xs text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-sm md:d-xs ${className}`}
       >
         <span>{label}</span>
         <m.span
@@ -89,7 +89,7 @@ export function Button({
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="inline-flex shrink-0"
         >
-          <ArrowUpRight className="size-xl md:size-2xl lg:size-3xl" />
+          <ArrowUpRight className="size-xl lg:size-2xl" />
         </m.span>
       </LinkTag>
     );
@@ -97,8 +97,8 @@ export function Button({
 
   if (variant === "view") {
     const viewText = size === "md" ? "b-sm lg:b-md" : "b-xs lg:b-sm";
-    const viewGap  = size === "md" ? "gap-xs" : "gap-3xs md:gap-2xs lg:gap-3xs";
-    const arrowSize = size === "md" ? "size-xl" : "size-md md:size-lg";
+    const viewGap  = size === "md" ? "gap-xs" : "gap-4xs lg:gap-3xs";
+    const arrowSize = size === "md" ? "size-xl" : "size-lg md:size-xl";
     const ViewTag = as === "span" ? m.span : isExternalHref(href) ? m.a : MotionLink;
     return (
       <ViewTag
@@ -134,7 +134,7 @@ export function Button({
       animate="rest"
       variants={primaryScaleVariants}
       transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`relative inline-flex items-center gap-xs overflow-hidden rounded-full pl-xl pr-lg py-sm b-xs text-text-inverted md:gap-sm md:pl-2xl md:pr-xl md:py-md md:b-sm lg:pl-3xl lg:pr-2xl lg:py-md lg:b-md ${className}`}
+      className={`relative inline-flex items-center gap-2xs overflow-hidden rounded-full pl-xl pr-md py-sm b-xs text-text-inverted md:gap-xs md:pl-2xl md:pr-lg md:py-md md:b-sm lg:gap-2xs lg:pl-3xl lg:pr-xl lg:py-md lg:b-md ${className}`}
       style={{
         boxShadow:
           "0 10px 10px -10px var(--shadows-shadow-01), 0 10px 30px 1px var(--shadows-shadow-02)",
@@ -165,7 +165,7 @@ export function Button({
           transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
           className="relative inline-flex shrink-0"
         >
-          <ArrowRight className="size-lg md:size-xl lg:size-2xl" />
+          <ArrowRight className="size-xl lg:size-2xl" />
         </m.span>
       )}
       {/* Glow overlay — tightens and brightens on hover */}
