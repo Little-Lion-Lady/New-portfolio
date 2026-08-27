@@ -133,8 +133,8 @@ export function useBackdropTone(ref: RefObject<HTMLElement | null>): BackdropTon
       const ys = [rect.top + rect.height / 3, rect.top + (rect.height * 2) / 3];
 
       let hits = 0;
+      let read = 0;
       let total = 0;
-      let unreadable = false;
 
       for (const y of ys) {
         for (const x of xs) {
@@ -142,12 +142,14 @@ export function useBackdropTone(ref: RefObject<HTMLElement | null>): BackdropTon
             if (el.contains(hit)) continue;
             if (!isMedia(hit)) continue;
             hits++;
+            // <video> and CSS backgrounds have no pixels we can read; they just
+            // don't contribute a sample.
             if (hit.tagName === "IMG") {
               const l = luminanceAt(hit as HTMLImageElement, x, y);
-              if (l === null) unreadable = true;
-              else total += l;
-            } else {
-              unreadable = true; // <video>, CSS background — can't read pixels
+              if (l !== null) {
+                read++;
+                total += l;
+              }
             }
             break; // topmost photo at this point wins
           }
@@ -157,12 +159,15 @@ export function useBackdropTone(ref: RefObject<HTMLElement | null>): BackdropTon
       let next: BackdropTone;
       if (hits === 0) {
         next = null;
-      } else if (unreadable || total === 0) {
-        // Couldn't read the pixels — keep the old behaviour of assuming a light
-        // photo, which is what the dark ink was written for.
+      } else if (read === 0) {
+        // Nothing readable under the pill — fall back to the old behaviour of
+        // assuming a light photo, which is what the dark ink was written for.
+        // Deliberately keyed off the sample COUNT, not the summed luminance: a
+        // black photo sums to zero and must still come out "dark".
         next = "light";
       } else {
-        const avg = total / hits;
+        // Average over the samples we could actually read, not over every hit.
+        const avg = total / read;
         const prev = toneRef.current;
         next =
           prev === "dark"
@@ -197,12 +202,24 @@ export function useBackdropTone(ref: RefObject<HTMLElement | null>): BackdropTon
       : 0;
     // Photos decode after first paint; re-measure once they're in.
     window.addEventListener("load", schedule);
+    // Switching theme swaps the light/dark export of a photo in place, with no
+    // scroll and no resize — on a page with no marquee to poll, the ink would
+    // otherwise keep the tone of the export that just got hidden.
+    const themeObserver = new MutationObserver(schedule);
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+    const scheme = window.matchMedia("(prefers-color-scheme: dark)");
+    scheme.addEventListener("change", schedule);
     return () => {
       if (frame) cancelAnimationFrame(frame);
       if (tick) window.clearInterval(tick);
       window.removeEventListener("scroll", schedule, true);
       window.removeEventListener("resize", schedule);
       window.removeEventListener("load", schedule);
+      themeObserver.disconnect();
+      scheme.removeEventListener("change", schedule);
     };
   }, [ref]);
 
