@@ -25,7 +25,8 @@
   wrapper around every <Link>, so Button, WorkItem, CaseStudyNav and SiteHeader
   need no changes. Opt a link out with data-no-curtain.
 
-  prefers-reduced-motion: the listener never engages — navigation stays native.
+  prefers-reduced-motion: no sweep. The navigation is still intercepted, but
+  only so the scroll reset below is guaranteed — nothing animates.
 */
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -84,6 +85,8 @@ function targetForClick(event: MouseEvent, currentPath: string): Target | null {
 export function PageCurtain() {
   const [phase, setPhase] = useState<Phase>("idle");
   const target = useRef<Target | null>(null);
+  // Same, for the reduced-motion path, which never enters the phase machine.
+  const reducedTarget = useRef<Target | null>(null);
   const pathname = usePathname();
   const router = useRouter();
   const reducedMotion = useReducedMotion();
@@ -122,6 +125,38 @@ export function PageCurtain() {
     return () => document.removeEventListener("click", onClick, { capture: true });
   }, [reducedMotion]);
 
+  // Reduced motion gets no sweep, so the block above never runs — and with it
+  // goes the scroll reset the covered phase performs. The router's own reset
+  // only fires when it decides the new tree's top isn't already in view, and
+  // that check can pass through, landing the viewer at the bottom of the page
+  // they just opened. Drive the navigation ourselves here so the reset is
+  // guaranteed on this path too. Only forward clicks are touched: Back and
+  // Forward never reach this listener, so the browser keeps restoring their
+  // scroll positions as it should.
+  useEffect(() => {
+    if (!reducedMotion) return;
+
+    const onClick = (event: MouseEvent) => {
+      const next = targetForClick(event, pathRef.current);
+      if (!next) return;
+      event.preventDefault();
+      reducedTarget.current = next;
+      router.push(next.url);
+    };
+
+    document.addEventListener("click", onClick, { capture: true });
+    return () => document.removeEventListener("click", onClick, { capture: true });
+  }, [reducedMotion, router]);
+
+  // ...and put the new page at its top once the route actually lands. Skipped
+  // when the target carries a hash, which has its own anchor to reach.
+  useEffect(() => {
+    const next = reducedTarget.current;
+    if (!next || pathname !== next.path) return;
+    reducedTarget.current = null;
+    if (!next.url.includes("#")) window.scrollTo(0, 0);
+  }, [pathname]);
+
   // Safety net spanning the whole covered phase. Keyed on `phase` alone so it
   // survives the pathname change below — if the route never lands (offline, a
   // hard error), the curtain still lifts instead of stranding the viewer on a
@@ -146,7 +181,16 @@ export function PageCurtain() {
       return;
     }
 
-    // Landed. Two rAFs = one committed paint of the new tree. rAF is paused in
+    // Landed. Put the new page at its top ourselves rather than trusting the
+    // router to have done it: Next only resets scroll when it decides the new
+    // tree's top isn't already in view, and that check has been observed to
+    // pass through, landing the viewer at the bottom of the page they just
+    // opened. Doing it here is free and unconditional — the panel still covers
+    // everything, so the jump is never visible. Skipped when the target
+    // carries a hash, which has its own anchor to reach ("/#work").
+    if (!next.url.includes("#")) window.scrollTo(0, 0);
+
+    // Two rAFs = one committed paint of the new tree. rAF is paused in
     // a background tab (and can be starved on a slow first paint), so race it
     // against the clock — whichever arrives first lifts the curtain.
     const lift = () => setPhase("revealing");
