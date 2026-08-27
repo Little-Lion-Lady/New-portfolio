@@ -16,6 +16,7 @@ import { Journey } from "../../components/journey";
 import { Tag, TagGroup } from "../../components/tag";
 import { OptionCard, OptionCards } from "../../components/option-card";
 import { ResearchFindings } from "../../components/research-findings";
+import { GlassImage } from "../../components/work-image";
 import {
   ResearchMedia,
   ProcessMedia,
@@ -120,20 +121,33 @@ export default function Basis() {
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="02" name="Problem" />
         </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full lg:grid lg:grid-cols-12 lg:gap-x-lg">
-          <KeyParagraph lead="A hardware product and a blank slate." leadTone="primary" className="lg:col-start-1 lg:col-span-6">
-            Traditional switchboards are failing modern households. Basis built a smart,
-            prefabricated electrical panel to fix that. But hardware alone can’t drive
-            long-term engagement or support a subscription model. A digital product was
-            non-negotiable. The problem: no one had defined what it should be.
-          </KeyParagraph>
-          <div className="mt-r-md lg:col-start-8 lg:col-span-5 lg:mt-0">
-            <TagGroup>
-              {constraints.map((c) => (
-                <Tag key={c}>{c}</Tag>
-              ))}
-            </TagGroup>
+        <Reveal index={1} delay={0.6} className="flex w-full flex-col">
+          <div className="w-full lg:grid lg:grid-cols-12 lg:gap-x-lg">
+            <KeyParagraph lead="A hardware product and a blank slate." leadTone="primary" className="lg:col-start-1 lg:col-span-6">
+              Traditional switchboards are failing modern households. Basis built a smart,
+              prefabricated electrical panel to fix that. But hardware alone can’t drive
+              long-term engagement or support a subscription model. A digital product was
+              non-negotiable. The problem: no one had defined what it should be.
+            </KeyParagraph>
+            <div className="mt-r-md lg:col-start-8 lg:col-span-5 lg:mt-0">
+              <TagGroup>
+                {constraints.map((c) => (
+                  <Tag key={c}>{c}</Tag>
+                ))}
+              </TagGroup>
+            </div>
           </div>
+          {/* The panel itself (Figma 1555:135209). Sits --md below the tags on
+              mobile/tablet, where they stack, and --lg below the whole
+              two-column block on desktop. Heights are Figma's own crop at each
+              frame width — 361×300 / 944×500 / 1648×700. */}
+          <GlassImage
+            src="/home/work/basis/BasisConsumer.png"
+            alt="The Basis smart electrical panel, shown closed, open and with its cover removed"
+            sizes="(min-width: 1400px) 1648px, (min-width: 768px) 944px, 100vw"
+            objectPosition="top"
+            className="mt-r-md h-[300px] w-full md:h-[500px] lg:mt-r-lg lg:h-[700px]"
+          />
         </Reveal>
       </SectionReveal>
 
