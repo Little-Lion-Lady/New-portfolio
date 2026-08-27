@@ -36,8 +36,12 @@ export function WorkItem({
 
   const content = (
     <>
-      {/* Text container: stack (mobile) → 9-col grid (tablet) → 12-col grid (desktop) */}
-      <div className="flex w-full flex-col gap-xs md:grid md:grid-cols-9 md:items-start md:gap-lg lg:grid-cols-12 lg:items-start">
+      {/* Text container: stack (mobile) → 9-col grid (tablet) → 12-col grid
+          (desktop). On mobile the SW/xx + name row sits 4px above the body
+          copy. From tablet up every cell shares one grid row, so only the 20px
+          column gutter is doing anything; gap-y is pinned to 0 so that stays
+          true if the row ever wraps. */}
+      <div className="flex w-full flex-col gap-3xs md:grid md:grid-cols-9 md:items-start md:gap-x-lg md:gap-y-0 lg:grid-cols-12 lg:items-start">
         {/* number + name — one row on mobile; individual grid cells on md+ (via contents) */}
         <div className="flex items-center gap-xl md:contents">
           <p className="b-xs text-text-primary md:col-start-1 md:b-xs lg:b-sm">{number}</p>
@@ -46,16 +50,23 @@ export function WorkItem({
           </p>
         </div>
 
-        {/* description block — holds desc + roles, and the View label on mobile/tablet */}
-        <div className="flex flex-col gap-xs md:col-start-5 md:col-span-5 lg:col-start-6 lg:col-span-6 lg:self-start">
-          <div className="flex flex-col gap-xs">
+        {/* description block — holds desc + roles, and the View label on
+            mobile/tablet. Gap 0: the View carries its own 4px of top padding,
+            and this gap is only ever seen below lg anyway — from lg the View
+            moves to its own grid cell and this collapses to a single child. */}
+        <div className="flex flex-col gap-0 md:col-start-5 md:col-span-5 lg:col-start-6 lg:col-span-6 lg:self-start">
+          {/* Body copy, roles and the optional COMING SOON line stack flush —
+              their line boxes carry the separation. */}
+          <div className="flex flex-col gap-0">
             <p className="b-xs text-text-primary lg:b-sm">{description}</p>
             <p className="b-xs text-text-tertiary lg:b-sm">{roles}</p>
             {comingSoon && <p className="b-xs text-text-tertiary lg:b-sm">COMING SOON</p>}
           </div>
-          {/* View — wrapper controls visibility so it doesn't fight Button's display */}
+          {/* View — wrapper controls visibility so it doesn't fight Button's
+              display. Its top padding is the only thing separating it from the
+              roles line now that the column stacks flush. */}
           {!comingSoon && (
-            <div className="w-full pt-3xs lg:hidden">
+            <div className="w-full pt-xs lg:hidden">
               <Button as="span" variant="view" label="View" href={href} />
             </div>
           )}

@@ -193,21 +193,23 @@ export function GlassImage({
 // ─── Image carousel ──────────────────────────────────────────────────────────
 
 // A flat, centred row of fixed-size cards — no tilt, no overlap. The row is
-// wider than the page at every breakpoint (3 × 560 + 2 × 24 = 1728 against a
+// wider than the page at every breakpoint (3 × 660 + 2 × 24 = 2028 against a
 // 1648 desktop content width), so `justify-center` lets it bleed symmetrically
-// past the page gutter, exactly as the Figma frames show. <body> carries
-// overflow-x: clip, so the bleed never produces a horizontal scrollbar.
+// past the page gutter. <body> carries overflow-x: clip, so the bleed never
+// produces a horizontal scrollbar.
 //
 //   breakpoint   card         gap
-//   mobile       320 × 260    spacing-sm  12px
-//   tablet       400 × 340    spacing-md  16px
-//   desktop      560 × 400    spacing-xl  24px   (size="md")
-//   desktop      560 × 500    spacing-xl  24px   (size="lg", case-study heroes)
+//   mobile       380 × 260    spacing-sm  12px
+//   tablet       480 × 340    spacing-md  16px
+//   desktop      660 × 400    spacing-xl  24px   (size="md")
+//   desktop      660 × 500    spacing-xl  24px   (size="lg", case-study heroes)
 //
-// Only the desktop height differs between the two sizes.
+// Only the desktop height differs between the two sizes. Heights are unchanged
+// from the Figma frames; the cards were widened past them, so each one crops
+// more off the top and bottom of its photo and less off the sides.
 const CARD_CLASS = {
-  md: "h-[260px] w-[320px] md:h-[340px] md:w-[400px] lg:h-[400px] lg:w-[560px]",
-  lg: "h-[260px] w-[320px] md:h-[340px] md:w-[400px] lg:h-[500px] lg:w-[560px]",
+  md: "h-[260px] w-[380px] md:h-[340px] md:w-[480px] lg:h-[400px] lg:w-[660px]",
+  lg: "h-[260px] w-[380px] md:h-[340px] md:w-[480px] lg:h-[500px] lg:w-[660px]",
 } as const;
 
 export function ImageCarousel({
@@ -249,7 +251,7 @@ export function ImageCarousel({
       src={image.src}
       alt={image.alt}
       quality={image.quality}
-      sizes="(min-width: 1024px) 560px, (min-width: 768px) 400px, 320px"
+      sizes="(min-width: 1024px) 660px, (min-width: 768px) 480px, 380px"
       loading="eager"
       className={`shrink-0 ${CARD_CLASS[size]}${gap ? " mr-sm md:mr-md lg:mr-xl" : ""}`}
     />

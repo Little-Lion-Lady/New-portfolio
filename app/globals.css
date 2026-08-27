@@ -1346,12 +1346,13 @@ h1.d-sm {
 }
 
 .image-marquee-track {
-  --image-marquee-duration: 25s;
+  --image-marquee-duration: 35s;
   /* The duration covers one full set of cards, so a row with fewer cards
      travels less distance in the same time and reads as slower. Rows that hold
      fewer than the home page's five cards scale the duration down by the same
      ratio (see ImageCarousel's `speedScale`) so every marquee moves at one
-     speed in px/s. */
+     speed in px/s. These values track the card pitch in CARD_CLASS — widen a
+     card and the same duration reads faster, so both moved together. */
   animation: image-marquee calc(var(--image-marquee-duration) * var(--image-marquee-scale, 1))
     linear infinite;
 }
@@ -1362,11 +1363,11 @@ h1.d-sm {
 }
 
 @media (min-width: 768px) {
-  .image-marquee-track { --image-marquee-duration: 32s; }
+  .image-marquee-track { --image-marquee-duration: 45s; }
 }
 
 @media (min-width: 1024px) {
-  .image-marquee-track { --image-marquee-duration: 44s; }
+  .image-marquee-track { --image-marquee-duration: 61s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
