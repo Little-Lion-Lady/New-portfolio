@@ -140,14 +140,14 @@ export default function Basis() {
           </div>
           {/* The panel itself (Figma 1555:135209). Sits --md below the tags on
               mobile/tablet, where they stack, and --lg below the whole
-              two-column block on desktop. Heights are Figma's own crop at each
-              frame width — 361×300 / 944×500 / 1648×700. */}
+              two-column block on desktop. Heights follow Figma's crop at tablet
+              and desktop — 944×500 / 1648×700 — with mobile pulled in to 260. */}
           <GlassImage
             src="/home/work/basis/BasisConsumer.png"
             alt="The Basis smart electrical panel, shown closed, open and with its cover removed"
             sizes="(min-width: 1400px) 1648px, (min-width: 768px) 944px, 100vw"
             objectPosition="top"
-            className="mt-r-md h-[300px] w-full md:h-[500px] lg:mt-r-lg lg:h-[700px]"
+            className="mt-r-md h-[260px] w-full md:h-[500px] lg:mt-r-lg lg:h-[700px]"
           />
         </Reveal>
       </SectionReveal>

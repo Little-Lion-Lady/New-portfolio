@@ -554,9 +554,11 @@ export function FTValidationMedia() {
   );
 }
 
-// §06 Outcome — two centred rows of shipped app screens (4 above 5). Both rows
-// are wider than the content column at every breakpoint, so they bleed evenly
-// past both edges exactly as in Figma (<body> already clips overflow-x).
+// §06 Outcome — shipped app screens. From tablet up they sit in two centred
+// rows (4 above 5), both wider than the content column so they bleed evenly
+// past both edges exactly as in Figma (<body> already clips overflow-x). On
+// mobile the two rows become one horizontal scroll strip, the same treatment
+// the Basis outcome screens get.
 const OUTCOME_ROW_1 = ["18", "19", "20", "21"];
 const OUTCOME_ROW_2 = ["22", "23", "24", "25", "26"];
 
@@ -574,14 +576,31 @@ function FTOutcomeScreen({ name }: { name: string }) {
 
 export function FTOutcomeMedia() {
   return (
-    <div className="flex flex-col items-center gap-r-2xs">
-      {[OUTCOME_ROW_1, OUTCOME_ROW_2].map((row, i) => (
-        <div key={i} className="flex justify-center gap-r-2xs">
-          {row.map((name) => (
-            <FTOutcomeScreen key={name} name={name} />
-          ))}
-        </div>
-      ))}
+    // No `items-center` on this column: the mobile strip below has to stretch
+    // for its negative margins to widen it rather than just shift it left.
+    // The tablet/desktop group centres its own rows instead.
+    <div className="flex flex-col gap-r-2xs">
+      {/* Mobile — one continuous scroll strip, bled full-bleed past <main>'s
+          own px-md gutter (-mx-md) so cards aren't cropped at the page's edges
+          and can scroll to the true screen edge. overflow-x-auto forces
+          overflow-y to auto too, which would clip each card's box-shadow at the
+          top/bottom edge — py-sm gives the shadow's blur room inside the scroll
+          box. Same treatment as BasisOutcomeMedia. */}
+      <div className="-mx-md flex gap-r-2xs overflow-x-auto py-sm md:hidden">
+        {[...OUTCOME_ROW_1, ...OUTCOME_ROW_2].map((name) => (
+          <FTOutcomeScreen key={name} name={name} />
+        ))}
+      </div>
+      {/* Tablet/desktop — two centred rows, no horizontal scroll */}
+      <div className="hidden flex-col items-center gap-r-2xs md:flex">
+        {[OUTCOME_ROW_1, OUTCOME_ROW_2].map((row, i) => (
+          <div key={i} className="flex justify-center gap-r-2xs">
+            {row.map((name) => (
+              <FTOutcomeScreen key={name} name={name} />
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
