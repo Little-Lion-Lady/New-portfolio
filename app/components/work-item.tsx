@@ -61,10 +61,13 @@ export function WorkItem({
           )}
         </div>
 
-        {/* View — standalone column on desktop only */}
+        {/* View — standalone column on desktop only.
+            lg:self-start on the cell is what top-aligns the View against the
+            row; the Button must NOT also carry items-start, or the arrow
+            top-aligns against the label's 32px line box and sits 4px high. */}
         {!comingSoon && (
           <div className="hidden lg:col-start-12 lg:flex lg:justify-self-end lg:self-start">
-            <Button as="span" variant="view" label="View" href={href} className="lg:items-start" />
+            <Button as="span" variant="view" label="View" href={href} />
           </div>
         )}
       </div>

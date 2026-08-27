@@ -100,6 +100,32 @@
   --colour-blue-900: #14159b;
   --colour-blue-950: #0e0c5a;
 
+  /* Colour — Purple */
+  --colour-purple-50:  #f5f0ff;
+  --colour-purple-100: #e9ddff;
+  --colour-purple-200: #d6c0ff;
+  --colour-purple-300: #b994ff;
+  --colour-purple-400: #a473ff;
+  --colour-purple-500: #9257ff;
+  --colour-purple-600: #813dff;
+  --colour-purple-700: #7500fa;
+  --colour-purple-800: #5f00cc;
+  --colour-purple-900: #43039e;
+  --colour-purple-950: #1c0050;
+
+  /* Colour — Teal */
+  --colour-teal-50:  #e9f4ff;
+  --colour-teal-100: #d6ebff;
+  --colour-teal-200: #b6dbff;
+  --colour-teal-300: #8ac5ff;
+  --colour-teal-400: #73b9ff;
+  --colour-teal-500: #4da6ff;
+  --colour-teal-600: #379bff;
+  --colour-teal-700: #0d82f7;
+  --colour-teal-800: #0d6ac6;
+  --colour-teal-900: #14589b;
+  --colour-teal-950: #0c335a;
+
   /* Colour — Base + transparents */
   --colour-base-white: #ffffff;
   --colour-base-black: #000000;
@@ -128,6 +154,12 @@
   --colour-blue-100-10: rgba(214, 228, 255, 0.1);
   --colour-blue-200-50: rgba(182, 203, 255, 0.5);
   --colour-blue-200-70: rgba(182, 203, 255, 0.7);
+  --colour-blue-900-20: rgba(20, 21, 155, 0.2);
+  --colour-gray-light-300-50: rgba(169, 175, 193, 0.5);
+  --colour-purple-100-10: rgba(233, 221, 255, 0.1);
+  --colour-purple-200-50: rgba(214, 192, 255, 0.5);
+  --colour-teal-100-10: rgba(214, 235, 255, 0.1);
+  --colour-teal-200-50: rgba(182, 219, 255, 0.5);
 
   /* Size scale (numeric primitives) */
   --size-0: 0px;
@@ -237,12 +269,16 @@
   --shadows-shadow-02: var(--colour-gray-light-950-10);
   --shadows-glow-01:   var(--colour-gray-light-50-30);
 
-  /* Carousel glass-card fill. TODO: designer added a purple colour + inverses
-     tokens in Figma for this — dark-mode value is pending, currently unchanged. */
-  --utility-inverses-glass: var(--colour-base-white-50);
-
-  /* Figma "Utility/inverses/white" — Insight card's opaque inner fill. */
-  --utility-inverses-white: var(--colour-base-white);
+  /* Figma "Utility/inverses" collection — light values. `white` is the Insight
+     card's inner fill; the rest are accent slots that invert to a different hue
+     in dark rather than to a lighter step of the same one. */
+  --utility-inverses-glass:  var(--colour-gray-light-50-30);
+  --utility-inverses-white:  var(--colour-base-white);
+  --utility-inverses-orange: var(--colour-orange-400);
+  --utility-inverses-purple: var(--colour-purple-300);
+  --utility-inverses-red:    var(--colour-red-light-500);
+  --utility-inverses-teal:   var(--colour-teal-400);
+  --utility-inverses-shadow: var(--colour-gray-light-800-50);
 
   /* ----------------------------------------------------------
      4. COMPONENT TOKENS — light mode
@@ -319,6 +355,26 @@
   --utility-orange-900: var(--colour-orange-900);
   --utility-orange-950: var(--colour-orange-950);
 
+  --utility-purple-50: var(--colour-purple-50);
+  --utility-purple-100: var(--colour-purple-100);
+  --utility-purple-200: var(--colour-purple-200);
+  --utility-purple-300: var(--colour-purple-300);
+  --utility-purple-400: var(--colour-purple-400);
+  --utility-purple-500: var(--colour-purple-500);
+  --utility-purple-600: var(--colour-purple-600);
+  --utility-purple-700: var(--colour-purple-700);
+  --utility-purple-800: var(--colour-purple-800);
+  --utility-purple-900: var(--colour-purple-900);
+  --utility-purple-950: var(--colour-purple-950);
+
+  /* Figma "Utility/white" — white opacities in light, black in dark. */
+  --utility-white-25: var(--colour-base-white-25);
+  --utility-white-50: var(--colour-base-white-50);
+  --utility-white-70: var(--colour-base-white-70);
+  --utility-white-100: var(--colour-base-white);
+
+  --utility-blue-900-20: var(--colour-blue-900-20);
+
   /* Gradient tokens — light values */
   --utility-gradient-red:         var(--colour-red-light-600);
   --utility-gradient-orange:      var(--colour-orange-400);
@@ -390,8 +446,8 @@
     --bg-inverse:          var(--colour-gray-dark-800);
     --bg-transparency:     var(--colour-base-black-transparent);
 
-    --text-primary:           var(--colour-gray-light-100);
-    --text-secondary:         var(--colour-gray-dark-200);
+    --text-primary:           var(--colour-gray-light-200);
+    --text-secondary:         var(--colour-gray-dark-300);
     --text-tertiary:          var(--colour-gray-dark-500);
     --text-quaternary:        var(--colour-gray-dark-600);
     --text-decorative:        var(--colour-gray-dark-700);
@@ -418,9 +474,15 @@
     --shadows-shadow-02: var(--colour-base-black);
     --shadows-glow-01:   var(--colour-blue-100);
 
-    /* Figma "Utility/inverses" collection, dark mode: glass = base/White-10. */
-    --utility-inverses-glass: var(--colour-base-white-10);
-    --utility-inverses-white: var(--colour-blue-950);
+    /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
+       wash here, not an opaque fill, and red/teal swap hue rather than step. */
+    --utility-inverses-glass:  var(--colour-base-white-10);
+    --utility-inverses-white:  var(--colour-blue-900-20);
+    --utility-inverses-orange: var(--colour-orange-400);
+    --utility-inverses-purple: var(--colour-purple-500);
+    --utility-inverses-red:    var(--colour-blue-600);
+    --utility-inverses-teal:   var(--colour-red-light-500);
+    --utility-inverses-shadow: var(--colour-gray-dark-950-50);
 
     --component-bg-button-primary: var(--colour-base-white);
     --component-bg-button-hover:   var(--colour-blue-100);
@@ -488,6 +550,25 @@
     --utility-orange-900: var(--colour-orange-100);
     --utility-orange-950: var(--colour-orange-50);
 
+    --utility-purple-50: var(--colour-purple-950);
+    --utility-purple-100: var(--colour-purple-900);
+    --utility-purple-200: var(--colour-purple-800);
+    --utility-purple-300: var(--colour-purple-700);
+    --utility-purple-400: var(--colour-purple-600);
+    --utility-purple-500: var(--colour-purple-500);
+    --utility-purple-600: var(--colour-purple-400);
+    --utility-purple-700: var(--colour-purple-300);
+    --utility-purple-800: var(--colour-purple-200);
+    --utility-purple-900: var(--colour-purple-100);
+    --utility-purple-950: var(--colour-purple-50);
+
+    --utility-white-25: var(--colour-base-black-70);
+    --utility-white-50: var(--colour-base-black-50);
+    --utility-white-70: var(--colour-base-black-25);
+    --utility-white-100: var(--colour-base-black-10);
+
+    --utility-blue-900-20: var(--colour-blue-100-10);
+
     --utility-gradient-red:         var(--colour-blue-600);
     --utility-gradient-orange:      var(--colour-orange-950);
     --utility-gradient-transparent: var(--colour-base-black-transparent);
@@ -507,8 +588,8 @@
   --bg-inverse:          var(--colour-gray-dark-800);
   --bg-transparency:     var(--colour-base-black-transparent);
 
-  --text-primary:           var(--colour-gray-light-100);
-  --text-secondary:         var(--colour-gray-dark-200);
+  --text-primary:           var(--colour-gray-light-200);
+  --text-secondary:         var(--colour-gray-dark-300);
   --text-tertiary:          var(--colour-gray-dark-500);
   --text-quaternary:        var(--colour-gray-dark-600);
   --text-decorative:        var(--colour-gray-dark-700);
@@ -534,9 +615,15 @@
   --shadows-shadow-02: var(--colour-base-black);
   --shadows-glow-01:   var(--colour-blue-100);
 
-  /* Figma "Utility/inverses" collection, dark mode: glass = base/White-10. */
-  --utility-inverses-glass: var(--colour-base-white-10);
-  --utility-inverses-white: var(--colour-blue-950);
+  /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
+     wash here, not an opaque fill, and red/teal swap hue rather than step. */
+  --utility-inverses-glass:  var(--colour-base-white-10);
+  --utility-inverses-white:  var(--colour-blue-900-20);
+  --utility-inverses-orange: var(--colour-orange-400);
+  --utility-inverses-purple: var(--colour-purple-500);
+  --utility-inverses-red:    var(--colour-blue-600);
+  --utility-inverses-teal:   var(--colour-red-light-500);
+  --utility-inverses-shadow: var(--colour-gray-dark-950-50);
 
   --component-bg-button-primary: var(--colour-base-white);
   --component-bg-button-hover:   var(--colour-blue-100);
@@ -603,6 +690,25 @@
   --utility-orange-800: var(--colour-orange-200);
   --utility-orange-900: var(--colour-orange-100);
   --utility-orange-950: var(--colour-orange-50);
+
+  --utility-purple-50: var(--colour-purple-950);
+  --utility-purple-100: var(--colour-purple-900);
+  --utility-purple-200: var(--colour-purple-800);
+  --utility-purple-300: var(--colour-purple-700);
+  --utility-purple-400: var(--colour-purple-600);
+  --utility-purple-500: var(--colour-purple-500);
+  --utility-purple-600: var(--colour-purple-400);
+  --utility-purple-700: var(--colour-purple-300);
+  --utility-purple-800: var(--colour-purple-200);
+  --utility-purple-900: var(--colour-purple-100);
+  --utility-purple-950: var(--colour-purple-50);
+
+  --utility-white-25: var(--colour-base-black-70);
+  --utility-white-50: var(--colour-base-black-50);
+  --utility-white-70: var(--colour-base-black-25);
+  --utility-white-100: var(--colour-base-black-10);
+
+  --utility-blue-900-20: var(--colour-blue-100-10);
 
   --utility-gradient-red:         var(--colour-blue-600);
   --utility-gradient-orange:      var(--colour-orange-950);
@@ -725,6 +831,27 @@
   --color-utility-orange-800: var(--utility-orange-800);
   --color-utility-orange-900: var(--utility-orange-900);
   --color-utility-orange-950: var(--utility-orange-950);
+  --color-utility-purple-50: var(--utility-purple-50);
+  --color-utility-purple-100: var(--utility-purple-100);
+  --color-utility-purple-200: var(--utility-purple-200);
+  --color-utility-purple-300: var(--utility-purple-300);
+  --color-utility-purple-400: var(--utility-purple-400);
+  --color-utility-purple-500: var(--utility-purple-500);
+  --color-utility-purple-600: var(--utility-purple-600);
+  --color-utility-purple-700: var(--utility-purple-700);
+  --color-utility-purple-800: var(--utility-purple-800);
+  --color-utility-purple-900: var(--utility-purple-900);
+  --color-utility-purple-950: var(--utility-purple-950);
+  --color-utility-white-25: var(--utility-white-25);
+  --color-utility-white-50: var(--utility-white-50);
+  --color-utility-white-70: var(--utility-white-70);
+  --color-utility-white-100: var(--utility-white-100);
+  --color-utility-blue-900-20: var(--utility-blue-900-20);
+  --color-utility-inverses-orange: var(--utility-inverses-orange);
+  --color-utility-inverses-purple: var(--utility-inverses-purple);
+  --color-utility-inverses-red: var(--utility-inverses-red);
+  --color-utility-inverses-teal: var(--utility-inverses-teal);
+  --color-utility-inverses-shadow: var(--utility-inverses-shadow);
 
   /* Fonts */
   --font-sans: var(--font-family-body);
@@ -1043,6 +1170,27 @@ h1.d-sm {
 @media (min-width: 1024px) {
   [style*="--lg-scale-x"] {
     transform: scaleX(var(--lg-scale-x)) !important;
+  }
+}
+
+/* ── 404 title (Figma 99:2843 / 940:7368 / 940:7377) ──────────────────────
+   D-md → D-lg → D-2xl, medium, lh 1.15 at every step. Desktop is capped
+   fluid rather than a flat 224px: Figma only draws the 1728 frame, and a
+   fixed 224 would push the nowrap "404 error" past the gutter between 1024
+   and ~1150. The clamp reaches 224 exactly at 1728.
+   ────────────────────────────────────────────────────────────────────────── */
+.notfound-title {
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-display-md);   /* 80 */
+  line-height: 1.15;
+}
+@media (min-width: 768px) {
+  .notfound-title { font-size: var(--font-size-display-lg); }  /* 124 */
+}
+@media (min-width: 1024px) {
+  .notfound-title {
+    font-size: clamp(var(--font-size-display-xl), 22.7px + 11.65vw, var(--font-size-display-2xl));
   }
 }
 

@@ -257,7 +257,7 @@ export default function CovidTracer() {
             Each round had a clear “therefore”. Findings went straight into the next
             iteration instead of being logged and filed.
           </KeyParagraph>
-          <Stats className="md:grid-cols-2 lg:grid-cols-4">
+          <Stats rowGap="gap-y-2xl md:gap-y-lg" className="md:grid-cols-2 lg:grid-cols-4">
             <Stat size="sm" value="18% → 5.3%" label="Mislick rate reduction" />
             <Stat size="sm" value="55% → 12%" label="Drop off reduction at step 1" />
             <Stat size="sm" value="38% → 92%" label="Task success" />

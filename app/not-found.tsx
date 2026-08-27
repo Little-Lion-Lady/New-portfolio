@@ -2,84 +2,73 @@ import { SiteHeader } from "./components/site-header";
 import { Button } from "./components/button";
 import { Reveal, RevealWords } from "./components/reveal";
 
+// Figma 404 (99:2837 desktop / 436:17550 tablet / 269:3740 mobile).
+// Page padding is a flat 16/40/40 on all four sides; the header overlays it.
+// The hero grows to fill whatever is left and centres the title inside its own
+// generous padding, and the helper row sits at the bottom.
 export default function NotFound() {
   return (
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex min-h-svh flex-col bg-bg-primary px-md pt-[60px] md:px-2xl md:pt-[92px] lg:px-3xl lg:pt-[92px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex min-h-svh flex-col bg-bg-primary p-md text-text-primary md:p-3xl">
       <SiteHeader />
 
-      {/* Full-height content wrapper, sits above gradient */}
-      <div className="relative z-10 flex flex-1 flex-col">
-
-        {/* ── Hero text ──────────────────────────────────────────────────────
-            Mobile/tablet: natural height with top padding.
-            Desktop: fixed 70svh with text pushed to bottom via justify-end,
-            so the helper is always visible in the remaining ~30svh.        */}
-        <div className="flex flex-col justify-end pb-8xl pt-8xl md:pb-2xl md:pt-[140px] lg:h-[70svh] lg:justify-center lg:pt-0 lg:pb-0">
-
-          {/* Mobile: no stagger, stack */}
-          <div className="md:hidden">
-            <RevealWords as="h1" className="d-md whitespace-nowrap text-text-primary-highlight">Oops</RevealWords>
-            <RevealWords as="p" startIndex={1} className="d-md leading-[0.8] whitespace-nowrap text-text-highlight-dark">404 error</RevealWords>
-          </div>
-
-          {/* Tablet: 9-col grid stagger */}
-          <div className="hidden grid-cols-9 gap-x-lg md:grid lg:hidden">
-            <RevealWords as="h1" className="col-[1/span_4] d-lg leading-[0.9] whitespace-nowrap text-text-primary-highlight">Oops</RevealWords>
-            <RevealWords as="p" startIndex={1} className="col-[2/span_8] d-lg leading-[0.9] whitespace-nowrap text-text-highlight-dark">404 error</RevealWords>
-          </div>
-
-          {/* Desktop: 12-col grid stagger, fluid D-xl → D-2xl */}
-          <div className="hidden grid-cols-12 gap-x-lg lg:grid">
+      {/* Fills the viewport, pushing the helper row to the bottom. */}
+      <div className="relative z-10 flex flex-1 flex-col justify-between lg:pb-7xl">
+        {/* Hero — title centred in its own padding. */}
+        <div className="flex flex-1 flex-col justify-center gap-lg py-8xl md:pb-8xl md:pt-9xl lg:pb-9xl lg:pt-[260px]">
+          {/* The two lines overlap: Figma pulls the second up by 40 at desktop
+              and 24 at tablet. Expressed in em so the overlap tracks the
+              clamped font size instead of drifting as it scales. */}
+          <div className="flex flex-col">
             <RevealWords
               as="h1"
-              className="col-[1/span_5] d-xl leading-[0.9] whitespace-nowrap text-text-primary-highlight"
-              style={{ fontSize: "clamp(var(--font-size-display-xl), 22.7px + 11.65vw, var(--font-size-display-2xl))" }}
+              className="notfound-title whitespace-nowrap text-text-primary-highlight md:-mb-[0.1935em] lg:-mb-[0.1786em]"
             >
               Oops
             </RevealWords>
             <RevealWords
               as="p"
               startIndex={1}
-              className="col-[3/span_10] d-xl leading-[0.9] whitespace-nowrap text-text-highlight-dark"
-              style={{ fontSize: "clamp(var(--font-size-display-xl), 22.7px + 11.65vw, var(--font-size-display-2xl))" }}
+              className="notfound-title whitespace-nowrap text-text-highlight-dark"
             >
               404 error
             </RevealWords>
           </div>
         </div>
 
-        {/* ── Helper row ─────────────────────────────────────────────────── */}
-
-        {/* Mobile: stacked texts + button */}
-        <div className="mt-3xl flex flex-col gap-3xl md:hidden">
-          <div className="flex flex-col gap-[20px]">
-            <Reveal index={0} delay={0.5} as="p" className="b-sm text-text-secondary">Are you lost?</Reveal>
-            <Reveal index={1} delay={0.5} as="p" className="b-sm text-text-secondary">I can fix this</Reveal>
+        {/* Helper — stacked on mobile; from tablet a 9-col grid (copy in 1-3
+            and 4-5, button hard right), and a 12-col one on desktop (5-7 and
+            8-9). Gutter is 32 at both.
+            The two lines never wrap: Figma sizes them as fixed 258px text boxes
+            that overflow their own cell rather than reflowing (the desktop
+            "I can fix this" sits at x=-5 inside a 248px cell), so nowrap is
+            what keeps them on one line in the narrow cells just above 1024. */}
+        <div className="flex flex-col items-start gap-3xl md:grid md:grid-cols-9 md:items-center md:gap-2xl lg:grid-cols-12">
+          <div className="flex w-[258px] flex-col gap-lg md:contents">
+            <Reveal
+              index={0}
+              delay={0.5}
+              as="p"
+              className="b-sm whitespace-nowrap text-text-secondary md:b-md md:col-start-1 md:col-span-3 lg:col-start-5 lg:col-span-3"
+            >
+              Are you lost?
+            </Reveal>
+            <Reveal
+              index={1}
+              delay={0.5}
+              as="p"
+              className="b-sm whitespace-nowrap text-text-secondary md:b-md md:col-start-4 md:col-span-2 lg:col-start-8 lg:col-span-2"
+            >
+              I can fix this
+            </Reveal>
           </div>
-          <Reveal index={2} delay={0.5} className="self-start">
+          <Reveal
+            index={2}
+            delay={0.5}
+            className="self-start md:col-start-6 md:col-span-4 md:justify-self-end lg:col-start-10 lg:col-span-3"
+          >
             <Button variant="primary" label="Go home" href="/" />
           </Reveal>
         </div>
-
-        {/* Tablet: flex row, button ml-auto */}
-        <div className="mt-8xl hidden items-center gap-x-lg md:flex lg:hidden">
-          <Reveal index={0} delay={0.5} as="p" className="w-[258px] b-md text-text-secondary">Are you lost?</Reveal>
-          <Reveal index={1} delay={0.5} as="p" className="w-[258px] b-md text-text-secondary">I can fix this</Reveal>
-          <Reveal index={2} delay={0.5} className="ml-auto">
-            <Button variant="primary" label="Go home" href="/" />
-          </Reveal>
-        </div>
-
-        {/* Desktop: fills remaining ~30svh, flex-1 centers helper vertically */}
-        <div className="hidden flex-1 items-center gap-x-lg lg:flex">
-          <div className="flex-1" />
-          <Reveal index={0} delay={0.5} as="p" className="w-[258px] lg:b-md text-text-secondary">Are you lost?</Reveal>
-          <Reveal index={1} delay={0.5} as="p" className="w-[258px] lg:b-md text-text-secondary">I can fix this</Reveal>
-          <Reveal index={2} delay={0.5} className="ml-auto">
-            <Button variant="primary" label="Go home" href="/" />
-          </Reveal>
-        </div>
-
       </div>
     </main>
   );

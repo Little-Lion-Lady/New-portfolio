@@ -83,18 +83,22 @@ export function Stat({
   );
 }
 
-// "Stats" row — responsive grid. Column gap = lg (20), row gap = 3xl (40), matching
-// Figma's grid (gap-x 20 / gap-y 40). Callers set the column count per section via
-// `className` (e.g. "md:grid-cols-3", "md:grid-cols-2 lg:grid-cols-4"); default stacks.
+// "Stats" row — responsive grid. Column gap = lg (20); row gap is lg (20) too in
+// every Figma instance bar one (COVID §06, which opens to 32 on mobile only —
+// hence the prop rather than a className override, which would lose to the base
+// utility on Tailwind's value ordering). Callers set the column count per
+// section via `className` (e.g. "md:grid-cols-3"); default stacks.
 export function Stats({
   children,
   className = "",
+  rowGap = "gap-y-lg",
 }: {
   children: ReactNode;
   className?: string;
+  rowGap?: string;
 }) {
   return (
-    <div className={`grid grid-cols-1 gap-x-lg gap-y-3xl ${className}`}>
+    <div className={`grid grid-cols-1 gap-x-lg ${rowGap} ${className}`}>
       {children}
     </div>
   );

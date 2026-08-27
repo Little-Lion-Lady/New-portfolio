@@ -165,7 +165,7 @@ export default function FirstTable() {
       </div>
 
       {/* 01 — Journey */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="01" name="Journey" />
         </Reveal>
@@ -177,13 +177,14 @@ export default function FirstTable() {
       <Divider />
 
       {/* 02 — Problem */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="02" name="Problem" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
-          <Stats className="md:grid-cols-2">
+          <Stats className="md:grid-cols-3">
             <Stat size="lg" value="1.7M" label="App users" />
+            <Stat size="lg" tone="highlight-dark" value="7.50%" label="Booking conversion rate" />
             <Stat size="lg" tone="highlight-dark" value="1.2" label="Bookings per user per year" />
           </Stats>
           <KeyParagraph className="lg:max-w-[953px]">
@@ -208,7 +209,7 @@ export default function FirstTable() {
       <Divider />
 
       {/* 03 — Research */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="03" name="Research" />
         </Reveal>
@@ -220,15 +221,17 @@ export default function FirstTable() {
             what stops them.
           </KeyParagraph>
         </Reveal>
-        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-4xl">
+        <Reveal index={2} delay={0.6} className="w-full">
           <Stats className="md:grid-cols-3">
             <Stat size="lg" tone="highlight-subtle" value="400k+" label="Transactions analysed" />
             <Stat size="lg" tone="highlight-subtle" value="10k" label="User survey responses" />
             <Stat size="lg" tone="highlight-subtle" value="5" label="User groups identified" />
           </Stats>
+        </Reveal>
+        <Reveal index={3} delay={0.6} className="w-full">
           <FTResearchMedia />
         </Reveal>
-        <Reveal index={3} delay={0.6} className="flex w-full flex-col gap-r-md">
+        <Reveal index={4} delay={0.6} className="flex w-full flex-col gap-r-md">
           {findings.map((f) => (
             <Column
               key={f.label}
@@ -252,7 +255,7 @@ export default function FirstTable() {
       </Reveal>
 
       {/* 04 — Design System */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="04" name="Design System" />
         </Reveal>
@@ -267,14 +270,15 @@ export default function FirstTable() {
         <Reveal index={2} delay={0.6} className="w-full">
           <FTDesignSystemMedia />
         </Reveal>
-        {/* Three supporting notes — B-sm throughout, a step below the section body
-            (Figma 1394:101631): stacked on mobile, 3-up from tablet. */}
-        <Reveal index={3} delay={0.6} className="flex w-full flex-col gap-3xl md:grid md:grid-cols-3 md:gap-lg">
+        {/* Three supporting notes (Figma 1523:63230 / 1575:135304 / 1575:135327).
+            Each is a Key paragraph — title over body at gap 0. They stack at --sm
+            on mobile and go 3-up from tablet, where --sm is also the grid gutter:
+            equal thirds of Figma's 9-col grid, and of the 12-col one on desktop. */}
+        <Reveal index={3} delay={0.6} className="flex w-full flex-col gap-r-sm md:grid md:grid-cols-3">
           {systemPrinciples.map((p) => (
-            <div key={p.title} className="flex flex-col items-start gap-md md:gap-lg">
-              <p className="b-xs text-text-primary-highlight md:b-sm">{p.title}</p>
-              <p className="b-xs text-text-secondary md:b-sm">{p.body}</p>
-            </div>
+            <KeyParagraph key={p.title} lead={p.title}>
+              {p.body}
+            </KeyParagraph>
           ))}
         </Reveal>
       </SectionReveal>
@@ -282,7 +286,7 @@ export default function FirstTable() {
       <Divider />
 
       {/* 05 — Redesign */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="05" name="Redesign" />
         </Reveal>
@@ -309,7 +313,7 @@ export default function FirstTable() {
       <Divider />
 
       {/* 06 — Validation */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="06" name="Validation" />
         </Reveal>
@@ -329,7 +333,7 @@ export default function FirstTable() {
       <Divider />
 
       {/* 07 — Outcome */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="07" name="Outcome" />
         </Reveal>

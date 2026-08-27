@@ -67,22 +67,24 @@ export function CaseStudyHero({
             Text, meta and images all reveal together 0.6s in — over the tail of
             the word-by-word title — with the same 16px y-lift the home page
             uses. */}
-        <div className="flex flex-col gap-3xl md:gap-4xl lg:grid lg:grid-cols-12 lg:gap-x-lg">
+        <div className="flex flex-col gap-md md:gap-lg lg:grid lg:grid-cols-12 lg:gap-x-lg">
           {/* Text block (desktop: right, c7-12) */}
           <Reveal immediate delay={0.6} className="flex flex-col lg:col-start-7 lg:col-span-6 lg:justify-center">
             <p className="b-xs text-text-primary-highlight md:b-sm lg:b-md">{lead}</p>
             <p className="b-xs text-text-secondary md:b-sm lg:b-md">{description}</p>
           </Reveal>
 
-          {/* Meta block (desktop: left, c2-6) — in step with the text block.
-              Always a single column (meta rows then recognition rows stacked). */}
-          <Reveal immediate delay={0.6} className="flex flex-col lg:col-start-1 lg:col-span-5 lg:row-start-1">
-            <div className="flex flex-col">
+          {/* Meta block (desktop: left, c1-5) — in step with the text block.
+              Mobile and desktop stack the context rows over the recognition
+              rows; tablet alone splits them across Figma's 9-col grid (c1-3
+              and c5-7). */}
+          <Reveal immediate delay={0.6} className="flex flex-col md:grid md:grid-cols-9 md:gap-x-lg lg:flex lg:flex-col lg:col-start-1 lg:col-span-5 lg:row-start-1">
+            <div className="flex flex-col md:col-start-1 md:col-span-3">
               {meta.map((m, i) => (
                 <MetaRow key={i} label={m.label} value={m.value} />
               ))}
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col md:col-start-5 md:col-span-3">
               {recognition.map((r, i) => (
                 <MetaRow key={i} label={r.label} value={r.value} />
               ))}

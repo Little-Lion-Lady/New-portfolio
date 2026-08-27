@@ -366,7 +366,7 @@ export function FTProblemMedia() {
 // §02 Research — segmentation charts. Stacked through tablet, side by side at desktop.
 export function FTResearchMedia() {
   return (
-    <div className="flex gap-sm md:gap-md lg:gap-md flex-col lg:flex-row lg:items-start">
+    <div className="flex gap-r-2xs flex-col lg:flex-row lg:items-start">
       <GlassImage
         src={`${FT}/5.jpg`}
         darkSrc={`${FT}/5_dark.jpg`}
@@ -390,7 +390,7 @@ export function FTResearchMedia() {
 export function FTDesignSystemMedia() {
   const tokenSheet = "w-full aspect-[361/180] md:aspect-[944/437] lg:aspect-[1584/796]";
   return (
-    <div className="flex gap-sm md:gap-md lg:gap-md flex-col">
+    <div className="flex gap-r-2xs flex-col">
       <GlassImage
         src={`${FT}/7.jpg`}
         darkSrc={`${FT}/7_dark.jpg`}
@@ -482,7 +482,7 @@ const REDESIGN_DETAILS: {
 
 export function FTRedesignMedia() {
   return (
-    <div className="flex gap-sm md:gap-md lg:gap-md flex-col">
+    <div className="flex gap-r-2xs flex-col">
       <GlassImage
         src={`${FT}/9.jpg`}
         darkSrc={`${FT}/9_dark.jpg`}
@@ -490,7 +490,7 @@ export function FTRedesignMedia() {
         sizes="100vw"
         className="w-full aspect-[361/148] md:aspect-[944/342] lg:aspect-[1584/609]"
       />
-      <div className="flex gap-sm md:gap-md lg:gap-md flex-col md:flex-row md:items-start">
+      <div className="flex gap-r-2xs flex-col md:flex-row md:items-start">
         {REDESIGN_DETAILS.map((d) => (
           <GlassFrame
             key={d.key}
@@ -519,8 +519,8 @@ const VALIDATION_TESTS = ["10", "11", "12", "13", "14", "15"];
 
 export function FTValidationMedia() {
   return (
-    <div className="flex gap-sm md:gap-md lg:gap-md flex-col">
-      <div className="grid gap-sm md:gap-md lg:gap-md grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <div className="flex gap-r-2xs flex-col">
+      <div className="grid gap-r-2xs grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {VALIDATION_TESTS.map((n) => (
           <GlassImage
             key={n}
@@ -532,7 +532,7 @@ export function FTValidationMedia() {
           />
         ))}
       </div>
-      <div className="flex gap-sm md:gap-md lg:gap-md flex-col lg:flex-row lg:items-start">
+      <div className="flex gap-r-2xs flex-col lg:flex-row lg:items-start">
         <GlassImage
           src={`${FT}/16.jpg`}
           darkSrc={`${FT}/16_dark.jpg`}
@@ -572,9 +572,9 @@ function FTOutcomeScreen({ name }: { name: string }) {
 
 export function FTOutcomeMedia() {
   return (
-    <div className="flex flex-col items-center gap-3xl">
+    <div className="flex flex-col items-center gap-r-2xs">
       {[OUTCOME_ROW_1, OUTCOME_ROW_2].map((row, i) => (
-        <div key={i} className="flex justify-center gap-lg">
+        <div key={i} className="flex justify-center gap-r-2xs">
           {row.map((name) => (
             <FTOutcomeScreen key={name} name={name} />
           ))}
