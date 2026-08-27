@@ -7,7 +7,7 @@ import { Button } from "../components/button";
 import { SectionReveal } from "../components/section-reveal-context";
 import { Reveal, RevealWords } from "../components/reveal";
 import { Divider } from "../components/divider";
-import { ArrowUpRight } from "../components/icons";
+import { ArrowUpRightSmall } from "../components/icons";
 import { BioCollage } from "../components/bio-collage";
 import { CaseStudyNav } from "../components/case-study-nav";
 import { ArtworkStrip } from "../components/artwork-strip";
@@ -151,7 +151,7 @@ export default function About() {
                         <p className="b-xs text-text-secondary transition-colors group-hover:text-text-primary">{a.award}</p>
                         <div className="flex items-center gap-3xs text-text-secondary shrink-0 ml-sm transition-colors group-hover:text-text-primary">
                           <p className="b-xs">{a.year}</p>
-                          <ArrowUpRight className="size-sm transition-transform duration-200 ease-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px] group-hover:scale-[1.1]" />
+                          <ArrowUpRightSmall className="size-sm transition-transform duration-200 ease-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px] group-hover:scale-[1.1]" />
                         </div>
                       </div>
                       <p className="b-xs text-text-tertiary transition-colors group-hover:text-text-primary">{a.project}</p>
@@ -163,7 +163,7 @@ export default function About() {
                       <p className="b-sm text-text-secondary transition-colors md:col-start-3 md:col-span-3 group-hover:text-text-primary">{a.award}</p>
                       <div className="flex items-center justify-end gap-3xs text-text-secondary transition-colors md:col-start-6 group-hover:text-text-primary">
                         <p className="b-sm">{a.year}</p>
-                        <ArrowUpRight className="size-lg transition-transform duration-200 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:scale-[1.1]" />
+                        <ArrowUpRightSmall className="size-lg transition-transform duration-200 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:scale-[1.1]" />
                       </div>
                     </div>
                   </a>

@@ -8,8 +8,10 @@ import { Divider } from "./divider";
 // Header text is text-primary-highlight (B-xs→B-xs→B-md — tablet matches mobile);
 // row text is text-secondary
 // (B-xs→B-xs→B-sm); arrow is text-tertiary. Rows separated by dividers.
-// Figma "Section wrapper" and "List" both sit at a flat 20; "Row" stacks at 0 on
-// mobile, and the list carries 24/32/40 of bottom padding.
+// Spacing per Figma 1512:7124 (desktop) / 1512:7125 (tablet), which agree:
+// "Section wrapper" gaps at 20 (--sm), "List" at 16 (--xs), and the list carries
+// 40 (--md) of bottom padding. "Row" stacks at 0 on mobile. Mobile's bottom
+// padding is left at 24 — no mobile frame was given to check it against.
 // Column headings default to the COVID Tracer §04 wording; First Table §04 relabels
 // them "Friction point" / "Solution".
 export function FindingsTable({
@@ -36,7 +38,7 @@ export function FindingsTable({
       </div>
 
       {/* Rows */}
-      <div className="flex flex-col gap-lg pb-xl md:pb-2xl lg:pb-3xl">
+      <div className="flex flex-col gap-md pb-xl md:pb-3xl">
         {rows.map((row, i) => (
           <Fragment key={i}>
             <div className="grid grid-cols-1 md:grid-cols-9 md:gap-x-lg md:gap-y-0 lg:grid-cols-12">

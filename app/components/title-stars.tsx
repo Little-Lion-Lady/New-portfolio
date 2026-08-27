@@ -24,15 +24,16 @@ const STAR_VARIANTS: Variants = {
 // Star offsets relative to the anchor word's top-right corner. The home hero
 // runs at a much larger fluid font size than the case-study/About titles, so
 // each placement carries its own nudge; everything else about the cluster —
-// timing, anchoring, motion — is shared.
+// timing, anchoring, motion — is shared. The hero pair sits up and left of that
+// corner, by a step that grows with the breakpoint (8 / 10 / 12px).
 const PLACEMENTS = {
   title: {
     one: "absolute -top-[8px] left-[14px] w-9 md:-top-[4px] md:left-[28px] md:w-12 lg:-top-[4px] lg:left-[36px] lg:w-16",
     two: "absolute -top-[22px] -left-[6px] w-9 md:-top-[32px] md:-left-[12px] md:w-12 lg:-top-[40px] lg:-left-[16px] lg:w-16",
   },
   hero: {
-    one: "absolute top-[2px] left-[22px] w-9 md:top-[4px] md:left-[28px] md:w-12 lg:top-[6px] lg:left-[36px] lg:w-16",
-    two: "absolute -top-[18px] -left-[8px] w-9 md:-top-[24px] md:-left-[12px] md:w-12 lg:-top-[30px] lg:-left-[16px] lg:w-16",
+    one: "absolute -top-[6px] left-[6px] w-9 md:-top-[6px] md:left-[8px] md:w-12 lg:-top-[6px] lg:left-[12px] lg:w-16",
+    two: "absolute -top-[26px] -left-[24px] w-9 md:-top-[34px] md:-left-[32px] md:w-12 lg:-top-[42px] lg:-left-[40px] lg:w-16",
   },
 } as const;
 

@@ -8,6 +8,16 @@ import { useIsDark } from "./use-is-dark";
 
 const STORAGE_KEY = "theme";
 
+// Icon swap. Both icons share one set, so the rotation always reads clockwise:
+// the incoming icon turns up from -90 and the outgoing one carries on to +90,
+// rather than each icon spinning back the way the other came.
+const spin = {
+  initial: { opacity: 0, rotate: -90 },
+  animate: { opacity: 1, rotate: 0 },
+  exit: { opacity: 0, rotate: 90 },
+  transition: { duration: 0.2, ease: [0.25, 0.1, 0.25, 1] as const },
+};
+
 // Read the saved preference, falling back to system preference.
 // Returns "dark" | "light" — never null.
 function resolveTheme(): "dark" | "light" {
@@ -43,7 +53,7 @@ function applyTheme(theme: "dark" | "light") {
 //   survives navigation (ThemeToggle remounts per page) and page refreshes.
 // - Subscribes to OS changes only when the user hasn't made a manual choice.
 // - Sets data-theme on <html>; globals.css resolves all tokens from it.
-// Visual matches the Figma toggle: 24×20 pill, border-highlight, 16px icon.
+// Visual matches the Figma toggle: 24×20 pill, 16px icon, no border.
 export function ThemeToggle({ className = "" }: { className?: string }) {
   // `data-theme` on <html> is the single source of truth — globals.css already
   // resolves every token from it, and applyTheme() below is the only writer.
@@ -86,36 +96,17 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       onClick={toggle}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       suppressHydrationWarning
-      whileHover={{
-        scale: 1.07,
-        boxShadow: isDark
-          ? "0 0 8px 2px rgba(55, 68, 255, 0.3)"
-          : "0 0 8px 2px rgba(0, 0, 0, 0.1)",
-      }}
+      whileHover={{ scale: 1.07 }}
       transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`group inline-flex h-[20px] w-[24px] items-center justify-center rounded-full border-[1.2px] border-border-highlight p-[4px] text-text-primary ${className}`}
+      className={`group inline-flex h-[20px] w-[24px] items-center justify-center rounded-full p-[4px] text-text-primary ${className}`}
     >
       <AnimatePresence mode="wait" initial={false}>
         {isDark ? (
-          <m.span
-            key="sun"
-            initial={{ opacity: 0, rotate: -90 }}
-            animate={{ opacity: 1, rotate: 0 }}
-            exit={{ opacity: 0, rotate: 90 }}
-            transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="inline-flex"
-          >
+          <m.span key="sun" {...spin} className="inline-flex">
             <SunIcon className="size-md group-hover:fill-current" />
           </m.span>
         ) : (
-          <m.span
-            key="moon"
-            initial={{ opacity: 0, rotate: 90 }}
-            animate={{ opacity: 1, rotate: 0 }}
-            exit={{ opacity: 0, rotate: -90 }}
-            transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-            className="inline-flex"
-          >
+          <m.span key="moon" {...spin} className="inline-flex">
             <MoonIcon className="size-md group-hover:fill-current" />
           </m.span>
         )}

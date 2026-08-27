@@ -199,6 +199,7 @@
 
   /* Typography — weights */
   --font-weight-regular: 400;
+  --font-weight-book: 460; /* hero title and button labels */
   --font-weight-medium: 500;
 
   /* Typography — font sizes */
@@ -259,6 +260,11 @@
   --text-primary-pressed:   var(--colour-gray-light-500);
   --text-primary-overlay:   var(--colour-gray-light-950-50);
   --text-primary-highlight: var(--colour-gray-light-950);
+  /* Nav text when the pill sits over a photo — same in both themes, because it
+     reads against the image, not against the page background. Not overridden in
+     the dark blocks below on purpose. */
+  --text-over-media:        var(--colour-base-black);
+  --text-over-media-hover:  var(--colour-gray-light-700);
 
   --border-primary:   var(--colour-gray-light-200);
   --border-secondary: var(--colour-gray-light-100);
@@ -756,6 +762,8 @@
   --color-text-primary-pressed:   var(--text-primary-pressed);
   --color-text-primary-overlay:   var(--text-primary-overlay);
   --color-text-primary-highlight: var(--text-primary-highlight);
+  --color-text-over-media:        var(--text-over-media);
+  --color-text-over-media-hover:  var(--text-over-media-hover);
 
   /* Borders */
   --color-border-primary:   var(--border-primary);

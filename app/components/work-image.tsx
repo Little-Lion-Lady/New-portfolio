@@ -80,7 +80,9 @@ export function GlassImage({
   sizes = "100vw",
   loading,
   aspectRatio,
+  aspectClassName,
   frameAspectRatio,
+  frameAspectClassName,
   objectPosition,
   radiusClassName,
   children,
@@ -115,6 +117,13 @@ export function GlassImage({
    */
   aspectRatio?: string;
   /**
+   * Responsive form of `aspectRatio` — Tailwind aspect-* classes rather than a
+   * single inline value, for photos Figma sizes differently per breakpoint
+   * (e.g. "aspect-[361/240] md:aspect-[904/828] lg:aspect-[814/500]"). Takes
+   * precedence over `aspectRatio`; pass one or the other, not both.
+   */
+  aspectClassName?: string;
+  /**
    * Same idea as `aspectRatio`, but applied to the outer (padded) frame
    * instead of the inner photo box. Use this — paired with a `flex-[ratio]`
    * className instead of a fixed width — for a "justified row" of images
@@ -126,6 +135,11 @@ export function GlassImage({
    * negligible, and the only way to keep the row's height-matching intact.)
    */
   frameAspectRatio?: string;
+  /**
+   * Responsive form of `frameAspectRatio`, for frames Figma sizes differently
+   * per breakpoint. Takes precedence over `frameAspectRatio`.
+   */
+  frameAspectClassName?: string;
   /** object-position for the cropped photo (e.g. "left", "top"). Defaults to center. */
   objectPosition?: string;
   /** Replaces the default radius ramp — see GlassFrame's own `radiusClassName`. */
@@ -135,12 +149,12 @@ export function GlassImage({
 }) {
   return (
     <div
-      className={`${FRAME_CLASS} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)} ${className}`}
-      style={frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
+      className={`${FRAME_CLASS} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)}${frameAspectClassName ? ` ${frameAspectClassName}` : ""} ${className}`}
+      style={!frameAspectClassName && frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
     >
       <div
-        className={`${INNER_CLASS}${aspectRatio ? "" : " h-full"}`}
-        style={aspectRatio ? { aspectRatio } : undefined}
+        className={`${INNER_CLASS}${aspectClassName ? ` ${aspectClassName}` : aspectRatio ? "" : " h-full"}`}
+        style={!aspectClassName && aspectRatio ? { aspectRatio } : undefined}
       >
         <Image
           src={src}

@@ -6,12 +6,18 @@ import { TitleStars } from "./title-stars";
 
 const TEXT_STYLE = {
   fontFamily: "var(--font-family-body)",
-  fontWeight: "var(--font-weight-medium)",
-  lineHeight: 1.15,
+  fontWeight: "var(--font-weight-book)",
+  lineHeight: 1.1,
   letterSpacing: "-0.02em",
 } as const;
 
 const HL = { color: "var(--text-primary-highlight)" };
+
+// The title is sized to fill its box, so this is the one knob for how big it
+// reads: the binary search targets this share of the available height rather
+// than all of it. Below 1 the type steps down at every breakpoint and leaves
+// slack under the last line.
+const FILL = 0.9;
 
 // Plain text for probe measurement — must match the visible content exactly
 // (spans are inline and don't change line-wrap metrics).
@@ -36,11 +42,13 @@ export function HeroText({ className }: { className?: string }) {
         parseFloat(cs.paddingBottom);
       if (!availH) return;
 
+      const targetH = availH * FILL;
+
       let lo = 16, hi = 300;
       for (let i = 0; i < 24; i++) {
         const mid = (lo + hi) / 2;
         probe.style.fontSize = `${mid}px`;
-        if (probe.scrollHeight <= availH) {
+        if (probe.scrollHeight <= targetH) {
           lo = mid;
         } else {
           hi = mid;

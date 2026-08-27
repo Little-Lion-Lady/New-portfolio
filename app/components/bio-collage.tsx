@@ -9,10 +9,11 @@ import { MeCat } from "./dynamic-visuals";
 // Image wrapper default, hence the radiusClassName override). Container height
 // is Figma's own: 267.319 / 384 / 496.967.
 //
-// The right-hand card is not a photo — it's a flat blue-200 → red-200 gradient
-// with the cat drawn over it, so it's built from the tokens rather than the
-// baked ABOUT2.jpg/ABOUT2_Dark.jpg pair. Both primitives are mode-invariant, so
-// one gradient covers light and dark.
+// The right-hand card is not a photo — it's a flat gradient with the cat drawn
+// over it, so it's built from the tokens rather than the baked
+// ABOUT2.jpg/ABOUT2_Dark.jpg pair. Each mode gets its own stops, sampled from
+// those two exports: blue-200 → red-light-200 in light, blue-600 →
+// red-light-950 in dark.
 //
 // Tablet is the only step where the two cards don't share a height: both are
 // 300px tall inside a 384px container, with the right card bottom-aligned so it
@@ -36,7 +37,7 @@ export function BioCollage() {
         <GlassFrame
           radiusClassName={CARD_RADIUS}
           className={CARD_HEIGHT}
-          innerClassName="bg-gradient-to-b from-[var(--colour-blue-200)] to-[var(--colour-red-light-200)]"
+          innerClassName="bg-gradient-to-b from-[var(--colour-blue-200)] to-[var(--colour-red-light-200)] dark:from-[var(--colour-blue-600)] dark:to-[var(--colour-red-light-950)]"
         >
           {/* Cat overlay — a child of the card, so it is positioned and clipped
               by the frame rather than floating over the whole collage.

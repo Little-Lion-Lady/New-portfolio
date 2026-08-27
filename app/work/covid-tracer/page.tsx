@@ -205,7 +205,9 @@ export default function CovidTracer() {
             The Column→hypotheses gap is a literal 32/40/40 — it tracks --lg on
             mobile/tablet but --md on desktop, so no single token covers it. */}
         <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-2xl md:gap-3xl">
-          <Column label="How might we" labelClassName="b-xs md:b-sm lg:b-sm">
+          {/* Figma 1144:10217 holds the whole block at B-sm on desktop — label and
+              body — rather than the Column default's B-md body. */}
+          <Column label="How might we" textClassName="b-xs md:b-sm lg:b-sm">
             improve Bluetooth Tracing feature acquisition for both new and existing users?
           </Column>
           <div className="flex w-full flex-col gap-r-md">
@@ -277,12 +279,14 @@ export default function CovidTracer() {
             12-col page grid (image 1-6, content 8-12). */}
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg md:grid md:grid-cols-9 md:gap-x-lg lg:grid-cols-12">
           {/* Content (tablet/desktop: right) */}
-          <div className="flex flex-col gap-3xl md:gap-xl md:col-start-5 md:col-span-5 md:row-start-1 lg:gap-3xl lg:col-start-8 lg:col-span-5">
+          <div className="flex flex-col gap-lg md:gap-xl md:col-start-5 md:col-span-5 md:row-start-1 lg:gap-3xl lg:col-start-8 lg:col-span-5">
             <KeyParagraph>
               Both hypotheses were validated within a month of launch. By the time I left the
               project, the app’s rating had doubled.
             </KeyParagraph>
-            <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-x-lg gap-y-3xl">
+            {/* Figma 1144:10659 — mobile stats sit at a 6/8 gap, far tighter than
+                the 20/40 the desktop grid uses. */}
+            <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-x-2xs gap-y-xs md:gap-x-lg md:gap-y-3xl">
               <Stat size="sm" highlight value="1,494,077" label="Daily active BT devices" />
               <StatArrow />
               <Stat size="sm" highlight value="2,006,506" label="34% growth" />
@@ -292,20 +296,24 @@ export default function CovidTracer() {
             </div>
           </div>
           {/* Headline image (desktop: left) */}
+          {/* Figma sizes this card differently at every step — 361×225 mobile
+              (1609:135725), 301.33×276 tablet (1144:18118), 814×500 desktop
+              (1144:18063) — so the ratio is responsive rather than one value.
+              On mobile it stacks under the content as the first shot of the
+              image run; from tablet up it sits beside the content. */}
           <GlassImage
             src="/home/work/covid-tracer/MOH11.jpg"
             alt="NZ COVID Tracer app screen"
-            aspectRatio="758/474"
+            aspectClassName="aspect-[361/225] md:aspect-[904/828] lg:aspect-[814/500]"
             className="w-full self-start md:col-start-1 md:col-span-3 md:row-start-1 lg:col-span-6"
           />
         </Reveal>
-        {/* The outer SectionReveal's gap-r-lg (32/40/64px) separates every
-            child uniformly, but OutcomeMedia's own row gap between MOH12 and
-            MOH13 is only gap-xs/md:gap-md (8/16px) — so the MOH11→MOH12 gap
-            was much bigger than the MOH12→MOH13 gap on mobile/tablet.
-            Negative margin pulls it down to match; lg is left alone (its
-            own row layout wasn't part of this request). */}
-        <Reveal index={2} delay={0.6} className="w-full -mt-[32px] md:-mt-[56px] lg:mt-0">
+        {/* From tablet up the section's own gap-r-lg (40/64) is exactly Figma's
+            gap between the columns row and the images container. On mobile the
+            columns row ends with MOH11 — the first shot of the image run — so
+            the gap to MOH12 is only 8 (1144:10666), and 24 is taken back off
+            the 32. Still a positive 8px gap, so nothing can overlap. */}
+        <Reveal index={2} delay={0.6} className="w-full -mt-xl md:mt-0">
           <OutcomeMedia />
         </Reveal>
       </SectionReveal>

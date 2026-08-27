@@ -94,13 +94,13 @@ export function OutcomeMedia() {
         <GlassImage
           src="/home/work/covid-tracer/MOH12.jpg"
           alt={COVID_ALT}
-          frameAspectRatio="647/420"
+          frameAspectClassName="aspect-[361/240] md:aspect-[647/420]"
           className="w-full lg:w-auto lg:flex-[1.5405]"
         />
         <GlassImage
           src="/home/work/covid-tracer/MOH13.jpg"
           alt={COVID_ALT}
-          frameAspectRatio="884/420"
+          frameAspectClassName="aspect-[361/168] md:aspect-[884/420]"
           className="w-full lg:w-auto lg:flex-[2.1048]"
         />
       </div>
@@ -117,24 +117,26 @@ export function OutcomeMedia() {
           uses that flat row, and only mobile (where MOH14/MOH15 must stay
           paired above MOH16) keeps the nested layout. */}
       <div className="flex flex-col gap-xs md:hidden">
-        <div className="flex gap-xs md:gap-md lg:gap-lg">
+        {/* Figma 1144:18252 — the pair is 99w each inside the 361 column, gap 6,
+            centred; not two half-width cards filling the row. */}
+        <div className="flex justify-center gap-2xs">
           <GlassImage
             src="/home/work/covid-tracer/MOH14.jpg"
             alt={COVID_ALT}
-            frameAspectRatio="226/457"
-            className="flex-[0.4945]"
+            frameAspectRatio="99/200"
+            className="w-[27.42%]"
           />
           <GlassImage
             src="/home/work/covid-tracer/MOH15.jpg"
             alt={COVID_ALT}
-            frameAspectRatio="226/458"
-            className="flex-[0.4934]"
+            frameAspectRatio="99/200"
+            className="w-[27.42%]"
           />
         </div>
         <GlassImage
           src="/home/work/covid-tracer/MOH16.jpg"
           alt={COVID_ALT}
-          frameAspectRatio="1013/470"
+          frameAspectRatio="361/200"
           objectPosition="left"
           className="w-full"
         />

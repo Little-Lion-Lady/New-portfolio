@@ -2,7 +2,7 @@
 
 import { m } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "./icons";
+import { ArrowRight, ArrowUpRight, ArrowUpRightSmall } from "./icons";
 
 // Animated Next.js Link — client-side nav + prefetch for internal routes.
 const MotionLink = m.create(Link);
@@ -18,9 +18,11 @@ const arrowVariants = {
   hover: { x: 3, y: -3, scale: 1.2 },
 };
 
-const arrowVariantsRight = {
-  rest: { x: 0, y: 0 },
-  hover: { x: 4, y: 0 },
+// "view" links only — the primary pill's arrow stays put (its own scale carries
+// the hover), so this deliberately isn't shared with it.
+const viewArrowVariants = {
+  rest: { x: 0 },
+  hover: { x: 4 },
 };
 
 const primaryScaleVariants = {
@@ -45,7 +47,12 @@ const primaryPressTintVariants = {
 //   primary (Type=Button, Size=lg) — filled pill, text-inverted
 //   link    (Type=Link,   Size=lg) — oversized text link (footer socials), text-primary-highlight
 //   view    (Type=Link,   Size=sm) — mono uppercase inline link ("View"), text-primary
-// Every size/gap/padding/colour below is taken from the Figma component spec.
+// Every size/gap/padding/colour below is taken from the Figma component spec,
+// except the primary pill's right padding: it always ends in a trailing arrow,
+// so it runs two spacing steps wider than Figma to keep the icon off the edge,
+// which lands it level with the left padding at every breakpoint.
+// Labels run at --font-weight-book (460) across all three variants — the type
+// utilities set 400/500 at each breakpoint, so it needs `!` to win at lg.
 type Variant = "primary" | "link" | "view";
 type ViewSize = "sm" | "md";
 
@@ -81,7 +88,7 @@ export function Button({
         whileHover="hover"
         whileTap={{ scale: 0.95 }}
         animate="rest"
-        className={`inline-flex items-center gap-xs d-2xs text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-sm md:d-xs ${className}`}
+        className={`inline-flex items-center gap-xs d-2xs [font-weight:var(--font-weight-book)]! text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-sm md:d-xs ${className}`}
       >
         <span>{label}</span>
         <m.span
@@ -89,7 +96,7 @@ export function Button({
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="inline-flex shrink-0"
         >
-          <ArrowUpRight className="size-xl lg:size-2xl" />
+          <ArrowUpRight className="size-2xl lg:size-3xl" />
         </m.span>
       </LinkTag>
     );
@@ -98,7 +105,7 @@ export function Button({
   if (variant === "view") {
     const viewText = size === "md" ? "b-sm lg:b-md" : "b-xs lg:b-sm";
     const viewGap  = size === "md" ? "gap-xs" : "gap-4xs lg:gap-3xs";
-    const arrowSize = size === "md" ? "size-xl" : "size-lg md:size-xl";
+    const arrowSize = size === "md" ? "size-lg" : "size-md md:size-lg";
     const ViewTag = as === "span" ? m.span : isExternalHref(href) ? m.a : MotionLink;
     return (
       <ViewTag
@@ -107,11 +114,11 @@ export function Button({
         whileHover="hover"
         whileTap={{ scale: 0.95 }}
         animate="rest"
-        className={`inline-flex items-center ${viewGap} ${viewText} text-text-primary transition-colors hover:text-text-primary-hover ${className}`}
+        className={`inline-flex items-center ${viewGap} ${viewText} [font-weight:var(--font-weight-book)]! text-text-primary transition-colors hover:text-text-primary-hover ${className}`}
       >
         <span>{label}</span>
         <m.span
-          variants={arrowVariantsRight}
+          variants={viewArrowVariants}
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="inline-flex shrink-0"
         >
@@ -134,7 +141,7 @@ export function Button({
       animate="rest"
       variants={primaryScaleVariants}
       transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`relative inline-flex items-center gap-2xs overflow-hidden rounded-full pl-xl pr-md py-sm b-xs text-text-inverted md:gap-xs md:pl-2xl md:pr-lg md:py-md md:b-sm lg:gap-2xs lg:pl-3xl lg:pr-xl lg:py-md lg:b-md ${className}`}
+      className={`relative inline-flex items-center gap-2xs overflow-hidden rounded-full pl-xl pr-xl py-sm b-xs text-text-inverted md:gap-xs md:pl-2xl md:pr-2xl md:py-md md:b-sm lg:gap-2xs lg:pl-3xl lg:pr-3xl lg:py-md lg:b-md [font-weight:var(--font-weight-book)]! ${className}`}
       style={{
         boxShadow:
           "0 10px 10px -10px var(--shadows-shadow-01), 0 10px 30px 1px var(--shadows-shadow-02)",
@@ -157,16 +164,12 @@ export function Button({
       <span className="relative whitespace-nowrap">{label}</span>
       {external ? (
         <span className="relative inline-flex shrink-0">
-          <ArrowUpRight className="size-xl lg:size-2xl" />
+          <ArrowUpRightSmall className="size-lg md:size-xl" />
         </span>
       ) : (
-        <m.span
-          variants={arrowVariantsRight}
-          transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-          className="relative inline-flex shrink-0"
-        >
-          <ArrowRight className="size-xl lg:size-2xl" />
-        </m.span>
+        <span className="relative inline-flex shrink-0">
+          <ArrowRight className="size-lg md:size-xl" />
+        </span>
       )}
       {/* Glow overlay — tightens and brightens on hover */}
       <m.span

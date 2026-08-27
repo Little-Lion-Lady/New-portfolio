@@ -15,7 +15,9 @@ export default function Home() {
     <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-2xl md:pt-[92px] lg:px-3xl lg:pb-0 lg:pt-[92px]">
       {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
       <div>
-        <SiteHeader />
+        {/* 2s matches the hero cat/divider Reveal below, so the nav and the
+            cat arrive together. */}
+        <SiteHeader revealDelay={2} />
 
         {/* Hero — fills the viewport (clamped 640px–1500px).
             Text vertically centered in the top 3/4. Image bottom-aligned in the remaining 1/4. */}
@@ -26,18 +28,19 @@ export default function Home() {
         {/* Image + divider — bottom 1/4.5.
             Divider is flex-1 so it stretches from the left page edge.
             Image pulls left with a negative margin to overlap the divider
-            by exactly 5% of the image's max-width per breakpoint:
-              mobile  296px → -ml-[15px]
-              tablet  636px → -ml-[32px]
-              desktop 42vw  → -ml-[2.1vw] */}
+            by exactly 10% of the image's max-width per breakpoint:
+              mobile  296px → -ml-[30px]
+              tablet  636px → -ml-[64px]
+              desktop 36vw  → -ml-[3.6vw] */}
         <Reveal as="div" delay={2} noY className="relative flex h-[calc(100%/3)] items-end">
-          {/* Third twinkle star — sits underneath the hero text, at the top of this row */}
+          {/* Third twinkle star — sits underneath the hero text, lifted just above
+              the top of this row so it clears the last line of the headline */}
           <Star
             variant={3}
-            className="pointer-events-none absolute left-[3%] top-0 w-8 md:left-[2%] md:w-11 lg:left-[2%] lg:w-14"
+            className="pointer-events-none absolute left-[3%] -top-[28px] w-8 md:left-[2%] md:-top-[36px] md:w-11 lg:left-[2%] lg:-top-[44px] lg:w-14"
           />
           <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
-          <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[15px] max-w-[296px] md:-ml-[32px] md:max-w-[636px] md:min-h-[200px] md:max-h-[280px] lg:-ml-[1.8vw] lg:max-w-[36vw] lg:min-h-[300px]" />
+          <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[30px] max-w-[296px] md:-ml-[64px] md:max-w-[636px] md:min-h-[200px] md:max-h-[280px] lg:-ml-[3.6vw] lg:max-w-[36vw] lg:min-h-[300px]" />
         </Reveal>
         </section>
       </div>
@@ -67,6 +70,7 @@ export default function Home() {
                 { src: "/home/work/firsttable/FT2.jpg", alt: "First Table app screen" },
                 { src: "/home/work/firsttable/3.jpg", alt: "First Table app screen" },
                 { src: "/home/work/firsttable/FT3.jpg", alt: "First Table app screen" },
+                { src: "/home/work/firsttable/FirstTable_08.jpg", alt: "First Table app screen" },
               ]}
             />
           </Reveal>
