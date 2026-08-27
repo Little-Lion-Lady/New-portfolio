@@ -70,10 +70,14 @@ const journeySteps = [
   },
 ];
 
-// Arrow used between before→after stat pairs in §06 (matches the sm stat number scale).
+// Arrow used between before→after stat pairs in §07 (matches the sm stat number
+// scale). It sits in its own grid column and is centred in it, so it reads as
+// belonging to neither stat rather than crowding the one on its right.
 function StatArrow() {
   return (
-    <span className="b-md self-start text-text-highlight-dark md:b-lg lg:d-xs">→</span>
+    <span className="b-md self-start justify-self-center text-text-highlight-dark md:b-lg lg:d-xs">
+      →
+    </span>
   );
 }
 
@@ -282,9 +286,11 @@ export default function CovidTracer() {
               Both hypotheses were validated within a month of launch. By the time I left the
               project, the app’s rating had doubled.
             </KeyParagraph>
-            {/* Figma 1144:10659 — mobile stats sit at a 6/8 gap, far tighter than
-                the 20/40 the desktop grid uses. */}
-            <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-x-2xs gap-y-xs md:gap-x-lg md:gap-y-3xl">
+            {/* Figma 1144:10659 (mobile) / 1144:10505 (tablet) give the arrow a
+                column of its own — two ~38% stat columns either side of a
+                ~22-24% gutter — instead of sizing it to the glyph. Desktop keeps
+                the content-width column and a 20px gap. */}
+            <div className="grid grid-cols-[39fr_22fr_39fr] items-start gap-y-xs md:grid-cols-[38fr_24fr_38fr] md:gap-y-3xl lg:grid-cols-[1fr_auto_1fr] lg:gap-x-lg">
               <Stat size="sm" highlight value="1,494,077" label="Daily active BT devices" />
               <StatArrow />
               <Stat size="sm" highlight value="2,006,506" label="34% growth" />
