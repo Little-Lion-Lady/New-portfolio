@@ -12,6 +12,7 @@ import { Stat, Stats } from "../../components/stat";
 import { Insight } from "../../components/insight";
 import { Hypothesis } from "../../components/hypothesis";
 import { Column } from "../../components/column";
+import { Hmw } from "../../components/hmw";
 import { FindingsTable } from "../../components/findings-table";
 import { Journey } from "../../components/journey";
 import {
@@ -147,7 +148,7 @@ export default function CovidTracer() {
       <Divider />
 
       {/* 03 — Approach */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg pb-xl">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="03" name="Approach" />
         </Reveal>
@@ -190,27 +191,25 @@ export default function CovidTracer() {
       </Reveal>
 
       {/* 04 — Design brief */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg pb-xl">
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="04" name="Design brief" />
         </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full">
+        {/* Figma 1144:10215 pulls the How-Might-We up into the key paragraph
+            block: --lg apart on mobile/tablet, but only 24 on desktop. The
+            hypotheses then sit a full section gap below. */}
+        <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg lg:gap-xl">
           <KeyParagraph className="lg:max-w-[953px]">
             The findings gave us one How Might We and two testable hypotheses. We set the
             success metrics before making any design decisions.
           </KeyParagraph>
-        </Reveal>
-        {/* Figma groups the How-Might-We with the hypotheses it produced, and
-            sets that group off from the key paragraph by the section gap.
-            The Column→hypotheses gap is a literal 32/40/40 — it tracks --lg on
-            mobile/tablet but --md on desktop, so no single token covers it. */}
-        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-2xl md:gap-3xl">
-          {/* Figma 1144:10217 holds the whole block at B-sm on desktop — label and
-              body — rather than the Column default's B-md body. */}
-          <Column label="How might we" textClassName="b-xs md:b-sm lg:b-sm">
+          {/* Figma 1629:140118 — the HMW runs at the key-paragraph scale here,
+              and mobile drops the label onto its own line (1144:10588). */}
+          <Hmw scale="b-xs md:b-sm lg:b-md" stackLabel>
             improve Bluetooth Tracing feature acquisition for both new and existing users?
-          </Column>
-          <div className="flex w-full flex-col gap-r-md">
+          </Hmw>
+        </Reveal>
+        <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-md">
           <Hypothesis
             label="H1"
             believe="making Bluetooth Tracing visible in the app will get more people to turn it on"
@@ -224,7 +223,6 @@ export default function CovidTracer() {
             because="people will know what they’re switching on, and what they get for it."
             metric="Daily Bluetooth-active devices grow while poster scans hold steady or rise."
           />
-          </div>
         </Reveal>
       </SectionReveal>
 

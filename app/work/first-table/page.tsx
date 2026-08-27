@@ -44,22 +44,22 @@ const findings = [
   {
     label: "Finding 1",
     title: "Who drives the business",
-    body: "Loyal Regulars are 14–19% of customers and account for far more revenue than that share suggests, in every market. Keeping them is the business model.",
+    body: "Loyal Regulars are 14–19% of the customer base but deliver 28–37% of revenue in every market. Retaining them is the business model.",
   },
   {
     label: "Finding 2",
     title: "Discovery beats discounts",
-    body: "Diners use First Table to find somewhere new, not to chase a deal. That ranked above saving money in every segment, which changed what the redesign had to be good at.",
+    body: "Diners use First Table to find somewhere new, not to chase a deal. Finding somewhere new outranked saving money as the primary driver in every segment, and reframed what the redesign needed to prioritise.",
   },
   {
     label: "Finding 3",
     title: "The lapsed segment is recoverable",
-    body: "A large segment booked heavily for a few months, then went quiet. Most of them hadn’t switched to a rival, and 90% could name something that would bring them back. That makes it a reactivation problem, not a churn one.",
+    body: "A large segment booked intensely for a few months, then went quiet. 80% hadn’t switched to a rival. 90% could name something that would bring them back. This is a reactivation problem, not a churn one.",
   },
   {
     label: "Finding 4",
     title: "Forgetting is the real drop-off",
-    body: "Most users don’t abandon First Table, they just stop thinking about it. The habit never forms. What’s missing is a reason to come back between meals.",
+    body: "Most users don’t abandon First Table. They just stop thinking about it. The habit never forms. Re-engagement mechanics are the lever rather than better discounts.",
   },
 ];
 
@@ -68,42 +68,42 @@ const findings = [
 const systemPrinciples = [
   {
     title: "Atomic design",
-    body: "A token-based system (semantic colour, spacing, typography, size) with a standardised component library. UI changes stopped meaning a rebuild from scratch.",
+    body: "Built a token-based system (semantic colour, spacing, typography, size) and standardised component library unlocks UI iteration without rebuilding from zero; faster to ship, easier to maintain.",
   },
   {
     title: "Single source of truth for AI",
-    body: "Figma components linked to their code counterparts through CodeConnect. A developer picking up a task already has the UI code to review, and the Figma MCP server points at real production code instead of guessing at it.",
+    body: "Figma components linked to their code counterparts via CodeConnect. When a developer picks up a task, the UI code is already there to review. The Figma MCP server references real production code, making AI-assisted implementation significantly more precise.",
   },
   {
     title: "Accessibility-led design",
-    body: "Components rebuilt to a WCAG 2.1 AA baseline, with the accessibility notes written into the component docs rather than bolted on later.",
+    body: "Rebuilt components to WCAG 2.1 AA baseline; accessibility notes embedded in component documentation, not added post-hoc.",
   },
 ];
 
 const frictionPoints = [
   {
-    finding: "Booking took four steps, and people dropped out before the end",
-    decision: "Cut it to one step: browse to confirmed in a single action",
+    finding: "Four-step booking flow created unnecessary drop-off before commitment",
+    decision: "Cut the booking flow to a single step — from browse to confirmed in one action",
   },
   {
     finding:
-      "Timeslot selection was ambiguous; diners weren’t sure what they’d booked until after confirming",
+      "Timeslot selection was ambiguous — diners weren’t sure what they’d committed to before confirming",
     decision:
-      "Rebuilt the timeslot display with clear states, and added week-view browsing next to time search",
+      "Rebuilt timeslot display with clear state feedback; added week-view browsing alongside specific time search",
   },
   {
     finding:
-      "Finding something nearby took too many steps if you were already out",
-    decision: "Rebuilt the map into a proper way to browse rather than an afterthought",
+      "The map didn’t serve spontaneous diners — finding something nearby required too many steps",
+    decision: "Rebuilt the map as a first-class discovery surface for diners out and about",
   },
   {
-    finding: "Solo and group bookings weren’t supported, so we were turning away real demand",
+    finding: "Solo and group bookings were unsupported — the product was turning away real demand",
     decision: "Extended party size options to include solo diners and larger groups",
   },
   {
     finding: "7-day booking window cut off planners and special occasion bookers",
     decision:
-      "Extended to 14 days, so one product works whether you’re booking tonight or a birthday next week",
+      "Extended to 14-day window; designed for two distinct mental models (spontaneous and planned) in one product",
   },
 ];
 
@@ -184,14 +184,17 @@ export default function FirstTable() {
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <Stats className="md:grid-cols-3">
             <Stat size="lg" value="1.7M" label="App users" />
-            <Stat size="lg" tone="highlight-dark" value="7.50%" label="Booking conversion rate" />
-            <Stat size="lg" tone="highlight-dark" value="1.2" label="Bookings per user per year" />
+            <Stat size="lg" tone="highlight-dark" value="7.50%" label="Conversion rate through booking flow" />
+            <Stat size="lg" tone="highlight-dark" value="1.2" label="bookings per user per year" />
           </Stats>
-          <KeyParagraph className="lg:max-w-[953px]">
-            I joined First Table as its first designer. The product itself worked. People knew
-            what it was for, the community was there, and the restaurants were real. The app
-            was the part letting it down: inconsistent, inaccessible, and a slog to get
-            through.
+          {/* Figma 1394:101595 holds this opener at B-sm on desktop rather than
+              stepping up to B-md. */}
+          <KeyParagraph scale="b-xs md:b-sm" className="lg:max-w-[953px]">
+            When I joined First Table as the founding design team member, the product had real
+            love behind it. The value proposition was clear, the community was there, and the
+            restaurants were real. But the digital experience wasn’t holding up its end.
+            Inaccessible, inconsistent, and full of friction. It was quietly capping the
+            potential of a product that deserved better.
           </KeyParagraph>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
@@ -214,11 +217,11 @@ export default function FirstTable() {
           <SectionHeader number="03" name="Research" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
-          <KeyParagraph lead="Understanding diner motivation" className="lg:max-w-[953px]">
-            Before redesigning anything I wanted to know who we were designing for. We ran a
-            behavioural segmentation study over the last 13 months of bookings, then added
-            survey research to get at what the numbers couldn’t tell us: why people book, and
-            what stops them.
+          <KeyParagraph lead="Understanding diner motivation" scale="b-xs md:b-sm" className="lg:max-w-[953px]">
+            Before redesigning anything, I needed to understand who we were actually designing
+            for. We ran a behavioural segmentation study across the last 13 months of bookings
+            and layered in survey research to reach what the data alone couldn’t tell us: the
+            motivations, habits, and friction points driving real diner decisions.
           </KeyParagraph>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
@@ -233,13 +236,7 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={4} delay={0.6} className="flex w-full flex-col gap-r-md">
           {findings.map((f) => (
-            <Column
-              key={f.label}
-              label={f.label}
-              title={f.title}
-              labelClassName="b-xs md:b-sm lg:b-sm"
-              textClassName="b-xs md:b-sm"
-            >
+            <Column key={f.label} label={f.label} title={f.title}>
               {f.body}
             </Column>
           ))}
@@ -260,10 +257,10 @@ export default function FirstTable() {
           <SectionHeader number="04" name="Design System" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
-          <KeyParagraph className="lg:max-w-[953px]">
-            Alongside the research, before touching a single screen, I built a new design
-            system. Design and engineering needed to be working from the same tokens, the same
-            components, the same patterns. Without that, any UI work would only add to the
+          <KeyParagraph scale="b-xs md:b-sm" className="lg:max-w-[953px]">
+            Before touching a single screen, I led the creation of a new design system. The
+            goal was to align design and engineering on shared tokens, accessible components,
+            and consistent patterns. Without that foundation, any UI work would compound the
             inconsistency we were trying to fix.
           </KeyParagraph>
         </Reveal>
@@ -276,7 +273,7 @@ export default function FirstTable() {
             equal thirds of Figma's 9-col grid, and of the 12-col one on desktop. */}
         <Reveal index={3} delay={0.6} className="flex w-full flex-col gap-r-sm md:grid md:grid-cols-3">
           {systemPrinciples.map((p) => (
-            <KeyParagraph key={p.title} lead={p.title}>
+            <KeyParagraph key={p.title} lead={p.title} scale="b-xs md:b-sm">
               {p.body}
             </KeyParagraph>
           ))}
@@ -292,9 +289,10 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph className="lg:max-w-[953px]">
-            With the system in place we went after the main flows. The IA had grown into a
-            mess of overlapping paths that made the app slower to use and harder to maintain.
-            I stripped it back and rebuilt the core journeys.
+            With the system in place, we went after the key flows. IA analysis revealed a
+            tangled web of interactions and redundancy that made the app slower to use and
+            harder to maintain. I stripped it back, restructured the information architecture,
+            and rebuilt the core paths.
           </KeyParagraph>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
@@ -319,10 +317,10 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph lead="150+ A/B tests run" className="lg:max-w-[953px]">
-            No change shipped on intuition alone. We ran continuous usability research and
-            more than 150 A/B tests a year. With 1.5 million monthly active users, every
-            decision got checked against real behaviour before it reached production. Losing
-            variants got cut. Winners got built on.
+            No change shipped on intuition alone. The work was shaped by continuous usability
+            research and 150+ A/B tests a year. With 1.5 million monthly active users, every
+            design decision was checked against real behaviour before it landed in production.
+            Losing variants got cut. Winners got built on.
           </KeyParagraph>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
@@ -340,15 +338,17 @@ export default function FirstTable() {
         <Reveal index={1} delay={0.6} className="w-full">
           <Stats className="md:grid-cols-3">
             <Stat size="outcome" value="+51%" label="Sign-ups increase" />
-            <Stat size="outcome" value="+21%" label="Onboarding completion" />
+            <Stat size="outcome" value="+21%" label="onboarding completion" />
             <Stat size="outcome" value="+12.3%" label="Conversion rate increase" />
           </Stats>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
-          <Column label="Closing the loop">
-            First Table already made going out for dinner affordable for a lot more people.
-            The rebuild was about getting the app out of the way, so the only thing a diner
-            notices is the table they just booked.
+          {/* Figma 1394:101716 steps this row up to B-md on desktop, unlike the
+              Blocker and Finding rows above. */}
+          <Column label="Closing the loop" textClassName="b-xs md:b-sm lg:b-md">
+            First Table was already changing who gets to go out for dinner. The rebuild made
+            sure the product was worthy of the promise. Simple enough that the only thing a
+            diner notices is the table they just booked.
           </Column>
         </Reveal>
         <Reveal index={3} delay={0.6} className="w-full">

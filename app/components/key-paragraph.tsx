@@ -4,15 +4,17 @@ import type { ReactNode } from "react";
 //   optional label line   — text-tertiary caption above the lead (§06 "What broke")
 //   optional lead line   — text-primary-highlight (#0f1117), the dark opener
 //   body paragraph(s)    — text-secondary, may contain text-highlight-dark spans
-// Label keeps B-md on desktop (16/20/24); lead and body are B-xs→B-sm→B-sm
-// (16/20/20). The lines stack at gap 0 —
-// Figma "Key paragraph" holds B-sm from tablet up and lets line height do the
-// spacing (it was B-md 24 with a 12/16 gap under cap trim).
+// Label, lead and body all run B-xs→B-sm→B-md (16/26, 20/32, 24/36 — Figma
+// 741:6868/741:6869). The lines stack at gap 0 and let the line box do the
+// spacing rather than carrying a gap of their own. `scale` overrides that ramp
+// for the instances Figma holds smaller — Basis keeps its research rows and
+// design principles at B-sm rather than stepping up on desktop.
 export function KeyParagraph({
   label,
   lead,
   leadTone = "highlight",
   children,
+  scale = "b-xs md:b-sm lg:b-md",
   className = "",
 }: {
   label?: ReactNode;
@@ -24,6 +26,8 @@ export function KeyParagraph({
    */
   leadTone?: "highlight" | "primary" | "accent";
   children: ReactNode;
+  /** Type ramp for label, lead and body. Defaults to B-xs→B-sm→B-md. */
+  scale?: string;
   className?: string;
 }) {
   const leadClass =
@@ -35,12 +39,12 @@ export function KeyParagraph({
   return (
     <div className={`flex flex-col items-start ${className}`}>
       {label && (
-        <p className="b-xs text-text-tertiary md:b-sm lg:b-md">{label}</p>
+        <p className={`${scale} text-text-tertiary`}>{label}</p>
       )}
       {lead && (
-        <p className={`b-xs md:b-sm ${leadClass}`}>{lead}</p>
+        <p className={`${scale} ${leadClass}`}>{lead}</p>
       )}
-      <p className="b-xs text-text-secondary md:b-sm">{children}</p>
+      <p className={`${scale} text-text-secondary`}>{children}</p>
     </div>
   );
 }

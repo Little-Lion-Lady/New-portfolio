@@ -50,3 +50,6 @@ public/home/work/firsttable/Screenshots.jpg
 /.agents/
 /.claude/skills/
 /skills-lock.json
+
+# Pre-crop copies of the exports that shipped with a light 1px edge
+.image-originals/

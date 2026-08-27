@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 export type WorkImageData = { src: string; alt: string; quality?: number };
 export type WorkImageSize = "md" | "lg";
@@ -21,8 +21,13 @@ export type WorkImageSize = "md" | "lg";
 //
 // The card has no inset frame, no border, no glass fill and no drop shadow any
 // more — the photo runs to the card's own edge. What is left is bg-primary
-// behind the photo (visible only through transparent PNGs), a 10px backdrop
-// blur on the photo layer, and a 1px hairline.
+// behind the photo (visible only through transparent PNGs) and a 1px hairline.
+//
+// Figma's export puts a 10px backdrop blur on the photo layer. It is a no-op
+// here — the only thing behind the photo is a flat bg-primary fill, and
+// blurring a flat colour returns the same colour — but it is NOT free: on a
+// frame with a fractional height Chrome clamps the sampled backdrop and paints
+// a light 1px sliver along the bottom edge. So the blur stays out.
 //
 // The hairline is an INSET RING on a separate overlay element, not a border and
 // not a box-shadow on the frame itself: a border would occupy layout space and
@@ -33,7 +38,7 @@ const RADIUS_CLASS = "rounded-md md:rounded-lg lg:rounded-xl";
 const MINI_RADIUS_CLASS = "rounded-xs";
 const RING_CLASS =
   "pointer-events-none absolute inset-0 rounded-[inherit] shadow-[inset_0_0_0_1px_var(--border-overlay)]";
-const INNER_CLASS = "relative w-full flex-1 overflow-hidden rounded-[inherit] backdrop-blur-[10px]";
+const INNER_CLASS = "relative w-full flex-1 overflow-hidden rounded-[inherit]";
 
 // The same card as GlassImage, but holding arbitrary content instead of a
 // photo — used where the frame wraps something that isn't a next/image (e.g. the
@@ -210,6 +215,7 @@ export function ImageCarousel({
   size = "md",
   marquee = false,
   reverse = false,
+  speedScale,
   className = "",
 }: {
   images: WorkImageData[];
@@ -228,6 +234,13 @@ export function ImageCarousel({
   marquee?: boolean;
   /** Run the loop left-to-right instead. Only meaningful with `marquee`. */
   reverse?: boolean;
+  /**
+   * Multiplies the loop duration. One "set" of cards passes per cycle, so a row
+   * with fewer cards covers less ground in the same time; pass
+   * `images.length / 5` (five being the widest home row) to hold every marquee
+   * at the same px/s. Defaults to 1 — the home rows' own timing, untouched.
+   */
+  speedScale?: number;
   className?: string;
 }) {
   const card = (image: WorkImageData, key: string, gap: boolean) => (
@@ -259,7 +272,10 @@ export function ImageCarousel({
     // `100% + 2 × gutter` and letting `items-center` centre it lands the edges
     // exactly on the viewport, which is also where overflow-hidden then clips.
     <div className={`w-[calc(100%+var(--page-gutter)*2)] overflow-hidden ${className}`}>
-      <div className={`image-marquee-track flex w-max items-center${reverse ? " image-marquee-track--reverse" : ""}`}>
+      <div
+        className={`image-marquee-track flex w-max items-center${reverse ? " image-marquee-track--reverse" : ""}`}
+        style={speedScale ? ({ "--image-marquee-scale": speedScale } as CSSProperties) : undefined}
+      >
         {images.map((image) => card(image, `a-${image.src}`, true))}
         {/* Duplicate set — decorative only, so it stays out of the a11y tree. */}
         <div aria-hidden className="flex w-max items-center">

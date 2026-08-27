@@ -94,9 +94,13 @@ export function CaseStudyHero({
       </div>
 
       {/* Image carousel. Reveals with the description and meta — title+stars
-          first, then everything else together. */}
-      <Reveal immediate delay={0.6} className="w-full">
-        <ImageCarousel images={images} size="lg" />
+          first, then everything else together.
+          Loops like the home page's work rows; `items-center` on the wrapper is
+          what lets the over-wide track bleed symmetrically past the page gutter
+          (see ImageCarousel), and speedScale holds it at the home rows' px/s
+          despite carrying three cards instead of five. */}
+      <Reveal immediate delay={0.6} className="flex w-full flex-col items-center">
+        <ImageCarousel images={images} size="lg" marquee speedScale={images.length / 5} />
       </Reveal>
     </div>
   );

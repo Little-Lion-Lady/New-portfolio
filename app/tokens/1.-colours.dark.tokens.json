@@ -82,11 +82,11 @@
   "border": {
     "borderPrimary": {
       "$type": "color",
-      "$value": "{colour.grayDark.600}"
+      "$value": "{colour.grayDark.700}"
     },
     "borderSecondary": {
       "$type": "color",
-      "$value": "{colour.grayDark.700}"
+      "$value": "{colour.grayDark.800}"
     },
     "borderHighlight": {
       "$type": "color",

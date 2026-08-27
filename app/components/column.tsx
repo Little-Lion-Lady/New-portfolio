@@ -6,10 +6,10 @@ import type { ReactNode } from "react";
 //   tablet  — 9-col grid: label c1 · text c4-9 (Figma 393:15680)
 //   desktop — 12-col grid: label c1-2 · text c3-9
 // Label is text-primary-highlight; title text-primary; body text-secondary.
-// Text scale B-xs→B-sm→B-md (16/20/24) by default; COVID and First Table use it as
-// drawn, Basis holds the whole block at B-sm via textClassName. labelClassName
-// overrides the label scale independently
-// (e.g. §03 keeps the label at B-sm on desktop).
+// Text scale B-xs→B-sm→B-sm (16/26, 20/32, 20/32) — the label and the body run
+// the same size, and desktop holds B-sm rather than stepping up to B-md
+// (Figma 393:15682/393:15683). labelClassName and textClassName override the
+// label and body scales independently — Basis holds its whole block at B-sm.
 // Pass `ordered` instead of children for a numbered list (§04 "How might we" HMW
 // statements 547:10601) — renders a list-decimal <ol> of text-secondary items.
 export function Column({
@@ -29,7 +29,7 @@ export function Column({
   textClassName?: string;
   className?: string;
 }) {
-  const scale = textClassName ?? "b-xs md:b-sm lg:b-md";
+  const scale = textClassName ?? "b-xs md:b-sm";
   return (
     <div
       className={`flex flex-col md:grid md:grid-cols-9 md:gap-x-xl lg:grid-cols-12 lg:gap-x-lg ${className}`}
@@ -39,7 +39,9 @@ export function Column({
       >
         {label}
       </p>
-      <div className="flex flex-col md:col-start-4 md:col-span-6 lg:col-start-3 lg:col-span-7">
+      {/* Title and body stack at gap 0 up to tablet; desktop opens a 2px
+          hairline between them (Figma spacing-4xs). */}
+      <div className="flex flex-col lg:gap-4xs md:col-start-4 md:col-span-6 lg:col-start-3 lg:col-span-7">
         {title && <p className={`${scale} text-text-primary`}>{title}</p>}
         {/* The ordered list stacks at gap 0 — Figma's items carry mb-0, and the
             B-xs/B-sm line box already supplies the separation. */}

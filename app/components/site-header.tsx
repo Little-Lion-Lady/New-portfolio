@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Reveal } from "./reveal";
 import { ThemeToggle } from "./theme-toggle";
-import { useOverMedia } from "./use-over-media";
+import { useBackdropTone } from "./use-over-media";
 
 // Figma "Header" (436:17272) — a floating glass pill rather than a full-bleed
 // band. The header itself stays transparent and only pads the pill in from the
@@ -30,10 +30,13 @@ import { useOverMedia } from "./use-over-media";
 export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
-  // Over a photo the glass pill isn't enough contrast for light type, so the
-  // nav re-points --text-primary at the over-media token and every child that
-  // uses text-text-primary (links, role, theme toggle) follows.
-  const overMedia = useOverMedia(navRef);
+  // Over a photo the glass pill isn't enough contrast on its own, so the nav
+  // re-points --text-primary at an over-media token and every child that uses
+  // text-text-primary (links, role, theme toggle) follows. Which token depends
+  // on the photo's own luminance under the pill: dark ink on light photos,
+  // light ink on dark ones. A fixed dark ink disappeared against the dark
+  // screenshots that fill the First Table page in dark mode.
+  const tone = useBackdropTone(navRef);
   const pathname = usePathname();
   const isAbout = pathname === "/about";
 
@@ -54,10 +57,16 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           ref={navRef}
           className="pointer-events-auto relative grid grid-cols-4 items-center gap-sm rounded-xs p-xs transition-colors duration-300 md:grid-cols-9 md:gap-x-lg md:gap-y-md md:rounded-sm md:p-md lg:grid-cols-12"
           style={
-            overMedia
+            tone
               ? ({
-                  "--text-primary": "var(--text-over-media)",
-                  "--text-primary-hover": "var(--text-over-media-hover)",
+                  "--text-primary":
+                    tone === "dark"
+                      ? "var(--text-over-media-inverted)"
+                      : "var(--text-over-media)",
+                  "--text-primary-hover":
+                    tone === "dark"
+                      ? "var(--text-over-media-inverted-hover)"
+                      : "var(--text-over-media-hover)",
                 } as CSSProperties)
               : undefined
           }

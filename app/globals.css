@@ -262,9 +262,15 @@
   --text-primary-highlight: var(--colour-gray-light-950);
   /* Nav text when the pill sits over a photo — same in both themes, because it
      reads against the image, not against the page background. Not overridden in
-     the dark blocks below on purpose. */
-  --text-over-media:        var(--colour-base-black);
-  --text-over-media-hover:  var(--colour-gray-light-700);
+     the dark blocks below on purpose.
+     Two pairs, picked by the photo's own luminance under the pill (see
+     useBackdropTone): the plain pair for light photos, the -inverted pair for
+     dark ones. A single dark pair went invisible over the dark screenshots that
+     fill the First Table page in dark mode. */
+  --text-over-media:                 var(--colour-base-black);
+  --text-over-media-hover:           var(--colour-gray-light-700);
+  --text-over-media-inverted:        var(--colour-base-white);
+  --text-over-media-inverted-hover:  var(--colour-gray-light-300);
 
   --border-primary:   var(--colour-gray-light-200);
   --border-secondary: var(--colour-gray-light-100);
@@ -466,8 +472,8 @@
     --text-primary-overlay:   var(--colour-blue-200-70);
     --text-primary-highlight: var(--colour-base-white);
 
-    --border-primary:   var(--colour-gray-dark-600);
-    --border-secondary: var(--colour-gray-dark-700);
+    --border-primary:   var(--colour-gray-dark-700);
+    --border-secondary: var(--colour-gray-dark-800);
     --border-highlight: var(--colour-gray-dark-100);
     /* Overlay chrome stays dark in dark mode, same as shadow-02 below:
        the glass frame's hairline is gray-light-950-10 in both themes. */
@@ -608,8 +614,8 @@
   --text-primary-overlay:   var(--colour-blue-200-70);
   --text-primary-highlight: var(--colour-base-white);
 
-  --border-primary:   var(--colour-gray-dark-600);
-  --border-secondary: var(--colour-gray-dark-700);
+  --border-primary:   var(--colour-gray-dark-700);
+  --border-secondary: var(--colour-gray-dark-800);
   --border-highlight: var(--colour-gray-dark-100);
   /* Overlay chrome stays dark in dark mode, same as shadow-02 below:
      the glass frame's hairline is gray-light-950-10 in both themes. */
@@ -762,8 +768,10 @@
   --color-text-primary-pressed:   var(--text-primary-pressed);
   --color-text-primary-overlay:   var(--text-primary-overlay);
   --color-text-primary-highlight: var(--text-primary-highlight);
-  --color-text-over-media:        var(--text-over-media);
-  --color-text-over-media-hover:  var(--text-over-media-hover);
+  --color-text-over-media:                var(--text-over-media);
+  --color-text-over-media-hover:          var(--text-over-media-hover);
+  --color-text-over-media-inverted:       var(--text-over-media-inverted);
+  --color-text-over-media-inverted-hover: var(--text-over-media-inverted-hover);
 
   /* Borders */
   --color-border-primary:   var(--border-primary);
@@ -1339,7 +1347,13 @@ h1.d-sm {
 
 .image-marquee-track {
   --image-marquee-duration: 25s;
-  animation: image-marquee var(--image-marquee-duration) linear infinite;
+  /* The duration covers one full set of cards, so a row with fewer cards
+     travels less distance in the same time and reads as slower. Rows that hold
+     fewer than the home page's five cards scale the duration down by the same
+     ratio (see ImageCarousel's `speedScale`) so every marquee moves at one
+     speed in px/s. */
+  animation: image-marquee calc(var(--image-marquee-duration) * var(--image-marquee-scale, 1))
+    linear infinite;
 }
 
 /* Same keyframes played backwards — the row travels left-to-right. */
