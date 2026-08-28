@@ -19,7 +19,7 @@
 import { useRef, type ReactNode } from "react";
 import { m, useInView, useReducedMotion } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
-import { useHasMounted, useRevealTrigger } from "./reveal";
+import { useHasMounted, useRevealTrigger, DURATION, EASE, IN_VIEW } from "./reveal";
 
 export function TiltIn({
   offset,
@@ -36,7 +36,7 @@ export function TiltIn({
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const inView = useInView(ref, IN_VIEW);
   const reducedMotion = useReducedMotion();
   const { active, immediate: ctxImmediate } = useSectionReveal();
   const parent = useRevealTrigger();
@@ -57,7 +57,7 @@ export function TiltIn({
       className={className}
       initial={{ rotate: offset }}
       animate={{ rotate: shouldAnimate ? 0 : offset }}
-      transition={{ duration: 0.6, ease: [0.165, 0.84, 0.44, 1], delay: startDelay }}
+      transition={{ duration: DURATION, ease: EASE, delay: startDelay }}
     >
       {children}
     </m.div>

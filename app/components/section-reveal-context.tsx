@@ -7,7 +7,8 @@
   intersection, flips a context flag to `true`. Children (Reveal, ScrambleText,
   images) stay hidden until the section releases them.
 
-  - IntersectionObserver at threshold 0.15, fire-once (disconnects after).
+  - IntersectionObserver at threshold 0.05 with a 10% bottom root margin,
+    fire-once (disconnects after).
   - `delay` waits N ms after intersection; `notBefore` gates on an absolute
     Date.now() timestamp (for staggering sibling sections).
   - `immediate`: skip the observer entirely and release children on mount, and
@@ -86,7 +87,10 @@ export function SectionReveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.15 },
+      // Matches the gate in <Reveal>: a low threshold plus a positive bottom
+      // root margin releases the section just before it scrolls into view, so
+      // its children are already moving by the time they are on screen.
+      { threshold: 0.05, rootMargin: "0px 0px 10% 0px" },
     );
     observer.observe(el);
     return () => {

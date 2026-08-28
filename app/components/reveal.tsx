@@ -3,9 +3,9 @@
 /*
   Reveal + RevealWords
   ────────────────────
-  Reveal        — fades a single element in from y:16px over 400ms with an
-                  ease-out curve. Pass `index` to stagger items in a group by
-                  60ms each.
+  Reveal        — fades a single element in from y:12px over 450ms on an
+                  ease-out-quint curve. Pass `index` to stagger items in a
+                  group by 45ms each. See the Timing block below.
 
   RevealWords   — same animation applied word-by-word. Walks children,
                   splits string nodes into individual words (keeping trailing
@@ -77,30 +77,60 @@ export function useHasMounted() {
 // bleed past its edges (e.g. GlassImage cards). transitionEnd removes the
 // filter after animating through it, so the entrance blur is unaffected but
 // nothing is left clipping shadows at rest.
+// Shared in-view gate. `amount: "some"` fires on any sliver of the element
+// (the old 0.2 meant a tall block had to be a fifth on screen before it even
+// started, so reveals felt like they were chasing the scroll), and the positive
+// bottom margin expands the observer root downwards so a reveal begins just
+// before the element crosses into view rather than after.
+export const IN_VIEW = { once: true, amount: "some", margin: "0px 0px 10% 0px" } as const;
+
+// ─── Timing ──────────────────────────────────────────────────────────────────
+// One source of truth for the reveal system.
+//
+// EASE is --ease-smooth-out from globals.css (ease-out-quint). It covers most
+// of the distance in the first ~150ms, so a reveal reads as snappy, then spends
+// a long tail settling, so it also reads as smooth. The previous ease-out-quad
+// was near-linear at the start — it crept, and needed a longer duration to
+// compensate, which is what made the old reveals feel slow.
+export const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+export const DURATION = 0.45;
+export const STAGGER = 0.045;
+const DURATION_FF = 0.4;
+const WORD_DURATION = 0.5;
+const Y = 12;
+
+// filter:blur() is paint-bound — every frame re-rasterises the element at a new
+// radius — so the radius is the frame cost. Block reveals wrap whole sections
+// including large images and glass cards, where a wide radius is expensive and
+// barely legible. Word reveals cover small glyph runs, where it is cheap and
+// does the most work, so they keep a slightly wider one.
+const BLUR_BLOCK = "blur(8px)";
+const BLUR_TEXT = "blur(10px)";
+
 const variants: Variants = {
-  hidden: { opacity: 0, y: 16, filter: "blur(20px)" },
+  hidden: { opacity: 0, y: Y, filter: BLUR_BLOCK },
   visible: (custom: { i?: number; delay?: number } = {}) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
     transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-      delay: (custom.i ?? 0) * 0.06 + (custom.delay ?? 0),
+      duration: DURATION,
+      ease: EASE,
+      delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
   }),
 };
 
 const variantsNoY: Variants = {
-  hidden: { opacity: 0, filter: "blur(20px)" },
+  hidden: { opacity: 0, filter: BLUR_BLOCK },
   visible: (custom: { i?: number; delay?: number } = {}) => ({
     opacity: 1,
     filter: "blur(0px)",
     transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-      delay: (custom.i ?? 0) * 0.06 + (custom.delay ?? 0),
+      duration: DURATION,
+      ease: EASE,
+      delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
   }),
@@ -108,14 +138,14 @@ const variantsNoY: Variants = {
 
 // Word-level reveal: blur-only, no y movement.
 const wordVariants: Variants = {
-  hidden: { opacity: 0, filter: "blur(20px)" },
+  hidden: { opacity: 0, filter: BLUR_TEXT },
   visible: (i: number = 0) => ({
     opacity: 1,
     filter: "blur(0px)",
     transition: {
-      duration: 1.4,
-      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
-      delay: i * 0.06,
+      duration: WORD_DURATION,
+      ease: EASE,
+      delay: i * STAGGER,
     },
     transitionEnd: { filter: "none" },
   }),
@@ -128,18 +158,19 @@ const reducedVariants: Variants = {
 };
 
 // For Firefox — opacity + y only (no blur). filter:blur(0px) must be explicit
-// in every state so Framer Motion overwrites the stale blur(20px) from the
-// initial hidden state instead of carrying it forward.
+// in every state so Framer Motion overwrites the stale blur from the initial
+// hidden state instead of carrying it forward. With no blur to paint there is
+// nothing to hide behind, so these run slightly shorter.
 const ffVariants: Variants = {
-  hidden: { opacity: 0, y: 16, filter: "blur(0px)" },
+  hidden: { opacity: 0, y: Y, filter: "blur(0px)" },
   visible: (custom: { i?: number; delay?: number } = {}) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
     transition: {
-      duration: 0.5,
-      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-      delay: (custom.i ?? 0) * 0.06 + (custom.delay ?? 0),
+      duration: DURATION_FF,
+      ease: EASE,
+      delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
   }),
@@ -151,9 +182,9 @@ const ffVariantsNoY: Variants = {
     opacity: 1,
     filter: "blur(0px)",
     transition: {
-      duration: 0.5,
-      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-      delay: (custom.i ?? 0) * 0.06 + (custom.delay ?? 0),
+      duration: DURATION_FF,
+      ease: EASE,
+      delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
   }),
@@ -165,20 +196,20 @@ const ffWordVariants: Variants = {
     opacity: 1,
     filter: "blur(0px)",
     transition: {
-      duration: 0.8,
-      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
-      delay: i * 0.06,
+      duration: DURATION_FF,
+      ease: EASE,
+      delay: i * STAGGER,
     },
     transitionEnd: { filter: "none" },
   }),
 };
 
 const blurVariants: Variants = {
-  hidden: { filter: "blur(8px)", opacity: 0 },
+  hidden: { filter: BLUR_BLOCK, opacity: 0 },
   visible: {
     filter: "blur(0px)",
     opacity: 1,
-    transition: { duration: 0.6, ease: [0.445, 0.05, 0.55, 0.95] as [number, number, number, number] },
+    transition: { duration: DURATION, ease: EASE },
     transitionEnd: { filter: "none" },
   },
 };
@@ -209,7 +240,7 @@ export function Reveal({
   style?: CSSProperties;
 }) {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const inView = useInView(ref, IN_VIEW);
   const reducedMotion = useReducedMotion();
   const isFF = useIsFirefox();
   const { active, immediate: ctxImmediate } = useSectionReveal();
@@ -224,7 +255,7 @@ export function Reveal({
   // Same delay the variants above apply, shared with the subtree so nested
   // animations start in step with this fade.
   const trigger = useMemo(
-    () => ({ active: shouldAnimate, delay: index * 0.06 + delay }),
+    () => ({ active: shouldAnimate, delay: index * STAGGER + delay }),
     [shouldAnimate, index, delay],
   );
 
@@ -261,7 +292,7 @@ export function RevealWords({
   immediate?: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const inView = useInView(ref, IN_VIEW);
   const reducedMotion = useReducedMotion();
   const isFF = useIsFirefox();
   const { active, immediate: ctxImmediate } = useSectionReveal();
