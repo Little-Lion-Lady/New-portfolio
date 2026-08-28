@@ -27,7 +27,7 @@ import { useBackdropTone } from "./use-over-media";
 // The pill's chrome is revealed on scroll (unchanged behaviour): fill, hairline
 // and the 10px backdrop-blur live on an overlay element whose opacity is driven
 // by scrollY, so the nav text itself never fades — only the surface behind it.
-export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
+export function SiteHeader({ revealDelay = 0, intro = false }: { revealDelay?: number; intro?: boolean } = {}) {
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   // Over a photo the glass pill isn't enough contrast on its own, so the nav
@@ -52,7 +52,7 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
       {/* Fades in with the same blur-and-opacity Reveal as the page content.
           `immediate` rather than the in-view gate: the header is fixed and
           always on screen, so there is nothing to scroll into view. */}
-      <Reveal immediate noY delay={revealDelay}>
+      <Reveal immediate noY intro={intro} delay={revealDelay}>
         <nav
           ref={navRef}
           className="pointer-events-auto relative grid grid-cols-4 items-center gap-sm rounded-xs p-xs transition-colors duration-300 md:grid-cols-9 md:gap-x-lg md:gap-y-md md:rounded-sm md:p-md lg:grid-cols-12"

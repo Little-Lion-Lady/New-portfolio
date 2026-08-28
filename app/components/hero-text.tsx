@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { RevealWords } from "./reveal";
+import { markHeroIntroSeen } from "./hero-seen";
 import { TitleStars } from "./title-stars";
 
 const TEXT_STYLE = {
@@ -30,10 +31,35 @@ const PLAIN =
 // copy changes length.
 const REVEAL_SPAN = 5.0;
 
-export function HeroText({ className, revealDelay = 0 }: { className?: string; revealDelay?: number }) {
+export function HeroText({
+  className,
+  revealDelay = 0,
+  intro = false,
+}: {
+  className?: string;
+  revealDelay?: number;
+  /** Part of the home hero's opening sequence — see Reveal's `intro`. */
+  intro?: boolean;
+}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const probeRef = useRef<HTMLParagraphElement>(null);
   const [fontSize, setFontSize] = useState(64);
+
+  // Record that the intro has played — on completion, and on the way out if
+  // they leave before it finishes (clicking away two seconds in still counts;
+  // nobody wants to sit through it again on the way back).
+  //
+  // Deliberately NOT on mount: the snapshot is re-read on any re-render, and
+  // this component re-renders as soon as the font fit measures, which would
+  // swap in the skipped variants while the intro was still running.
+  useEffect(() => {
+    if (!intro) return;
+    const id = window.setTimeout(markHeroIntroSeen, (revealDelay + REVEAL_SPAN) * 1000);
+    return () => {
+      window.clearTimeout(id);
+      markHeroIntroSeen();
+    };
+  }, [intro, revealDelay]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -93,9 +119,10 @@ export function HeroText({ className, revealDelay = 0 }: { className?: string; r
       {/* TitleStars' wrapper hugs the h1's own box (unlike wrapRef, which is
           flex-centered and taller) so the twinkle stars anchor precisely to
           the rendered text at every breakpoint. */}
-      <TitleStars placement="hero" revealDelay={revealDelay} className="relative w-full">
+      <TitleStars placement="hero" revealDelay={revealDelay} intro={intro} className="relative w-full">
         <RevealWords
           immediate
+          intro={intro}
           delay={revealDelay}
           span={REVEAL_SPAN}
           as="h1"

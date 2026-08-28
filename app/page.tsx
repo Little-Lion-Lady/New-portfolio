@@ -16,7 +16,11 @@ export default function Home() {
     <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-2xl md:pt-[92px] lg:px-3xl lg:pb-0 lg:pt-[92px]">
       {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
       <div>
-        {/* Hero load sequence — nav and headline open together, cat closes:
+        {/* Every piece below is marked `intro`: the whole sequence is skipped,
+            rendered already finished, if this session has seen the home page
+            before — see hero-seen.ts.
+
+            Hero load sequence — nav and headline open together, cat closes:
               nav       0s    → settles 0.7s
               headline  0s    → last word settles 5s (REVEAL_SPAN)
               cat       2.3s  → settles 3.0s
@@ -26,14 +30,14 @@ export default function Home() {
             So the cat follows the whole line being in motion rather than the
             nominal end — waiting for 5s left a dead beat with nothing moving
             but a blur no one can see. */}
-        <SiteHeader revealDelay={0} />
+        <SiteHeader revealDelay={0} intro />
 
         {/* Hero — fills the viewport (clamped 640px–1500px).
             Text vertically centered in the top 3/4. Image bottom-aligned in the remaining 1/4. */}
         {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
         <section className="relative z-10 flex h-[clamp(640px,calc(100svh-60px),1500px)] w-full flex-col md:h-[clamp(640px,calc(100svh-92px),1500px)] lg:h-[clamp(640px,calc(100svh-100px),1500px)]">
         {/* Text — fits to its bounding box via JS binary search on font-size */}
-        <HeroText revealDelay={0} className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:pt-3xl md:pb-2xl lg:pt-lg lg:pb-4xl" />
+        <HeroText revealDelay={0} intro className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:pt-3xl md:pb-2xl lg:pt-lg lg:pb-4xl" />
         {/* Image + divider — bottom 1/4.5.
             Divider is flex-1 so it stretches from the left page edge.
             Image pulls left with a negative margin to overlap the divider
@@ -50,10 +54,11 @@ export default function Home() {
               hold this star back past the word it points at. */}
           <SyncedStar
             variant={3}
+            intro
             revealDelay={0}
             className="pointer-events-none absolute left-[3%] -top-[28px] w-8 md:left-[2%] md:-top-[36px] md:w-11 lg:left-[2%] lg:-top-[44px] lg:w-14"
           />
-          <Reveal as="div" delay={2.3} noY className="flex h-full w-full items-end">
+          <Reveal as="div" delay={2.3} noY intro className="flex h-full w-full items-end">
             <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
             <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[30px] max-w-[296px] md:-ml-[64px] md:max-w-[636px] md:min-h-[200px] md:max-h-[280px] lg:-ml-[3.6vw] lg:max-w-[36vw] lg:min-h-[300px]" />
           </Reveal>

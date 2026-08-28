@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { m, useReducedMotion, type Variants } from "framer-motion";
 import { Star } from "./dynamic-visuals";
-import { WORD_STAGGER, EASE } from "./reveal";
+import { WORD_STAGGER, EASE } from "./motion-timing";
+import { useHeroIntroSkip } from "./hero-seen";
 
 // Matches RevealWords' own blur-in look and curve, timed via `custom` so each
 // star arrives with the word it is anchored to.
@@ -52,6 +53,7 @@ export function TitleStars({
   placement = "title",
   className = "relative",
   revealDelay = 0,
+  intro = false,
 }: {
   children: ReactNode;
   /** Star offsets to use — "hero" for the fluid home headline, "title" otherwise. */
@@ -59,10 +61,13 @@ export function TitleStars({
   className?: string;
   /** The wrapped heading's own reveal delay, so the stars share its timeline. */
   revealDelay?: number;
+  /** See Reveal's `intro` — skip the entrance if it already played this session. */
+  intro?: boolean;
 }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [anchor, setAnchor] = useState<{ top: number; left: number; delay: number } | null>(null);
   const reducedMotion = useReducedMotion();
+  const skipIntro = useHeroIntroSkip(intro);
 
   useEffect(() => {
     const box = boxRef.current;
@@ -123,9 +128,9 @@ export function TitleStars({
         <m.div
           className="pointer-events-none absolute"
           style={{ top: anchor.top, left: anchor.left }}
-          initial={reducedMotion ? false : "hidden"}
+          initial={reducedMotion || skipIntro ? false : "hidden"}
           animate="visible"
-          custom={anchor.delay}
+          custom={skipIntro ? 0 : anchor.delay}
           variants={STAR_VARIANTS}
         >
           <Star variant={1} className={stars.one} />

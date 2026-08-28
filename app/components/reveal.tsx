@@ -23,6 +23,7 @@
 import React, { createContext, useContext, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { m, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
+import { useHeroIntroSkip } from "./hero-seen";
 import {
   EASE,
   DURATION,
@@ -223,6 +224,7 @@ export function Reveal({
   blur = false,
   noY = false,
   duration,
+  intro = false,
   immediate = false,
   className,
   style,
@@ -235,6 +237,12 @@ export function Reveal({
   noY?: boolean;
   /** Override the shared block duration for this reveal only, in seconds. */
   duration?: number;
+  /**
+   * Part of the home hero's opening sequence. Such a reveal is skipped —
+   * rendered already finished — once the intro has played in this browsing
+   * session, so returning to the home page does not replay five seconds of it.
+   */
+  intro?: boolean;
   immediate?: boolean;
   className?: string;
   style?: CSSProperties;
@@ -244,6 +252,9 @@ export function Reveal({
   const reducedMotion = useReducedMotion();
   const isFF = useIsFirefox();
   const { active, immediate: ctxImmediate } = useSectionReveal();
+  // Already played this session: land on the finished state rather than
+  // animating. Reuses the reduced-motion variants, which are exactly that.
+  const skipIntro = useHeroIntroSkip(intro);
   // `immediate` (prop or inherited from an immediate SectionReveal) reveals on
   // mount and ignores the in-view gate, so all content appears at once on load.
   const isImmediate = immediate || ctxImmediate;
@@ -267,7 +278,7 @@ export function Reveal({
       custom={{ i: index, delay, duration }}
       initial="hidden"
       animate={shouldAnimate ? "visible" : "hidden"}
-      variants={reducedMotion ? reducedVariants : isFF ? (noY ? ffVariantsNoY : ffVariants) : blur ? blurVariants : noY ? variantsNoY : variants}
+      variants={reducedMotion || skipIntro ? reducedVariants : isFF ? (noY ? ffVariantsNoY : ffVariants) : blur ? blurVariants : noY ? variantsNoY : variants}
     >
       <RevealTriggerContext.Provider value={trigger}>{children}</RevealTriggerContext.Provider>
     </Component>
@@ -284,6 +295,7 @@ export function RevealWords({
   startIndex = 0,
   delay = 0,
   span,
+  intro = false,
   immediate = false,
 }: {
   children: ReactNode;
@@ -300,6 +312,8 @@ export function RevealWords({
    * individual word takes. Omitted, the span follows from the word count.
    */
   span?: number;
+  /** See Reveal's `intro`. */
+  intro?: boolean;
   immediate?: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
@@ -307,6 +321,7 @@ export function RevealWords({
   const reducedMotion = useReducedMotion();
   const isFF = useIsFirefox();
   const { active, immediate: ctxImmediate } = useSectionReveal();
+  const skipIntro = useHeroIntroSkip(intro);
   const isImmediate = immediate || ctxImmediate;
   const mounted = useHasMounted();
   const shouldAnimate = isImmediate ? mounted : active && inView;
@@ -387,7 +402,7 @@ export function RevealWords({
           custom={{ i: startIndex + i, delay, duration: timing.duration, stagger: timing.stagger }}
           initial="hidden"
           animate={shouldAnimate ? "visible" : "hidden"}
-          variants={reducedMotion ? reducedVariants : isFF ? ffWordVariants : wordVariants}
+          variants={reducedMotion || skipIntro ? reducedVariants : isFF ? ffWordVariants : wordVariants}
         >
           {token}
         </m.span>
