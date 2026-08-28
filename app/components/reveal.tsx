@@ -3,9 +3,9 @@
 /*
   Reveal + RevealWords
   ────────────────────
-  Reveal        — fades a single element in from y:12px over 450ms on an
-                  ease-out-quint curve. Pass `index` to stagger items in a
-                  group by 45ms each. See the Timing block below.
+  Reveal        — fades a single element in from y:16px over 700ms on a
+                  gentle-onset curve. Pass `index` to stagger items in a
+                  group by 90ms each. See the Timing block below.
 
   RevealWords   — same animation applied word-by-word. Walks children,
                   splits string nodes into individual words (keeping trailing
@@ -87,17 +87,29 @@ export const IN_VIEW = { once: true, amount: "some", margin: "0px 0px 10% 0px" }
 // ─── Timing ──────────────────────────────────────────────────────────────────
 // One source of truth for the reveal system.
 //
-// EASE is --ease-smooth-out from globals.css (ease-out-quint). It covers most
-// of the distance in the first ~150ms, so a reveal reads as snappy, then spends
-// a long tail settling, so it also reads as smooth. The previous ease-out-quad
-// was near-linear at the start — it crept, and needed a longer duration to
-// compensate, which is what made the old reveals feel slow.
-export const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
-export const DURATION = 0.45;
-export const STAGGER = 0.045;
-const DURATION_FF = 0.4;
-const WORD_DURATION = 0.5;
-const Y = 12;
+// A reveal reads as abrupt when it leaves rest already moving fast. The onset
+// velocity is (y1/x1) * Y / DURATION, so the curve's initial slope matters as
+// much as the duration: ease-out-quint (0.22,1) starts at slope 4.5, i.e. flat
+// out, which popped. This curve starts at slope 2.25 and then flattens hard
+// into a very long tail, so motion begins gently and spends most of its time
+// settling. At 700ms over 16px that is ~51 px/s at the start — matching the
+// old ease-out-quad's gentle onset — but with far more of the duration spent
+// in the deceleration, which is what actually reads as smooth.
+export const EASE = [0.32, 0.72, 0, 1] as [number, number, number, number];
+export const DURATION = 0.7;
+// Stagger is well under the duration, so each item begins while its neighbour
+// is only a fraction through: the group arrives as one continuous cascade
+// rather than a sequence of discrete pops.
+export const STAGGER = 0.09;
+const DURATION_FF = 0.6;
+const WORD_DURATION = 1.0;
+// Words need a far tighter stagger than blocks: the hero runs 33 of them, so
+// the block value would drag its reveal out past three seconds. At 30ms the
+// cascade crosses the line in ~1s while each word still takes a full second to
+// resolve — around 25 words are in motion at any moment, so the line reads as
+// one sweep rather than a row of individual pops.
+const WORD_STAGGER = 0.03;
+const Y = 16;
 
 // filter:blur() is paint-bound — every frame re-rasterises the element at a new
 // radius — so the radius is the frame cost. Block reveals wrap whole sections
@@ -145,7 +157,7 @@ const wordVariants: Variants = {
     transition: {
       duration: WORD_DURATION,
       ease: EASE,
-      delay: i * STAGGER,
+      delay: i * WORD_STAGGER,
     },
     transitionEnd: { filter: "none" },
   }),
@@ -198,7 +210,7 @@ const ffWordVariants: Variants = {
     transition: {
       duration: DURATION_FF,
       ease: EASE,
-      delay: i * STAGGER,
+      delay: i * WORD_STAGGER,
     },
     transitionEnd: { filter: "none" },
   }),
