@@ -1383,38 +1383,43 @@ h1.d-sm {
 
    Themed by swapping the file, not by recolouring: a CSS `cursor: url()` is
    rasterised by the browser and nothing in the document can restyle it, so
-   each asset ships a pre-mapped dark twin. The mapping is the one the Lottie
-   artwork uses (DARK_MAP in star.tsx / hero-cat.tsx) — near-black to #FFFFFF,
-   #FFFFFF to #3744FF — applied to the SVG source. Hand.svg's #FF0000 is not
-   in that map, so the hand stays red in both themes.
+   each asset ships a pre-mapped dark twin, generated from the SVG source.
+
+   The two assets map differently, because the job differs. Cursor.svg follows
+   the Lottie DARK_MAP (see star.tsx / hero-cat.tsx): near-black to #FFFFFF and
+   #FFFFFF to #3744FF, so the arrow inverts against the flipped background.
+   Hand.svg instead turns its #FF0000 body into #3744FF and keeps its white
+   line work white — the outline is what gives the hand its shape, and blue on
+   blue would have flattened it.
 
    Hotspots are measured from the rasterised art, not guessed: the arrow's tip
-   is the furthest up-left opaque pixel (15, 6), and the hand's is the centre
-   of its topmost row, the index fingertip (17, 3).
+   is the furthest up-left opaque pixel (7, 3), and the hand's is the centre of
+   its topmost row, the index fingertip (8, 1).
 
-   Both files are 64x64, so that is the size the cursor renders at — roughly
-   double a system cursor. To scale it down, set width/height on the four SVGs
-   (leaving viewBox alone) and halve the hotspot numbers below to match.
+   The files are 32x32 (width/height only — viewBox stays 0 0 64 64), which is
+   the size the cursor renders at. Re-measure the hotspots after any resize
+   rather than scaling these numbers: halving the 64px values would have put
+   both a pixel out.
 
    Theme selectors mirror the pattern documented at the top of this file:
    prefers-color-scheme for a first visit with no explicit choice, then
    [data-theme="dark"] for a returning visitor who chose dark.
    ============================================================ */
 :root {
-  --cursor-default: url("/home/Cursor.svg") 15 6, auto;
-  --cursor-pointer: url("/home/Hand.svg") 17 3, pointer;
+  --cursor-default: url("/home/Cursor.svg") 7 3, auto;
+  --cursor-pointer: url("/home/Hand.svg") 8 1, pointer;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not([data-theme="dark"]) {
-    --cursor-default: url("/home/Cursor-dark.svg") 15 6, auto;
-    --cursor-pointer: url("/home/Hand-dark.svg") 17 3, pointer;
+    --cursor-default: url("/home/Cursor-dark.svg") 7 3, auto;
+    --cursor-pointer: url("/home/Hand-dark.svg") 8 1, pointer;
   }
 }
 
 [data-theme="dark"] {
-  --cursor-default: url("/home/Cursor-dark.svg") 15 6, auto;
-  --cursor-pointer: url("/home/Hand-dark.svg") 17 3, pointer;
+  --cursor-default: url("/home/Cursor-dark.svg") 7 3, auto;
+  --cursor-pointer: url("/home/Hand-dark.svg") 8 1, pointer;
 }
 
 /* `cursor` inherits, so this one declaration covers the whole document. */
