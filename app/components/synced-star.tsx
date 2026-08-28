@@ -39,13 +39,16 @@ export function SyncedStar({
   // from the start — hence the wrapper animating opacity rather than the star
   // being conditionally rendered.
   const ref = useRef<HTMLDivElement>(null);
-  const delay = useNearestWordDelay(ref, { headingSelector, revealDelay });
+  const { delay, clearance } = useNearestWordDelay(ref, { headingSelector, revealDelay });
   const reducedMotion = useReducedMotion();
 
   return (
     <m.div
       ref={ref}
       className={className}
+      // marginTop, not a transform: the y animation below owns transform, and
+      // margin shifts an absolutely-positioned box just as well.
+      style={clearance ? { marginTop: clearance } : undefined}
       initial={reducedMotion ? false : { opacity: 0, y: 8, filter: "blur(16px)" }}
       animate={
         delay === null

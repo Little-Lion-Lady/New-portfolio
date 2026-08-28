@@ -28,6 +28,9 @@ export function wordTokens(heading: Element): HTMLElement[] {
   return Array.from(heading.querySelectorAll<HTMLElement>("span")).filter((el) => !el.firstElementChild);
 }
 
+/** Minimum gap to leave between the heading's box and an element beside it. */
+const CLEARANCE_GAP = 8;
+
 /** Squared distance from a point to the nearest edge of a rect (0 if inside). */
 function distanceTo(rect: DOMRect, x: number, y: number) {
   const dx = Math.max(rect.left - x, 0, x - rect.right);
@@ -40,6 +43,12 @@ export function useNearestWordDelay(
   { headingSelector = "h1", revealDelay = 0 }: { headingSelector?: string; revealDelay?: number } = {},
 ) {
   const [delay, setDelay] = useState<number | null>(null);
+  // Vertical push needed to keep the element clear of the heading's box. The
+  // star's own offset is a fixed step above the row below the text, but the
+  // headline's height is not fixed — it refits its font size and re-wraps — so
+  // on a tall wrap the last line's descenders reach it. Measured rather than
+  // nudged, because the number that clears it changes with the viewport.
+  const [clearance, setClearance] = useState(0);
 
   useEffect(() => {
     const measure = () => {
@@ -67,6 +76,16 @@ export function useNearestWordDelay(
         }
       });
       setDelay(revealDelay + best * stagger);
+
+      // Subtract the push already applied so this measures the element's
+      // natural position — otherwise each pass would measure its own output
+      // and the value would walk down the page.
+      setClearance((applied) => {
+        const naturalTop = r.top - applied;
+        const needed = heading.getBoundingClientRect().bottom + CLEARANCE_GAP - naturalTop;
+        const next = Math.max(0, Math.round(needed));
+        return Math.abs(next - applied) < 1 ? applied : next;
+      });
     };
 
     const raf = () => requestAnimationFrame(measure);
@@ -77,5 +96,5 @@ export function useNearestWordDelay(
     return () => ro.disconnect();
   }, [ref, headingSelector, revealDelay]);
 
-  return delay;
+  return { delay, clearance };
 }
