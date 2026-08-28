@@ -238,6 +238,7 @@ export default function Basis() {
         <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-sm">
           <Hypothesis
             label="H1"
+            size="sm"
             believe="Showing energy usage in dollars rather than kilowatt-hours will make data more relatable and actionable for homeowners."
             because="It simplifies energy metrics into a format users can immediately act on."
             metric="Users who engage with insights 3x/month will show a 10% bill reduction within 6 months."
@@ -245,6 +246,7 @@ export default function Basis() {
           <Divider />
           <Hypothesis
             label="H2"
+            size="sm"
             believe="Allowing users to remotely control power in their homes will foster a greater sense of safety and control."
             because="Real-time control reduces unnecessary consumption and mitigates potential safety risks"
             metric="90% of users report feeling more in control of their home’s energy and safety after 3 months."
@@ -252,6 +254,7 @@ export default function Basis() {
           <Divider />
           <Hypothesis
             label="H3"
+            size="sm"
             believe="An automation feature that lets users schedule and manage electricity supply will result in a 10–15% reduction in bills."
             because="Strategic power-down during peak pricing hours optimises consumption without requiring ongoing effort."
             metric="Users who engage with insights 3x/month will show a 10% bill reduction within 6 months."

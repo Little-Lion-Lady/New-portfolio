@@ -235,9 +235,19 @@ export default function DesignSystem() {
           </Column>
         </Demo>
 
-        <Demo name="Hypothesis" full>
+        <Demo name="Hypothesis — md" full>
           <Hypothesis
             label="H1"
+            believe="increasing the visual affordance of Bluetooth Tracing will drive acquisition"
+            because="users need a clear, persistent cue — not a buried setting."
+            metric="BT daily active users grow by 30% within one month of launch."
+          />
+        </Demo>
+
+        <Demo name="Hypothesis — sm" full>
+          <Hypothesis
+            label="H1"
+            size="sm"
             believe="increasing the visual affordance of Bluetooth Tracing will drive acquisition"
             because="users need a clear, persistent cue — not a buried setting."
             metric="BT daily active users grow by 30% within one month of launch."
