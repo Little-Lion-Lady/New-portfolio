@@ -94,11 +94,15 @@ export function TitleStars({
         }
       });
       const r = lastOnLine1.getBoundingClientRect();
+      // A line fitted to a target span overrides the module default stagger,
+      // so take the one it published rather than assuming WORD_STAGGER.
+      const published = parseFloat(heading.getAttribute("data-word-stagger") ?? "");
+      const stagger = Number.isFinite(published) ? published : WORD_STAGGER;
       // The cluster is pinned to this word's top-right corner, so it is the
       // nearest word by construction — it just has to share the word's place
       // in the cascade. Derived from WORD_STAGGER and the heading's own delay
       // rather than written down, so retuning either keeps the stars in step.
-      const delay = revealDelay + lastIndex * WORD_STAGGER;
+      const delay = revealDelay + lastIndex * stagger;
       setAnchor({ top: r.top - boxRect.top, left: r.right - boxRect.left, delay });
     };
 

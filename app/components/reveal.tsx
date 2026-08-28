@@ -149,15 +149,17 @@ const variantsNoY: Variants = {
 };
 
 // Word-level reveal: blur-only, no y movement.
+type WordCustom = { i?: number; delay?: number; duration?: number; stagger?: number };
+
 const wordVariants: Variants = {
   hidden: { opacity: 0, filter: BLUR_TEXT },
-  visible: (custom: { i?: number; delay?: number } = {}) => ({
+  visible: (custom: WordCustom = {}) => ({
     opacity: 1,
     filter: "blur(0px)",
     transition: {
-      duration: WORD_DURATION,
+      duration: custom.duration ?? WORD_DURATION,
       ease: EASE,
-      delay: (custom.i ?? 0) * WORD_STAGGER + (custom.delay ?? 0),
+      delay: (custom.i ?? 0) * (custom.stagger ?? WORD_STAGGER) + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
   }),
@@ -204,13 +206,13 @@ const ffVariantsNoY: Variants = {
 
 const ffWordVariants: Variants = {
   hidden: { opacity: 0, filter: "blur(0px)" },
-  visible: (custom: { i?: number; delay?: number } = {}) => ({
+  visible: (custom: WordCustom = {}) => ({
     opacity: 1,
     filter: "blur(0px)",
     transition: {
-      duration: DURATION_FF,
+      duration: custom.duration ?? DURATION_FF,
       ease: EASE,
-      delay: (custom.i ?? 0) * WORD_STAGGER + (custom.delay ?? 0),
+      delay: (custom.i ?? 0) * (custom.stagger ?? WORD_STAGGER) + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
   }),
@@ -295,6 +297,7 @@ export function RevealWords({
   style,
   startIndex = 0,
   delay = 0,
+  span,
   immediate = false,
 }: {
   children: ReactNode;
@@ -303,6 +306,13 @@ export function RevealWords({
   style?: CSSProperties;
   startIndex?: number;
   delay?: number;
+  /**
+   * Seconds from the first word starting to the last word settling. Given one,
+   * the stagger and per-word duration are derived from the actual token count
+   * to hit it, so the line still wraps on time if the copy changes. Omitted,
+   * the module defaults apply and the span follows from the word count.
+   */
+  span?: number;
   immediate?: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
@@ -358,13 +368,34 @@ export function RevealWords({
 
   const Tag = as;
 
+  // Fit the cascade to `span` when one is given. The overlap ratio (per-word
+  // duration over stagger) is what gives the reveal its character — how many
+  // words are in flight at once — so hold that constant and solve for the pair
+  // that lands the last word exactly on time:
+  //   (n - 1) * stagger + duration = span,  with duration = ratio * stagger
+  const count = startIndex + tokens.length;
+  const timing = useMemo(() => {
+    if (!span) return { stagger: WORD_STAGGER, duration: WORD_DURATION };
+    const ratio = WORD_DURATION / WORD_STAGGER;
+    const stagger = span / Math.max(count - 1 + ratio, 1);
+    return { stagger, duration: ratio * stagger };
+  }, [span, count]);
+
   return (
-    <Tag ref={ref as unknown as React.RefObject<never>} className={className} style={style}>
+    // Published so <SyncedStar>/<TitleStars> can time themselves against the
+    // stagger this line actually used rather than the module default, which a
+    // fitted span overrides.
+    <Tag
+      ref={ref as unknown as React.RefObject<never>}
+      className={className}
+      style={style}
+      data-word-stagger={timing.stagger}
+    >
       {tokens.map((token, i) => (
         <m.span
           key={i}
           style={{ display: "inline-block", whiteSpace: "pre-wrap" }}
-          custom={{ i: startIndex + i, delay }}
+          custom={{ i: startIndex + i, delay, duration: timing.duration, stagger: timing.stagger }}
           initial="hidden"
           animate={shouldAnimate ? "visible" : "hidden"}
           variants={reducedMotion ? reducedVariants : isFF ? ffWordVariants : wordVariants}

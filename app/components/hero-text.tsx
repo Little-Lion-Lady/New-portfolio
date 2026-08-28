@@ -24,6 +24,12 @@ const FILL = 0.9;
 const PLAIN =
   "I'm an IC Product Designer specialising in product growth and optimisation with a track record of shipping highly crafted interfaces and dynamic interactions that elevate user experience. Currently leading design at First Table.";
 
+// Seconds from the first word starting to the last settling. With the 0.9s
+// revealDelay the page gives it, the headline wraps at 5s. Expressed as a span
+// rather than a stagger/duration pair so it still wraps on time if the copy
+// changes length.
+const REVEAL_SPAN = 4.1;
+
 export function HeroText({ className, revealDelay = 0 }: { className?: string; revealDelay?: number }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const probeRef = useRef<HTMLParagraphElement>(null);
@@ -91,6 +97,7 @@ export function HeroText({ className, revealDelay = 0 }: { className?: string; r
         <RevealWords
           immediate
           delay={revealDelay}
+          span={REVEAL_SPAN}
           as="h1"
           className="w-full"
           style={{

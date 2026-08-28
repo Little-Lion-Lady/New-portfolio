@@ -48,6 +48,10 @@ export function useNearestWordDelay(
       if (!el || !heading) return;
       const words = wordTokens(heading);
       if (!words.length) return;
+      // A line fitted to a target span overrides the module default, so take
+      // the stagger it published rather than assuming WORD_STAGGER.
+      const published = parseFloat(heading.getAttribute("data-word-stagger") ?? "");
+      const stagger = Number.isFinite(published) ? published : WORD_STAGGER;
 
       const r = el.getBoundingClientRect();
       const cx = r.left + r.width / 2;
@@ -62,7 +66,7 @@ export function useNearestWordDelay(
           best = i;
         }
       });
-      setDelay(revealDelay + best * WORD_STAGGER);
+      setDelay(revealDelay + best * stagger);
     };
 
     const raf = () => requestAnimationFrame(measure);
