@@ -108,7 +108,7 @@ const WORD_DURATION = 1.45;
 // cascade crosses the line in ~1.2s while each word takes ~1.45s to resolve,
 // so nearly every word is in motion at once and the line reads as one slow
 // sweep rather than a row of individual pops.
-const WORD_STAGGER = 0.035;
+export const WORD_STAGGER = 0.035;
 const Y = 16;
 
 // filter:blur() is paint-bound — every frame re-rasterises the element at a new

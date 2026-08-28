@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { m, useReducedMotion, type Variants } from "framer-motion";
 import { Star } from "./dynamic-visuals";
+import { WORD_STAGGER, EASE } from "./reveal";
 
-// Matches RevealWords' own blur-in look, timed via `custom` so the stars come
-// in over the last word of line 1.
+// Matches RevealWords' own blur-in look and curve, timed via `custom` so each
+// star arrives with the word it is anchored to.
 const STAR_VARIANTS: Variants = {
   hidden: { opacity: 0, y: 8, filter: "blur(16px)" },
   visible: (delay: number = 0) => ({
@@ -14,7 +15,7 @@ const STAR_VARIANTS: Variants = {
     filter: "blur(0px)",
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+      ease: EASE,
       delay,
     },
     transitionEnd: { filter: "none" },
@@ -50,11 +51,14 @@ export function TitleStars({
   children,
   placement = "title",
   className = "relative",
+  revealDelay = 0,
 }: {
   children: ReactNode;
   /** Star offsets to use — "hero" for the fluid home headline, "title" otherwise. */
   placement?: keyof typeof PLACEMENTS;
   className?: string;
+  /** The wrapped heading's own reveal delay, so the stars share its timeline. */
+  revealDelay?: number;
 }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [anchor, setAnchor] = useState<{ top: number; left: number; delay: number } | null>(null);
@@ -90,9 +94,11 @@ export function TitleStars({
         }
       });
       const r = lastOnLine1.getBoundingClientRect();
-      // RevealWords staggers each word by 0.06s; the stars come in while that
-      // word is still fading up rather than waiting for it to land.
-      const delay = lastIndex * 0.06 + 0.2;
+      // The cluster is pinned to this word's top-right corner, so it is the
+      // nearest word by construction — it just has to share the word's place
+      // in the cascade. Derived from WORD_STAGGER and the heading's own delay
+      // rather than written down, so retuning either keeps the stars in step.
+      const delay = revealDelay + lastIndex * WORD_STAGGER;
       setAnchor({ top: r.top - boxRect.top, left: r.right - boxRect.left, delay });
     };
 
@@ -102,7 +108,7 @@ export function TitleStars({
     const ro = new ResizeObserver(raf);
     ro.observe(box);
     return () => ro.disconnect();
-  }, []);
+  }, [revealDelay]);
 
   const stars = PLACEMENTS[placement];
 

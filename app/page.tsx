@@ -5,7 +5,8 @@ import { WorkItem } from "./components/work-item";
 import { Button } from "./components/button";
 import { SectionReveal } from "./components/section-reveal-context";
 import { Reveal } from "./components/reveal";
-import { HeroCat, AboutCat, Star } from "./components/dynamic-visuals";
+import { HeroCat, AboutCat } from "./components/dynamic-visuals";
+import { SyncedStar } from "./components/synced-star";
 import { HeroText } from "./components/hero-text";
 import { Divider } from "./components/divider";
 
@@ -40,9 +41,12 @@ export default function Home() {
               desktop 36vw  → -ml-[3.6vw] */}
         <Reveal as="div" delay={0.25} noY className="relative flex h-[calc(100%/3)] items-end">
           {/* Third twinkle star — sits underneath the hero text, lifted just above
-              the top of this row so it clears the last line of the headline */}
-          <Star
+              the top of this row so it clears the last line of the headline.
+              It reveals with the headline word it sits under, not with this
+              row, so it stays in step with the text it points at. */}
+          <SyncedStar
             variant={3}
+            revealDelay={0.9}
             className="pointer-events-none absolute left-[3%] -top-[28px] w-8 md:left-[2%] md:-top-[36px] md:w-11 lg:left-[2%] lg:-top-[44px] lg:w-14"
           />
           <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />

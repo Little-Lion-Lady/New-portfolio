@@ -87,7 +87,7 @@ export function HeroText({ className, revealDelay = 0 }: { className?: string; r
       {/* TitleStars' wrapper hugs the h1's own box (unlike wrapRef, which is
           flex-centered and taller) so the twinkle stars anchor precisely to
           the rendered text at every breakpoint. */}
-      <TitleStars placement="hero" className="relative w-full">
+      <TitleStars placement="hero" revealDelay={revealDelay} className="relative w-full">
         <RevealWords
           immediate
           delay={revealDelay}

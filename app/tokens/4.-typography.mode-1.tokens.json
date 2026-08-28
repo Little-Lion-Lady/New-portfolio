@@ -2,7 +2,7 @@
   "fontFamily": {
     "fontFamilyDisplay": {
       "$type": "string",
-      "$value": "Casey"
+      "$value": "Caveat"
     },
     "fontFamilyBody": {
       "$type": "string",
