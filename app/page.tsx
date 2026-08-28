@@ -15,14 +15,14 @@ export default function Home() {
     <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-2xl md:pt-[92px] lg:px-3xl lg:pb-0 lg:pt-[92px]">
       {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
       <div>
-        {/* Hero load sequence — nav, then headline, then image. Each starts
-            while the previous is still moving, so the three read as one
-            continuous arrival rather than three separate events:
-              nav       0s → settles 0.7s
-              headline  0.4s → last word settles ~2.6s
-              image     1.8s → settles 2.5s
-            The headline is the long one (33 words on a 30ms cascade), so the
-            image is timed to land with its tail rather than after it. */}
+        {/* Hero load sequence — the frame first (nav + cat), then the words:
+              nav       0s    → settles 0.7s
+              cat       0.25s → settles 0.95s
+              headline  0.9s  → last word settles ~3.5s
+            The nav and cat are offset by a beat rather than fired together so
+            the pair still reads as motion rather than a single pop, and the
+            headline starts just as the cat lands — overlapping enough to stay
+            continuous, late enough that the frame is established first. */}
         <SiteHeader revealDelay={0} />
 
         {/* Hero — fills the viewport (clamped 640px–1500px).
@@ -30,7 +30,7 @@ export default function Home() {
         {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
         <section className="relative z-10 flex h-[clamp(640px,calc(100svh-60px),1500px)] w-full flex-col md:h-[clamp(640px,calc(100svh-92px),1500px)] lg:h-[clamp(640px,calc(100svh-100px),1500px)]">
         {/* Text — fits to its bounding box via JS binary search on font-size */}
-        <HeroText revealDelay={0.4} className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:pt-3xl md:pb-2xl lg:pt-lg lg:pb-4xl" />
+        <HeroText revealDelay={0.9} className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:pt-3xl md:pb-2xl lg:pt-lg lg:pb-4xl" />
         {/* Image + divider — bottom 1/4.5.
             Divider is flex-1 so it stretches from the left page edge.
             Image pulls left with a negative margin to overlap the divider
@@ -38,7 +38,7 @@ export default function Home() {
               mobile  296px → -ml-[30px]
               tablet  636px → -ml-[64px]
               desktop 36vw  → -ml-[3.6vw] */}
-        <Reveal as="div" delay={1.8} noY className="relative flex h-[calc(100%/3)] items-end">
+        <Reveal as="div" delay={0.25} noY className="relative flex h-[calc(100%/3)] items-end">
           {/* Third twinkle star — sits underneath the hero text, lifted just above
               the top of this row so it clears the last line of the headline */}
           <Star

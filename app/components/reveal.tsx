@@ -102,13 +102,13 @@ export const DURATION = 0.7;
 // rather than a sequence of discrete pops.
 export const STAGGER = 0.09;
 const DURATION_FF = 0.6;
-const WORD_DURATION = 1.2;
+const WORD_DURATION = 1.45;
 // Words need a far tighter stagger than blocks: the hero runs 33 of them, so
-// the block value would drag its reveal out past three seconds. At 30ms the
-// cascade crosses the line in ~1s while each word still takes a full second to
-// resolve — around 25 words are in motion at any moment, so the line reads as
-// one sweep rather than a row of individual pops.
-const WORD_STAGGER = 0.03;
+// the block value would drag its reveal out past three seconds. At 35ms the
+// cascade crosses the line in ~1.2s while each word takes ~1.45s to resolve,
+// so nearly every word is in motion at once and the line reads as one slow
+// sweep rather than a row of individual pops.
+const WORD_STAGGER = 0.035;
 const Y = 16;
 
 // filter:blur() is paint-bound — every frame re-rasterises the element at a new
