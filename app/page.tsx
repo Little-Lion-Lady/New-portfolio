@@ -101,7 +101,12 @@ export default function Home() {
               roles="UX/UI, Research, Product strategy"
               href="/work/basis"
               images={[
-                { src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" },
+                {
+                  src: "/home/work/basis/BS1.jpg",
+                  alt: "Basis home app screen",
+                  // Narrower than the row's other cards by request.
+                  lgWidth: { class: "lg:w-[350px]", px: 350 },
+                },
                 { src: "/home/work/basis/BS2.jpg", alt: "Basis home app screen" },
                 { src: "/home/work/basis/BS3.png", alt: "Basis home app screen" },
                 { src: "/home/work/basis/BS4.png", alt: "Basis home app screen", quality: 75 },

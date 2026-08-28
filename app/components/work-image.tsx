@@ -1,7 +1,19 @@
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 
-export type WorkImageData = { src: string; alt: string; quality?: number };
+export type WorkImageData = {
+  src: string;
+  alt: string;
+  quality?: number;
+  /**
+   * Desktop width override for this one card, leaving every other card in the
+   * row alone. `class` must be a literal Tailwind class — the JIT scanner
+   * reads source text, so it cannot be built from `px` — and `px` feeds the
+   * `sizes` hint so Next still picks a sensibly-sized source. Keep the two in
+   * agreement.
+   */
+  lgWidth?: { class: string; px: number };
+};
 export type WorkImageSize = "md" | "lg";
 
 // Figma "Image wrapper" (1144:7939) — one variant per platform, and
@@ -208,9 +220,17 @@ export function GlassImage({
 // from the Figma frames; the cards were widened past them, so each one crops
 // more off the top and bottom of its photo and less off the sides.
 const CARD_CLASS = {
-  md: "h-[260px] w-[380px] md:h-[340px] md:w-[480px] lg:h-[400px] lg:w-[660px]",
-  lg: "h-[260px] w-[380px] md:h-[340px] md:w-[480px] lg:h-[500px] lg:w-[660px]",
+  md: "h-[260px] w-[380px] md:h-[340px] md:w-[480px] lg:h-[400px]",
+  lg: "h-[260px] w-[380px] md:h-[340px] md:w-[480px] lg:h-[500px]",
 } as const;
+
+// Desktop width lives apart from CARD_CLASS so a per-image override REPLACES
+// it instead of layering on top of it. Two lg:w-* utilities on one element
+// have equal specificity, and which one wins is decided by their order in the
+// generated stylesheet, not by their order in the class attribute — so
+// appending an override would work or not depending on how Tailwind happened
+// to sort the two arbitrary values.
+const CARD_LG_WIDTH = "lg:w-[660px]";
 
 export function ImageCarousel({
   images,
@@ -251,9 +271,9 @@ export function ImageCarousel({
       src={image.src}
       alt={image.alt}
       quality={image.quality}
-      sizes="(min-width: 1024px) 660px, (min-width: 768px) 480px, 380px"
+      sizes={`(min-width: 1024px) ${image.lgWidth?.px ?? 660}px, (min-width: 768px) 480px, 380px`}
       loading="eager"
-      className={`shrink-0 ${CARD_CLASS[size]}${gap ? " mr-sm md:mr-md lg:mr-xl" : ""}`}
+      className={`shrink-0 ${CARD_CLASS[size]} ${image.lgWidth?.class ?? CARD_LG_WIDTH}${gap ? " mr-sm md:mr-md lg:mr-xl" : ""}`}
     />
   );
 
