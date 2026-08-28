@@ -24,7 +24,7 @@ const FILL = 0.9;
 const PLAIN =
   "I'm an IC Product Designer specialising in product growth and optimisation with a track record of shipping highly crafted interfaces and dynamic interactions that elevate user experience. Currently leading design at First Table.";
 
-export function HeroText({ className }: { className?: string }) {
+export function HeroText({ className, revealDelay = 0 }: { className?: string; revealDelay?: number }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const probeRef = useRef<HTMLParagraphElement>(null);
   const [fontSize, setFontSize] = useState(64);
@@ -90,6 +90,7 @@ export function HeroText({ className }: { className?: string }) {
       <TitleStars placement="hero" className="relative w-full">
         <RevealWords
           immediate
+          delay={revealDelay}
           as="h1"
           className="w-full"
           style={{

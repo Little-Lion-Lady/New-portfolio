@@ -102,7 +102,7 @@ export const DURATION = 0.7;
 // rather than a sequence of discrete pops.
 export const STAGGER = 0.09;
 const DURATION_FF = 0.6;
-const WORD_DURATION = 1.0;
+const WORD_DURATION = 1.2;
 // Words need a far tighter stagger than blocks: the hero runs 33 of them, so
 // the block value would drag its reveal out past three seconds. At 30ms the
 // cascade crosses the line in ~1s while each word still takes a full second to
@@ -151,13 +151,13 @@ const variantsNoY: Variants = {
 // Word-level reveal: blur-only, no y movement.
 const wordVariants: Variants = {
   hidden: { opacity: 0, filter: BLUR_TEXT },
-  visible: (i: number = 0) => ({
+  visible: (custom: { i?: number; delay?: number } = {}) => ({
     opacity: 1,
     filter: "blur(0px)",
     transition: {
       duration: WORD_DURATION,
       ease: EASE,
-      delay: i * WORD_STAGGER,
+      delay: (custom.i ?? 0) * WORD_STAGGER + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
   }),
@@ -204,13 +204,13 @@ const ffVariantsNoY: Variants = {
 
 const ffWordVariants: Variants = {
   hidden: { opacity: 0, filter: "blur(0px)" },
-  visible: (i: number = 0) => ({
+  visible: (custom: { i?: number; delay?: number } = {}) => ({
     opacity: 1,
     filter: "blur(0px)",
     transition: {
       duration: DURATION_FF,
       ease: EASE,
-      delay: i * WORD_STAGGER,
+      delay: (custom.i ?? 0) * WORD_STAGGER + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
   }),
@@ -294,6 +294,7 @@ export function RevealWords({
   className,
   style,
   startIndex = 0,
+  delay = 0,
   immediate = false,
 }: {
   children: ReactNode;
@@ -301,6 +302,7 @@ export function RevealWords({
   className?: string;
   style?: CSSProperties;
   startIndex?: number;
+  delay?: number;
   immediate?: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
@@ -362,7 +364,7 @@ export function RevealWords({
         <m.span
           key={i}
           style={{ display: "inline-block", whiteSpace: "pre-wrap" }}
-          custom={startIndex + i}
+          custom={{ i: startIndex + i, delay }}
           initial="hidden"
           animate={shouldAnimate ? "visible" : "hidden"}
           variants={reducedMotion ? reducedVariants : isFF ? ffWordVariants : wordVariants}
