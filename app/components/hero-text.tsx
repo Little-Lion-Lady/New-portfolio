@@ -22,13 +22,13 @@ const FILL = 0.9;
 // Plain text for probe measurement — must match the visible content exactly
 // (spans are inline and don't change line-wrap metrics).
 const PLAIN =
-  "I'm an IC Product Designer specialising in product growth and optimisation with a track record of shipping highly crafted interfaces and dynamic interactions that elevate user experience. Currently leading design at First Table.";
+  "I'm an IC Product Designer specialising in product growth and optimisation with a track record of shipping delightful interfaces and dynamic interactions that elevate user experience. Currently leading design at First Table.";
 
-// Seconds from the first word starting to the last settling. With the 0.9s
-// revealDelay the page gives it, the headline wraps at 5s. Expressed as a span
-// rather than a stagger/duration pair so it still wraps on time if the copy
-// changes length.
-const REVEAL_SPAN = 4.1;
+// Seconds from the first word starting to the last settling. The headline now
+// opens with the nav at 0s, so this is the wrap time outright. Expressed as a
+// span rather than a stagger/duration pair so it still wraps on time if the
+// copy changes length.
+const REVEAL_SPAN = 5.0;
 
 export function HeroText({ className, revealDelay = 0 }: { className?: string; revealDelay?: number }) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -108,7 +108,7 @@ export function HeroText({ className, revealDelay = 0 }: { className?: string; r
         >
           I&apos;m an <span style={HL}>IC Product Designer </span>specialising in{" "}
           <span style={HL}>product growth </span>and optimisation with a track record of shipping{" "}
-          <span style={HL}>highly crafted interfaces</span> and dynamic interactions that elevate
+          <span style={HL}>delightful interfaces</span> and dynamic interactions that elevate
           user experience. Currently <span style={HL}>leading design</span> at First Table.
         </RevealWords>
       </TitleStars>
