@@ -23,6 +23,20 @@
 import React, { createContext, useContext, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { m, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
+import {
+  EASE,
+  DURATION,
+  STAGGER,
+  DURATION_FF,
+  WORD_DURATION,
+  WORD_STAGGER,
+  Y,
+  BLUR_BLOCK,
+  BLUR_TEXT,
+} from "./motion-timing";
+
+// Re-exported for the client components that already import them from here.
+export { EASE, DURATION, STAGGER, WORD_STAGGER } from "./motion-timing";
 
 // Published by every <Reveal> to its subtree so nested animations (e.g. the
 // per-card rotation in <TiltIn>) can fire on the same trigger and the same
@@ -84,49 +98,18 @@ export function useHasMounted() {
 // before the element crosses into view rather than after.
 export const IN_VIEW = { once: true, amount: "some", margin: "0px 0px 10% 0px" } as const;
 
-// ─── Timing ──────────────────────────────────────────────────────────────────
-// One source of truth for the reveal system.
-//
-// A reveal reads as abrupt when it leaves rest already moving fast. The onset
-// velocity is (y1/x1) * Y / DURATION, so the curve's initial slope matters as
-// much as the duration: ease-out-quint (0.22,1) starts at slope 4.5, i.e. flat
-// out, which popped. This curve starts at slope 2.25 and then flattens hard
-// into a very long tail, so motion begins gently and spends most of its time
-// settling. At 910ms over 16px that is ~39 px/s at the start — gentler still
-// than the old ease-out-quad's ~49 px/s — with far more of the duration spent
-// in the deceleration, which is what actually reads as smooth.
-export const EASE = [0.32, 0.72, 0, 1] as [number, number, number, number];
-export const DURATION = 0.91;
-// Stagger is well under the duration, so each item begins while its neighbour
-// is only a fraction through: the group arrives as one continuous cascade
-// rather than a sequence of discrete pops.
-export const STAGGER = 0.09;
-const DURATION_FF = 0.78;
-const WORD_DURATION = 1.45;
-// Words need a far tighter stagger than blocks: the hero runs 33 of them, so
-// the block value would drag its reveal out past three seconds. At 35ms the
-// cascade crosses the line in ~1.2s while each word takes ~1.45s to resolve,
-// so nearly every word is in motion at once and the line reads as one slow
-// sweep rather than a row of individual pops.
-export const WORD_STAGGER = 0.035;
-const Y = 16;
 
-// filter:blur() is paint-bound — every frame re-rasterises the element at a new
-// radius — so the radius is the frame cost. Block reveals wrap whole sections
-// including large images and glass cards, where a wide radius is expensive and
-// barely legible. Word reveals cover small glyph runs, where it is cheap and
-// does the most work, so they keep a slightly wider one.
-const BLUR_BLOCK = "blur(8px)";
-const BLUR_TEXT = "blur(10px)";
+
+type BlockCustom = { i?: number; delay?: number; duration?: number };
 
 const variants: Variants = {
   hidden: { opacity: 0, y: Y, filter: BLUR_BLOCK },
-  visible: (custom: { i?: number; delay?: number } = {}) => ({
+  visible: (custom: BlockCustom = {}) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
     transition: {
-      duration: DURATION,
+      duration: custom.duration ?? DURATION,
       ease: EASE,
       delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
     },
@@ -136,11 +119,11 @@ const variants: Variants = {
 
 const variantsNoY: Variants = {
   hidden: { opacity: 0, filter: BLUR_BLOCK },
-  visible: (custom: { i?: number; delay?: number } = {}) => ({
+  visible: (custom: BlockCustom = {}) => ({
     opacity: 1,
     filter: "blur(0px)",
     transition: {
-      duration: DURATION,
+      duration: custom.duration ?? DURATION,
       ease: EASE,
       delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
     },
@@ -177,12 +160,12 @@ const reducedVariants: Variants = {
 // nothing to hide behind, so these run slightly shorter.
 const ffVariants: Variants = {
   hidden: { opacity: 0, y: Y, filter: "blur(0px)" },
-  visible: (custom: { i?: number; delay?: number } = {}) => ({
+  visible: (custom: BlockCustom = {}) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
     transition: {
-      duration: DURATION_FF,
+      duration: custom.duration ?? DURATION_FF,
       ease: EASE,
       delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
     },
@@ -192,11 +175,11 @@ const ffVariants: Variants = {
 
 const ffVariantsNoY: Variants = {
   hidden: { opacity: 0, filter: "blur(0px)" },
-  visible: (custom: { i?: number; delay?: number } = {}) => ({
+  visible: (custom: BlockCustom = {}) => ({
     opacity: 1,
     filter: "blur(0px)",
     transition: {
-      duration: DURATION_FF,
+      duration: custom.duration ?? DURATION_FF,
       ease: EASE,
       delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
     },
@@ -239,6 +222,7 @@ export function Reveal({
   as = "div",
   blur = false,
   noY = false,
+  duration,
   immediate = false,
   className,
   style,
@@ -249,6 +233,8 @@ export function Reveal({
   as?: Tag;
   blur?: boolean;
   noY?: boolean;
+  /** Override the shared block duration for this reveal only, in seconds. */
+  duration?: number;
   immediate?: boolean;
   className?: string;
   style?: CSSProperties;
@@ -278,7 +264,7 @@ export function Reveal({
       ref={ref as unknown as React.RefObject<HTMLDivElement>}
       className={className}
       style={style}
-      custom={{ i: index, delay }}
+      custom={{ i: index, delay, duration }}
       initial="hidden"
       animate={shouldAnimate ? "visible" : "hidden"}
       variants={reducedMotion ? reducedVariants : isFF ? (noY ? ffVariantsNoY : ffVariants) : blur ? blurVariants : noY ? variantsNoY : variants}

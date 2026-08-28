@@ -1,4 +1,15 @@
 import { Reveal, RevealWords } from "./reveal";
+import { DURATION } from "./motion-timing";
+
+// The case-study intro settles 30% slower than block reveals elsewhere on the
+// site. Written as a multiple of the shared DURATION rather than a literal, so
+// a future change to the site-wide block timing carries through here instead
+// of leaving this page stranded on an old number.
+//
+// DURATION comes from ./motion-timing, NOT from ./reveal: this file is a
+// Server Component, and a "use client" module's export reaches it as a client
+// reference rather than a number — the multiplication would quietly yield NaN.
+const INTRO_DURATION = DURATION * 1.3;
 import { ImageCarousel, type WorkImageData } from "./work-image";
 import { TitleStars } from "./title-stars";
 
@@ -69,7 +80,7 @@ export function CaseStudyHero({
             uses. */}
         <div className="flex flex-col gap-md md:gap-lg lg:grid lg:grid-cols-12 lg:gap-x-lg">
           {/* Text block (desktop: right, c7-12) */}
-          <Reveal immediate delay={0.6} className="flex flex-col lg:col-start-7 lg:col-span-6 lg:justify-center">
+          <Reveal immediate delay={0.6} duration={INTRO_DURATION} className="flex flex-col lg:col-start-7 lg:col-span-6 lg:justify-center">
             <p className="b-xs text-text-primary-highlight md:b-sm lg:b-md">{lead}</p>
             <p className="b-xs text-text-secondary md:b-sm lg:b-md">{description}</p>
           </Reveal>
@@ -78,7 +89,7 @@ export function CaseStudyHero({
               Mobile and desktop stack the context rows over the recognition
               rows; tablet alone splits them across Figma's 9-col grid (c1-3
               and c5-7). */}
-          <Reveal immediate delay={0.6} className="flex flex-col md:grid md:grid-cols-9 md:gap-x-lg lg:flex lg:flex-col lg:col-start-1 lg:col-span-5 lg:row-start-1">
+          <Reveal immediate delay={0.6} duration={INTRO_DURATION} className="flex flex-col md:grid md:grid-cols-9 md:gap-x-lg lg:flex lg:flex-col lg:col-start-1 lg:col-span-5 lg:row-start-1">
             <div className="flex flex-col md:col-start-1 md:col-span-3">
               {meta.map((m, i) => (
                 <MetaRow key={i} label={m.label} value={m.value} />
