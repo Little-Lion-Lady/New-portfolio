@@ -293,7 +293,9 @@ export default function Basis() {
             </OptionCard>
           </OptionCards>
           <ProcessMedia />
-          <TagGroup label="Deferred to V2" className="flex-wrap gap-r-2xs">
+          {/* Figma 1613:139375 / 1144:11974 / 1144:13115 — the V2 reset pins the wrap
+              gap at a flat 12, not the responsive 8/8/12 of gap-r-2xs. */}
+          <TagGroup label="Deferred to V2" className="flex-wrap gap-sm">
             {deferred.map((d) => (
               <Tag key={d} deferred>
                 {d}
