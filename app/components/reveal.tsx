@@ -308,9 +308,10 @@ export function RevealWords({
   delay?: number;
   /**
    * Seconds from the first word starting to the last word settling. Given one,
-   * the stagger and per-word duration are derived from the actual token count
-   * to hit it, so the line still wraps on time if the copy changes. Omitted,
-   * the module defaults apply and the span follows from the word count.
+   * the stagger is derived from the actual token count to hit it, so the line
+   * still wraps on time if the copy changes. The per-word duration is always
+   * WORD_DURATION — a span sets the pace of the cascade, never how long an
+   * individual word takes. Omitted, the span follows from the word count.
    */
   span?: number;
   immediate?: boolean;
@@ -368,17 +369,19 @@ export function RevealWords({
 
   const Tag = as;
 
-  // Fit the cascade to `span` when one is given. The overlap ratio (per-word
-  // duration over stagger) is what gives the reveal its character — how many
-  // words are in flight at once — so hold that constant and solve for the pair
-  // that lands the last word exactly on time:
-  //   (n - 1) * stagger + duration = span,  with duration = ratio * stagger
+  // Fit the cascade to `span` when one is given, by moving the stagger alone:
+  //   (n - 1) * stagger + WORD_DURATION = span
+  // Every word blurs up over WORD_DURATION wherever it appears, so a fitted
+  // line and an unfitted one look identical word for word and differ only in
+  // how fast the cascade crosses them. Scaling the duration to fit instead
+  // made the per-word reveal a function of the line's length — the home hero
+  // ran at 2.86s a word against 1.45s everywhere else, purely because it had
+  // a wrap target and the others did not.
   const count = startIndex + tokens.length;
   const timing = useMemo(() => {
     if (!span) return { stagger: WORD_STAGGER, duration: WORD_DURATION };
-    const ratio = WORD_DURATION / WORD_STAGGER;
-    const stagger = span / Math.max(count - 1 + ratio, 1);
-    return { stagger, duration: ratio * stagger };
+    const stagger = Math.max((span - WORD_DURATION) / Math.max(count - 1, 1), 0);
+    return { stagger, duration: WORD_DURATION };
   }, [span, count]);
 
   return (
