@@ -7,7 +7,7 @@ import { Reveal, RevealWords } from "./components/reveal";
 // The hero grows to fill whatever is left and centres the title inside its own
 // generous padding, and the helper row sits at the bottom.
 //
-// Height: the page is max(800px, viewport) — never shorter than 800px — and on
+// Height: the page is max(700px, viewport) — never shorter than 700px — and on
 // desktop that is its exact height, not just a floor, so the helper row stays
 // above the fold instead of being pushed under it.
 //
@@ -18,11 +18,11 @@ import { Reveal, RevealWords } from "./components/reveal";
 // floor the content sailed straight past (1068px of content in a 900px
 // window). min-h-0 on both flex items lets them size below their content.
 //
-// Below 800px of viewport the row is necessarily under the fold: the page is
-// 800px tall by request, so it scrolls.
+// Below 700px of viewport the row is necessarily under the fold: the page is
+// 700px tall by request, so it scrolls.
 export default function NotFound() {
   return (
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex min-h-[max(800px,100svh)] flex-col bg-bg-primary p-md text-text-primary md:p-3xl lg:h-[max(800px,100svh)]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex min-h-[max(700px,100svh)] flex-col bg-bg-primary p-md text-text-primary md:p-3xl lg:h-[max(700px,100svh)]">
       <SiteHeader />
 
       {/* Fills the viewport, pushing the helper row to the bottom. */}
