@@ -10,6 +10,12 @@ import { DURATION } from "./motion-timing";
 // Server Component, and a "use client" module's export reaches it as a client
 // reference rather than a number — the multiplication would quietly yield NaN.
 const INTRO_DURATION = DURATION * 1.3;
+
+// How long the description, meta and carousel wait behind the title. The title
+// is four words on a 35ms cascade, so it is essentially all there by ~0.1s and
+// only its tail is still resolving — 0.6s left a visible gap after it rather
+// than a handover.
+const INTRO_DELAY = 0.3;
 import { ImageCarousel, type WorkImageData } from "./work-image";
 import { TitleStars } from "./title-stars";
 
@@ -80,7 +86,7 @@ export function CaseStudyHero({
             uses. */}
         <div className="flex flex-col gap-md md:gap-lg lg:grid lg:grid-cols-12 lg:gap-x-lg">
           {/* Text block (desktop: right, c7-12) */}
-          <Reveal immediate delay={0.6} duration={INTRO_DURATION} className="flex flex-col lg:col-start-7 lg:col-span-6 lg:justify-center">
+          <Reveal immediate delay={INTRO_DELAY} duration={INTRO_DURATION} className="flex flex-col lg:col-start-7 lg:col-span-6 lg:justify-center">
             <p className="b-xs text-text-primary-highlight md:b-sm lg:b-md">{lead}</p>
             <p className="b-xs text-text-secondary md:b-sm lg:b-md">{description}</p>
           </Reveal>
@@ -89,7 +95,7 @@ export function CaseStudyHero({
               Mobile and desktop stack the context rows over the recognition
               rows; tablet alone splits them across Figma's 9-col grid (c1-3
               and c5-7). */}
-          <Reveal immediate delay={0.6} duration={INTRO_DURATION} className="flex flex-col md:grid md:grid-cols-9 md:gap-x-lg lg:flex lg:flex-col lg:col-start-1 lg:col-span-5 lg:row-start-1">
+          <Reveal immediate delay={INTRO_DELAY} duration={INTRO_DURATION} className="flex flex-col md:grid md:grid-cols-9 md:gap-x-lg lg:flex lg:flex-col lg:col-start-1 lg:col-span-5 lg:row-start-1">
             <div className="flex flex-col md:col-start-1 md:col-span-3">
               {meta.map((m, i) => (
                 <MetaRow key={i} label={m.label} value={m.value} />
@@ -110,7 +116,7 @@ export function CaseStudyHero({
           what lets the over-wide track bleed symmetrically past the page gutter
           (see ImageCarousel), and speedScale holds it at the home rows' px/s
           despite carrying three cards instead of five. */}
-      <Reveal immediate delay={0.6} className="flex w-full flex-col items-center">
+      <Reveal immediate delay={INTRO_DELAY} className="flex w-full flex-col items-center">
         <ImageCarousel images={images} size="lg" marquee speedScale={images.length / 5} />
       </Reveal>
     </div>

@@ -11,10 +11,10 @@
 
   Sequencing
   ──────────
-    covering  → panel y -100% → 0%, opacity 0 → 1 (350ms, --duration-medium)
+    covering  → panel y -100% → 0%, opacity 0 → 1 (450ms)
     covered   → router.push(), wait for usePathname() to land, two rAFs so the
                 new tree has painted
-    revealing → panel y 0% → 100%   (400ms, --duration-slow)
+    revealing → panel y 0% → 100%, opacity 1 → 0 (600ms)
     idle      → panel unmounts (so it never animates back UP through frame)
 
   Cover is the quicker half and reveal the slower one, per the open/close
@@ -32,15 +32,21 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { m, useReducedMotion } from "framer-motion";
+import { EASE } from "./motion-timing";
 
 type Phase = "idle" | "covering" | "covered" | "revealing";
 
-// --duration-medium / --duration-slow / --ease-smooth-out from the
-// transitions.dev motion scale. Mirrored in globals.css as CSS custom
-// properties; kept as literals here because Framer needs numbers.
-const COVER_S = 0.35;
-const REVEAL_S = 0.4;
-const EASE = [0.22, 1, 0.36, 1] as const;
+// Longer and gentler than the old 350/400ms on ease-out-quint. Quint leaves
+// rest at its maximum velocity, which on a full-bleed panel reads as a snap
+// rather than a sweep; EASE (shared with every reveal on the site, see
+// motion-timing.ts) starts at less than half that velocity and spends most of
+// its time decelerating. The extra duration is what lets the softened edge
+// actually be seen travelling.
+//
+// Cover stays the quicker half and reveal the slower one, per the open/close
+// asymmetry in the transitions-polish motion scale.
+const COVER_S = 0.45;
+const REVEAL_S = 0.6;
 
 // If the route never lands (offline, a hard error), lift the curtain anyway
 // rather than leaving the viewer staring at a blank panel.
@@ -235,7 +241,13 @@ export function PageCurtain() {
       aria-hidden
       className="page-curtain"
       initial={{ y: "-100%", opacity: 0 }}
-      animate={{ y: phase === "revealing" ? "100%" : "0%", opacity: 1 }}
+      // Reveal mirrors cover on both lanes: the panel slides away AND fades,
+      // so the new page comes up through it rather than from behind a solid
+      // sheet that happens to be leaving.
+      animate={{
+        y: phase === "revealing" ? "100%" : "0%",
+        opacity: phase === "revealing" ? 0 : 1,
+      }}
       transition={{ duration: phase === "revealing" ? REVEAL_S : COVER_S, ease: EASE }}
       onAnimationComplete={onAnimationComplete}
     >
@@ -269,7 +281,11 @@ export function PageCurtain() {
 // the same reason, then ramps out over the exposed part, finishing ahead of the
 // blur so a band of blurred-but-uncovered page runs in front of the sweep.
 
-const FEATHER_PX = 200;
+// Per edge, because the two are seen differently. The bottom feather leads the
+// cover sweep, which is the quicker half and is racing over a page the viewer
+// is done with. The top feather leads the reveal — the slower half, and the
+// edge the new page emerges from — so it gets a longer ramp to dissolve over.
+const FEATHER_PX = { bottom: 200, top: 340 };
 const OVERLAP = 0.2; // fraction of the strip hidden beneath the panel
 
 // reach = how far into the EXPOSED part of the strip each layer survives.
@@ -285,14 +301,15 @@ const stop = (reach: number) => `${(OVERLAP + reach * (1 - OVERLAP)) * 100}%`;
 function CurtainEdge({ edge }: { edge: "top" | "bottom" }) {
   const dir = edge === "bottom" ? "to bottom" : "to top";
   const hidden = stop(0);
+  const height = FEATHER_PX[edge];
 
   return (
     <div
       aria-hidden
       className="page-curtain-feather"
       style={{
-        height: FEATHER_PX,
-        [edge === "bottom" ? "top" : "bottom"]: `calc(100% - ${FEATHER_PX * OVERLAP}px)`,
+        height,
+        [edge === "bottom" ? "top" : "bottom"]: `calc(100% - ${height * OVERLAP}px)`,
       }}
     >
       {BLUR_LAYERS.map(({ blur, reach }) => {
