@@ -3,7 +3,7 @@
 /*
   Reveal + RevealWords
   ────────────────────
-  Reveal        — fades a single element in from y:16px over 700ms on a
+  Reveal        — fades a single element in from y:16px over 910ms on a
                   gentle-onset curve. Pass `index` to stagger items in a
                   group by 90ms each. See the Timing block below.
 
@@ -92,16 +92,16 @@ export const IN_VIEW = { once: true, amount: "some", margin: "0px 0px 10% 0px" }
 // much as the duration: ease-out-quint (0.22,1) starts at slope 4.5, i.e. flat
 // out, which popped. This curve starts at slope 2.25 and then flattens hard
 // into a very long tail, so motion begins gently and spends most of its time
-// settling. At 700ms over 16px that is ~51 px/s at the start — matching the
-// old ease-out-quad's gentle onset — but with far more of the duration spent
+// settling. At 910ms over 16px that is ~39 px/s at the start — gentler still
+// than the old ease-out-quad's ~49 px/s — with far more of the duration spent
 // in the deceleration, which is what actually reads as smooth.
 export const EASE = [0.32, 0.72, 0, 1] as [number, number, number, number];
-export const DURATION = 0.7;
+export const DURATION = 0.91;
 // Stagger is well under the duration, so each item begins while its neighbour
 // is only a fraction through: the group arrives as one continuous cascade
 // rather than a sequence of discrete pops.
 export const STAGGER = 0.09;
-const DURATION_FF = 0.6;
+const DURATION_FF = 0.78;
 const WORD_DURATION = 1.45;
 // Words need a far tighter stagger than blocks: the hero runs 33 of them, so
 // the block value would drag its reveal out past three seconds. At 35ms the

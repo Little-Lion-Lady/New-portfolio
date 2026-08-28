@@ -1338,15 +1338,18 @@ h1.d-sm {
    The track renders the image set twice back-to-back; translating exactly -50%
    of that doubled track equals one full set's width (card + its own trailing
    margin), so the seam is invisible. Duration is set per breakpoint rather than
-   fixed, so the cards travel at roughly the same speed (~40px/s) at every
-   size: one set is ~996px on mobile, ~1248px on tablet, ~1752px on desktop. */
+   fixed, so the cards travel at roughly the same speed at every size. Measured
+   on the home page's five-card desktop row: a 3420px set over 76.25s, ~45px/s.
+   (The per-breakpoint set widths this comment used to quote were stale — the
+   desktop set is 3420px, not the ~1752px claimed; the durations themselves
+   were never wrong.) */
 @keyframes image-marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
 
 .image-marquee-track {
-  --image-marquee-duration: 35s;
+  --image-marquee-duration: 43.75s;
   /* The duration covers one full set of cards, so a row with fewer cards
      travels less distance in the same time and reads as slower. Rows that hold
      fewer than the home page's five cards scale the duration down by the same
@@ -1363,11 +1366,11 @@ h1.d-sm {
 }
 
 @media (min-width: 768px) {
-  .image-marquee-track { --image-marquee-duration: 45s; }
+  .image-marquee-track { --image-marquee-duration: 56.25s; }
 }
 
 @media (min-width: 1024px) {
-  .image-marquee-track { --image-marquee-duration: 61s; }
+  .image-marquee-track { --image-marquee-duration: 76.25s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
