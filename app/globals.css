@@ -1376,3 +1376,83 @@ h1.d-sm {
 @media (prefers-reduced-motion: reduce) {
   .image-marquee-track { animation: none; }
 }
+
+/* ============================================================
+   CUSTOM CURSORS
+   Replaces the default arrow with Cursor.svg and the pointer with Hand.svg.
+
+   Themed by swapping the file, not by recolouring: a CSS `cursor: url()` is
+   rasterised by the browser and nothing in the document can restyle it, so
+   each asset ships a pre-mapped dark twin. The mapping is the one the Lottie
+   artwork uses (DARK_MAP in star.tsx / hero-cat.tsx) — near-black to #FFFFFF,
+   #FFFFFF to #3744FF — applied to the SVG source. Hand.svg's #FF0000 is not
+   in that map, so the hand stays red in both themes.
+
+   Hotspots are measured from the rasterised art, not guessed: the arrow's tip
+   is the furthest up-left opaque pixel (15, 6), and the hand's is the centre
+   of its topmost row, the index fingertip (17, 3).
+
+   Both files are 64x64, so that is the size the cursor renders at — roughly
+   double a system cursor. To scale it down, set width/height on the four SVGs
+   (leaving viewBox alone) and halve the hotspot numbers below to match.
+
+   Theme selectors mirror the pattern documented at the top of this file:
+   prefers-color-scheme for a first visit with no explicit choice, then
+   [data-theme="dark"] for a returning visitor who chose dark.
+   ============================================================ */
+:root {
+  --cursor-default: url("/home/Cursor.svg") 15 6, auto;
+  --cursor-pointer: url("/home/Hand.svg") 17 3, pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    --cursor-default: url("/home/Cursor-dark.svg") 15 6, auto;
+    --cursor-pointer: url("/home/Hand-dark.svg") 17 3, pointer;
+  }
+}
+
+[data-theme="dark"] {
+  --cursor-default: url("/home/Cursor-dark.svg") 15 6, auto;
+  --cursor-pointer: url("/home/Hand-dark.svg") 17 3, pointer;
+}
+
+/* `cursor` inherits, so this one declaration covers the whole document. */
+body {
+  cursor: var(--cursor-default);
+}
+
+/* Everything that would otherwise show the system pointer. `.cursor-pointer`
+   is Tailwind's utility — same specificity, so this wins only because it is
+   declared after the framework's layers. */
+a,
+button,
+summary,
+label[for],
+select,
+[role="button"],
+.cursor-pointer,
+input[type="checkbox"],
+input[type="radio"],
+input[type="submit"],
+input[type="button"] {
+  cursor: var(--cursor-pointer);
+}
+
+/* Text entry keeps the I-beam — the inherited arrow would otherwise sit over
+   editable fields, where the caret position is what matters. */
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+textarea,
+[contenteditable="true"] {
+  cursor: text;
+}
+
+/* No custom cursor where there is no cursor. */
+@media (hover: none) {
+  body,
+  a,
+  button,
+  .cursor-pointer {
+    cursor: auto;
+  }
+}
