@@ -568,8 +568,8 @@ function FTOutcomeScreen({ name }: { name: string }) {
       src={`${FT}/${name}_light.jpg`}
       darkSrc={`${FT}/${name}_dark.jpg`}
       alt={FT_ALT}
-      sizes="390px"
-      className="w-[212px] shrink-0 aspect-[212/456] md:w-[390px] md:aspect-[390/840]"
+      sizes="332px"
+      className="w-[220px] shrink-0 aspect-[390/840] md:w-[281px] lg:w-[332px]"
     />
   );
 }

@@ -15,7 +15,9 @@ const arrowVariantsRight = {
 // Visual match for Button's "view" variant, but as a plain span — the whole
 // row is now the link, so this can't be its own nested <a>.
 function ViewLabel({ size = "sm" }: { size?: "sm" | "md" }) {
-  const viewText = size === "md" ? "b-sm lg:b-md" : "b-xs lg:b-sm";
+  // Both sizes share one text ramp — Figma draws "View" at B-xs on mobile and
+  // tablet and B-sm on desktop in every variant; only the gap and arrow differ.
+  const viewText = "b-xs lg:b-sm";
   const viewGap = size === "md" ? "gap-xs" : "gap-3xs md:gap-2xs lg:gap-3xs";
   const arrowSize = size === "md" ? "size-xl" : "size-md md:size-lg";
   return (

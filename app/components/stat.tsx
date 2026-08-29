@@ -46,10 +46,12 @@ export function Stat({
       : size === "sm"
         ? "b-md md:d-2xs lg:d-xs"
         : "d-xs lg:d-md";
-  // Figma Size=md labels are B-sm at BOTH tablet and desktop (code had 16/16/20).
+  // Figma Size=md labels hold B-xs (16/26) through tablet and step to B-sm only
+  // on desktop — the tablet and desktop stat components are separate sets
+  // (FT_Tablet I…;393:15665 vs FT_Desktop I…;100:5994).
   // Figma Size=sm drops to B-2xs (14) on mobile — cap height 10 there vs 11.4 for B-xs.
   const labelClass =
-    size === "outcome" ? "b-xs lg:b-md" : size === "lg" ? "b-xs md:b-sm" : "b-2xs md:b-sm";
+    size === "outcome" ? "b-xs lg:b-md" : size === "lg" ? "b-xs lg:b-sm" : "b-2xs md:b-sm";
   const sublabelClass = size === "outcome" ? "b-2xs md:b-xs lg:b-sm" : "b-2xs uppercase";
   // Number → label group sits at gap 0 in every Figma variant: the standard-trim
   // line box already carries the leading that the old 12/16/20 gap was adding on
@@ -65,7 +67,7 @@ export function Stat({
     size === "outcome" ? "" : size === "lg" ? "gap-sm md:gap-md lg:gap-sm" : "gap-sm md:gap-md";
 
   return (
-    <div className={`flex flex-col justify-center ${className}`}>
+    <div className={`flex flex-col justify-start ${className}`}>
       <p
         className={`${numberClass} ${numberPull} ${
           TONE_CLASS[tone ?? (highlight ? "highlight-dark" : "primary")]

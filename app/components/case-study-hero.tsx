@@ -87,8 +87,10 @@ export function CaseStudyHero({
         <div className="flex flex-col gap-md md:gap-lg lg:grid lg:grid-cols-12 lg:gap-x-lg">
           {/* Text block (desktop: right, c7-12) */}
           <Reveal immediate delay={INTRO_DELAY} duration={INTRO_DURATION} className="flex flex-col lg:col-start-7 lg:col-span-6 lg:justify-center">
-            <p className="b-xs text-text-primary-highlight md:b-sm lg:b-md">{lead}</p>
-            <p className="b-xs text-text-secondary md:b-sm lg:b-md">{description}</p>
+            {/* B-2xs→B-xs→B-sm (14/24, 16/26, 20/32) — the description sits a step
+                below the meta rows' desktop size, not above it. */}
+            <p className="b-2xs text-text-primary-highlight md:b-xs lg:b-sm">{lead}</p>
+            <p className="b-2xs text-text-secondary md:b-xs lg:b-sm">{description}</p>
           </Reveal>
 
           {/* Meta block (desktop: left, c1-5) — in step with the text block.
@@ -101,7 +103,7 @@ export function CaseStudyHero({
                 <MetaRow key={i} label={m.label} value={m.value} />
               ))}
             </div>
-            <div className="flex flex-col md:col-start-5 md:col-span-3">
+            <div className="flex flex-col md:col-start-5 md:col-span-4">
               {recognition.map((r, i) => (
                 <MetaRow key={i} label={r.label} value={r.value} />
               ))}

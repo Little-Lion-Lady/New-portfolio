@@ -393,6 +393,8 @@ export default function Basis() {
         </Reveal>
       </SectionReveal>
 
+      <Divider />
+
       {/* Case study nav */}
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
         <CaseStudyNav

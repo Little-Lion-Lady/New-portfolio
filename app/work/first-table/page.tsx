@@ -184,12 +184,12 @@ export default function FirstTable() {
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <Stats className="md:grid-cols-3">
             <Stat size="lg" value="1.7M" label="App users" />
-            <Stat size="lg" tone="highlight-dark" value="7.50%" label="Conversion rate through booking flow" />
-            <Stat size="lg" tone="highlight-dark" value="1.2" label="bookings per user per year" />
+            <Stat size="lg" tone="highlight-dark" value=">10%" label="Conversion rate through booking flow" />
+            <Stat size="lg" tone="highlight-dark" value="Low" label="Repeat bookings" />
           </Stats>
           {/* Figma 1394:101595 holds this opener at B-sm on desktop rather than
               stepping up to B-md. */}
-          <KeyParagraph scale="b-xs md:b-sm" className="lg:max-w-[953px]">
+          <KeyParagraph className="lg:max-w-[953px]">
             When I joined First Table as the founding design team member, the product had real
             love behind it. The value proposition was clear, the community was there, and the
             restaurants were real. But the digital experience wasn’t holding up its end.
@@ -217,7 +217,7 @@ export default function FirstTable() {
           <SectionHeader number="03" name="Research" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
-          <KeyParagraph lead="Understanding diner motivation" scale="b-xs md:b-sm" className="lg:max-w-[953px]">
+          <KeyParagraph lead="Understanding diner motivation" className="lg:max-w-[953px]">
             Before redesigning anything, I needed to understand who we were actually designing
             for. We ran a behavioural segmentation study across the last 13 months of bookings
             and layered in survey research to reach what the data alone couldn’t tell us: the
@@ -257,7 +257,7 @@ export default function FirstTable() {
           <SectionHeader number="04" name="Design System" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
-          <KeyParagraph scale="b-xs md:b-sm" className="lg:max-w-[953px]">
+          <KeyParagraph className="lg:max-w-[953px]">
             Before touching a single screen, I led the creation of a new design system. The
             goal was to align design and engineering on shared tokens, accessible components,
             and consistent patterns. Without that foundation, any UI work would compound the
@@ -273,7 +273,7 @@ export default function FirstTable() {
             equal thirds of Figma's 9-col grid, and of the 12-col one on desktop. */}
         <Reveal index={3} delay={0.6} className="flex w-full flex-col gap-r-sm md:grid md:grid-cols-3">
           {systemPrinciples.map((p) => (
-            <KeyParagraph key={p.title} lead={p.title} scale="b-xs md:b-sm">
+            <KeyParagraph key={p.title} lead={p.title} scale="b-xs lg:b-sm">
               {p.body}
             </KeyParagraph>
           ))}
