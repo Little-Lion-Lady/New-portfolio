@@ -9,6 +9,7 @@ import { HeroCat, AboutCat } from "./components/dynamic-visuals";
 import { SyncedStar } from "./components/synced-star";
 import { HeroText } from "./components/hero-text";
 import { Divider } from "./components/divider";
+import { basis, covid, firstTable } from "@/content/stats";
 
 export default function Home() {
   return (
@@ -83,8 +84,8 @@ export default function Home() {
             <WorkItem
               number="SW/01"
               name="First Table app"
-              description="A ground-up redesign of First Table, the app that gives diners 50% off their first table of the night, now used by 1.5 million people. In the six months since launch, sign-ups are up 51% and conversion up 12.3%."
-              roles="UX/UI, Design system, Research"
+              description={`A ground-up redesign of First Table, the app that gives diners 50% off their first table of the night, now used by ${firstTable.appUsers} people. In the six months since launch, sign-ups are up ${firstTable.signupIncrease} and conversion up ${firstTable.conversionIncrease}.`}
+              roles="Growth, Design system, Experimentation"
               href="/work/first-table"
               images={[
                 { src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" },
@@ -102,7 +103,7 @@ export default function Home() {
               // the same way.
               reverseMarquee
               name="Basis home app"
-              description="Defining and designing the world’s first Smart Electrical Panel companion app to redefine user’s relationship with energy."
+              description={`The companion app for New Zealand’s first smart electrical panel, built with no product owner and no brief. I owned the strategy. The ${basis.pilotLengthWord} pilot cut household energy bills by ${basis.billReductionActual}.`}
               roles="UX/UI, Research, Product strategy"
               href="/work/basis"
               images={[
@@ -122,8 +123,8 @@ export default function Home() {
             <WorkItem
               number="SW/03"
               name="NZ COVID Tracer app"
-              description="Working on a nation-wide COVID-19 pandemic response to support contact tracing efforts and protect New Zealand from the spread of COVID-19."
-              roles="UX/UI, Research, Product strategy"
+              description={`${covid.installs} New Zealanders downloaded the COVID Tracer app. Only ${covid.btActivationRateBefore} turned on Bluetooth Tracing, the part that logged contacts automatically. I redesigned the onboarding and half a million more people switched it on.`}
+              roles="Onboarding, Research, Usability"
               href="/work/covid-tracer"
               images={[
                 { src: "/home/work/covid-tracer/MOH0.jpg", alt: "NZ COVID Tracer app screen" },
@@ -151,15 +152,16 @@ export default function Home() {
           <div className="flex flex-col gap-r-xl lg:col-start-1 lg:col-span-7 lg:row-start-1">
             {/* Key paragraph — B-sm → B-md → B-lg */}
             <p className="b-sm text-text-secondary md:b-md lg:b-lg">
-              I’m a <span className="text-text-highlight-dark">passionate</span>,{" "}
-              <span className="text-text-highlight-dark">strategic</span>, and{" "}
-              <span className="text-text-highlight-dark">creative thinker</span>, blending human-centred
-              design with technology to create experiences that positively impact lives. With{" "}
-              <span className="text-text-highlight-dark">9 years</span> of experience in product design,
-              I’ve delivered <span className="text-text-highlight-dark">award-winning</span>,{" "}
-              <span className="text-text-highlight-dark">impactful</span> designs across a variety of
-              industries and environments, including agencies, startups, and established product
-              companies.
+              I&apos;m a lead product designer, and a{" "}
+              <span className="text-text-highlight-dark">senior IC by choice</span>. Nine years in,
+              I&apos;ve taken products from{" "}
+              <span className="text-text-highlight-dark">0→1</span>{" "}
+              and brought tired ones back to
+              life. I like working in the open with engineers and PMs, and I&apos;d rather hand a team
+              a <span className="text-text-highlight-dark">design system and a testing habit</span>{" "}
+              than a folder of files. My work has reached millions of users across three continents
+              and won <span className="text-text-highlight-dark">four Best Design Awards</span>, one a
+              Purple Pin.
             </p>
             <Button variant="primary" label="About me" href="/about" className="self-start" />
           </div>

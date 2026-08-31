@@ -209,7 +209,7 @@ export default function DesignSystem() {
         <Demo name="Stat — lg, lg highlight, sm before→after" full>
           <Stats className="md:grid-cols-3">
             <Stat size="lg" value="2.7M" label="Unique app installs" />
-            <Stat size="lg" value="49%" label="Users enabled BT tracing" highlight />
+            <Stat size="lg" value="55%" label="Users enabled BT tracing" highlight />
             <Stat size="sm" value="18% → 5.3%" label="Mislick rate reduction" />
           </Stats>
         </Demo>
@@ -308,8 +308,8 @@ export default function DesignSystem() {
           <CaseStudyHero
             titleTop="NZ Covid"
             titleBottom="Tracer App"
-            lead="How I closed a 1.4 million user gap during the COVID-19 pandemic"
-            description="2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million had Bluetooth Tracing enabled, which allowed frictionless contact tracing that would kerb the spread. I diagnosed it as a UX failure and redesigned the experience to close that gap."
+            lead="How I got half a million New Zealanders to switch on Bluetooth contact tracing"
+            description="2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.5 million had Bluetooth Tracing enabled, which allowed frictionless contact tracing that would curb the spread. I diagnosed it as a UX failure and redesigned the experience, and 512,429 more people switched it on."
             meta={[
               { label: "Role_", value: "Senior Product Designer" },
               { label: "Scope_", value: "Strategy·UX/UI·Research" },

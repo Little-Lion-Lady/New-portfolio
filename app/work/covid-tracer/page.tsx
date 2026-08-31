@@ -22,6 +22,7 @@ import {
   OutcomeMedia,
 } from "../../components/media-block";
 import { GlassImage } from "../../components/work-image";
+import { covid } from "@/content/stats";
 
 const findings = [
   {
@@ -40,7 +41,7 @@ const findings = [
       "Lead screen opens with the benefit (“Trace your encounters”) and drops the mechanics below the fold",
   },
   {
-    finding: "Unfocused landing page: 38.7% success rate, 17 of 31 dropped at screen 1",
+    finding: `Unfocused landing page: ${covid.taskSuccessBefore} success rate, 17 of 31 dropped at screen 1`,
     decision:
       "Rebuilt around one primary CTA, with the supporting detail collapsed",
   },
@@ -84,7 +85,7 @@ function StatArrow() {
 export const metadata: Metadata = {
   title: "NZ Covid Tracer app — Maryna Babych",
   description:
-    "2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million turned on Bluetooth Tracing, the part that logged contacts automatically. People couldn't tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding to close the gap.",
+    `${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing, the part that logged contacts automatically. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAddedRounded} people switched it on.`,
 };
 
 export default function CovidTracer() {
@@ -97,8 +98,8 @@ export default function CovidTracer() {
           <CaseStudyHero
             titleTop="NZ Covid"
             titleBottom="Tracer App"
-            lead="How I closed a 1.4 million user gap during the COVID-19 pandemic"
-            description="2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million turned on Bluetooth Tracing, the part that logged contacts automatically. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding to close the gap."
+            lead="How I got half a million New Zealanders to switch on Bluetooth contact tracing"
+            description={`${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing, the part that logged contacts automatically. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAddedRounded} people switched it on.`}
             meta={[
               { label: "Role_", value: "Senior Product Designer" },
               { label: "Scope_", value: "Strategy·UX/UI·Research" },
@@ -118,28 +119,16 @@ export default function CovidTracer() {
         </section>
       </div>
 
-      {/* 01 — Journey */}
+      {/* 01 — Problem */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="01" name="Journey" />
-        </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full">
-          <Journey steps={journeySteps} />
-        </Reveal>
-      </SectionReveal>
-
-      <Divider />
-
-      {/* 02 — Problem */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
-        <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="02" name="Problem" />
+          <SectionHeader number="01" name="Problem" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <Stats className="md:grid-cols-3">
-            <Stat size="lg" value="2.7M" label="Unique app installs" />
+            <Stat size="lg" value={covid.installsShort} label="Unique app installs" />
             <Stat size="lg" value="95%" label="Devices capable of BT Tracing" />
-            <Stat size="lg" value="49%" label="Users with BT Tracing enabled" highlight />
+            <Stat size="lg" value={covid.btActivationRateBefore} label="Users with BT Tracing enabled" highlight />
           </Stats>
           <KeyParagraph className="lg:max-w-[953px]">
             Bluetooth Tracing was opt-in and badly explained. People didn’t know what it
@@ -151,10 +140,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 03 — Approach */}
+      {/* 02 — Approach */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="03" name="Approach" />
+          <SectionHeader number="02" name="Approach" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <KeyParagraph className="lg:max-w-[953px]">
@@ -166,10 +155,10 @@ export default function CovidTracer() {
         </Reveal>
         <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-lg">
           <Stats className="md:grid-cols-2 lg:grid-cols-4">
-            <Stat size="lg" highlight value="18%" label="Mislick rate on primary CTA" />
-            <Stat size="lg" highlight value="38.7%" label="Avg task success rate" />
-            <Stat size="lg" highlight value="47" label="Usability score" />
-            <Stat size="lg" highlight value="55%" label="Users dropped off at screen 1" />
+            <Stat size="lg" highlight value={covid.mislickBefore} label="Mislick rate on primary CTA" />
+            <Stat size="lg" highlight value={covid.taskSuccessBefore} label="Avg task success rate" />
+            <Stat size="lg" highlight value={covid.usabilityScoreBefore} label="Usability score" />
+            <Stat size="lg" highlight value={covid.dropoffBefore} label="Users dropped off at screen 1" />
           </Stats>
           <div className="flex flex-col gap-r-md">
             <Column label="Blocker 1" title="The app asked for trust before earning it">
@@ -194,10 +183,10 @@ export default function CovidTracer() {
         </Insight>
       </Reveal>
 
-      {/* 04 — Design brief */}
+      {/* 03 — Design brief */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg pb-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="04" name="Design brief" />
+          <SectionHeader number="03" name="Design brief" />
         </Reveal>
         {/* Figma 1144:10215 pulls the How-Might-We up into the key paragraph
             block: --lg apart on mobile/tablet, but only 24 on desktop. The
@@ -232,10 +221,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 05 — Design */}
+      {/* 04 — Design */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="05" name="Design" />
+          <SectionHeader number="04" name="Design" />
         </Reveal>
         {/* Figma sets the findings table only --sm (16/20/20) above the media,
             not the section gap, and the two media blocks only --2xs (6/8/12)
@@ -251,31 +240,32 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 06 — Validation */}
+      {/* 05 — Validation */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="06" name="Validation" />
+          <SectionHeader number="05" name="Validation" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg">
-          <KeyParagraph lead="Two rounds. Each one answered a specific question.">
-            Each round had a clear “therefore”. Findings went straight into the next
-            iteration instead of being logged and filed.
+          <KeyParagraph>
+            What I really needed to know: would people turn Bluetooth on, and did they understand it
+            doesn’t replace scanning posters? Getting that wrong meant they’d think they were
+            protected when they weren’t.
           </KeyParagraph>
           <Stats rowGap="gap-y-2xl md:gap-y-lg" className="md:grid-cols-2 lg:grid-cols-4">
-            <Stat size="sm" value="18% → 5.3%" label="Mislick rate reduction" />
-            <Stat size="sm" value="55% → 12%" label="Drop off reduction at step 1" />
-            <Stat size="sm" value="38% → 92%" label="Task success" />
-            <Stat size="sm" value="47 → 81" label="Usability score improvement" />
+            <Stat size="sm" value={`${covid.mislickBefore} → ${covid.mislickAfter}`} label="Mislick rate reduction" />
+            <Stat size="sm" value={`${covid.dropoffBefore} → ${covid.dropoffAfter}`} label="Drop off reduction at step 1" />
+            <Stat size="sm" value={`${covid.taskSuccessBefore} → ${covid.taskSuccessAfter}`} label="Task success" />
+            <Stat size="sm" value={`${covid.usabilityScoreBefore} → ${covid.usabilityScoreAfter}`} label="Usability score improvement" />
           </Stats>
         </Reveal>
       </SectionReveal>
 
       <Divider />
 
-      {/* 07 — Outcome */}
+      {/* 06 — Outcome */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="07" name="Outcome" />
+          <SectionHeader number="06" name="Outcome" />
         </Reveal>
         {/* Tablet uses Figma's 9-col grid (image 1-3, content 5-9); desktop the
             12-col page grid (image 1-6, content 8-12). */}
@@ -283,20 +273,22 @@ export default function CovidTracer() {
           {/* Content (tablet/desktop: right) */}
           <div className="flex flex-col gap-lg md:gap-xl md:col-start-5 md:col-span-5 md:row-start-1 lg:gap-3xl lg:col-start-8 lg:col-span-5">
             <KeyParagraph>
-              Both hypotheses were validated within a month of launch. By the time I left the
-              project, the app’s rating had doubled.
+              A month after launch, Bluetooth adoption was up and scanning hadn’t dropped. That
+              combination was the point: people turned Bluetooth on without deciding it let them off
+              the hook for scanning. The app’s rating had also doubled by the time I wrapped the
+              project.
             </KeyParagraph>
             {/* Figma 1144:10659 (mobile) / 1144:10505 (tablet) give the arrow a
                 column of its own — two ~38% stat columns either side of a
                 ~22-24% gutter — instead of sizing it to the glyph. Desktop keeps
                 the content-width column and a 20px gap. */}
             <div className="grid grid-cols-[39fr_22fr_39fr] items-start gap-y-xs md:grid-cols-[38fr_24fr_38fr] md:gap-y-3xl lg:grid-cols-[1fr_auto_1fr] lg:gap-x-lg">
-              <Stat size="sm" highlight value="1,494,077" label="Daily active BT devices" />
+              <Stat size="sm" highlight value={covid.btDevicesBefore} label="Daily active BT devices" />
               <StatArrow />
-              <Stat size="sm" highlight value="2,006,506" label="34% growth" />
-              <Stat size="sm" highlight value="618,344" label="Daily poster scans" />
+              <Stat size="sm" highlight value={covid.btDevicesAfter} label={`${covid.btGrowth} growth`} />
+              <Stat size="sm" highlight value={covid.posterScansBefore} label="Daily poster scans" />
               <StatArrow />
-              <Stat size="sm" highlight value="672,605" label="9% growth" />
+              <Stat size="sm" highlight value={covid.posterScansAfter} label={`${covid.posterScanGrowth} growth`} />
             </div>
           </div>
           {/* Headline image (desktop: left) */}
@@ -307,18 +299,66 @@ export default function CovidTracer() {
               image run; from tablet up it sits beside the content. */}
           <GlassImage
             src="/home/work/covid-tracer/MOH11.jpg"
-            alt="NZ COVID Tracer app screen"
+            alt={`NZ COVID Tracer app store listing, March 2020 beside July 2021: the rating rises from ${covid.appRatingBefore} to ${covid.appRatingAfter} stars`}
             aspectClassName="aspect-[361/225] md:aspect-[904/828] lg:aspect-[814/500]"
             className="w-full self-start md:col-start-1 md:col-span-3 md:row-start-1 lg:col-span-6"
           />
         </Reveal>
+        {/* Attribution note. Plain KeyParagraph rather than an Insight card:
+            this is meant to read quieter than the metric tiles above it, and
+            KeyParagraph's label stacks above the body, so a long heading has
+            room. Paragraphs are block spans at gap-r-sm — KeyParagraph renders
+            one <p>, so nested <p>s would be invalid. */}
+        <Reveal index={2} delay={0.6} className="w-full">
+          <KeyParagraph label="A note on attribution" className="lg:max-w-[953px]">
+            <span className="block">
+              This was a national app during a pandemic, so growth in raw installs is not something
+              design gets to claim.
+            </span>
+            <span className="mt-r-sm block">
+              What makes the activation numbers readable is that the install base was close to
+              saturated by this point. Most New Zealanders who were ever going to download the app
+              already had it. So the people who switched Bluetooth Tracing on after the redesign were
+              overwhelmingly existing users who had previously left it off, not new arrivals bringing
+              the default with them.
+            </span>
+            <span className="mt-r-sm block">
+              Before the redesign, {covid.btDevicesBefore} of {covid.installs} installs had Bluetooth
+              Tracing on, an activation rate of {covid.btActivationRateBefore}. After,{" "}
+              {covid.btDevicesAfter} did, which is roughly three quarters. Against a broadly flat
+              install base, that is {covid.devicesAdded} people who already had the app and had
+              previously left the feature off, reached by changing what they understood rather than
+              by adding anyone.
+            </span>
+            <span className="mt-r-sm block">
+              The controlled evidence sits upstream of that, in moderated testing against the old
+              build before launch: mislick rate {covid.mislickBefore} to {covid.mislickAfter},
+              drop-off at step one {covid.dropoffBefore} to {covid.dropoffAfter}, task success{" "}
+              {covid.taskSuccessBefore} to {covid.taskSuccessAfter}, usability score{" "}
+              {covid.usabilityScoreBefore} to {covid.usabilityScoreAfter}.
+            </span>
+          </KeyParagraph>
+        </Reveal>
+
         {/* From tablet up the section's own gap-r-lg (40/64) is exactly Figma's
             gap between the columns row and the images container. On mobile the
             columns row ends with MOH11 — the first shot of the image run — so
             the gap to MOH12 is only 8 (1144:10666), and 24 is taken back off
             the 32. Still a positive 8px gap, so nothing can overlap. */}
-        <Reveal index={2} delay={0.6} className="w-full -mt-xl md:mt-0">
+        <Reveal index={3} delay={0.6} className="w-full -mt-xl md:mt-0">
           <OutcomeMedia />
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* 07 — Journey */}
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
+        <Reveal index={0} delay={0.6} className="w-full">
+          <SectionHeader number="07" name="Journey" />
+        </Reveal>
+        <Reveal index={1} delay={0.6} className="w-full">
+          <Journey steps={journeySteps} />
         </Reveal>
       </SectionReveal>
 

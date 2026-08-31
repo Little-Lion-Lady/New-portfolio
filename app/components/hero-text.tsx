@@ -23,7 +23,7 @@ const FILL = 0.9;
 // Plain text for probe measurement — must match the visible content exactly
 // (spans are inline and don't change line-wrap metrics).
 const PLAIN =
-  "I'm an IC Product Designer specialising in product growth and optimisation with a track record of shipping delightful interfaces and dynamic interactions that elevate user experience. Currently leading design at First Table.";
+  "I'm a Lead Product Designer specialising in product growth and optimisation with a track record of shipping delightful interfaces and research-backed experiences that move the numbers. Currently leading design at First Table.";
 
 // Seconds from the first word starting to the last settling. The headline now
 // opens with the nav at 0s, so this is the wrap time outright. Expressed as a
@@ -133,10 +133,11 @@ export function HeroText({
             color: "var(--text-primary-overlay)",
           }}
         >
-          I&apos;m an <span style={HL}>IC Product Designer </span>specialising in{" "}
+          I&apos;m a <span style={HL}>Lead Product Designer </span>specialising in{" "}
           <span style={HL}>product growth </span>and optimisation with a track record of shipping{" "}
-          <span style={HL}>delightful interfaces</span> and dynamic interactions that elevate
-          user experience. Currently <span style={HL}>leading design</span> at First Table.
+          <span style={HL}>delightful interfaces</span> and research-backed experiences that{" "}
+          <span style={HL}>move the numbers</span>. Currently <span style={HL}>leading design</span>{" "}
+          at First Table.
         </RevealWords>
       </TitleStars>
     </div>

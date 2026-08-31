@@ -21,6 +21,7 @@ import {
   FTValidationMedia,
   FTOutcomeMedia,
 } from "../../components/media-block";
+import { firstTable } from "@/content/stats";
 
 const blockers = [
   {
@@ -122,14 +123,14 @@ const journeySteps = [
   },
   {
     title: "Validation",
-    body: "150+ A/B tests per year, continuous usability research, staged rollout across 4 markets",
+    body: `${firstTable.abTestsPerYear} A/B tests per year, continuous usability research, staged rollout across ${firstTable.markets} markets`,
   },
 ];
 
 export const metadata: Metadata = {
   title: "First Table booking app — Maryna Babych",
   description:
-    "First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months in, onboarding completion was up 21% and conversion up 12.3%.",
+    `First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months later the onboarding completion was up ${firstTable.onboardingCompletionIncrease} and conversion up ${firstTable.conversionIncrease}.`,
 };
 
 export default function FirstTable() {
@@ -143,7 +144,7 @@ export default function FirstTable() {
             titleTop="First Table"
             titleBottom="booking app"
             lead="A full rebuild of the booking app."
-            description="First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months in, onboarding completion was up 21% and conversion up 12.3%."
+            description={`First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months later the onboarding completion was up ${firstTable.onboardingCompletionIncrease} and conversion up ${firstTable.conversionIncrease}.`}
             meta={[
               { label: "Role_", value: "Lead Product Designer" },
               {
@@ -164,27 +165,15 @@ export default function FirstTable() {
         </section>
       </div>
 
-      {/* 01 — Journey */}
+      {/* 01 — Problem */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="01" name="Journey" />
-        </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full">
-          <Journey steps={journeySteps} />
-        </Reveal>
-      </SectionReveal>
-
-      <Divider />
-
-      {/* 02 — Problem */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
-        <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="02" name="Problem" />
+          <SectionHeader number="01" name="Problem" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <Stats className="md:grid-cols-3">
-            <Stat size="lg" value="1.7M" label="App users" />
-            <Stat size="lg" tone="highlight-dark" value=">10%" label="Conversion rate through booking flow" />
+            <Stat size="lg" value={firstTable.appUsersShort} label="App users" />
+            <Stat size="lg" tone="highlight-dark" value={firstTable.conversionBefore} label="Conversion rate through booking flow" />
             <Stat size="lg" tone="highlight-dark" value="Low" label="Repeat bookings" />
           </Stats>
           {/* Figma 1394:101595 holds this opener at B-sm on desktop rather than
@@ -211,10 +200,10 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 03 — Research */}
+      {/* 02 — Research */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="03" name="Research" />
+          <SectionHeader number="02" name="Research" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph lead="Understanding diner motivation" className="lg:max-w-[953px]">
@@ -251,10 +240,10 @@ export default function FirstTable() {
         </Insight>
       </Reveal>
 
-      {/* 04 — Design System */}
+      {/* 03 — Design System */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="04" name="Design System" />
+          <SectionHeader number="03" name="Design System" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph className="lg:max-w-[953px]">
@@ -282,10 +271,10 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 05 — Redesign */}
+      {/* 04 — Redesign */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="05" name="Redesign" />
+          <SectionHeader number="04" name="Redesign" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph className="lg:max-w-[953px]">
@@ -300,6 +289,7 @@ export default function FirstTable() {
             rows={frictionPoints}
             findingLabel="Friction point"
             decisionLabel="Solution"
+            mobileLabel="Friction point to design decision"
             headerClassName="b-xs"
           />
         </Reveal>
@@ -310,17 +300,16 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 06 — Validation */}
+      {/* 05 — Validation */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="06" name="Validation" />
+          <SectionHeader number="05" name="Validation" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
-          <KeyParagraph lead="150+ A/B tests run" className="lg:max-w-[953px]">
-            No change shipped on intuition alone. The work was shaped by continuous usability
-            research and 150+ A/B tests a year. With 1.5 million monthly active users, every
-            design decision was checked against real behaviour before it landed in production.
-            Losing variants got cut. Winners got built on.
+          <KeyParagraph lead={`${firstTable.abTestsPerYear} A/B tests run`} className="lg:max-w-[953px]">
+            I don&apos;t ship on intuition. Behind every change is continuous usability research, so
+            with {firstTable.appUsers} app users I get to check a decision against real behaviour
+            before it reaches production. Losers got cut, and winners got built on.
           </KeyParagraph>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
@@ -330,16 +319,16 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 07 — Outcome */}
+      {/* 06 — Outcome */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="07" name="Outcome" />
+          <SectionHeader number="06" name="Outcome" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <Stats className="md:grid-cols-3">
-            <Stat size="outcome" value="+51%" label="Sign-ups increase" />
-            <Stat size="outcome" value="+21%" label="onboarding completion" />
-            <Stat size="outcome" value="+12.3%" label="Conversion rate increase" />
+            <Stat size="outcome" value={`+${firstTable.signupIncrease}`} label="Sign-ups increase" />
+            <Stat size="outcome" value={`+${firstTable.onboardingCompletionIncrease}`} label="onboarding completion" />
+            <Stat size="outcome" value={`+${firstTable.conversionIncrease}`} label="Conversion rate increase" />
           </Stats>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
@@ -353,6 +342,18 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={3} delay={0.6} className="w-full">
           <FTOutcomeMedia />
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* 07 — Journey */}
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
+        <Reveal index={0} delay={0.6} className="w-full">
+          <SectionHeader number="07" name="Journey" />
+        </Reveal>
+        <Reveal index={1} delay={0.6} className="w-full">
+          <Journey steps={journeySteps} />
         </Reveal>
       </SectionReveal>
 

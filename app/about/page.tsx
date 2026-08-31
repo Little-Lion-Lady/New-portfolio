@@ -76,20 +76,28 @@ export default function About() {
         <Reveal index={1} delay={0.5} className="flex flex-col gap-3xl md:gap-6xl wide:grid wide:grid-cols-12 wide:items-start wide:gap-lg">
           {/* Description + CV button */}
           <div className="flex flex-col gap-3xl md:pb-2xl wide:col-start-1 wide:col-span-5">
-            <p className="b-xs text-text-secondary md:b-sm">
-              I&apos;ve been designing products since 2018. Agency work taught me to move fast and
-              not to be afraid of making mistakes or asking questions. Product work taught me how
-              to advocate for users and to own things past launch. So I care as much about{" "}
-              <span className="text-text-highlight-dark">understanding the people</span>{" "}
-              I&apos;m designing for as I do about{" "}
-              <span className="text-text-highlight-dark">design craft</span>. My favourite part is{" "}
-              <span className="text-text-highlight-dark">working it out with product and engineering</span>:{" "}
-              what&apos;s possible, what isn&apos;t, before I fall for something nobody can build.
-              Whatever we ship still has to{" "}
-              <span className="text-text-highlight-dark">be delightful</span> and{" "}
-              <span className="text-text-highlight-dark">easy to use</span>. That part I
-              don&apos;t budge on.
-            </p>
+            {/* Two paragraphs at gap-r-sm. The container's gap-3xl separates
+                this block from the CV button, so sibling <p>s would sit far
+                enough apart to read as separate sections. */}
+            <div className="flex flex-col gap-r-sm">
+              <p className="b-xs text-text-secondary md:b-sm">
+                For 9 years I&apos;ve been designing products with the teams that build them, in
+                agencies, a hardware startup, and now an international marketplace product. My aim is
+                simple: make the product{" "}
+                <span className="text-text-highlight-dark">obvious to use</span> and give the team the
+                systems and evidence to keep it that way.
+              </p>
+              <p className="b-xs text-text-secondary md:b-sm">
+                I lead{" "}
+                <span className="text-text-highlight-dark">design direction, systems and research</span>{" "}
+                without a reporting line, which keeps me close to the craft and the data. Agency work
+                taught me to move fast and ask the dumb question early. Product work taught me to{" "}
+                <span className="text-text-highlight-dark">own things past launch</span>. My favourite
+                part is still figuring out what&apos;s possible with product and engineering before I
+                fall for something nobody can build. Whatever we ship has to be{" "}
+                <span className="text-text-highlight-dark">delightful, impactful and easy to use</span>.
+              </p>
+            </div>
             <Button
               variant="primary"
               label="Download CV"
