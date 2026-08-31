@@ -289,6 +289,7 @@ export default function FirstTable() {
             rows={frictionPoints}
             findingLabel="Friction point"
             decisionLabel="Solution"
+            mobileLabel="Friction point to design decision"
             headerClassName="b-xs"
           />
         </Reveal>

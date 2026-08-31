@@ -14,15 +14,21 @@ import { Divider } from "./divider";
 // padding is left at 24 — no mobile frame was given to check it against.
 // Column headings default to the COVID Tracer §04 wording; First Table §04 relabels
 // them "Friction point" / "Solution".
+// `mobileLabel` covers the one-column mobile layout: the decision heading is
+// hidden there, so a single finding-only heading leaves the second half of each
+// row unlabelled. Pass a combined heading to name both.
 export function FindingsTable({
   rows,
   findingLabel = "Finding",
   decisionLabel = "Design decision",
+  mobileLabel,
   headerClassName = "b-xs lg:b-md",
 }: {
   rows: { finding: string; decision: string }[];
   findingLabel?: string;
   decisionLabel?: string;
+  /** Heading shown below md, where the decision column's heading is hidden. */
+  mobileLabel?: string;
   headerClassName?: string;
 }) {
   return (
@@ -30,7 +36,8 @@ export function FindingsTable({
       {/* Header */}
       <div className="grid grid-cols-1 md:grid-cols-9 md:gap-x-lg lg:grid-cols-12">
         <p className={`${headerClassName} text-text-primary-highlight md:col-span-4 lg:col-span-5`}>
-          {findingLabel}
+          <span className="md:hidden">{mobileLabel ?? findingLabel}</span>
+          <span className="hidden md:inline">{findingLabel}</span>
         </p>
         <p className={`hidden text-text-primary-highlight md:col-start-6 md:col-span-4 md:block lg:col-start-8 lg:col-span-5 ${headerClassName}`}>
           {decisionLabel}
