@@ -308,8 +308,8 @@ export default function DesignSystem() {
           <CaseStudyHero
             titleTop="NZ Covid"
             titleBottom="Tracer App"
-            lead="How I got half a million New Zealanders to switch on contact tracing"
-            description="2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.5 million had Bluetooth Tracing enabled, which allowed frictionless contact tracing that would kerb the spread. I diagnosed it as a UX failure and redesigned the experience, and 512,429 more people switched it on."
+            lead="How I got half a million New Zealanders to switch on Bluetooth contact tracing"
+            description="2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.5 million had Bluetooth Tracing enabled, which allowed frictionless contact tracing that would curb the spread. I diagnosed it as a UX failure and redesigned the experience, and 512,429 more people switched it on."
             meta={[
               { label: "Role_", value: "Senior Product Designer" },
               { label: "Scope_", value: "Strategy·UX/UI·Research" },

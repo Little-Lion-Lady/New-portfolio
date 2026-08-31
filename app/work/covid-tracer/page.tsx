@@ -98,7 +98,7 @@ export default function CovidTracer() {
           <CaseStudyHero
             titleTop="NZ Covid"
             titleBottom="Tracer App"
-            lead="How I got half a million New Zealanders to switch on contact tracing"
+            lead="How I got half a million New Zealanders to switch on Bluetooth contact tracing"
             description={`${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing, the part that logged contacts automatically. People couldnn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAdded} more people switched it on.`}
             meta={[
               { label: "Role_", value: "Senior Product Designer" },
