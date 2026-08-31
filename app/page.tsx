@@ -150,33 +150,19 @@ export default function Home() {
             <AboutCat className="w-full max-w-[350px] aspect-[1857/1206] md:w-1/2 md:min-w-[350px] lg:w-full lg:max-w-full lg:h-full lg:aspect-auto" />
           </div>
           <div className="flex flex-col gap-r-xl lg:col-start-1 lg:col-span-7 lg:row-start-1">
-            {/* Key paragraph — B-sm → B-md → B-lg. Four separate paragraphs at
-                gap-r-sm (16/20): KeyParagraph's gap-0 works for its label/lead/
-                body because those differ in colour, but four same-toned body
-                paragraphs run together into one block at gap 0. The outer
-                gap-r-xl stays reserved for the button below. */}
-            <div className="flex flex-col items-start gap-r-sm">
-              <p className="b-sm text-text-secondary md:b-md lg:b-lg">
-                <span className="text-text-highlight-dark">Nine years</span> in product design,
-                across agencies, a hardware startup, and a marketplace.
-              </p>
-              <p className="b-sm text-text-secondary md:b-md lg:b-lg">
-                I joined First Table as the{" "}
-                <span className="text-text-highlight-dark">founding design team member</span> and now
-                lead design across {firstTable.marketsWord} markets. I built the design system,
-                rebuilt the native app with engineering, and run{" "}
-                <span className="text-text-highlight-dark">continuous experimentation</span> on a
-                product with {firstTable.appUsers} app users.
-              </p>
-              <p className="b-sm text-text-secondary md:b-md lg:b-lg">
-                Before that I owned product strategy for Basis, New Zealand’s first smart electrical
-                panel, and designed the NZ COVID Tracer app.
-              </p>
-              <p className="b-sm text-text-secondary md:b-md lg:b-lg">
-                <span className="text-text-highlight-dark">Four Best Design Awards</span>, including a
-                Purple Pin.
-              </p>
-            </div>
+            {/* Key paragraph — B-sm → B-md → B-lg */}
+            <p className="b-sm text-text-secondary md:b-md lg:b-lg">
+              I&apos;m a lead product designer, and a{" "}
+              <span className="text-text-highlight-dark">senior IC by choice</span>. Nine years in,
+              I&apos;ve taken products from{" "}
+              <span className="text-text-highlight-dark">0→1</span>{" "}
+              and brought tired ones back to
+              life. I like working in the open with engineers and PMs, and I&apos;d rather hand a team
+              a <span className="text-text-highlight-dark">design system and a testing habit</span>{" "}
+              than a folder of files. My work has reached millions of users across three continents
+              and won <span className="text-text-highlight-dark">four Best Design Awards</span>, one a
+              Purple Pin.
+            </p>
             <Button variant="primary" label="About me" href="/about" className="self-start" />
           </div>
         </Reveal>
