@@ -307,10 +307,9 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph lead={`${firstTable.abTestsPerYear} A/B tests run`} className="lg:max-w-[953px]">
-            I don&apos;t ship on intuition. Behind every change is continuous usability research and
-            more than {firstTable.abTestsPerYearCount} A/B tests a year, so with {firstTable.appUsers}{" "}
-            app users I get to check a decision against real behaviour before it reaches production.
-            Losers got cut, and winners got built on.
+            I don&apos;t ship on intuition. Behind every change is continuous usability research, so
+            with {firstTable.appUsers} app users I get to check a decision against real behaviour
+            before it reaches production. Losers got cut, and winners got built on.
           </KeyParagraph>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
