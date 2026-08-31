@@ -106,22 +106,10 @@ export default function Basis() {
         </section>
       </div>
 
-      {/* 01 — Journey */}
+      {/* 01 — Problem */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="01" name="Journey" />
-        </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full">
-          <Journey steps={journeySteps} />
-        </Reveal>
-      </SectionReveal>
-
-      <Divider />
-
-      {/* 02 — Problem */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
-        <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="02" name="Problem" />
+          <SectionHeader number="01" name="Problem" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col">
           <div className="w-full lg:grid lg:grid-cols-12 lg:gap-x-lg">
@@ -155,12 +143,12 @@ export default function Basis() {
 
       <Divider />
 
-      {/* 03 — Approach (Figma 1613:139307 folds the old Research section into
+      {/* 02 — Approach (Figma 1613:139307 folds the old Research section into
           this one: the workshop opener, the research imagery, then the two
           method rows, every gap the section's own --lg). */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="03" name="Approach" />
+          <SectionHeader number="02" name="Approach" />
         </Reveal>
         {/* One paragraph now, with the product vision carried inline as a
             highlighted phrase instead of a second quoted column. */}
@@ -210,10 +198,10 @@ export default function Basis() {
         </Insight>
       </Reveal>
 
-      {/* 04 — Design brief */}
+      {/* 03 — Design brief */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-3xl md:gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="04" name="Design brief" />
+          <SectionHeader number="03" name="Design brief" />
         </Reveal>
         {/* Figma 1613:139331 sets the opener against the HMW list rather than
             above it: key paragraph cols 1-5, the three HMW lines cols 7-12,
@@ -265,10 +253,10 @@ export default function Basis() {
 
       <Divider />
 
-      {/* 05 — Process */}
+      {/* 04 — Process */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="05" name="Process" />
+          <SectionHeader number="04" name="Process" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           {/* Figma 1613:139355 folds the closing rationale into the opener, so
@@ -308,10 +296,10 @@ export default function Basis() {
 
       <Divider />
 
-      {/* 06 — Solution design */}
+      {/* 05 — Solution design */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="06" name="Solution design" />
+          <SectionHeader number="05" name="Solution design" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg">
           {/* Figma 1613:139383 drops the lead line — the opener is one
@@ -362,10 +350,10 @@ export default function Basis() {
 
       <Divider />
 
-      {/* 07 — Outcome */}
+      {/* 06 — Outcome */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="07" name="Outcome" />
+          <SectionHeader number="06" name="Outcome" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg">
           <div className="flex w-full flex-col gap-3xl md:grid md:grid-cols-8 md:gap-lg lg:grid-cols-12">
@@ -391,6 +379,18 @@ export default function Basis() {
             tenure on the project the app rating score doubled.
           </Column>
           <BasisOutcomeMedia />
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* 07 — Journey */}
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
+        <Reveal index={0} delay={0.6} className="w-full">
+          <SectionHeader number="07" name="Journey" />
+        </Reveal>
+        <Reveal index={1} delay={0.6} className="w-full">
+          <Journey steps={journeySteps} />
         </Reveal>
       </SectionReveal>
 

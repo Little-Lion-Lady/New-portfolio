@@ -119,22 +119,10 @@ export default function CovidTracer() {
         </section>
       </div>
 
-      {/* 01 — Journey */}
+      {/* 01 — Problem */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="01" name="Journey" />
-        </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full">
-          <Journey steps={journeySteps} />
-        </Reveal>
-      </SectionReveal>
-
-      <Divider />
-
-      {/* 02 — Problem */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
-        <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="02" name="Problem" />
+          <SectionHeader number="01" name="Problem" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <Stats className="md:grid-cols-3">
@@ -152,10 +140,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 03 — Approach */}
+      {/* 02 — Approach */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="03" name="Approach" />
+          <SectionHeader number="02" name="Approach" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <KeyParagraph className="lg:max-w-[953px]">
@@ -195,10 +183,10 @@ export default function CovidTracer() {
         </Insight>
       </Reveal>
 
-      {/* 04 — Design brief */}
+      {/* 03 — Design brief */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg pb-xl">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="04" name="Design brief" />
+          <SectionHeader number="03" name="Design brief" />
         </Reveal>
         {/* Figma 1144:10215 pulls the How-Might-We up into the key paragraph
             block: --lg apart on mobile/tablet, but only 24 on desktop. The
@@ -233,10 +221,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 05 — Design */}
+      {/* 04 — Design */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="05" name="Design" />
+          <SectionHeader number="04" name="Design" />
         </Reveal>
         {/* Figma sets the findings table only --sm (16/20/20) above the media,
             not the section gap, and the two media blocks only --2xs (6/8/12)
@@ -252,10 +240,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 06 — Validation */}
+      {/* 05 — Validation */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="06" name="Validation" />
+          <SectionHeader number="05" name="Validation" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg">
           <KeyParagraph lead="Two rounds. Each one answered a specific question.">
@@ -273,10 +261,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      {/* 07 — Outcome */}
+      {/* 06 — Outcome */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="07" name="Outcome" />
+          <SectionHeader number="06" name="Outcome" />
         </Reveal>
         {/* Tablet uses Figma's 9-col grid (image 1-3, content 5-9); desktop the
             12-col page grid (image 1-6, content 8-12). */}
@@ -320,6 +308,18 @@ export default function CovidTracer() {
             the 32. Still a positive 8px gap, so nothing can overlap. */}
         <Reveal index={2} delay={0.6} className="w-full -mt-xl md:mt-0">
           <OutcomeMedia />
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* 07 — Journey */}
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
+        <Reveal index={0} delay={0.6} className="w-full">
+          <SectionHeader number="07" name="Journey" />
+        </Reveal>
+        <Reveal index={1} delay={0.6} className="w-full">
+          <Journey steps={journeySteps} />
         </Reveal>
       </SectionReveal>
 

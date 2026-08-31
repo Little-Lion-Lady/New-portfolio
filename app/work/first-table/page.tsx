@@ -165,22 +165,10 @@ export default function FirstTable() {
         </section>
       </div>
 
-      {/* 01 — Journey */}
+      {/* 01 — Problem */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="01" name="Journey" />
-        </Reveal>
-        <Reveal index={1} delay={0.6} className="w-full">
-          <Journey steps={journeySteps} />
-        </Reveal>
-      </SectionReveal>
-
-      <Divider />
-
-      {/* 02 — Problem */}
-      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
-        <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="02" name="Problem" />
+          <SectionHeader number="01" name="Problem" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <Stats className="md:grid-cols-3">
@@ -212,10 +200,10 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 03 — Research */}
+      {/* 02 — Research */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="03" name="Research" />
+          <SectionHeader number="02" name="Research" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph lead="Understanding diner motivation" className="lg:max-w-[953px]">
@@ -252,10 +240,10 @@ export default function FirstTable() {
         </Insight>
       </Reveal>
 
-      {/* 04 — Design System */}
+      {/* 03 — Design System */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="04" name="Design System" />
+          <SectionHeader number="03" name="Design System" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph className="lg:max-w-[953px]">
@@ -283,10 +271,10 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 05 — Redesign */}
+      {/* 04 — Redesign */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="05" name="Redesign" />
+          <SectionHeader number="04" name="Redesign" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph className="lg:max-w-[953px]">
@@ -311,10 +299,10 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 06 — Validation */}
+      {/* 05 — Validation */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="06" name="Validation" />
+          <SectionHeader number="05" name="Validation" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <KeyParagraph lead={`${firstTable.abTestsPerYear} A/B tests run`} className="lg:max-w-[953px]">
@@ -331,10 +319,10 @@ export default function FirstTable() {
 
       <Divider />
 
-      {/* 07 — Outcome */}
+      {/* 06 — Outcome */}
       <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
         <Reveal index={0} delay={0.6} className="w-full">
-          <SectionHeader number="07" name="Outcome" />
+          <SectionHeader number="06" name="Outcome" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <Stats className="md:grid-cols-3">
@@ -354,6 +342,18 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={3} delay={0.6} className="w-full">
           <FTOutcomeMedia />
+        </Reveal>
+      </SectionReveal>
+
+      <Divider />
+
+      {/* 07 — Journey */}
+      <SectionReveal as="section" immediate className="relative z-10 flex w-full flex-col gap-r-lg">
+        <Reveal index={0} delay={0.6} className="w-full">
+          <SectionHeader number="07" name="Journey" />
+        </Reveal>
+        <Reveal index={1} delay={0.6} className="w-full">
+          <Journey steps={journeySteps} />
         </Reveal>
       </SectionReveal>
 
