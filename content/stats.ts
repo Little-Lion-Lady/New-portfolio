@@ -30,6 +30,8 @@ export const firstTable = {
   /** Same count, spelled out for prose. */
   marketsWord: "four",
   abTestsPerYear: "150+",
+  /** Same figure without the +, for prose that supplies its own "more than". */
+  abTestsPerYearCount: "150",
   transactionsAnalysed: "400k+",
   surveyResponses: "10k",
   segmentsIdentified: 5,
