@@ -273,9 +273,10 @@ export default function CovidTracer() {
           {/* Content (tablet/desktop: right) */}
           <div className="flex flex-col gap-lg md:gap-xl md:col-start-5 md:col-span-5 md:row-start-1 lg:gap-3xl lg:col-start-8 lg:col-span-5">
             <KeyParagraph>
-              Both hypotheses were validated within a month of launch. By the time I left the
-              project, the App Store rating had gone from {covid.appRatingBefore} to{" "}
-              {covid.appRatingAfter}.
+              A month after launch, Bluetooth adoption was up and scanning hadn’t dropped. That
+              combination was the point: people turned Bluetooth on without deciding it let them off
+              the hook for scanning. The app’s rating had also doubled by the time I wrapped the
+              project.
             </KeyParagraph>
             {/* Figma 1144:10659 (mobile) / 1144:10505 (tablet) give the arrow a
                 column of its own — two ~38% stat columns either side of a
