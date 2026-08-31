@@ -160,6 +160,9 @@ export default function CovidTracer() {
             <Stat size="lg" highlight value="47" label="Usability score" />
             <Stat size="lg" highlight value={covid.dropoffBefore} label="Users dropped off at screen 1" />
           </Stats>
+          <KeyParagraph>
+            Six things were clearly broken. The two that mattered most:
+          </KeyParagraph>
           <div className="flex flex-col gap-r-md">
             <Column label="Blocker 1" title="The app asked for trust before earning it">
               Onboarding led with technical language and too much of it, and no screen had an
@@ -273,7 +276,8 @@ export default function CovidTracer() {
           <div className="flex flex-col gap-lg md:gap-xl md:col-start-5 md:col-span-5 md:row-start-1 lg:gap-3xl lg:col-start-8 lg:col-span-5">
             <KeyParagraph>
               Both hypotheses were validated within a month of launch. By the time I left the
-              project, the app’s rating had doubled.
+              project, the App Store rating had gone from {covid.appRatingBefore} to{" "}
+              {covid.appRatingAfter}.
             </KeyParagraph>
             {/* Figma 1144:10659 (mobile) / 1144:10505 (tablet) give the arrow a
                 column of its own — two ~38% stat columns either side of a
@@ -296,17 +300,53 @@ export default function CovidTracer() {
               image run; from tablet up it sits beside the content. */}
           <GlassImage
             src="/home/work/covid-tracer/MOH11.jpg"
-            alt="NZ COVID Tracer app screen"
+            alt={`NZ COVID Tracer app store listing, March 2020 beside July 2021: the rating rises from ${covid.appRatingBefore} to ${covid.appRatingAfter} stars`}
             aspectClassName="aspect-[361/225] md:aspect-[904/828] lg:aspect-[814/500]"
             className="w-full self-start md:col-start-1 md:col-span-3 md:row-start-1 lg:col-span-6"
           />
         </Reveal>
+        {/* Attribution note. Plain KeyParagraph rather than an Insight card:
+            this is meant to read quieter than the metric tiles above it, and
+            KeyParagraph's label stacks above the body, so a long heading has
+            room. Paragraphs are block spans at gap-r-sm — KeyParagraph renders
+            one <p>, so nested <p>s would be invalid. */}
+        <Reveal index={2} delay={0.6} className="w-full">
+          <KeyParagraph label="A note on attribution" className="lg:max-w-[953px]">
+            <span className="block">
+              This was a national app during a pandemic, so growth in raw installs is not something
+              design gets to claim.
+            </span>
+            <span className="mt-r-sm block">
+              What makes the activation numbers readable is that the install base was close to
+              saturated by this point. Most New Zealanders who were ever going to download the app
+              already had it. So the people who switched Bluetooth Tracing on after the redesign were
+              overwhelmingly existing users who had previously left it off, not new arrivals bringing
+              the default with them.
+            </span>
+            <span className="mt-r-sm block">
+              Before the redesign, {covid.btDevicesBefore} of {covid.installs} installs had Bluetooth
+              Tracing on, an activation rate of {covid.btActivationRateBefore}. After,{" "}
+              {covid.btDevicesAfter} did, which is roughly three quarters. Against a broadly flat
+              install base, that is {covid.devicesAdded} people who already had the app and had
+              previously left the feature off, reached by changing what they understood rather than
+              by adding anyone.
+            </span>
+            <span className="mt-r-sm block">
+              The controlled evidence sits upstream of that, in moderated testing against the old
+              build before launch: mislick rate {covid.mislickBefore} to {covid.mislickAfter},
+              drop-off at step one {covid.dropoffBefore} to {covid.dropoffAfter}, task success{" "}
+              {covid.taskSuccessBefore} to {covid.taskSuccessAfter}, usability score{" "}
+              {covid.usabilityScoreBefore} to {covid.usabilityScoreAfter}.
+            </span>
+          </KeyParagraph>
+        </Reveal>
+
         {/* From tablet up the section's own gap-r-lg (40/64) is exactly Figma's
             gap between the columns row and the images container. On mobile the
             columns row ends with MOH11 — the first shot of the image run — so
             the gap to MOH12 is only 8 (1144:10666), and 24 is taken back off
             the 32. Still a positive 8px gap, so nothing can overlap. */}
-        <Reveal index={2} delay={0.6} className="w-full -mt-xl md:mt-0">
+        <Reveal index={3} delay={0.6} className="w-full -mt-xl md:mt-0">
           <OutcomeMedia />
         </Reveal>
       </SectionReveal>
