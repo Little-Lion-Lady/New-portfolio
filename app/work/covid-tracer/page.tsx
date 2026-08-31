@@ -160,9 +160,6 @@ export default function CovidTracer() {
             <Stat size="lg" highlight value={covid.usabilityScoreBefore} label="Usability score" />
             <Stat size="lg" highlight value={covid.dropoffBefore} label="Users dropped off at screen 1" />
           </Stats>
-          <KeyParagraph>
-            Six things were clearly broken. The two that mattered most:
-          </KeyParagraph>
           <div className="flex flex-col gap-r-md">
             <Column label="Blocker 1" title="The app asked for trust before earning it">
               Onboarding led with technical language and too much of it, and no screen had an
