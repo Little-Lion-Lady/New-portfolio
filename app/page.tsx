@@ -9,6 +9,7 @@ import { HeroCat, AboutCat } from "./components/dynamic-visuals";
 import { SyncedStar } from "./components/synced-star";
 import { HeroText } from "./components/hero-text";
 import { Divider } from "./components/divider";
+import { firstTable } from "@/content/stats";
 
 export default function Home() {
   return (
@@ -83,7 +84,7 @@ export default function Home() {
             <WorkItem
               number="SW/01"
               name="First Table app"
-              description="A ground-up redesign of First Table, the app that gives diners 50% off their first table of the night, now used by 1.5 million people. In the six months since launch, sign-ups are up 51% and conversion up 12.3%."
+              description={`A ground-up redesign of First Table, the app that gives diners 50% off their first table of the night, now used by ${firstTable.appUsers} people. In the six months since launch, sign-ups are up ${firstTable.signupIncrease} and conversion up ${firstTable.conversionIncrease}.`}
               roles="UX/UI, Design system, Research"
               href="/work/first-table"
               images={[

@@ -22,6 +22,7 @@ import {
   OutcomeMedia,
 } from "../../components/media-block";
 import { GlassImage } from "../../components/work-image";
+import { covid } from "@/content/stats";
 
 const findings = [
   {
@@ -84,7 +85,7 @@ function StatArrow() {
 export const metadata: Metadata = {
   title: "NZ Covid Tracer app — Maryna Babych",
   description:
-    "2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million turned on Bluetooth Tracing, the part that logged contacts automatically. People couldn't tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding to close the gap.",
+    `${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing, the part that logged contacts automatically. People couldnn\'t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAdded} more people switched it on.`,
 };
 
 export default function CovidTracer() {
@@ -97,8 +98,8 @@ export default function CovidTracer() {
           <CaseStudyHero
             titleTop="NZ Covid"
             titleBottom="Tracer App"
-            lead="How I closed a 1.4 million user gap during the COVID-19 pandemic"
-            description="2.7 million New Zealanders downloaded the Covid Tracer app. Only 1.3 million turned on Bluetooth Tracing, the part that logged contacts automatically. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding to close the gap."
+            lead="How I got half a million New Zealanders to switch on contact tracing"
+            description={`${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing, the part that logged contacts automatically. People couldnn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAdded} more people switched it on.`}
             meta={[
               { label: "Role_", value: "Senior Product Designer" },
               { label: "Scope_", value: "Strategy·UX/UI·Research" },
@@ -137,9 +138,9 @@ export default function CovidTracer() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-md">
           <Stats className="md:grid-cols-3">
-            <Stat size="lg" value="2.7M" label="Unique app installs" />
+            <Stat size="lg" value={covid.installsShort} label="Unique app installs" />
             <Stat size="lg" value="95%" label="Devices capable of BT Tracing" />
-            <Stat size="lg" value="49%" label="Users with BT Tracing enabled" highlight />
+            <Stat size="lg" value={covid.btActivationRateBefore} label="Users with BT Tracing enabled" highlight />
           </Stats>
           <KeyParagraph className="lg:max-w-[953px]">
             Bluetooth Tracing was opt-in and badly explained. People didn’t know what it
@@ -167,9 +168,9 @@ export default function CovidTracer() {
         <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-lg">
           <Stats className="md:grid-cols-2 lg:grid-cols-4">
             <Stat size="lg" highlight value="18%" label="Mislick rate on primary CTA" />
-            <Stat size="lg" highlight value="38.7%" label="Avg task success rate" />
+            <Stat size="lg" highlight value={covid.taskSuccessBefore} label="Avg task success rate" />
             <Stat size="lg" highlight value="47" label="Usability score" />
-            <Stat size="lg" highlight value="55%" label="Users dropped off at screen 1" />
+            <Stat size="lg" highlight value={covid.dropoffBefore} label="Users dropped off at screen 1" />
           </Stats>
           <div className="flex flex-col gap-r-md">
             <Column label="Blocker 1" title="The app asked for trust before earning it">
@@ -262,9 +263,9 @@ export default function CovidTracer() {
             iteration instead of being logged and filed.
           </KeyParagraph>
           <Stats rowGap="gap-y-2xl md:gap-y-lg" className="md:grid-cols-2 lg:grid-cols-4">
-            <Stat size="sm" value="18% → 5.3%" label="Mislick rate reduction" />
-            <Stat size="sm" value="55% → 12%" label="Drop off reduction at step 1" />
-            <Stat size="sm" value="38% → 92%" label="Task success" />
+            <Stat size="sm" value={`${covid.mislickBefore} → ${covid.mislickAfter}`} label="Mislick rate reduction" />
+            <Stat size="sm" value={`${covid.dropoffBefore} → ${covid.dropoffAfter}`} label="Drop off reduction at step 1" />
+            <Stat size="sm" value={`${covid.taskSuccessBefore} → ${covid.taskSuccessAfter}`} label="Task success" />
             <Stat size="sm" value="47 → 81" label="Usability score improvement" />
           </Stats>
         </Reveal>
@@ -291,12 +292,12 @@ export default function CovidTracer() {
                 ~22-24% gutter — instead of sizing it to the glyph. Desktop keeps
                 the content-width column and a 20px gap. */}
             <div className="grid grid-cols-[39fr_22fr_39fr] items-start gap-y-xs md:grid-cols-[38fr_24fr_38fr] md:gap-y-3xl lg:grid-cols-[1fr_auto_1fr] lg:gap-x-lg">
-              <Stat size="sm" highlight value="1,494,077" label="Daily active BT devices" />
+              <Stat size="sm" highlight value={covid.btDevicesBefore} label="Daily active BT devices" />
               <StatArrow />
-              <Stat size="sm" highlight value="2,006,506" label="34% growth" />
-              <Stat size="sm" highlight value="618,344" label="Daily poster scans" />
+              <Stat size="sm" highlight value={covid.btDevicesAfter} label={`${covid.btGrowth} growth`} />
+              <Stat size="sm" highlight value={covid.posterScansBefore} label="Daily poster scans" />
               <StatArrow />
-              <Stat size="sm" highlight value="672,605" label="9% growth" />
+              <Stat size="sm" highlight value={covid.posterScansAfter} label={`${covid.posterScanGrowth} growth`} />
             </div>
           </div>
           {/* Headline image (desktop: left) */}

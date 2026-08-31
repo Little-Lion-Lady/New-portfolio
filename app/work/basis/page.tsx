@@ -25,6 +25,7 @@ import {
   PrototypeMedia,
   BasisOutcomeMedia,
 } from "../../components/media-block";
+import { basis } from "@/content/stats";
 
 const constraints = [
   "No product Direction",
@@ -35,7 +36,7 @@ const constraints = [
 ];
 
 const hmw = [
-  "enable users to reduce electricity costs by 15%?",
+  `enable users to reduce electricity costs by ${basis.billReductionGoal}?`,
   "turn dense information into actionable pathways?",
   "increase perceptions of safety rather than convince people they’re not at risk?",
 ];
@@ -170,7 +171,7 @@ export default function Basis() {
             for users, and what does success look like for the business? We came out with
             one line:{" "}
             <span className="text-text-highlight-dark">
-              give NZ households an intuitive tool to reduce electricity costs by 15%,
+              give NZ households an intuitive tool to reduce electricity costs by {basis.billReductionGoal},
               while promoting safety
             </span>
             . Every decision after that got measured against it. If a feature didn’t serve
@@ -371,14 +372,14 @@ export default function Basis() {
             <Stat
               size="outcome"
               className="md:col-span-4 lg:col-start-1"
-              value="10%"
+              value={basis.billReductionActual}
               label="Reduction in household energy bills"
-              sublabel="Measured over 6-month pilot"
+              sublabel={`Measured over ${basis.pilotLength} pilot`}
             />
             <Stat
               size="outcome"
               className="md:col-span-4 lg:col-start-5"
-              value="85%"
+              value={basis.routineAdoptionActual}
               label="Users created an energy routine in week one"
               sublabel="Validates automation hypothesis"
             />
