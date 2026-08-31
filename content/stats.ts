@@ -25,6 +25,8 @@ export const firstTable = {
   conversionIncrease: "12.3%",
   /** New Zealand, Australia, the UK and Ireland. */
   markets: 4,
+  /** Same count, spelled out for prose. */
+  marketsWord: "four",
   abTestsPerYear: "150+",
   transactionsAnalysed: "400k+",
   surveyResponses: "10k",

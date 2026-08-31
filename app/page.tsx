@@ -150,18 +150,33 @@ export default function Home() {
             <AboutCat className="w-full max-w-[350px] aspect-[1857/1206] md:w-1/2 md:min-w-[350px] lg:w-full lg:max-w-full lg:h-full lg:aspect-auto" />
           </div>
           <div className="flex flex-col gap-r-xl lg:col-start-1 lg:col-span-7 lg:row-start-1">
-            {/* Key paragraph — B-sm → B-md → B-lg */}
-            <p className="b-sm text-text-secondary md:b-md lg:b-lg">
-              I’m a <span className="text-text-highlight-dark">passionate</span>,{" "}
-              <span className="text-text-highlight-dark">strategic</span>, and{" "}
-              <span className="text-text-highlight-dark">creative thinker</span>, blending human-centred
-              design with technology to create experiences that positively impact lives. With{" "}
-              <span className="text-text-highlight-dark">9 years</span> of experience in product design,
-              I’ve delivered <span className="text-text-highlight-dark">award-winning</span>,{" "}
-              <span className="text-text-highlight-dark">impactful</span> designs across a variety of
-              industries and environments, including agencies, startups, and established product
-              companies.
-            </p>
+            {/* Key paragraph — B-sm → B-md → B-lg. Four separate paragraphs at
+                gap-r-sm (16/20): KeyParagraph's gap-0 works for its label/lead/
+                body because those differ in colour, but four same-toned body
+                paragraphs run together into one block at gap 0. The outer
+                gap-r-xl stays reserved for the button below. */}
+            <div className="flex flex-col items-start gap-r-sm">
+              <p className="b-sm text-text-secondary md:b-md lg:b-lg">
+                <span className="text-text-highlight-dark">Nine years</span> in product design,
+                across agencies, a hardware startup, and a marketplace.
+              </p>
+              <p className="b-sm text-text-secondary md:b-md lg:b-lg">
+                I joined First Table as the{" "}
+                <span className="text-text-highlight-dark">founding design team member</span> and now
+                lead design across {firstTable.marketsWord} markets. I built the design system,
+                rebuilt the native app with engineering, and run{" "}
+                <span className="text-text-highlight-dark">continuous experimentation</span> on a
+                product with {firstTable.appUsers} app users.
+              </p>
+              <p className="b-sm text-text-secondary md:b-md lg:b-lg">
+                Before that I owned product strategy for Basis, New Zealand’s first smart electrical
+                panel, and redesigned onboarding for the NZ COVID Tracer app.
+              </p>
+              <p className="b-sm text-text-secondary md:b-md lg:b-lg">
+                <span className="text-text-highlight-dark">Four Best Design Awards</span>, including a
+                Purple Pin.
+              </p>
+            </div>
             <Button variant="primary" label="About me" href="/about" className="self-start" />
           </div>
         </Reveal>
