@@ -66,6 +66,8 @@ export const covid = {
   btDevicesBeforeRounded: "1.5 million",
   /** 2,006,506 - 1,494,077. */
   devicesAdded: "512,429",
+  /** Prose rounding of devicesAdded. */
+  devicesAddedRounded: "500k+",
   btGrowth: "34%",
   /** 2.7M - 1,494,077 = 1,205,923. The gap, which was narrowed, not closed. */
   gapBefore: "1.2 million",
