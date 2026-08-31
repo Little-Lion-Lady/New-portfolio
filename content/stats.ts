@@ -23,6 +23,8 @@ export const firstTable = {
   onboardingCompletionIncrease: "21%",
   /** Booking-flow conversion, six months post-launch. */
   conversionIncrease: "12.3%",
+  /** Pre-rebuild conversion through the booking flow. */
+  conversionBefore: ">10%",
   /** New Zealand, Australia, the UK and Ireland. */
   markets: 4,
   /** Same count, spelled out for prose. */
@@ -38,6 +40,8 @@ export const basis = {
   billReductionGoal: "15%",
   /** What the pilot actually delivered. */
   billReductionActual: "10%",
+  /** The band H3 predicted, written as one range so the % lands once. */
+  billReductionRange: "10–15%",
   /** H3 target: share of users setting up one automation routine in month one. */
   routineAdoptionTarget: "70 to 80%",
   /** Actual, and it landed in week one rather than month one. */

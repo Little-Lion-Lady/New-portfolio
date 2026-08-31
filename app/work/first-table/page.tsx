@@ -173,7 +173,7 @@ export default function FirstTable() {
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-4xl">
           <Stats className="md:grid-cols-3">
             <Stat size="lg" value={firstTable.appUsersShort} label="App users" />
-            <Stat size="lg" tone="highlight-dark" value=">10%" label="Conversion rate through booking flow" />
+            <Stat size="lg" tone="highlight-dark" value={firstTable.conversionBefore} label="Conversion rate through booking flow" />
             <Stat size="lg" tone="highlight-dark" value="Low" label="Repeat bookings" />
           </Stats>
           {/* Figma 1394:101595 holds this opener at B-sm on desktop rather than

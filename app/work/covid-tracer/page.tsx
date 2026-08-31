@@ -41,7 +41,7 @@ const findings = [
       "Lead screen opens with the benefit (“Trace your encounters”) and drops the mechanics below the fold",
   },
   {
-    finding: "Unfocused landing page: 38.7% success rate, 17 of 31 dropped at screen 1",
+    finding: `Unfocused landing page: ${covid.taskSuccessBefore} success rate, 17 of 31 dropped at screen 1`,
     decision:
       "Rebuilt around one primary CTA, with the supporting detail collapsed",
   },
@@ -155,9 +155,9 @@ export default function CovidTracer() {
         </Reveal>
         <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-lg">
           <Stats className="md:grid-cols-2 lg:grid-cols-4">
-            <Stat size="lg" highlight value="18%" label="Mislick rate on primary CTA" />
+            <Stat size="lg" highlight value={covid.mislickBefore} label="Mislick rate on primary CTA" />
             <Stat size="lg" highlight value={covid.taskSuccessBefore} label="Avg task success rate" />
-            <Stat size="lg" highlight value="47" label="Usability score" />
+            <Stat size="lg" highlight value={covid.usabilityScoreBefore} label="Usability score" />
             <Stat size="lg" highlight value={covid.dropoffBefore} label="Users dropped off at screen 1" />
           </Stats>
           <KeyParagraph>
@@ -257,7 +257,7 @@ export default function CovidTracer() {
             <Stat size="sm" value={`${covid.mislickBefore} → ${covid.mislickAfter}`} label="Mislick rate reduction" />
             <Stat size="sm" value={`${covid.dropoffBefore} → ${covid.dropoffAfter}`} label="Drop off reduction at step 1" />
             <Stat size="sm" value={`${covid.taskSuccessBefore} → ${covid.taskSuccessAfter}`} label="Task success" />
-            <Stat size="sm" value="47 → 81" label="Usability score improvement" />
+            <Stat size="sm" value={`${covid.usabilityScoreBefore} → ${covid.usabilityScoreAfter}`} label="Usability score improvement" />
           </Stats>
         </Reveal>
       </SectionReveal>

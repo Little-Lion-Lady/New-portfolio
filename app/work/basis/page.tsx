@@ -74,7 +74,7 @@ const journeySteps = [
 export const metadata: Metadata = {
   title: "Basis smart panel app — Maryna Babych",
   description:
-    "Basis built smart electrical hardware for NZ homes. They knew they needed a companion app, but had no PO, no product brief, and no defined direction. I stepped in to own the strategy, run the research, and design an app that reduced household energy bills by 10% in the first pilot.",
+    `Basis built smart electrical hardware for NZ homes. They knew they needed a companion app, but had no PO, no product brief, and no defined direction. I stepped in to own the strategy, run the research, and design an app that reduced household energy bills by ${basis.billReductionActual} in the first pilot.`,
 };
 
 export default function Basis() {
@@ -88,7 +88,7 @@ export default function Basis() {
             titleTop="Basis"
             titleBottom="smart panel app"
             lead="How I built a product strategy when there was no product owner to hand it to me"
-            description="Basis built smart electrical hardware for NZ homes. They knew they needed a companion app, but had no PO, no product brief, and no defined direction. I stepped in to own the strategy, run the research, and design an app that reduced household energy bills by 10% in the first pilot."
+            description={`Basis built smart electrical hardware for NZ homes. They knew they needed a companion app, but had no PO, no product brief, and no defined direction. I stepped in to own the strategy, run the research, and design an app that reduced household energy bills by ${basis.billReductionActual} in the first pilot.`}
             meta={[
               { label: "Role_", value: "Senior Product Designer" },
               { label: "Scope_", value: "Product strategy · UX/UI · Research" },
@@ -230,7 +230,7 @@ export default function Basis() {
             size="sm"
             believe="Showing energy usage in dollars rather than kilowatt-hours will make data more relatable and actionable for homeowners."
             because="It simplifies energy metrics into a format users can immediately act on."
-            metric="Users who engage with insights 3x/month will show a 10% bill reduction within 6 months."
+            metric={`Users who engage with insights 3x/month will show a ${basis.billReductionActual} bill reduction within 6 months.`}
           />
           <Divider />
           <Hypothesis
@@ -244,7 +244,7 @@ export default function Basis() {
           <Hypothesis
             label="H3"
             size="sm"
-            believe="An automation feature that lets users schedule and manage electricity supply will result in a 10–15% reduction in bills."
+            believe={`An automation feature that lets users schedule and manage electricity supply will result in a ${basis.billReductionRange} reduction in bills.`}
             because="Strategic power-down during peak pricing hours optimises consumption without requiring ongoing effort."
             metric={`${basis.routineAdoptionTarget} of users set up at least one automation routine in their first month, and those users show a 10 to ${basis.billReductionGoal} bill reduction within six months.`}
           />
