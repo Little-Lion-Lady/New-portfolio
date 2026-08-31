@@ -80,9 +80,13 @@ export default function About() {
               I lead{" "}
               <span className="text-text-highlight-dark">design direction, systems and research</span>{" "}
               without a reporting line, which keeps me close to the craft and the data.
-              I&apos;ve been designing products since 2018. Agency work taught me to move fast and
-              not to be afraid of making mistakes or asking questions. Product work taught me how
-              to advocate for users and to own things past launch. So I care as much about{" "}
+              I&apos;ve been designing products since 2018. My career started at an agency, working
+              with clients like{" "}
+              <span className="text-text-highlight-dark">Visa, EROAD and Google</span>, and ultimately
+              designing the{" "}
+              <span className="text-text-highlight-dark">NZ COVID Tracer app</span>. Agency work
+              taught me to move fast and not to be afraid of making mistakes or asking questions.
+              Product work taught me how to advocate for users and to own things past launch. So I care as much about{" "}
               <span className="text-text-highlight-dark">understanding the people</span>{" "}
               I&apos;m designing for as I do about{" "}
               <span className="text-text-highlight-dark">design craft</span>. My favourite part is{" "}
