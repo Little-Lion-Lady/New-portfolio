@@ -77,6 +77,9 @@ export default function About() {
           {/* Description + CV button */}
           <div className="flex flex-col gap-3xl md:pb-2xl wide:col-start-1 wide:col-span-5">
             <p className="b-xs text-text-secondary md:b-sm">
+              I lead{" "}
+              <span className="text-text-highlight-dark">design direction, systems and research</span>{" "}
+              without a reporting line, which keeps me close to the craft and the data.
               I&apos;ve been designing products since 2018. Agency work taught me to move fast and
               not to be afraid of making mistakes or asking questions. Product work taught me how
               to advocate for users and to own things past launch. So I care as much about{" "}
