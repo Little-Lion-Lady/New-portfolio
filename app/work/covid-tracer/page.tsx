@@ -246,9 +246,10 @@ export default function CovidTracer() {
           <SectionHeader number="05" name="Validation" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg">
-          <KeyParagraph lead="Two rounds. Each one answered a specific question.">
-            Each round had a clear “therefore”. Findings went straight into the next
-            iteration instead of being logged and filed.
+          <KeyParagraph>
+            What I really needed to know: would people turn Bluetooth on, and did they understand it
+            doesn’t replace scanning posters? Getting that wrong meant they’d think they were
+            protected when they weren’t.
           </KeyParagraph>
           <Stats rowGap="gap-y-2xl md:gap-y-lg" className="md:grid-cols-2 lg:grid-cols-4">
             <Stat size="sm" value={`${covid.mislickBefore} → ${covid.mislickAfter}`} label="Mislick rate reduction" />
