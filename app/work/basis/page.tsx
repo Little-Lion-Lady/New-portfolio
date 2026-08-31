@@ -172,7 +172,7 @@ export default function Basis() {
         <Reveal index={3} delay={0.6} className="flex w-full flex-col gap-r-lg">
           <KeyParagraph lead="The research shifted our entire framing" leadTone="primary" scale="b-xs md:b-sm">
             I ran three phases of research. Each one changed how we thought about the
-            product — and the third made us rethink the category we were designing for.
+            product, and the third made us rethink the category we were designing for.
           </KeyParagraph>
           <ResearchFindings
             method="Existing research + Competitive analysis"
@@ -183,7 +183,7 @@ export default function Basis() {
           <ResearchFindings
             method="Card sort"
             primary="Users prioritised Energy Control over Insights. Safety was treated as a baseline expectation."
-            secondary="Bundling Control and Insights had the most impact together. Safety was already expected — it wasn’t a feature worth leading with."
+            secondary="Bundling Control and Insights had the most impact together. Safety was already expected: it wasn’t a feature worth leading with."
             implication="Control first in IA. Insights bundled. Safety ambient, never interruptive."
           />
         </Reveal>
@@ -192,7 +192,7 @@ export default function Basis() {
       {/* Insight — between 03 and 04, no dividers */}
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
         <Insight>
-          Users expected safety by default — it wasn’t a differentiator. The real value was the
+          Users expected safety by default: it wasn’t a differentiator. The real value was the
           financial control electricity gave them over their spending. Safety had to disappear
           into infrastructure for that control to feel trustworthy.
         </Insight>
@@ -246,7 +246,7 @@ export default function Basis() {
             size="sm"
             believe="An automation feature that lets users schedule and manage electricity supply will result in a 10–15% reduction in bills."
             because="Strategic power-down during peak pricing hours optimises consumption without requiring ongoing effort."
-            metric="Users who engage with insights 3x/month will show a 10% bill reduction within 6 months."
+            metric={`${basis.routineAdoptionTarget} of users set up at least one automation routine in their first month, and those users show a 10 to ${basis.billReductionGoal} bill reduction within six months.`}
           />
         </Reveal>
       </SectionReveal>
@@ -266,7 +266,7 @@ export default function Basis() {
             Story mapping revealed a wide feature space with more to build than the timeline
             and budget could support. Research said users wanted control. The business needed
             engagement to support the subscription model. Option C was the only path that
-            answered both — and it mapped directly to the hypotheses we’d already validated.
+            answered both, and it mapped directly to the hypotheses we’d already validated.
           </KeyParagraph>
           <OptionCards>
             <OptionCard label="Option A" title="Full control suite">
@@ -307,13 +307,13 @@ export default function Basis() {
           <KeyParagraph className="lg:max-w-[1092px]">
             I ran a collaborative Design Studio with the design and development teams to
             establish direction. Before any screens were signed off, three design principles
-            emerged from the workshop — and every subsequent decision was checked against them.
+            emerged from the workshop, and every subsequent decision was checked against them.
           </KeyParagraph>
           {/* The three principles hold B-xs until desktop, where they step to
               B-sm rather than B-md (Figma 1613:139385). */}
           <div className="flex flex-col gap-lg md:grid md:grid-cols-3 md:gap-lg">
             <KeyParagraph lead="Dollars, not kWh" scale="b-xs lg:b-sm">
-              All energy data translated to cost. Actionable by default — no mental conversion
+              All energy data translated to cost. Actionable by default: no mental conversion
               required.
             </KeyParagraph>
             <KeyParagraph lead="Safety as ambient" scale="b-xs lg:b-sm">
@@ -328,7 +328,7 @@ export default function Basis() {
           <SolutionMedia />
           <div className="flex w-full flex-col gap-3xl md:grid md:grid-cols-2 md:items-start md:gap-x-lg md:gap-y-0">
             <KeyParagraph
-              label="Prototype testing — n=6 · What it validated"
+              label="Prototype testing: n=6 · What it validated"
               lead="Dollars framing worked immediately"
               leadTone="primary"
               scale="b-xs md:b-sm"
@@ -356,6 +356,30 @@ export default function Basis() {
           <SectionHeader number="06" name="Outcome" />
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg">
+          <KeyParagraph>
+            The Basis Panel hadn’t gone to broad market yet. We ran a feature pilot with a small
+            group of participants as part of compliance testing and user research. What follows is
+            pilot data, not market data.
+          </KeyParagraph>
+          {/* Three paragraphs inside Column's single body <p>: block spans
+              rather than nested <p>s, which would be invalid, and separated at
+              the same gap-r-sm the homepage backstory uses. */}
+          <Column label="Goal and result" textClassName="b-xs md:b-sm lg:b-md">
+            <span className="block">
+              We set out to cut household bills by {basis.billReductionGoal}. The pilot delivered{" "}
+              {basis.billReductionActual}.
+            </span>
+            <span className="mt-r-sm block">
+              The gap was hardware, not design. V1 of the panel couldn’t store energy or redirect its
+              flow, which ruled the solar features out of scope. Those were the features carrying the
+              last five points.
+            </span>
+            <span className="mt-r-sm block">
+              What the {basis.billReductionActual} did prove was the thing the strategy rested on:
+              translating kilowatt-hours into dollars changed behaviour, and automation, not
+              information, was the lever that moved bills.
+            </span>
+          </Column>
           <div className="flex w-full flex-col gap-3xl md:grid md:grid-cols-8 md:gap-lg lg:grid-cols-12">
             <Stat
               size="outcome"
@@ -369,14 +393,20 @@ export default function Basis() {
               className="md:col-span-4 lg:col-start-5"
               value={basis.routineAdoptionActual}
               label="Users created an energy routine in week one"
-              sublabel="Validates automation hypothesis"
+              sublabel={`Against a target of ${basis.routineAdoptionTarget} in the first month`}
             />
           </div>
           {/* Figma 1613:139410 — one labelled row now, not two stacked key
               paragraphs, and it steps up to B-md on desktop. */}
+          <KeyParagraph>
+            H2 is the one I can’t close. The perceived-control metric needed three months of
+            longitudinal data we never collected, and V1 shipped with a narrower control feature set
+            than the hypothesis assumed. So it is untested rather than validated. The behavioural
+            proxy points the right way, since {basis.routineAdoptionActual} of users set up a routine
+            in week one, but adoption is not the same as feeling in control.
+          </KeyParagraph>
           <Column label="Closing the loop" textClassName="b-xs md:b-sm lg:b-md">
-            Both hypotheses validated within one month of launch. While at the end of my
-            tenure on the project the app rating score doubled.
+            Two of the three hypotheses validated during the pilot. The third is covered above.
           </Column>
           <BasisOutcomeMedia />
         </Reveal>
