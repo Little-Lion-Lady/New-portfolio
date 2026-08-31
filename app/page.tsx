@@ -170,7 +170,7 @@ export default function Home() {
               </p>
               <p className="b-sm text-text-secondary md:b-md lg:b-lg">
                 Before that I owned product strategy for Basis, New Zealand’s first smart electrical
-                panel, and redesigned onboarding for the NZ COVID Tracer app.
+                panel, and designed the NZ COVID Tracer app.
               </p>
               <p className="b-sm text-text-secondary md:b-md lg:b-lg">
                 <span className="text-text-highlight-dark">Four Best Design Awards</span>, including a
