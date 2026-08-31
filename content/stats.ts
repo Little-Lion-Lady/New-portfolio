@@ -43,6 +43,8 @@ export const basis = {
   /** Actual, and it landed in week one rather than month one. */
   routineAdoptionActual: "85%",
   pilotLength: "6-month",
+  /** Same length, spelled out for prose. */
+  pilotLengthWord: "six-month",
 } as const;
 
 export const covid = {
