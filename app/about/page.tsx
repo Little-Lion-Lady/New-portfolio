@@ -81,21 +81,16 @@ export default function About() {
                 enough apart to read as separate sections. */}
             <div className="flex flex-col gap-r-sm">
               <p className="b-xs text-text-secondary md:b-sm">
-                For 9 years I&apos;ve been designing products with the teams that build them, in
-                agencies, a hardware startup, and now an international marketplace product. My aim is
-                simple: make the product{" "}
-                <span className="text-text-highlight-dark">obvious to use</span> and give the team the
+                I&apos;ve been designing products with the teams that build them, in agencies,
+                startups, and now an international marketplace. Agency work taught me to move fast
+                and ask the dumb question early. Product work taught me to own things past launch.
+                Both left me with the same aim: make the product easy to use, and give the team the
                 systems and evidence to keep it that way.
               </p>
               <p className="b-xs text-text-secondary md:b-sm">
-                I lead{" "}
-                <span className="text-text-highlight-dark">design direction, systems and research</span>{" "}
-                without a reporting line, which keeps me close to the craft and the data. Agency work
-                taught me to move fast and ask the dumb question early. Product work taught me to{" "}
-                <span className="text-text-highlight-dark">own things past launch</span>. My favourite
-                part is still figuring out what&apos;s possible with product and engineering before I
-                fall for something nobody can build. Whatever we ship has to be{" "}
-                <span className="text-text-highlight-dark">delightful, impactful and easy to use</span>.
+                I lead design direction, systems and research while staying on the tools. My
+                favourite part is still working out what&apos;s possible with product and
+                engineering before I fall for something nobody can build.
               </p>
             </div>
             <Button
@@ -133,11 +128,11 @@ export default function About() {
                         Desktop: 6-col (role+org 1-2 | project 3-4 | year 6). */}
                     <div className="hidden md:grid md:grid-cols-3 md:gap-x-lg md:items-start lg:grid-cols-6">
                       <div className="flex flex-col md:col-span-1 lg:col-span-2">
-                        <p className="b-sm text-text-secondary">{e.role}</p>
-                        <p className="b-sm text-text-tertiary">{e.org}</p>
+                        <p className="b-xs text-text-secondary">{e.role}</p>
+                        <p className="b-xs text-text-tertiary">{e.org}</p>
                       </div>
-                      <p className="b-sm text-text-secondary md:col-span-1 lg:col-start-3 lg:col-span-2">{e.project}</p>
-                      <p className="b-sm text-text-secondary text-right md:col-span-1 lg:col-start-6">{e.year}</p>
+                      <p className="b-xs text-text-secondary md:col-span-1 lg:col-start-3 lg:col-span-2">{e.project}</p>
+                      <p className="b-xs text-text-secondary text-right md:col-span-1 lg:col-start-6">{e.year}</p>
                     </div>
                   </Fragment>
                 ))}
@@ -167,10 +162,10 @@ export default function About() {
                     {/* Tablet and desktop share Figma's 6-col awards grid
                         (project 1-2 | award 3-5 | year↗ 6). */}
                     <div className="hidden md:grid md:grid-cols-6 md:gap-x-lg md:items-start">
-                      <p className="b-sm text-text-secondary transition-colors md:col-span-2 group-hover:text-text-primary">{a.project}</p>
-                      <p className="b-sm text-text-secondary transition-colors md:col-start-3 md:col-span-3 group-hover:text-text-primary">{a.award}</p>
+                      <p className="b-xs text-text-secondary transition-colors md:col-span-2 group-hover:text-text-primary">{a.project}</p>
+                      <p className="b-xs text-text-secondary transition-colors md:col-start-3 md:col-span-3 group-hover:text-text-primary">{a.award}</p>
                       <div className="flex items-center justify-end gap-3xs text-text-secondary transition-colors md:col-start-6 group-hover:text-text-primary">
-                        <p className="b-sm">{a.year}</p>
+                        <p className="b-xs">{a.year}</p>
                         <ArrowUpRightSmall className="size-lg transition-transform duration-200 ease-out group-hover:translate-x-[3px] group-hover:-translate-y-[3px] group-hover:scale-[1.1]" />
                       </div>
                     </div>

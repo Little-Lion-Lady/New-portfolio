@@ -151,17 +151,15 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-r-xl lg:col-start-1 lg:col-span-7 lg:row-start-1">
             {/* Key paragraph — B-sm → B-md → B-lg */}
-            <p className="b-sm text-text-secondary md:b-md lg:b-lg">
-              I&apos;m a lead product designer, and a{" "}
-              <span className="text-text-highlight-dark">senior IC by choice</span>. Nine years in,
-              I&apos;ve taken products from{" "}
+            <p className="b-sm text-text-secondary md:b-md lg:b-md">
+              With 9+ years of experience, I&apos;ve taken products from{" "}
               <span className="text-text-highlight-dark">0→1</span>{" "}
-              and brought tired ones back to
-              life. I like working in the open with engineers and PMs, and I&apos;d rather hand a team
-              a <span className="text-text-highlight-dark">design system and a testing habit</span>{" "}
-              than a folder of files. My work has reached millions of users across three continents
-              and won <span className="text-text-highlight-dark">four Best Design Awards</span>, one a
-              Purple Pin.
+              and brought tired ones back to life. I work in the open with engineers and PMs, and I
+              care as much about{" "}
+              <span className="text-text-highlight-dark">how a team works as what it ships</span>:
+              shared systems, testing habits, people getting better at their craft. My work has
+              reached millions of users across three continents and won{" "}
+              <span className="text-text-highlight-dark">four Best Design Awards</span>.
             </p>
             <Button variant="primary" label="About me" href="/about" className="self-start" />
           </div>

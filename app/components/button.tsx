@@ -48,9 +48,10 @@ const primaryPressTintVariants = {
 //   link    (Type=Link,   Size=lg) — oversized text link (footer socials), text-primary-highlight
 //   view    (Type=Link,   Size=sm) — mono uppercase inline link ("View"), text-primary
 // Every size/gap/padding/colour below is taken from the Figma component spec,
-// except the primary pill's right padding: it always ends in a trailing arrow,
-// so it runs two spacing steps wider than Figma to keep the icon off the edge,
-// which lands it level with the left padding at every breakpoint.
+// except the primary pill: its label, padding and arrow each sit one step below
+// Figma's Size=lg spec at every breakpoint, so the pill reads lighter next to
+// the body copy. Its left and right padding stay level with each other (the
+// trailing arrow would otherwise crowd the right edge).
 // Labels run at --font-weight-book (460) across all three variants — the type
 // utilities set 400/500 at each breakpoint, so it needs `!` to win at lg.
 type Variant = "primary" | "link" | "view";
@@ -141,7 +142,7 @@ export function Button({
       animate="rest"
       variants={primaryScaleVariants}
       transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`relative inline-flex items-center gap-2xs overflow-hidden rounded-full pl-xl pr-xl py-sm b-xs text-text-inverted md:gap-xs md:pl-2xl md:pr-2xl md:py-md md:b-sm lg:gap-2xs lg:pl-3xl lg:pr-3xl lg:py-md lg:b-md [font-weight:var(--font-weight-book)]! ${className}`}
+      className={`relative inline-flex items-center gap-2xs overflow-hidden rounded-full pl-lg pr-lg py-xs b-2xs text-text-inverted md:gap-xs md:pl-xl md:pr-xl md:py-sm md:b-xs lg:gap-2xs lg:pl-2xl lg:pr-2xl lg:py-sm lg:b-sm [font-weight:var(--font-weight-book)]! ${className}`}
       style={{
         boxShadow:
           "0 10px 10px -10px var(--shadows-shadow-01), 0 10px 30px 1px var(--shadows-shadow-02)",
@@ -164,11 +165,11 @@ export function Button({
       <span className="relative whitespace-nowrap">{label}</span>
       {external ? (
         <span className="relative inline-flex shrink-0">
-          <ArrowUpRightSmall className="size-lg md:size-xl" />
+          <ArrowUpRightSmall className="size-md md:size-lg" />
         </span>
       ) : (
         <span className="relative inline-flex shrink-0">
-          <ArrowRight className="size-lg md:size-xl" />
+          <ArrowRight className="size-md md:size-lg" />
         </span>
       )}
       {/* Glow overlay — tightens and brightens on hover */}
