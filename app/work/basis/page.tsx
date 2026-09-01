@@ -353,9 +353,8 @@ export default function Basis() {
               {basis.billReductionActual}.
             </span>
             <span className="mt-r-sm block">
-              The gap was hardware, as later the panel’s hardware functionality was Descript to
-              remove solar battery integration for Generation 1. store energy or redirect its flow,
-              which ruled the solar features out of scope.
+              The gap was hardware, as the panel’s hardware functionality was descoped to remove
+              solar battery integration from Generation 1 panel.
             </span>
             <span className="mt-r-sm block">
               What the {basis.billReductionActual} did prove was the thing the strategy rested on:
