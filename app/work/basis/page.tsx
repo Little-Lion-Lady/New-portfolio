@@ -370,11 +370,6 @@ export default function Basis() {
               panel.
             </span>
             <span className="mt-r-sm block">
-              The {basis.billReductionActual} still proved the thing the strategy rested on. Showing
-              kilowatt-hours as dollars changed behaviour, and automation, not information, was what
-              actually moved bills.
-            </span>
-            <span className="mt-r-sm block">
               H2 I couldn’t close. Measuring perceived control needed three months of longitudinal
               data we never collected, and V1 shipped a narrower control set than the hypothesis
               assumed.
@@ -401,9 +396,9 @@ export default function Basis() {
       {/* Case study nav */}
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
         <CaseStudyNav
-          title="NZ COVID Tracer app"
-          href="/work/covid-tracer"
-          image={{ src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" }}
+          title="First Table booking app"
+          href="/work/first-table"
+          image={{ src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" }}
         />
       </Reveal>
 

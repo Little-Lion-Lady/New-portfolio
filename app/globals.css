@@ -1461,3 +1461,43 @@ textarea,
     cursor: auto;
   }
 }
+
+/* ============================================================
+   REVEAL SAFETY FLOOR
+
+   Every <Reveal> and every RevealWords token starts at opacity 0 (plus a
+   blur) and only JavaScript takes that away. A hydration error, a throttled
+   background tab, or a device that cannot afford filter:blur() on large image
+   blocks therefore leaves the page blank rather than merely unanimated, and
+   the `once: true` observers make it unrecoverable.
+
+   CSS animations sit above the style attribute in the cascade, so this floor
+   overrides Framer's inline hidden state with no !important and without
+   disturbing the real animation while it runs: during the delay the animation
+   contributes nothing at all.
+
+   Trade-off to weigh: the timer starts at page load for every reveal on the
+   page, not when one scrolls into view. Someone who idles at the top for the
+   full delay and then scrolls finds the lower sections already visible rather
+   than fading in. 10s sits well past the home hero's own 5s intro while
+   keeping the worst-case blank window short.
+   ============================================================ */
+@keyframes reveal-safety-floor {
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+.reveal-safety {
+  animation: reveal-safety-floor 300ms linear 10s forwards;
+}
+
+/* Reduced motion still relies on JS for the same reveal, so it needs the same
+   floor - just without the fade. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-safety {
+    animation-duration: 1ms;
+  }
+}

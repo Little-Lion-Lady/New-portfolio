@@ -226,6 +226,7 @@ export function Reveal({
   duration,
   intro = false,
   immediate = false,
+  noSafetyFloor = false,
   className,
   style,
 }: {
@@ -244,6 +245,16 @@ export function Reveal({
    */
   intro?: boolean;
   immediate?: boolean;
+  /**
+   * Opt out of the CSS safety floor (see .reveal-safety in globals.css).
+   * The floor animates filter/transform, and an element running such an
+   * animation becomes a backdrop root even while the computed values are
+   * `none` — which silently kills `backdrop-filter` on every descendant. Set
+   * this on a reveal that wraps frosted-glass chrome. Only reach for it on a
+   * reveal that plays on mount (`immediate`) rather than on scroll, since it
+   * gives up the blank-page insurance the floor exists to provide.
+   */
+  noSafetyFloor?: boolean;
   className?: string;
   style?: CSSProperties;
 }) {
@@ -273,7 +284,9 @@ export function Reveal({
   return (
     <Component
       ref={ref as unknown as React.RefObject<HTMLDivElement>}
-      className={className}
+      className={
+        noSafetyFloor ? className : className ? `reveal-safety ${className}` : "reveal-safety"
+      }
       style={style}
       custom={{ i: index, delay, duration }}
       initial="hidden"
@@ -398,6 +411,7 @@ export function RevealWords({
       {tokens.map((token, i) => (
         <m.span
           key={i}
+          className="reveal-safety"
           style={{ display: "inline-block", whiteSpace: "pre-wrap" }}
           custom={{ i: startIndex + i, delay, duration: timing.duration, stagger: timing.stagger }}
           initial="hidden"

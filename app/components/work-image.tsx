@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
+import { IMAGE_RATIOS } from "./image-ratios";
 
 export type WorkImageData = {
   src: string;
@@ -213,15 +214,27 @@ export function GlassImage({
 //   breakpoint   card         gap
 //   mobile       380 × 260    spacing-sm  12px
 //   tablet       480 × 340    spacing-md  16px
-//   desktop      660 × 400    spacing-xl  24px   (size="md")
-//   desktop      660 × 500    spacing-xl  24px   (size="lg", case-study heroes)
+//   desktop      400 tall     spacing-xl  24px   (both sizes)
 //
-// Only the desktop height differs between the two sizes. Heights are unchanged
-// from the Figma frames; the cards were widened past them, so each one crops
-// more off the top and bottom of its photo and less off the sides.
+// Cards are sized by HEIGHT only — the row shares one height per breakpoint and
+// each card's width falls out of its photo's own ratio (IMAGE_RATIOS), so
+// nothing is cropped and a rail carries portrait and landscape shapes together.
+// `size` no longer changes anything: the case-study heroes used to run 500 tall
+// on desktop and now match the home rows at 400.
 const CARD_CLASS = {
   md: "h-[260px] w-[380px] md:h-[340px] md:w-[480px] lg:h-[400px]",
-  lg: "h-[260px] w-[380px] md:h-[340px] md:w-[480px] lg:h-[500px]",
+  lg: "h-[260px] w-[380px] md:h-[340px] md:w-[480px] lg:h-[400px]",
+} as const;
+
+// Height-only card: the row shares one height at every
+// breakpoint and each card's width falls out of its photo's own ratio, so
+// nothing is cropped and the rail carries a mix of portrait and landscape
+// shapes the way a contact sheet does. Paired with frameAspectRatio on
+// <GlassImage>, which is the existing mechanism for "size the frame to the
+// photo" (see its docs above) rather than a new one.
+const CARD_HEIGHT_CLASS = {
+  md: "h-[260px] w-auto md:h-[340px] lg:h-[400px]",
+  lg: "h-[260px] w-auto md:h-[340px] lg:h-[400px]",
 } as const;
 
 // Desktop width lives apart from CARD_CLASS so a per-image override REPLACES
@@ -265,17 +278,62 @@ export function ImageCarousel({
   speedScale?: number;
   className?: string;
 }) {
-  const card = (image: WorkImageData, key: string, gap: boolean) => (
-    <GlassImage
-      key={key}
-      src={image.src}
-      alt={image.alt}
-      quality={image.quality}
-      sizes={`(min-width: 1024px) ${image.lgWidth?.px ?? 660}px, (min-width: 768px) 480px, 380px`}
-      loading="eager"
-      className={`shrink-0 ${CARD_CLASS[size]} ${image.lgWidth?.class ?? CARD_LG_WIDTH}${gap ? " mr-sm md:mr-md lg:mr-xl" : ""}`}
-    />
-  );
+  const card = (image: WorkImageData, key: string, gap: boolean) => {
+    // A known intrinsic ratio switches the card from a fixed
+    // box to a fixed height. The per-image lgWidth override existed to undo a
+    // bad crop, so it is skipped when the real ratio is available.
+    const ratio = IMAGE_RATIOS[image.src];
+    const margin = gap ? " mr-sm md:mr-md lg:mr-xl" : "";
+    if (ratio) {
+      return (
+        <GlassImage
+          key={key}
+          src={image.src}
+          alt={image.alt}
+          quality={image.quality}
+          frameAspectRatio={ratio}
+          sizes="(min-width: 1024px) 720px, (min-width: 768px) 560px, 420px"
+          loading="eager"
+          className={`shrink-0 ${CARD_HEIGHT_CLASS[size]}${margin}`}
+        />
+      );
+    }
+    return (
+      <GlassImage
+        key={key}
+        src={image.src}
+        alt={image.alt}
+        quality={image.quality}
+        sizes={`(min-width: 1024px) ${image.lgWidth?.px ?? 660}px, (min-width: 768px) 480px, 380px`}
+        loading="eager"
+        className={`shrink-0 ${CARD_CLASS[size]} ${image.lgWidth?.class ?? CARD_LG_WIDTH}${margin}`}
+      />
+    );
+  };
+
+  // Native-ratio cards make a set narrower than the old
+  // 660px-each set, and the marquee duration covers exactly one set — so
+  // without this every row would read slower than it does today, and rows
+  // would drift apart from each other again. Scale the duration by the set's
+  // real width against the reference the base duration was measured on (the
+  // home page's five-card desktop row, 3420px), which holds every rail at the
+  // same px/s. An explicitly passed speedScale still wins.
+  const naturalScale = (() => {
+    if (speedScale !== undefined) return undefined;
+    const CARD_H = 400;
+    const GAP = 24; // spacing-xl at lg
+    const REFERENCE_SET = 3420;
+    let total = 0;
+    for (const image of images) {
+      const ratio = IMAGE_RATIOS[image.src];
+      if (!ratio) return undefined; // mixed row: leave the timing alone
+      const [w, h] = ratio.split("/").map(Number);
+      if (!w || !h) return undefined;
+      total += (CARD_H * w) / h + GAP;
+    }
+    return total / REFERENCE_SET;
+  })();
+  const scale = speedScale ?? naturalScale;
 
   if (!marquee) {
     return (
@@ -296,7 +354,7 @@ export function ImageCarousel({
     <div className={`w-[calc(100%+var(--page-gutter)*2)] overflow-hidden ${className}`}>
       <div
         className={`image-marquee-track flex w-max items-center${reverse ? " image-marquee-track--reverse" : ""}`}
-        style={speedScale ? ({ "--image-marquee-scale": speedScale } as CSSProperties) : undefined}
+        style={scale ? ({ "--image-marquee-scale": scale } as CSSProperties) : undefined}
       >
         {images.map((image) => card(image, `a-${image.src}`, true))}
         {/* Duplicate set — decorative only, so it stays out of the a11y tree. */}

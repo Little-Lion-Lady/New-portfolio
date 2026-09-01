@@ -67,7 +67,7 @@ export function SiteFooter() {
 
       {/* Colophon — M-xs → M-md → M-lg */}
       <div className="col-start-1 col-span-4 row-start-3 flex items-center md:col-span-3 md:-mb-lg dt:col-span-2 dt:row-start-2 dt:pt-4xl dt:!-mb-2xl">
-        <p className="b-2xs text-text-tertiary pb-3xs md:pb-0 md:b-sm lg:b-sm dt:b-md">©2026_Maryna_Babych</p>
+        <p className="b-2xs text-text-tertiary pb-3xs md:pb-0 md:b-sm lg:b-xs dt:b-sm">©2026_Maryna_Babych</p>
       </div>
 
       {/* Wordmark — FitText measures and scales to exactly fill viewport width. */}

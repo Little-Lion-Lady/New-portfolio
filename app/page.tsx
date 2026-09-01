@@ -59,7 +59,11 @@ export default function Home() {
             revealDelay={0}
             className="pointer-events-none absolute left-[3%] -top-[28px] w-8 md:left-[2%] md:-top-[36px] md:w-11 lg:left-[2%] lg:-top-[44px] lg:w-14"
           />
-          <Reveal as="div" delay={2.3} noY intro className="flex h-full w-full items-end">
+          {/* noSafetyFloor: the Divider below carries a backdrop-blur, which a
+              reveal running the safety-floor animation would empty out (the
+              animation makes its element a backdrop root). Part of the hero
+              intro, so it plays on mount and needs no floor. */}
+          <Reveal as="div" delay={2.3} noY intro noSafetyFloor className="flex h-full w-full items-end">
             <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
             <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[30px] max-w-[296px] md:-ml-[64px] md:max-w-[636px] md:min-h-[200px] md:max-h-[280px] lg:-ml-[3.6vw] lg:max-w-[36vw] lg:min-h-[300px]" />
           </Reveal>
@@ -102,6 +106,21 @@ export default function Home() {
               // Middle item counter-scrolls, so the three rows don't all drift
               // the same way.
               reverseMarquee
+              name="NZ COVID Tracer app"
+              description={`${covid.installs} New Zealanders downloaded the COVID Tracer app. Only ${covid.btActivationRateBefore} turned on Bluetooth Tracing, the part that logged contacts automatically. I redesigned the onboarding and half a million more people switched it on.`}
+              roles="Onboarding, Research, Usability"
+              href="/work/covid-tracer"
+              images={[
+                { src: "/home/work/covid-tracer/MOH0.jpg", alt: "NZ COVID Tracer app screen" },
+                { src: "/home/work/covid-tracer/MOH1.5.jpg", alt: "NZ COVID Tracer app screen" },
+                { src: "/home/work/covid-tracer/MOH2.jpg", alt: "NZ COVID Tracer app screen" },
+                { src: "/home/work/covid-tracer/MOH3.jpg", alt: "NZ COVID Tracer app screen" },
+              ]}
+            />
+          </Reveal>
+          <Reveal index={3} className="w-full">
+            <WorkItem
+              number="SW/03"
               name="Basis home app"
               description={`The companion app for New Zealand’s first smart electrical panel, built with no product owner and no brief. I owned the strategy. The ${basis.pilotLengthWord} pilot cut household energy bills by ${basis.billReductionActual}.`}
               roles="UX/UI, Research, Product strategy"
@@ -116,21 +135,6 @@ export default function Home() {
                 { src: "/home/work/basis/BS2.jpg", alt: "Basis home app screen" },
                 { src: "/home/work/basis/BS3.png", alt: "Basis home app screen" },
                 { src: "/home/work/basis/BS4.png", alt: "Basis home app screen", quality: 75 },
-              ]}
-            />
-          </Reveal>
-          <Reveal index={3} className="w-full">
-            <WorkItem
-              number="SW/03"
-              name="NZ COVID Tracer app"
-              description={`${covid.installs} New Zealanders downloaded the COVID Tracer app. Only ${covid.btActivationRateBefore} turned on Bluetooth Tracing, the part that logged contacts automatically. I redesigned the onboarding and half a million more people switched it on.`}
-              roles="Onboarding, Research, Usability"
-              href="/work/covid-tracer"
-              images={[
-                { src: "/home/work/covid-tracer/MOH0.jpg", alt: "NZ COVID Tracer app screen" },
-                { src: "/home/work/covid-tracer/MOH1.5.jpg", alt: "NZ COVID Tracer app screen" },
-                { src: "/home/work/covid-tracer/MOH2.jpg", alt: "NZ COVID Tracer app screen" },
-                { src: "/home/work/covid-tracer/MOH3.jpg", alt: "NZ COVID Tracer app screen" },
               ]}
             />
           </Reveal>

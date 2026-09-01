@@ -362,9 +362,9 @@ export default function FirstTable() {
       {/* Case study nav */}
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
         <CaseStudyNav
-          title="Basis Home app"
-          href="/work/basis"
-          image={{ src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" }}
+          title="NZ COVID Tracer app"
+          href="/work/covid-tracer"
+          image={{ src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" }}
         />
       </Reveal>
 

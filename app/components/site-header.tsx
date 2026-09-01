@@ -38,7 +38,14 @@ export function SiteHeader({ revealDelay = 0, intro = false }: { revealDelay?: n
   // screenshots that fill the First Table page in dark mode.
   const tone = useBackdropTone(navRef);
   const pathname = usePathname();
+  // "Work" points back at the home page's work section, so it is offered
+  // everywhere except home itself — About, the three case studies and the 404.
+  // "About" is offered everywhere except the About page. Case studies and the
+  // 404 therefore carry BOTH, which is the only case needing two nav cells.
   const isAbout = pathname === "/about";
+  const showWork = pathname !== "/";
+  const showAbout = !isAbout;
+  const bothLinks = showWork && showAbout;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 0);
@@ -52,7 +59,11 @@ export function SiteHeader({ revealDelay = 0, intro = false }: { revealDelay?: n
       {/* Fades in with the same blur-and-opacity Reveal as the page content.
           `immediate` rather than the in-view gate: the header is fixed and
           always on screen, so there is nothing to scroll into view. */}
-      <Reveal immediate noY intro={intro} delay={revealDelay}>
+      {/* noSafetyFloor: the pill's backdrop-blur is the whole point of the
+          glass surface, and a reveal running the safety-floor animation turns
+          itself into a backdrop root, which empties that blur. This reveal
+          plays on mount, so it is not the one the floor is insuring against. */}
+      <Reveal immediate noY noSafetyFloor intro={intro} delay={revealDelay}>
         <nav
           ref={navRef}
           className="pointer-events-auto relative grid grid-cols-4 items-center gap-sm rounded-xs p-xs transition-colors duration-300 md:grid-cols-9 md:gap-x-lg md:gap-y-md md:rounded-sm md:p-md lg:grid-cols-12"
@@ -89,18 +100,26 @@ export function SiteHeader({ revealDelay = 0, intro = false }: { revealDelay?: n
           <p className="relative hidden whitespace-nowrap b-3xs text-text-primary transition-colors md:col-start-3 md:col-span-3 md:block lg:col-start-3 lg:col-span-2 lg:b-2xs">
             Lead Product Designer
           </p>
-          {isAbout && (
+          {/* Work stays hidden on mobile — the pill has no room for a second
+              link there, and About is the more useful of the two. */}
+          {showWork && (
             <Link
               href="/#work"
-              className="relative hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-start-6 md:col-span-2 md:block md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs"
+              className={`relative hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:block md:justify-self-start lg:col-span-1 lg:b-2xs ${
+                bothLinks
+                  ? "md:col-start-6 md:col-span-1 lg:col-start-10"
+                  : "md:col-start-6 md:col-span-2 lg:col-start-11"
+              }`}
             >
               Work
             </Link>
           )}
-          {!isAbout && (
+          {showAbout && (
             <Link
               href="/about"
-              className="relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-start-6 md:col-span-2 md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs"
+              className={`relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-span-2 md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
+                bothLinks ? "md:col-start-7" : "md:col-start-6"
+              }`}
             >
               About
             </Link>
