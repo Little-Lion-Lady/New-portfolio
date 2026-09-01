@@ -353,9 +353,9 @@ export default function Basis() {
               {basis.billReductionActual}.
             </span>
             <span className="mt-r-sm block">
-              The gap was hardware, not design. V1 of the panel couldn’t store energy or redirect its
-              flow, which ruled the solar features out of scope. Those were the features carrying the
-              last five points.
+              The gap was hardware, as later the panel’s hardware functionality was Descript to
+              remove solar battery integration for Generation 1. store energy or redirect its flow,
+              which ruled the solar features out of scope.
             </span>
             <span className="mt-r-sm block">
               What the {basis.billReductionActual} did prove was the thing the strategy rested on:
@@ -379,8 +379,6 @@ export default function Basis() {
               sublabel={`Against a target of ${basis.routineAdoptionTarget} in the first month`}
             />
           </div>
-          {/* Figma 1613:139410 — one labelled row now, not two stacked key
-              paragraphs, and it steps up to B-md on desktop. */}
           <KeyParagraph>
             H2 is the one I can’t close. The perceived-control metric needed three months of
             longitudinal data we never collected, and V1 shipped with a narrower control feature set
@@ -388,9 +386,6 @@ export default function Basis() {
             proxy points the right way, since {basis.routineAdoptionActual} of users set up a routine
             in week one, but adoption is not the same as feeling in control.
           </KeyParagraph>
-          <Column label="Closing the loop" textClassName="b-xs md:b-sm lg:b-md">
-            Two of the three hypotheses validated during the pilot. The third is covered above.
-          </Column>
           <BasisOutcomeMedia />
         </Reveal>
       </SectionReveal>
