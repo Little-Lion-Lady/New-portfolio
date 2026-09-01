@@ -344,19 +344,6 @@ export default function Basis() {
             We ran a feature pilot with a small group of participants (20+) as part of compliance
             testing and user research.
           </KeyParagraph>
-          {/* Paragraphs inside Column's single body <p> are block spans rather
-              than nested <p>s, which would be invalid, separated at the same
-              gap-r-sm the homepage backstory uses. */}
-          <Column label="Goal and result" textClassName="b-xs md:b-sm lg:b-md">
-            <span className="block">
-              We set out to cut household bills by {basis.billReductionGoal}. The pilot delivered{" "}
-              {basis.billReductionActual}.
-            </span>
-            <span className="mt-r-sm block">
-              The gap was hardware, as the panel’s hardware functionality was descoped to remove
-              solar battery integration from Generation 1 panel.
-            </span>
-          </Column>
           <div className="flex w-full flex-col gap-3xl md:grid md:grid-cols-8 md:gap-lg lg:grid-cols-12">
             <Stat
               size="outcome"
@@ -373,6 +360,9 @@ export default function Basis() {
               sublabel={`Against a target of ${basis.routineAdoptionTarget} in the first month`}
             />
           </div>
+          {/* Paragraphs inside Column's single body <p> are block spans rather
+              than nested <p>s, which would be invalid, separated at the same
+              gap-r-sm the homepage backstory uses. */}
           <Column label="Closing the loop" textClassName="b-xs md:b-sm lg:b-md">
             <span className="block">
               What the {basis.billReductionActual} did prove was the thing the strategy rested on:
@@ -380,9 +370,11 @@ export default function Basis() {
               information, was the lever that moved bills.
             </span>
             <span className="mt-r-sm block">
-              H2 is the one I can’t close. The perceived-control metric needed three months of
-              longitudinal data we never collected, and V1 shipped with a narrower control feature
-              set than the hypothesis assumed.
+              We set out to cut bills by {basis.billReductionGoal} and delivered{" "}
+              {basis.billReductionActual}. The gap was hardware: solar battery integration was
+              descoped from the Generation 1 panel. H2 I couldn’t close either, since the
+              perceived-control metric needed three months of longitudinal data we never collected,
+              and V1 shipped a narrower control set than the hypothesis assumed.
             </span>
           </Column>
           <BasisOutcomeMedia />
