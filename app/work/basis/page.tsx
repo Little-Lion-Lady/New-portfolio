@@ -356,7 +356,7 @@ export default function Basis() {
               size="outcome"
               className="md:col-span-4 lg:col-start-5"
               value={basis.routineAdoptionActual}
-              label="Users created an energy routine in week one"
+              label="Users created a routine within 1 week"
               sublabel={`Against a target of ${basis.routineAdoptionTarget} in the first month`}
             />
           </div>
