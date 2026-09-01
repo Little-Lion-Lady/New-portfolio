@@ -344,9 +344,9 @@ export default function Basis() {
             We ran a feature pilot with a small group of participants (20+) as part of compliance
             testing and user research.
           </KeyParagraph>
-          {/* Three paragraphs inside Column's single body <p>: block spans
-              rather than nested <p>s, which would be invalid, and separated at
-              the same gap-r-sm the homepage backstory uses. */}
+          {/* Paragraphs inside Column's single body <p> are block spans rather
+              than nested <p>s, which would be invalid, separated at the same
+              gap-r-sm the homepage backstory uses. */}
           <Column label="Goal and result" textClassName="b-xs md:b-sm lg:b-md">
             <span className="block">
               We set out to cut household bills by {basis.billReductionGoal}. The pilot delivered{" "}
@@ -355,11 +355,6 @@ export default function Basis() {
             <span className="mt-r-sm block">
               The gap was hardware, as the panel’s hardware functionality was descoped to remove
               solar battery integration from Generation 1 panel.
-            </span>
-            <span className="mt-r-sm block">
-              What the {basis.billReductionActual} did prove was the thing the strategy rested on:
-              translating kilowatt-hours into dollars changed behaviour, and automation, not
-              information, was the lever that moved bills.
             </span>
           </Column>
           <div className="flex w-full flex-col gap-3xl md:grid md:grid-cols-8 md:gap-lg lg:grid-cols-12">
@@ -378,13 +373,18 @@ export default function Basis() {
               sublabel={`Against a target of ${basis.routineAdoptionTarget} in the first month`}
             />
           </div>
-          <KeyParagraph>
-            H2 is the one I can’t close. The perceived-control metric needed three months of
-            longitudinal data we never collected, and V1 shipped with a narrower control feature set
-            than the hypothesis assumed. So it is untested rather than validated. The behavioural
-            proxy points the right way, since {basis.routineAdoptionActual} of users set up a routine
-            in week one, but adoption is not the same as feeling in control.
-          </KeyParagraph>
+          <Column label="Closing the loop" textClassName="b-xs md:b-sm lg:b-md">
+            <span className="block">
+              What the {basis.billReductionActual} did prove was the thing the strategy rested on:
+              translating kilowatt-hours into dollars changed behaviour, and automation, not
+              information, was the lever that moved bills.
+            </span>
+            <span className="mt-r-sm block">
+              H2 is the one I can’t close. The perceived-control metric needed three months of
+              longitudinal data we never collected, and V1 shipped with a narrower control feature
+              set than the hypothesis assumed.
+            </span>
+          </Column>
           <BasisOutcomeMedia />
         </Reveal>
       </SectionReveal>
