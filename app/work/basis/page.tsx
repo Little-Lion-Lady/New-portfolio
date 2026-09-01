@@ -365,16 +365,19 @@ export default function Basis() {
               gap-r-sm the homepage backstory uses. */}
           <Column label="Closing the loop" textClassName="b-xs md:b-sm lg:b-md">
             <span className="block">
-              What the {basis.billReductionActual} did prove was the thing the strategy rested on:
-              translating kilowatt-hours into dollars changed behaviour, and automation, not
-              information, was the lever that moved bills.
+              We aimed to cut bills by {basis.billReductionGoal} and got {basis.billReductionActual}.
+              The gap was hardware: solar battery integration got descoped from the Generation 1
+              panel.
             </span>
             <span className="mt-r-sm block">
-              We set out to cut bills by {basis.billReductionGoal} and delivered{" "}
-              {basis.billReductionActual}. The gap was hardware: solar battery integration was
-              descoped from the Generation 1 panel. H2 I couldn’t close either, since the
-              perceived-control metric needed three months of longitudinal data we never collected,
-              and V1 shipped a narrower control set than the hypothesis assumed.
+              The {basis.billReductionActual} still proved the thing the strategy rested on. Showing
+              kilowatt-hours as dollars changed behaviour, and automation, not information, was what
+              actually moved bills.
+            </span>
+            <span className="mt-r-sm block">
+              H2 I couldn’t close. Measuring perceived control needed three months of longitudinal
+              data we never collected, and V1 shipped a narrower control set than the hypothesis
+              assumed.
             </span>
           </Column>
           <BasisOutcomeMedia />
