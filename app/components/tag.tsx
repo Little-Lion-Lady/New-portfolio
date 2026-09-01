@@ -3,13 +3,15 @@ import type { ReactNode } from "react";
 // Figma "Tag" pill (§01 Problem constraints 547:26291 / §05 Process "Deferred to V2" 547:26392).
 // A bordered, fully-rounded pill with a centered label.
 //   default  — body text, sentence case (problem constraints)
-//   deferred — line-through (V2 backlog items)
+//   deferred — same pill, plus a line-through (V2 backlog items). Basis asked
+//              for these to match §01's pills, so the type ramp is shared:
+//              B-xs through tablet, B-sm on desktop.
 // Padding per Figma "Content" (547:26283): px 16/24/24, py 4/6/8. Border is
 // border-primary, radius full (Figma 56px, taller than the pill). Default text
-// is text-secondary at B-xs through tablet, B-sm on desktop; deferred pills sit
-// at a flat B-sm (20/32) on every breakpoint — Basis V2 reset them to the body
-// face in sentence case, dropping the old Geist Mono / uppercase / 16-28
-// treatment (Figma 1613:139376 desktop, 1670:4388 tablet, 1670:4401 mobile).
+// is text-secondary at B-xs through tablet, B-sm on desktop, deferred pills
+// included — Basis V2 reset them to the body face in sentence case, dropping
+// the old Geist Mono / uppercase / 16-28 treatment (Figma 1613:139376 desktop,
+// 1670:4388 tablet, 1670:4401 mobile).
 export function Tag({
   children,
   deferred = false,
@@ -20,8 +22,8 @@ export function Tag({
   return (
     <div className="flex items-center justify-center overflow-clip rounded-full border border-border-primary px-md py-3xs md:px-xl md:py-2xs lg:py-xs">
       <p
-        className={`whitespace-nowrap text-center text-text-secondary ${
-          deferred ? "b-sm line-through" : "b-xs lg:b-sm"
+        className={`b-xs whitespace-nowrap text-center text-text-secondary lg:b-sm ${
+          deferred ? "line-through" : ""
         }`}
       >
         {children}

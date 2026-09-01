@@ -28,11 +28,11 @@ import {
 import { basis } from "@/content/stats";
 
 const constraints = [
-  "No product Direction",
+  "No product direction",
   "Small budget, fast pace",
   "Limited research resources",
   "Hardware-constrained features",
-  "Safety Requirements",
+  "Safety requirements",
 ];
 
 const hmw = [
@@ -87,7 +87,7 @@ export default function Basis() {
           <CaseStudyHero
             titleTop="Basis"
             titleBottom="smart panel app"
-            lead="How I built a product strategy when there was no product owner to hand it to me"
+            lead="How I built a product strategy from scratch"
             description={`Basis built smart electrical hardware for NZ homes. They knew they needed a companion app, but had no PO, no product brief, and no defined direction. I stepped in to own the strategy, run the research, and design an app that reduced household energy bills by ${basis.billReductionActual} in the first pilot.`}
             meta={[
               { label: "Role_", value: "Senior Product Designer" },
@@ -116,8 +116,8 @@ export default function Basis() {
             <KeyParagraph lead="A hardware product and a blank slate." leadTone="primary" className="lg:col-start-1 lg:col-span-6">
               Traditional switchboards are failing modern households. Basis built a smart,
               prefabricated electrical panel to fix that. But hardware alone can’t drive
-              long-term engagement or support a subscription model. A digital product was
-              non-negotiable. The problem: no one had defined what it should be.
+              long-term engagement or ensure a positive user experience. A digital product was
+              non-negotiable.
             </KeyParagraph>
             <div className="mt-r-md lg:col-start-8 lg:col-span-5 lg:mt-0">
               <TagGroup>
@@ -227,7 +227,7 @@ export default function Basis() {
         <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-sm">
           <Hypothesis
             label="H1"
-            size="sm"
+            size="md"
             believe="Showing energy usage in dollars rather than kilowatt-hours will make data more relatable and actionable for homeowners."
             because="It simplifies energy metrics into a format users can immediately act on."
             metric={`Users who engage with insights 3x/month will show a ${basis.billReductionActual} bill reduction within 6 months.`}
@@ -235,7 +235,7 @@ export default function Basis() {
           <Divider />
           <Hypothesis
             label="H2"
-            size="sm"
+            size="md"
             believe="Allowing users to remotely control power in their homes will foster a greater sense of safety and control."
             because="Real-time control reduces unnecessary consumption and mitigates potential safety risks"
             metric="90% of users report feeling more in control of their home’s energy and safety after 3 months."
@@ -243,7 +243,7 @@ export default function Basis() {
           <Divider />
           <Hypothesis
             label="H3"
-            size="sm"
+            size="md"
             believe={`An automation feature that lets users schedule and manage electricity supply will result in a ${basis.billReductionRange} reduction in bills.`}
             because="Strategic power-down during peak pricing hours optimises consumption without requiring ongoing effort."
             metric={`${basis.routineAdoptionTarget} of users set up at least one automation routine in their first month, and those users show a 10 to ${basis.billReductionGoal} bill reduction within six months.`}
@@ -284,7 +284,7 @@ export default function Basis() {
           <ProcessMedia />
           {/* Figma 1613:139375 / 1144:11974 / 1144:13115 — the V2 reset pins the wrap
               gap at a flat 12, not the responsive 8/8/12 of gap-r-2xs. */}
-          <TagGroup label="Deferred to V2" className="flex-wrap gap-sm">
+          <TagGroup label="Deferred to V2">
             {deferred.map((d) => (
               <Tag key={d} deferred>
                 {d}
@@ -309,27 +309,11 @@ export default function Basis() {
             establish direction. Before any screens were signed off, three design principles
             emerged from the workshop, and every subsequent decision was checked against them.
           </KeyParagraph>
-          {/* The three principles hold B-xs until desktop, where they step to
-              B-sm rather than B-md (Figma 1613:139385). */}
-          <div className="flex flex-col gap-lg md:grid md:grid-cols-3 md:gap-lg">
-            <KeyParagraph lead="Dollars, not kWh" scale="b-xs lg:b-sm">
-              All energy data translated to cost. Actionable by default: no mental conversion
-              required.
-            </KeyParagraph>
-            <KeyParagraph lead="Safety as ambient" scale="b-xs lg:b-sm">
-              Never interrupt. Always visible. Safety status present in the UI without ever being
-              a primary CTA.
-            </KeyParagraph>
-            <KeyParagraph lead="Control before context" scale="b-xs lg:b-sm">
-              Users act first, understand later. Depth is earned through use, not frontloaded at
-              onboarding.
-            </KeyParagraph>
-          </div>
           <SolutionMedia />
           <div className="flex w-full flex-col gap-3xl md:grid md:grid-cols-2 md:items-start md:gap-x-lg md:gap-y-0">
             <KeyParagraph
               label="Prototype testing: n=6 · What it validated"
-              lead="Dollars framing worked immediately"
+              lead="Dollars, not kWh"
               leadTone="primary"
               scale="b-xs md:b-sm"
               className="md:pr-2xl"
@@ -357,29 +341,9 @@ export default function Basis() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg">
           <KeyParagraph>
-            The Basis Panel hadn’t gone to broad market yet. We ran a feature pilot with a small
-            group of participants as part of compliance testing and user research. What follows is
-            pilot data, not market data.
+            We ran a feature pilot with a small group of participants (20+) as part of compliance
+            testing and user research.
           </KeyParagraph>
-          {/* Three paragraphs inside Column's single body <p>: block spans
-              rather than nested <p>s, which would be invalid, and separated at
-              the same gap-r-sm the homepage backstory uses. */}
-          <Column label="Goal and result" textClassName="b-xs md:b-sm lg:b-md">
-            <span className="block">
-              We set out to cut household bills by {basis.billReductionGoal}. The pilot delivered{" "}
-              {basis.billReductionActual}.
-            </span>
-            <span className="mt-r-sm block">
-              The gap was hardware, not design. V1 of the panel couldn’t store energy or redirect its
-              flow, which ruled the solar features out of scope. Those were the features carrying the
-              last five points.
-            </span>
-            <span className="mt-r-sm block">
-              What the {basis.billReductionActual} did prove was the thing the strategy rested on:
-              translating kilowatt-hours into dollars changed behaviour, and automation, not
-              information, was the lever that moved bills.
-            </span>
-          </Column>
           <div className="flex w-full flex-col gap-3xl md:grid md:grid-cols-8 md:gap-lg lg:grid-cols-12">
             <Stat
               size="outcome"
@@ -392,21 +356,29 @@ export default function Basis() {
               size="outcome"
               className="md:col-span-4 lg:col-start-5"
               value={basis.routineAdoptionActual}
-              label="Users created an energy routine in week one"
+              label="Users created a routine within 1 week"
               sublabel={`Against a target of ${basis.routineAdoptionTarget} in the first month`}
             />
           </div>
-          {/* Figma 1613:139410 — one labelled row now, not two stacked key
-              paragraphs, and it steps up to B-md on desktop. */}
-          <KeyParagraph>
-            H2 is the one I can’t close. The perceived-control metric needed three months of
-            longitudinal data we never collected, and V1 shipped with a narrower control feature set
-            than the hypothesis assumed. So it is untested rather than validated. The behavioural
-            proxy points the right way, since {basis.routineAdoptionActual} of users set up a routine
-            in week one, but adoption is not the same as feeling in control.
-          </KeyParagraph>
+          {/* Paragraphs inside Column's single body <p> are block spans rather
+              than nested <p>s, which would be invalid, separated at the same
+              gap-r-sm the homepage backstory uses. */}
           <Column label="Closing the loop" textClassName="b-xs md:b-sm lg:b-md">
-            Two of the three hypotheses validated during the pilot. The third is covered above.
+            <span className="block">
+              We aimed to cut bills by {basis.billReductionGoal} and got {basis.billReductionActual}.
+              The gap was hardware: solar battery integration got descoped from the Generation 1
+              panel.
+            </span>
+            <span className="mt-r-sm block">
+              The {basis.billReductionActual} still proved the thing the strategy rested on. Showing
+              kilowatt-hours as dollars changed behaviour, and automation, not information, was what
+              actually moved bills.
+            </span>
+            <span className="mt-r-sm block">
+              H2 I couldn’t close. Measuring perceived control needed three months of longitudinal
+              data we never collected, and V1 shipped a narrower control set than the hypothesis
+              assumed.
+            </span>
           </Column>
           <BasisOutcomeMedia />
         </Reveal>
