@@ -44,3 +44,26 @@ export const Y = 16;
 // does the most work, so they keep a slightly wider one.
 export const BLUR_BLOCK = "blur(8px)";
 export const BLUR_TEXT = "blur(10px)";
+
+// ─── Line reveals ────────────────────────────────────────────────────────────
+// Hero headlines reveal a whole wrapped line at a time rather than a word at a
+// time. The pair below is chosen for overlap rather than for a total span: a
+// line starts when the one above it is under a tenth resolved, so the whole
+// headline is in motion at once and reads as a single blur lifting off the
+// block rather than a row of lines arriving in turn.
+//
+// The stagger is what keeps the total from running away — it multiplies by the
+// line count, and the copy wraps to as many as twelve lines on a phone. At
+// 0.15 that tail is 1.65s on top of the 1.6s a line takes; at 0.5 it was 5.5s,
+// which made the mobile intro a seven-second wait. Keep STAGGER far under
+// DURATION: at parity the lines separate into discrete steps.
+export const LINE_DURATION = 1.6;
+export const LINE_STAGGER = 0.15;
+
+// When a line READS as arrived, which is not when it finishes. EASE front-loads
+// hard — cubic-bezier(0.32,0.72,0,1) is ~93% of the way there at half its
+// duration — so the back half of a line reveal is a blur too faint to register.
+// Anything handing over to the headline should hand over here, at 0.8s into a
+// line rather than 1.6s; waiting for the nominal end buys most of a second of
+// dead air with nothing visibly moving. Used by useHeadlineHandoff.
+export const LINE_SETTLE = LINE_DURATION / 2;

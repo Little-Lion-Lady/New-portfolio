@@ -27,7 +27,7 @@ import { useBackdropTone } from "./use-over-media";
 // The pill's chrome is revealed on scroll (unchanged behaviour): fill, hairline
 // and the 10px backdrop-blur live on an overlay element whose opacity is driven
 // by scrollY, so the nav text itself never fades — only the surface behind it.
-export function SiteHeader({ revealDelay = 0, intro = false }: { revealDelay?: number; intro?: boolean } = {}) {
+export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   // Over a photo the glass pill isn't enough contrast on its own, so the nav
@@ -55,7 +55,7 @@ export function SiteHeader({ revealDelay = 0, intro = false }: { revealDelay?: n
   }, []);
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 p-sm md:p-lg lg:px-3xl lg:py-lg">
+    <header className="page-shell pointer-events-none fixed inset-x-0 top-0 z-50 p-sm md:p-lg lg:px-3xl lg:py-lg">
       {/* Fades in with the same blur-and-opacity Reveal as the page content.
           `immediate` rather than the in-view gate: the header is fixed and
           always on screen, so there is nothing to scroll into view. */}
@@ -63,7 +63,7 @@ export function SiteHeader({ revealDelay = 0, intro = false }: { revealDelay?: n
           glass surface, and a reveal running the safety-floor animation turns
           itself into a backdrop root, which empties that blur. This reveal
           plays on mount, so it is not the one the floor is insuring against. */}
-      <Reveal immediate noY noSafetyFloor intro={intro} delay={revealDelay}>
+      <Reveal immediate noY noSafetyFloor delay={revealDelay}>
         <nav
           ref={navRef}
           className="pointer-events-auto relative grid grid-cols-4 items-center gap-sm rounded-xs p-xs transition-colors duration-300 md:grid-cols-9 md:gap-x-lg md:gap-y-md md:rounded-sm md:p-md lg:grid-cols-12"
@@ -114,11 +114,17 @@ export function SiteHeader({ revealDelay = 0, intro = false }: { revealDelay?: n
               Work
             </Link>
           )}
+          {/* The md span is part of the conditional, not a constant beside it.
+              At 9 columns the toggle sits in column 9, so About spanning two
+              columns from 8 reaches into it — and a grid item cannot share a
+              cell, so the toggle wrapped onto a second row and the pill grew to
+              90px. It only collided when both links showed, because that is the
+              only case that puts About at column 8. */}
           {showAbout && (
             <Link
               href="/about"
-              className={`relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-span-2 md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
-                bothLinks ? "md:col-start-8" : "md:col-start-7"
+              className={`relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
+                bothLinks ? "md:col-start-8 md:col-span-1" : "md:col-start-7 md:col-span-2"
               }`}
             >
               About

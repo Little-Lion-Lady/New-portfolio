@@ -12,9 +12,8 @@ import { DURATION } from "./motion-timing";
 const INTRO_DURATION = DURATION * 1.3;
 
 // How long the description, meta and carousel wait behind the title. The title
-// is four words on a 35ms cascade, so it is essentially all there by ~0.1s and
-// only its tail is still resolving — 0.6s left a visible gap after it rather
-// than a handover.
+// is two lines, the second starting 0.15s behind the first, so at 0.3s both
+// are still resolving and the handover overlaps rather than queues.
 const INTRO_DELAY = 0.3;
 import { ImageCarousel, type WorkImageData } from "./work-image";
 import { TitleStars } from "./title-stars";
@@ -22,7 +21,7 @@ import { TitleStars } from "./title-stars";
 // Figma "Hero" (393:15572 desktop / tablet / mobile).
 // Title (two-tone, fluid) + description (lead + body) + meta + image carousel.
 //   title    — case-hero-title (D-xs→D-md→D-2xl); line 1 primary-highlight, line 2 50% overlay
-//              revealed word-by-word (RevealWords), matching the About hero
+//              revealed a line at a time (RevealWords byLine), matching every other hero
 //   layout   — mobile/tablet stack text→meta; desktop 12-col grid (meta c2-6 | text c7-12)
 //   meta     — always a single column (meta rows then recognition rows stacked)
 //   images   — ImageCarousel (same cards as the home work section), size="lg" so
@@ -57,24 +56,23 @@ export function CaseStudyHero({
   recognition: MetaItem[];
   images: WorkImageData[];
 }) {
-  // Second title line continues the word-reveal sequence after the first line's words.
-  const topWordCount = titleTop.trim().split(/\s+/).length;
-
   return (
     <div className="flex w-full flex-col gap-r-lg">
       {/* Title + description (inner Hero block) */}
       <div className="flex w-full flex-col gap-3xl pt-2xl md:pt-sm lg:gap-7xl lg:pt-3xl">
-        {/* Title — two lines, fluid, revealed word-by-word. `immediate` (like the
+        {/* Title — two lines, fluid, revealed a line at a time. `immediate` (like the
             rest of the hero) so it reveals on mount: an in-view trigger only
             fires once scroll restoration settles, which on a client-side nav
             from the bottom of another page landed the title *after* everything
             else instead of first. */}
         <TitleStars>
           <h1 className="case-hero-title flex flex-col whitespace-nowrap">
-            <RevealWords immediate as="span" className="block text-text-primary-highlight [margin-bottom:-0.0909em] md:[margin-bottom:-0.2em] lg:[margin-bottom:-0.2857em]">
+            <RevealWords immediate byLine as="span" className="block text-text-primary-highlight [margin-bottom:-0.0909em] md:[margin-bottom:-0.2em] lg:[margin-bottom:-0.2857em]">
               {titleTop}
             </RevealWords>
-            <RevealWords immediate as="span" startIndex={topWordCount} className="block text-text-primary-overlay">
+            {/* Each line is its own nowrap span, so this one is line 1 of the
+                headline even though it measures as line 0 of its own element. */}
+            <RevealWords immediate byLine as="span" startLine={1} className="block text-text-primary-overlay">
               {titleBottom}
             </RevealWords>
           </h1>
