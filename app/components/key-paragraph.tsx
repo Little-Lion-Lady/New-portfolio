@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 // Figma "Key paragraph" (278:30153 / 430:16062). A stacked text block:
 //   optional label line   — text-tertiary caption above the lead (§06 "What broke")
-//   optional lead line   — text-primary-highlight (#0f1117), the dark opener
+//   optional lead line   — text-primary-highlight (#0f0f0f), the dark opener
 //   body paragraph(s)    — text-secondary, may contain text-highlight-dark spans
 // Label, lead and body all run B-xs→B-sm→B-md (16/26, 20/32, 24/36 — Figma
 // 741:6868/741:6869). The lines stack at gap 0 and let the line box do the
@@ -20,8 +20,8 @@ export function KeyParagraph({
   label?: ReactNode;
   lead?: ReactNode;
   /**
-   * Lead colour. Most instances use text-primary-highlight (#0f1117); a few
-   * section openers are drawn in text-primary (#3b414e) instead, and the Basis
+   * Lead colour. Most instances use text-primary-highlight (#0f0f0f); a few
+   * section openers are drawn in text-primary (#3c3c3c) instead, and the Basis
    * §03 vision quote is text-highlight-dark.
    */
   leadTone?: "highlight" | "primary" | "accent";

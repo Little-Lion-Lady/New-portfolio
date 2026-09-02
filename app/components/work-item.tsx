@@ -20,6 +20,7 @@ export function WorkItem({
   imageSize = "md",
   reverseMarquee = false,
   comingSoon = false,
+  imagePriority,
 }: {
   number: string;
   name: ReactNode;
@@ -31,6 +32,13 @@ export function WorkItem({
   /** Loop this item's carousel left-to-right, so adjacent items counter-scroll. */
   reverseMarquee?: boolean;
   comingSoon?: boolean;
+  /**
+   * Bandwidth hint for this item's carousel. The rails load eagerly by
+   * necessity (see ImageCarousel), so on a page stacking several of them the
+   * only way to keep the first row from queueing behind the third is to rank
+   * them: "high" on the item nearest the top, "low" on the ones below it.
+   */
+  imagePriority?: "high" | "low" | "auto";
 }) {
   const wrapperClassName = "flex w-full flex-col items-center gap-lg md:gap-2xl lg:gap-3xl";
 
@@ -84,7 +92,13 @@ export function WorkItem({
       </div>
 
       {/* Image carousel */}
-      <ImageCarousel images={images} size={imageSize} marquee reverse={reverseMarquee} />
+      <ImageCarousel
+        images={images}
+        size={imageSize}
+        marquee
+        reverse={reverseMarquee}
+        fetchPriority={imagePriority}
+      />
     </>
   );
 

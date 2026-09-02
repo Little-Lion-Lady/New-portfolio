@@ -11,6 +11,18 @@ function Card({ name }: { name: string }) {
     <GlassImage
       src={`/home/about/${name}.jpg`}
       alt="Original artwork by Maryna Babych"
+      /*
+        Eager, for the same reason the work rows are (see GlassImage's `loading`
+        docs): this strip is a translated marquee track, and lazy loading keys
+        off intersection. The cards past the viewport's right edge never report
+        one, so ART6 and ART7 were never fetched at all — they stayed blank
+        every time the loop carried them into view.
+
+        Low priority because the strip sits well below the fold: it should not
+        be competing with the bio collage above it.
+      */
+      loading="eager"
+      fetchPriority="low"
       className={CARD_CLASS}
     />
   );
@@ -30,7 +42,7 @@ export function ArtworkStrip({ names }: { names: string[] }) {
   if (reducedMotion) {
     return (
       <div className={BLEED_CLASS}>
-        <div className="-my-md flex w-full gap-sm overflow-x-auto py-md md:gap-md lg:gap-xl">
+        <div className="-my-md flex w-full gap-xs overflow-x-auto py-md md:gap-sm lg:gap-lg">
           {names.map((name) => (
             <Card key={name} name={name} />
           ))}
@@ -41,7 +53,7 @@ export function ArtworkStrip({ names }: { names: string[] }) {
 
   return (
     <div className={`${BLEED_CLASS} -my-md overflow-hidden py-md`}>
-      <div className="artwork-marquee-track flex w-max gap-sm md:gap-md lg:gap-xl">
+      <div className="artwork-marquee-track flex w-max gap-xs md:gap-sm lg:gap-lg">
         {names.map((name) => (
           <Card key={`${name}-a`} name={name} />
         ))}

@@ -45,9 +45,18 @@ export default function About() {
 
         {/* Hero. Figma pads the page itself by spacing-md/3xl/3xl and lets the
             (absolutely positioned) header overlay it, so the hero's own
-            padding is what places the title: pt 80/128/160 on the section,
-            plus the Hero-text-container's own 0/24/32 on TitleStars. */}
-        <section className="relative z-10 pb-6xl pt-6xl md:pb-5xl md:pt-8xl lg:pb-8xl lg:pt-9xl">
+            padding is what places the title: pt 64/96/128 on the section,
+            plus the Hero-text-container's own 0/24/32 on TitleStars.
+
+            Well down the spacing scale from Figma's 80/128/160 top and
+            80/72/128 bottom. The title shrank to match the case-study ramp
+            (96px on desktop, down from a fluid 124-142), which left the hero
+            reading as mostly empty space at the original padding — and the
+            bigger the viewport, the more of it there was, so the wider
+            breakpoints are cut hardest. Desktop now sits tighter than tablet
+            rather than looser. The top still clears the fixed header at every
+            breakpoint. */}
+        <section className="relative z-10 pb-4xl pt-4xl md:pb-3xl md:pt-6xl lg:pb-2xl lg:pt-5xl">
           <TitleStars className="relative md:pt-xl lg:pt-2xl">
             <RevealWords immediate as="h1" className="about-hero-title text-text-primary-highlight">Who am I?</RevealWords>
           </TitleStars>

@@ -311,55 +311,55 @@
     "grayLight": {
       "50": {
         "$type": "color",
-        "$value": "#f2f4f8"
+        "$value": "#fafafa"
       },
       "100": {
         "$type": "color",
-        "$value": "#dde1ea"
+        "$value": "#f5f5f5"
       },
       "200": {
         "$type": "color",
-        "$value": "#c8cdda"
+        "$value": "#ededed"
       },
       "300": {
         "$type": "color",
-        "$value": "#a9afc1"
+        "$value": "#e3e3e3"
       },
       "400": {
         "$type": "color",
-        "$value": "#8b91a7"
+        "$value": "#d6d6d6"
       },
       "500": {
         "$type": "color",
-        "$value": "#6f778d"
+        "$value": "#b8b8b8"
       },
       "600": {
         "$type": "color",
-        "$value": "#555c6f"
+        "$value": "#999999"
       },
       "700": {
         "$type": "color",
-        "$value": "#3b414e"
+        "$value": "#737373"
       },
       "800": {
         "$type": "color",
-        "$value": "#282c37"
+        "$value": "#3c3c3c"
       },
       "900": {
         "$type": "color",
-        "$value": "#171a21"
+        "$value": "#1e1e1e"
       },
       "950": {
         "$type": "color",
-        "$value": "#0f1117"
+        "$value": "#0f0f0f"
       },
       "5000": {
         "$type": "color",
-        "$value": "#f2f4f800"
+        "$value": "#fafafa00"
       },
       "5030": {
         "$type": "color",
-        "$value": "#f2f4f84d"
+        "$value": "#fafafa4d"
       },
       "30050": {
         "$type": "color",
@@ -367,19 +367,19 @@
       },
       "50080": {
         "$type": "color",
-        "$value": "#6f778dcc"
+        "$value": "#b8b8b8cc"
       },
       "80050": {
         "$type": "color",
-        "$value": "#282c3780"
+        "$value": "#3c3c3c80"
       },
       "95010": {
         "$type": "color",
-        "$value": "#0f11171a"
+        "$value": "#0f0f0f1a"
       },
       "95050": {
         "$type": "color",
-        "$value": "#0f111780"
+        "$value": "#0f0f0f80"
       }
     },
     "grayDark": {

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { GlassFrame, GlassImage } from "./work-image";
+import { GlassFrame, GlassImage, DEFAULT_QUALITY } from "./work-image";
 import { LoopingVideo } from "./looping-video";
 
 // Figma image collages for §02 (100:6005), §04 (100:6193), §06 (495:3594).
@@ -10,7 +10,7 @@ const COVID_ALT = "NZ COVID Tracer app screen";
 // §02 Approach — a phone screen beside a wide screenshot. Stacks on mobile.
 export function ApproachMedia() {
   return (
-    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col md:flex-row md:items-stretch">
+    <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col md:flex-row md:items-stretch">
       {/* MOH4 + MOH5 share one row height: flex-grow proportional to each
           image's own ratio (flex-basis 0) + matching frameAspectRatio makes
           the browser resolve a common height and correct, uncropped widths.
@@ -51,15 +51,15 @@ export function FlowDiagram() {
 // §04 Design — big image beside a stacked pair, then a wide full-width shot below.
 export function DesignMedia() {
   return (
-    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
-      <div className="flex gap-xs md:gap-md lg:gap-lg">
+    <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col">
+      <div className="flex gap-2xs md:gap-sm lg:gap-md">
         <GlassImage
           src="/home/work/covid-tracer/MOH7.jpg"
           alt={COVID_ALT}
           aspectRatio="873/969"
           className="flex-[5] self-start lg:flex-1"
         />
-        <div className="flex gap-xs md:gap-md lg:gap-lg flex-[4] flex-col lg:flex-1">
+        <div className="flex gap-2xs md:gap-sm lg:gap-md flex-[4] flex-col lg:flex-1">
           <GlassImage
             src="/home/work/covid-tracer/MOH8.jpg"
             alt={COVID_ALT}
@@ -86,9 +86,9 @@ export function DesignMedia() {
 // (A third image, the section's "headline" shot, is inline in page.tsx.)
 export function OutcomeMedia() {
   return (
-    <div className="flex gap-xs md:gap-md lg:gap-lg flex-col">
+    <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col">
       {/* Row 1 — stacks through tablet, side-by-side only at desktop */}
-      <div className="flex gap-xs md:gap-md lg:gap-lg flex-col lg:flex-row lg:items-stretch">
+      <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col lg:flex-row lg:items-stretch">
         {/* MOH12 + MOH13 share one row height from lg up — same justified-row
             technique as MOH4/MOH5 above. */}
         <GlassImage
@@ -116,7 +116,7 @@ export function OutcomeMedia() {
           at once, same as the MOH4/MOH5 and MOH12/MOH13 pairs above — so md+
           uses that flat row, and only mobile (where MOH14/MOH15 must stay
           paired above MOH16) keeps the nested layout. */}
-      <div className="flex flex-col gap-xs md:hidden">
+      <div className="flex flex-col gap-2xs md:hidden">
         {/* Figma 1144:18252 — the pair is 99w each inside the 361 column, gap 6,
             centred; not two half-width cards filling the row. */}
         <div className="flex justify-center gap-2xs">
@@ -141,7 +141,7 @@ export function OutcomeMedia() {
           className="w-full"
         />
       </div>
-      <div className="hidden md:flex md:items-stretch md:gap-md lg:gap-lg">
+      <div className="hidden md:flex md:items-stretch md:gap-sm lg:gap-md">
         <GlassImage
           src="/home/work/covid-tracer/MOH14.jpg"
           alt={COVID_ALT}
@@ -267,10 +267,10 @@ export function PrototypeMedia() {
           ordering conflict. */}
       <div className="flex justify-center gap-r-2xs lg:w-[243px] lg:shrink-0 lg:flex-col">
         <div className="relative max-w-[190px] flex-1 aspect-[243/160] overflow-hidden rounded-lg lg:aspect-auto lg:h-[160px] lg:max-w-[400px] lg:flex-none">
-          <Image src="/home/work/basis/BS18.jpg" alt="Basis prototype testing participant" fill quality={100} sizes="243px" className="object-cover" />
+          <Image src="/home/work/basis/BS18.jpg" alt="Basis prototype testing participant" fill quality={DEFAULT_QUALITY} sizes="243px" className="object-cover" />
         </div>
         <div className="relative max-w-[190px] flex-1 aspect-[243/160] overflow-hidden rounded-lg lg:aspect-auto lg:h-[160px] lg:max-w-[400px] lg:flex-none">
-          <Image src="/home/work/basis/BS19.jpg" alt="Basis prototype testing participant" fill quality={100} sizes="243px" className="object-cover" />
+          <Image src="/home/work/basis/BS19.jpg" alt="Basis prototype testing participant" fill quality={DEFAULT_QUALITY} sizes="243px" className="object-cover" />
         </div>
       </div>
     </div>

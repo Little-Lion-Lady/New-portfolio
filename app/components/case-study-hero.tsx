@@ -119,7 +119,16 @@ export function CaseStudyHero({
           (see ImageCarousel), and speedScale holds it at the home rows' px/s
           despite carrying three cards instead of five. */}
       <Reveal immediate delay={INTRO_DELAY} className="flex w-full flex-col items-center">
-        <ImageCarousel images={images} size="lg" marquee speedScale={images.length / 5} />
+        <ImageCarousel
+          images={images}
+          size="lg"
+          marquee
+          speedScale={images.length / 5}
+          /* The hero rail is the one thing above the fold on a case study, and
+             it loads eagerly like every marquee — rank it above the collages
+             further down so it is not queued behind them. */
+          fetchPriority="high"
+        />
       </Reveal>
     </div>
   );

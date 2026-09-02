@@ -1,6 +1,21 @@
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import { IMAGE_RATIOS } from "./image-ratios";
+import { blurFor } from "./image-blur";
+import { sizesFor } from "./image-sizes";
+
+/*
+  WebP quality for every photo on the site.
+
+  Was 100. At the widths these cards actually render, q100 costs roughly 2x the
+  bytes of q90 (FT3 at 1200px: 301KB vs 165KB) for a difference that does not
+  survive a 1:1 pixel comparison — WebP's last few quality points are spent on
+  detail the encoder is already keeping. 90 stays well clear of the range where
+  small text in a UI screenshot starts to soften.
+
+  Must be listed in `images.qualities` in next.config.ts; anything else 400s.
+*/
+export const DEFAULT_QUALITY = 90;
 
 export type WorkImageData = {
   src: string;
@@ -93,10 +108,11 @@ export function GlassImage({
   darkSrc,
   alt,
   className = "",
-  quality = 100,
+  quality = DEFAULT_QUALITY,
   mini = false,
-  sizes = "100vw",
+  sizes,
   loading,
+  fetchPriority,
   aspectRatio,
   aspectClassName,
   frameAspectRatio,
@@ -118,6 +134,12 @@ export function GlassImage({
   quality?: number;
   /** Figma's Platform=mini variant — fixed 8px radius at every breakpoint. */
   mini?: boolean;
+  /**
+   * Overrides the measured default. Leave it off unless this call site renders
+   * the image at a width the measurement can't see (a layout only reachable
+   * behind an interaction, say) — the generated map in ./image-sizes is built
+   * from the real rendered box and stays correct as the layout moves.
+   */
   sizes?: string;
   /**
    * Passed straight to next/image. Set "eager" for anything that a transform
@@ -126,6 +148,15 @@ export function GlassImage({
    * shows up as an empty box when the motion brings it back.
    */
   loading?: "eager" | "lazy";
+  /**
+   * Hints how hard this image should compete for bandwidth. A page here can
+   * carry 25+ photos and the marquees have to load eagerly (see `loading`), so
+   * without a hint the browser opens every connection at once and the images
+   * that are actually on screen finish last. Set "high" for the few above the
+   * fold and "low" for everything further down the page; the browser then
+   * drains them roughly in reading order.
+   */
+  fetchPriority?: "high" | "low" | "auto";
   /**
    * Source photo's true W/H ratio (e.g. "260/460"). When set, the inner
    * frame is sized to match the photo exactly instead of stretching to fill
@@ -165,6 +196,14 @@ export function GlassImage({
   /** Optional overlay content stacked on top of the image (e.g. a decorative icon). */
   children?: ReactNode;
 }) {
+  /*
+    An explicit `sizes` wins; otherwise fall back to the measured width for
+    this photo. Without either, next/image assumes sizes="100vw" and a 262px
+    phone frame downloads the 3840px variant on a 2x display.
+  */
+  const lightSizes = sizes ?? sizesFor(src);
+  const darkSizes = sizes ?? (darkSrc ? sizesFor(darkSrc) ?? lightSizes : undefined);
+
   return (
     <div
       className={`${FRAME_CLASS} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)}${frameAspectClassName ? ` ${frameAspectClassName}` : ""} ${className}`}
@@ -179,8 +218,11 @@ export function GlassImage({
           alt={alt}
           fill
           quality={quality}
-          sizes={sizes}
+          sizes={lightSizes}
           loading={loading}
+          fetchPriority={fetchPriority}
+          placeholder={blurFor(src) ? "blur" : "empty"}
+          blurDataURL={blurFor(src)}
           className={`object-cover${darkSrc ? " dark:hidden" : ""}`}
           style={objectPosition ? { objectPosition } : undefined}
         />
@@ -190,8 +232,11 @@ export function GlassImage({
             alt={alt}
             fill
             quality={quality}
-            sizes={sizes}
+            sizes={darkSizes}
             loading={loading}
+            fetchPriority={fetchPriority}
+            placeholder={blurFor(darkSrc) ? "blur" : "empty"}
+            blurDataURL={blurFor(darkSrc)}
             className="hidden object-cover dark:block"
             style={objectPosition ? { objectPosition } : undefined}
           />
@@ -212,9 +257,14 @@ export function GlassImage({
 // produces a horizontal scrollbar.
 //
 //   breakpoint   card         gap
-//   mobile       380 × 260    spacing-sm  12px
-//   tablet       480 × 340    spacing-md  16px
-//   desktop      400 tall     spacing-xl  24px   (both sizes)
+//   mobile       380 × 260    spacing-xs   8px
+//   tablet       480 × 340    spacing-sm  12px
+//   desktop      400 tall     spacing-lg  20px   (both sizes)
+//
+// The gaps were tightened one step (12/16/24) to match the case-study collages
+// and the About artwork strip. Marquee speed is unaffected: px/s works out to
+// REFERENCE_SET / --image-marquee-duration, which neither the gap nor a row's
+// own width appears in — see `naturalScale` below.
 //
 // Cards are sized by HEIGHT only — the row shares one height per breakpoint and
 // each card's width falls out of its photo's own ratio (IMAGE_RATIOS), so
@@ -245,12 +295,36 @@ const CARD_HEIGHT_CLASS = {
 // to sort the two arbitrary values.
 const CARD_LG_WIDTH = "lg:w-[660px]";
 
+// Card heights per breakpoint, matching CARD_HEIGHT_CLASS above.
+const CARD_HEIGHTS = { lg: 400, md: 340, base: 260 } as const;
+
+/*
+  `sizes` for a height-sized card.
+
+  These cards are sized by HEIGHT and take their width from the photo's own
+  ratio, so a single hard-coded `sizes` has to guess — and the old guess (720px
+  on desktop) overstated every card. A 1856x1316 photo in the 400px-tall row is
+  564px wide, and on a 2x screen that is 1128 device px: Next rounds up to its
+  1200 bucket. Claiming 720px instead asks for 1440 and lands on 1920 — a file
+  ~3.5x larger than the slot, for no visible gain.
+
+  Deriving the width from the ratio the card is already using removes the guess
+  entirely, and stays correct when imagery is swapped.
+*/
+function ratioSizes(ratio: string): string {
+  const [w, h] = ratio.split("/").map(Number);
+  if (!w || !h) return "(min-width: 1024px) 720px, (min-width: 768px) 560px, 420px";
+  const at = (height: number) => Math.ceil((height * w) / h);
+  return `(min-width: 1024px) ${at(CARD_HEIGHTS.lg)}px, (min-width: 768px) ${at(CARD_HEIGHTS.md)}px, ${at(CARD_HEIGHTS.base)}px`;
+}
+
 export function ImageCarousel({
   images,
   size = "md",
   marquee = false,
   reverse = false,
   speedScale,
+  fetchPriority,
   className = "",
 }: {
   images: WorkImageData[];
@@ -276,6 +350,15 @@ export function ImageCarousel({
    * at the same px/s. Defaults to 1 — the home rows' own timing, untouched.
    */
   speedScale?: number;
+  /**
+   * Bandwidth hint for every card in this row — see <GlassImage>. The rows
+   * have to load eagerly (a marquee card translated off-screen never reports
+   * an intersection, so lazy loading would leave it blank when the loop brings
+   * it back), which means the only way to stop a third-row rail from competing
+   * with the one on screen is to rank them. Pass "high" for the first row on a
+   * page and "low" for the rest.
+   */
+  fetchPriority?: "high" | "low" | "auto";
   className?: string;
 }) {
   const card = (image: WorkImageData, key: string, gap: boolean) => {
@@ -283,7 +366,7 @@ export function ImageCarousel({
     // box to a fixed height. The per-image lgWidth override existed to undo a
     // bad crop, so it is skipped when the real ratio is available.
     const ratio = IMAGE_RATIOS[image.src];
-    const margin = gap ? " mr-sm md:mr-md lg:mr-xl" : "";
+    const margin = gap ? " mr-xs md:mr-sm lg:mr-lg" : "";
     if (ratio) {
       return (
         <GlassImage
@@ -292,8 +375,9 @@ export function ImageCarousel({
           alt={image.alt}
           quality={image.quality}
           frameAspectRatio={ratio}
-          sizes="(min-width: 1024px) 720px, (min-width: 768px) 560px, 420px"
+          sizes={ratioSizes(ratio)}
           loading="eager"
+          fetchPriority={fetchPriority}
           className={`shrink-0 ${CARD_HEIGHT_CLASS[size]}${margin}`}
         />
       );
@@ -306,6 +390,7 @@ export function ImageCarousel({
         quality={image.quality}
         sizes={`(min-width: 1024px) ${image.lgWidth?.px ?? 660}px, (min-width: 768px) 480px, 380px`}
         loading="eager"
+        fetchPriority={fetchPriority}
         className={`shrink-0 ${CARD_CLASS[size]} ${image.lgWidth?.class ?? CARD_LG_WIDTH}${margin}`}
       />
     );
@@ -321,7 +406,7 @@ export function ImageCarousel({
   const naturalScale = (() => {
     if (speedScale !== undefined) return undefined;
     const CARD_H = 400;
-    const GAP = 24; // spacing-xl at lg
+    const GAP = 20; // spacing-lg at lg — keep in step with `margin` above
     const REFERENCE_SET = 3420;
     let total = 0;
     for (const image of images) {
@@ -337,7 +422,7 @@ export function ImageCarousel({
 
   if (!marquee) {
     return (
-      <div className={`flex items-center justify-center gap-sm md:gap-md lg:gap-xl ${className}`}>
+      <div className={`flex items-center justify-center gap-xs md:gap-sm lg:gap-lg ${className}`}>
         {images.map((image) => card(image, image.src, false))}
       </div>
     );
