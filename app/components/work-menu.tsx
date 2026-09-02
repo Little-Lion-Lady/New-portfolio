@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import { GlassImage } from "./work-image";
-import { EASE } from "./motion-timing";
+
 
 /*
   The Work dropdown.
@@ -71,6 +71,32 @@ const MOBILE_QUERY = "(max-width: 767px)";
 // The card sits 8px below the link, so a straight-line reach crosses dead
 // space; without this grace it closes mid-reach.
 const CLOSE_DELAY = 150;
+
+/*
+  Menu motion.
+  ───────────
+  Deliberately NOT the reveal system's EASE/DURATION from ./motion-timing.
+  Those are tuned for large blocks arriving once on scroll — a 0.91s curve with
+  a very long settling tail, which is right for a section of the page and wrong
+  for a control the pointer is waiting on. A menu has to feel answered.
+
+  So: open fast and settle (an expo-out curve, quick off the mark, no overshoot),
+  and close FASTER than it opens. Exits that match their entrance read as
+  sluggish, because by then the reader has already decided to leave — roughly
+  half the open duration is the sweet spot.
+
+  The rows cascade in behind the card rather than with it, at a stagger well
+  under their own duration so the three read as one movement rather than three
+  pops. They do NOT cascade back out: on the way out the card's own fade covers
+  them, and staggering an exit just delays the dismissal.
+*/
+const OPEN_EASE = [0.16, 1, 0.3, 1] as const;   // expo-out: fast, then settles
+const CLOSE_EASE = [0.4, 0, 1, 1] as const;     // ease-in: accelerates away
+const OPEN_DURATION = 0.26;
+const CLOSE_DURATION = 0.14;
+const ROW_DURATION = 0.24;
+const ROW_STAGGER = 0.035;
+const ROW_DELAY = 0.03;
 
 // Marks the trigger and both panels, so outside-clicks and focus moves resolve
 // by querying the document instead of threading refs through props.
@@ -324,6 +350,17 @@ export function WorkMenuTrigger({
   row under the cursor is at gray-100 — so gray-200 doubles as the resting
   state of the page you are already on.
 */
+/*
+  Row motion. `hidden`/`visible` are driven by the card's own stagger — a child
+  with no transition of its own would otherwise inherit the parent's, and the
+  card's is tuned for a 342px box rather than a 64px row. No `exit`: the card
+  fades the whole stack out at once.
+*/
+const rowMotion = {
+  hidden: { opacity: 0, y: -6 },
+  visible: { opacity: 1, y: 0, transition: { duration: ROW_DURATION, ease: OPEN_EASE } },
+};
+
 function Rows({
   currentPath,
   onSelect,
@@ -335,15 +372,8 @@ function Rows({
 }) {
   return (
     <>
-      {CASE_STUDIES.map((item, index) => (
-        <m.div
-          key={item.href}
-          initial={reduced ? false : { opacity: 0, y: -4 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={
-            reduced ? { duration: 0 } : { duration: 0.3, ease: EASE, delay: 0.04 + index * 0.045 }
-          }
-        >
+      {CASE_STUDIES.map((item) => (
+        <m.div key={item.href} variants={reduced ? undefined : rowMotion}>
           <Link
             href={item.href}
             role="menuitem"
@@ -388,8 +418,14 @@ function Rows({
   flush, which lands it under the Work/About/toggle cluster and still reads as
   belonging to Work.
 
+  Vertically it sits flush against the nav, no gap. That is what the design
+  has: the "Work nav" frame's top is y=76.7, and the real pill's bottom edge at
+  1728 is y=76 (20px of header padding + a 56px pill). The 8px gap this
+  carried at first was invented, and read as detached.
+
   The deviation from Figma is ~69px of horizontal position on a wide desktop —
-  everything else (342px width, 8px padding, 4px gaps, 64px rows) is exact.
+  everything else (342px width, 8px padding, 4px gaps, 64px rows, and the
+  vertical join above) is exact.
 */
 export function WorkMenuPanel({
   open,
@@ -423,13 +459,43 @@ export function WorkMenuPanel({
           aria-label="Case studies"
           onMouseEnter={isDesktop ? onCancelClose : undefined}
           onMouseLeave={isDesktop ? onScheduleClose : undefined}
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.97 }}
-          animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
-          exit={reduced ? { opacity: 0 } : { opacity: 0, y: -6, scale: 0.98 }}
-          transition={{ duration: reduced ? 0.15 : 0.32, ease: EASE }}
+          variants={
+            reduced
+              ? {
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1, transition: { duration: 0.12 } },
+                  exit: { opacity: 0, transition: { duration: 0.1 } },
+                }
+              : {
+                  // Starts tucked 6px up behind the nav and slightly small, so
+                  // it reads as coming out from under the bar it hangs off
+                  // rather than appearing in place.
+                  hidden: { opacity: 0, y: -6, scale: 0.97 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: {
+                      duration: OPEN_DURATION,
+                      ease: OPEN_EASE,
+                      staggerChildren: ROW_STAGGER,
+                      delayChildren: ROW_DELAY,
+                    },
+                  },
+                  exit: {
+                    opacity: 0,
+                    y: -4,
+                    scale: 0.985,
+                    transition: { duration: CLOSE_DURATION, ease: CLOSE_EASE },
+                  },
+                }
+          }
+          initial="hidden"
+          animate="visible"
+          exit="exit"
           // Grows out of the corner it hangs from rather than its own middle.
           style={{ transformOrigin: "top right" }}
-          className="absolute right-0 top-[calc(100%+var(--spacing-xs))] z-10 hidden w-[342px] max-w-full flex-col gap-3xs rounded-md border border-border-overlay bg-bg-primary p-xs drop-shadow-[0_2px_7.5px_var(--shadows-shadow-02)] md:flex"
+          className="absolute right-0 top-full z-10 hidden w-[342px] max-w-full flex-col gap-3xs rounded-md border border-border-overlay bg-bg-primary p-xs drop-shadow-[0_2px_7.5px_var(--shadows-shadow-02)] md:flex"
         >
           <Rows currentPath={currentPath} onSelect={onClose} reduced={!!reduced} />
         </m.div>
@@ -467,13 +533,33 @@ export function WorkMenuMobileList({
           {...{ [SCOPE_ATTR]: "" }}
           role="menu"
           aria-label="Case studies"
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{
-            height: { duration: reduced ? 0 : 0.36, ease: EASE },
-            opacity: { duration: reduced ? 0 : 0.22, ease: EASE },
+          variants={{
+            hidden: { height: 0, opacity: 0 },
+            visible: {
+              height: "auto",
+              opacity: 1,
+              transition: {
+                height: { duration: reduced ? 0 : 0.32, ease: OPEN_EASE },
+                // Opacity finishes well before the height does, so the rows are
+                // solid while the pill is still growing — fading in step with
+                // the height makes the whole card look like it is dissolving.
+                opacity: { duration: reduced ? 0 : 0.16, ease: OPEN_EASE },
+                staggerChildren: reduced ? 0 : ROW_STAGGER,
+                delayChildren: reduced ? 0 : ROW_DELAY,
+              },
+            },
+            exit: {
+              height: 0,
+              opacity: 0,
+              transition: {
+                height: { duration: reduced ? 0 : 0.2, ease: CLOSE_EASE },
+                opacity: { duration: reduced ? 0 : 0.12, ease: CLOSE_EASE },
+              },
+            },
           }}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
           className="relative col-span-5 col-start-1 overflow-hidden md:hidden"
         >
           <div className="flex flex-col gap-3xs">

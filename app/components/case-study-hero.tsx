@@ -88,8 +88,12 @@ export function CaseStudyHero({
           <Reveal immediate delay={INTRO_DELAY} duration={INTRO_DURATION} className="flex flex-col lg:col-start-7 lg:col-span-6 lg:justify-center">
             {/* B-2xs→B-xs→B-sm (14/24, 16/26, 20/32) — the description sits a step
                 below the meta rows' desktop size, not above it. */}
-            <p className="b-2xs text-text-primary-highlight md:b-xs lg:b-sm">{lead}</p>
-            <p className="b-2xs text-text-secondary md:b-xs lg:b-sm">{description}</p>
+            {/* Body steps 16 → 20 (b-xs → b-sm). It used to start at 14 on
+                mobile, which read small against the hero title; the old md:b-xs
+                is gone rather than left in place, since the base now carries
+                that size all the way to lg. */}
+            <p className="b-xs text-text-primary-highlight lg:b-sm">{lead}</p>
+            <p className="b-xs text-text-secondary lg:b-sm">{description}</p>
           </Reveal>
 
           {/* Meta block (desktop: left, c1-5) — in step with the text block.
