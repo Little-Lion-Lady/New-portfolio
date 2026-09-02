@@ -151,6 +151,7 @@
   --colour-gray-dark-50-20:   rgba(250, 249, 250, 0.2);
   --colour-gray-dark-50-00:   rgba(250, 249, 250, 0);
   --colour-gray-dark-950-50:  rgba(10, 9, 10, 0.5);
+  --colour-gray-dark-950-10:  rgba(10, 9, 10, 0.1);
   --colour-blue-100-10: rgba(214, 228, 255, 0.1);
   --colour-blue-200-50: rgba(182, 203, 255, 0.5);
   --colour-blue-200-70: rgba(182, 203, 255, 0.7);
@@ -462,7 +463,7 @@
     --bg-inverse:          var(--colour-gray-dark-800);
     --bg-transparency:     var(--colour-base-black-transparent);
 
-    --text-primary:           var(--colour-gray-light-200);
+    --text-primary:           var(--colour-gray-dark-100);
     --text-secondary:         var(--colour-gray-dark-300);
     --text-tertiary:          var(--colour-gray-dark-500);
     --text-quaternary:        var(--colour-gray-dark-600);
@@ -481,7 +482,7 @@
     --border-highlight: var(--colour-gray-dark-100);
     /* Overlay chrome stays dark in dark mode, same as shadow-02 below:
        the glass frame's hairline is gray-light-950-10 in both themes. */
-    --border-overlay:   var(--colour-gray-light-950-10);
+    --border-overlay:   var(--colour-gray-dark-950-10);
 
     --shadows-shadow-01: var(--colour-blue-200-50);
     /* Drop shadows stay dark in dark mode — shadow-02 is mode-invariant
@@ -506,17 +507,17 @@
 
     --component-bg-detail-frame: #001C34;
 
-    --utility-gray-50:  var(--colour-gray-light-950);
-    --utility-gray-100: var(--colour-gray-light-900);
-    --utility-gray-200: var(--colour-gray-light-800);
-    --utility-gray-300: var(--colour-gray-light-700);
-    --utility-gray-400: var(--colour-gray-light-600);
-    --utility-gray-500: var(--colour-gray-light-500);
-    --utility-gray-600: var(--colour-gray-light-400);
-    --utility-gray-700: var(--colour-gray-light-300);
-    --utility-gray-800: var(--colour-gray-light-200);
-    --utility-gray-900: var(--colour-gray-light-100);
-    --utility-gray-950: var(--colour-gray-light-50);
+    --utility-gray-50:  var(--colour-gray-dark-950);
+    --utility-gray-100: var(--colour-gray-dark-900);
+    --utility-gray-200: var(--colour-gray-dark-800);
+    --utility-gray-300: var(--colour-gray-dark-700);
+    --utility-gray-400: var(--colour-gray-dark-600);
+    --utility-gray-500: var(--colour-gray-dark-500);
+    --utility-gray-600: var(--colour-gray-dark-400);
+    --utility-gray-700: var(--colour-gray-dark-300);
+    --utility-gray-800: var(--colour-gray-dark-200);
+    --utility-gray-900: var(--colour-gray-dark-100);
+    --utility-gray-950: var(--colour-gray-dark-50);
 
     --utility-beige-50:  var(--colour-gray-dark-950);
     --utility-beige-100: var(--colour-gray-dark-900);
@@ -604,7 +605,7 @@
   --bg-inverse:          var(--colour-gray-dark-800);
   --bg-transparency:     var(--colour-base-black-transparent);
 
-  --text-primary:           var(--colour-gray-light-200);
+  --text-primary:           var(--colour-gray-dark-100);
   --text-secondary:         var(--colour-gray-dark-300);
   --text-tertiary:          var(--colour-gray-dark-500);
   --text-quaternary:        var(--colour-gray-dark-600);
@@ -623,7 +624,7 @@
   --border-highlight: var(--colour-gray-dark-100);
   /* Overlay chrome stays dark in dark mode, same as shadow-02 below:
      the glass frame's hairline is gray-light-950-10 in both themes. */
-  --border-overlay:   var(--colour-gray-light-950-10);
+  --border-overlay:   var(--colour-gray-dark-950-10);
 
   --shadows-shadow-01: var(--colour-blue-200-50);
   /* Figma dark mode: shadow-02 is Base/black at full opacity — the
@@ -647,17 +648,17 @@
 
   --component-bg-detail-frame: #001C34;
 
-  --utility-gray-50:  var(--colour-gray-light-950);
-  --utility-gray-100: var(--colour-gray-light-900);
-  --utility-gray-200: var(--colour-gray-light-800);
-  --utility-gray-300: var(--colour-gray-light-700);
-  --utility-gray-400: var(--colour-gray-light-600);
-  --utility-gray-500: var(--colour-gray-light-500);
-  --utility-gray-600: var(--colour-gray-light-400);
-  --utility-gray-700: var(--colour-gray-light-300);
-  --utility-gray-800: var(--colour-gray-light-200);
-  --utility-gray-900: var(--colour-gray-light-100);
-  --utility-gray-950: var(--colour-gray-light-50);
+  --utility-gray-50:  var(--colour-gray-dark-950);
+  --utility-gray-100: var(--colour-gray-dark-900);
+  --utility-gray-200: var(--colour-gray-dark-800);
+  --utility-gray-300: var(--colour-gray-dark-700);
+  --utility-gray-400: var(--colour-gray-dark-600);
+  --utility-gray-500: var(--colour-gray-dark-500);
+  --utility-gray-600: var(--colour-gray-dark-400);
+  --utility-gray-700: var(--colour-gray-dark-300);
+  --utility-gray-800: var(--colour-gray-dark-200);
+  --utility-gray-900: var(--colour-gray-dark-100);
+  --utility-gray-950: var(--colour-gray-dark-50);
 
   --utility-beige-50:  var(--colour-gray-dark-950);
   --utility-beige-100: var(--colour-gray-dark-900);
@@ -1158,38 +1159,44 @@ h1.d-sm {
   font-weight: var(--font-weight-medium);
 }
 
-/* ── About page: hero title ────────────────────────────────────────────────
-   Sized to match .case-hero-title exactly at every breakpoint, so "Who am I?"
-   and a case study's title read at the same scale:
+/* ── Hero title size ramp ──────────────────────────────────────────────────
+   ONE source of truth for both hero titles — the About page's "Who am I?" and
+   every case study's title. They are meant to read at the same scale, and
+   holding that by keeping two sets of font-sizes in step by hand is exactly
+   the sort of thing that drifts. Change the ramp here and both follow.
 
      Mobile  : D-xs  44 px
      Tablet  : D-md  80 px
      Desktop : 6rem  96 px
 
-   KEEP THESE THREE font-sizes IN STEP WITH .case-hero-title BELOW. Only the
-   size is shared — this title keeps its own weight ramp (regular at mobile,
-   D-sm being the one display step that isn't medium) and its own lh 1.15 at
-   mobile, where the case title runs 1.10.
+   Only the SIZE is shared. Each title keeps its own weight and line-height
+   below — About runs regular at mobile (D-sm being the one display step that
+   isn't medium) and lh 1.15 throughout, where the case title is medium
+   throughout and runs lh 1.10 at mobile.
+   ────────────────────────────────────────────────────────────────────────── */
+:root {
+  --hero-title-size: var(--font-size-display-xs);   /* 44 px */
+}
+@media (min-width: 768px) {
+  :root { --hero-title-size: var(--font-size-display-md); }  /* 80 px */
+}
+@media (min-width: 1024px) {
+  :root { --hero-title-size: 6rem; }                         /* 96 px */
+}
 
-   Was a fluid ramp of its own (D-sm → D-md → D-lg/D-xl, topping out at 142 px).
+/* ── About page: hero title ────────────────────────────────────────────────
+   Was a fluid ramp of its own (D-sm → D-md → D-lg/D-xl, topping out at 142 px)
+   before it was matched to the case-study titles.
    ────────────────────────────────────────────────────────────────────────── */
 .about-hero-title {
   font-family: var(--font-family-body);
   font-weight: var(--font-weight-regular);
-  font-size: var(--font-size-display-xs);   /* 44 px */
+  font-size: var(--hero-title-size);
   line-height: 1.15;
 }
 @media (min-width: 768px) {
   .about-hero-title {
-    font-size: var(--font-size-display-md); /* 80 px */
     font-weight: 500;
-    line-height: 1.15;
-  }
-}
-@media (min-width: 1024px) {
-  .about-hero-title {
-    font-size: 6rem;                        /* 96 px */
-    line-height: 1.15;
   }
 }
 
@@ -1233,18 +1240,11 @@ h1.d-sm {
 .case-hero-title {
   font-family: var(--font-family-body);
   font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-display-xs);   /* 44 */
+  font-size: var(--hero-title-size);
   line-height: 1.10;
 }
 @media (min-width: 768px) {
   .case-hero-title {
-    font-size: var(--font-size-display-md); /* 80 */
-    line-height: 1.15;
-  }
-}
-@media (min-width: 1024px) {
-  .case-hero-title {
-    font-size: 6rem;
     line-height: 1.15;
   }
 }

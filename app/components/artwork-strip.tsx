@@ -6,7 +6,20 @@ import { GlassImage } from "./work-image";
 // Figma "Image wrapper" sizes for the §03 strip: 210×340 mobile, 420×600 from tablet up.
 const CARD_CLASS = "h-[340px] w-[210px] shrink-0 md:h-[600px] md:w-[420px] lg:h-[600px] lg:w-[420px]";
 
-function Card({ name }: { name: string }) {
+/*
+  Card pitch, as a trailing margin rather than flex `gap` — the same mechanism
+  <ImageCarousel> uses, and for the same reason.
+
+  `gap` puts n-1 gaps in a set of n. On the doubled marquee track that makes
+  half the track `n cards + (n - 0.5) gaps`, while one full set plus its own
+  trailing gap is `n cards + n gaps`. Translating exactly -50% therefore lands
+  half a gap short of where the duplicate set begins, and the loop shifts by
+  that much every cycle. A per-card margin makes the two halves exactly equal,
+  so the seam holds.
+*/
+const CARD_MARGIN = "mr-xs md:mr-sm lg:mr-lg";
+
+function Card({ name, margin = false }: { name: string; margin?: boolean }) {
   return (
     <GlassImage
       src={`/home/about/${name}.jpg`}
@@ -23,7 +36,7 @@ function Card({ name }: { name: string }) {
       */
       loading="eager"
       fetchPriority="low"
-      className={CARD_CLASS}
+      className={margin ? `${CARD_CLASS} ${CARD_MARGIN}` : CARD_CLASS}
     />
   );
 }
@@ -40,6 +53,8 @@ export function ArtworkStrip({ names }: { names: string[] }) {
   const reducedMotion = useReducedMotion();
 
   if (reducedMotion) {
+    // A single, non-translated set — no seam to hold, so plain flex `gap` is
+    // correct here and avoids a stray trailing margin at the scroll end.
     return (
       <div className={BLEED_CLASS}>
         <div className="-my-md flex w-full gap-xs overflow-x-auto py-md md:gap-sm lg:gap-lg">
@@ -53,12 +68,12 @@ export function ArtworkStrip({ names }: { names: string[] }) {
 
   return (
     <div className={`${BLEED_CLASS} -my-md overflow-hidden py-md`}>
-      <div className="artwork-marquee-track flex w-max gap-xs md:gap-sm lg:gap-lg">
+      <div className="artwork-marquee-track flex w-max">
         {names.map((name) => (
-          <Card key={`${name}-a`} name={name} />
+          <Card key={`${name}-a`} name={name} margin />
         ))}
         {names.map((name) => (
-          <Card key={`${name}-b`} name={name} />
+          <Card key={`${name}-b`} name={name} margin />
         ))}
       </div>
     </div>

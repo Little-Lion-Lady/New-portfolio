@@ -49,14 +49,14 @@ export default function About() {
             plus the Hero-text-container's own 0/24/32 on TitleStars.
 
             Well down the spacing scale from Figma's 80/128/160 top and
-            80/72/128 bottom. The title shrank to match the case-study ramp
+            80/72/128 bottom. Bottom is now 40/40/32 and top 64/80/72. The title shrank to match the case-study ramp
             (96px on desktop, down from a fluid 124-142), which left the hero
             reading as mostly empty space at the original padding — and the
             bigger the viewport, the more of it there was, so the wider
             breakpoints are cut hardest. Desktop now sits tighter than tablet
             rather than looser. The top still clears the fixed header at every
             breakpoint. */}
-        <section className="relative z-10 pb-4xl pt-4xl md:pb-3xl md:pt-6xl lg:pb-2xl lg:pt-5xl">
+        <section className="relative z-10 pb-3xl pt-4xl md:pb-3xl md:pt-6xl lg:pb-2xl lg:pt-5xl">
           <TitleStars className="relative md:pt-xl lg:pt-2xl">
             <RevealWords immediate as="h1" className="about-hero-title text-text-primary-highlight">Who am I?</RevealWords>
           </TitleStars>
