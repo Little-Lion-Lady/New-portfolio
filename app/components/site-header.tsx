@@ -114,11 +114,17 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
               Work
             </Link>
           )}
+          {/* The md span is part of the conditional, not a constant beside it.
+              At 9 columns the toggle sits in column 9, so About spanning two
+              columns from 8 reaches into it — and a grid item cannot share a
+              cell, so the toggle wrapped onto a second row and the pill grew to
+              90px. It only collided when both links showed, because that is the
+              only case that puts About at column 8. */}
           {showAbout && (
             <Link
               href="/about"
-              className={`relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-span-2 md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
-                bothLinks ? "md:col-start-8" : "md:col-start-7"
+              className={`relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
+                bothLinks ? "md:col-start-8 md:col-span-1" : "md:col-start-7 md:col-span-2"
               }`}
             >
               About
