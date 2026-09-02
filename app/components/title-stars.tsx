@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { m, useReducedMotion, type Variants } from "framer-motion";
 import { Star } from "./dynamic-visuals";
 import { WORD_STAGGER, EASE } from "./motion-timing";
-import { useHeroIntroSkip } from "./hero-seen";
 
 // Matches RevealWords' own blur-in look and curve, timed via `custom` so each
 // star arrives with the word it is anchored to.
@@ -53,7 +52,6 @@ export function TitleStars({
   placement = "title",
   className = "relative",
   revealDelay = 0,
-  intro = false,
 }: {
   children: ReactNode;
   /** Star offsets to use — "hero" for the fluid home headline, "title" otherwise. */
@@ -61,13 +59,10 @@ export function TitleStars({
   className?: string;
   /** The wrapped heading's own reveal delay, so the stars share its timeline. */
   revealDelay?: number;
-  /** See Reveal's `intro` — skip the entrance if it already played this session. */
-  intro?: boolean;
 }) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [anchor, setAnchor] = useState<{ top: number; left: number; delay: number } | null>(null);
   const reducedMotion = useReducedMotion();
-  const skipIntro = useHeroIntroSkip(intro);
 
   useEffect(() => {
     const box = boxRef.current;
@@ -105,9 +100,13 @@ export function TitleStars({
       const stagger = Number.isFinite(published) ? published : WORD_STAGGER;
       // The cluster is pinned to this word's top-right corner, so it is the
       // nearest word by construction — it just has to share the word's place
-      // in the cascade. Derived from WORD_STAGGER and the heading's own delay
-      // rather than written down, so retuning either keeps the stars in step.
-      const delay = revealDelay + lastIndex * stagger;
+      // in the cascade. Each token publishes its own resolved offset, which is
+      // the only correct source under a line-grouped reveal (there the offset
+      // comes from the token's measured line, not its index); the index maths
+      // stays as the fallback for anything that has not published one.
+      const ownOffset = parseFloat(lastOnLine1.getAttribute("data-reveal-delay") ?? "");
+      const offset = Number.isFinite(ownOffset) ? ownOffset : lastIndex * stagger;
+      const delay = revealDelay + offset;
       setAnchor({ top: r.top - boxRect.top, left: r.right - boxRect.left, delay });
     };
 
@@ -128,9 +127,9 @@ export function TitleStars({
         <m.div
           className="pointer-events-none absolute"
           style={{ top: anchor.top, left: anchor.left }}
-          initial={reducedMotion || skipIntro ? false : "hidden"}
+          initial={reducedMotion ? false : "hidden"}
           animate="visible"
-          custom={skipIntro ? 0 : anchor.delay}
+          custom={anchor.delay}
           variants={STAR_VARIANTS}
         >
           <Star variant={1} className={stars.one} />

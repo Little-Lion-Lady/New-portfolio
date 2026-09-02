@@ -1214,15 +1214,21 @@ h1.d-sm {
 .notfound-title {
   font-family: var(--font-family-body);
   font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-display-md);   /* 80 */
+  font-size: var(--font-size-display-sm);   /* 60 — was D-md 80 */
   line-height: 1.15;
 }
 @media (min-width: 768px) {
   .notfound-title { font-size: var(--font-size-display-lg); }  /* 124 */
 }
 @media (min-width: 1024px) {
+  /* Was clamp(D-xl 142 … D-2xl 224) ramping across 1024→1728. Both ends step
+     down one place on the display scale, to D-lg 124 → D-xl 142, and the ramp
+     is re-derived to span the same two viewports rather than reusing the old
+     slope: at 11.65vw a 124 floor would top out by ~1178px and sit flat across
+     every real desktop. 97.8px + 2.56vw hits 124 at 1024 and 142 at 1728, so
+     the type still grows with the viewport, just over a shorter distance. */
   .notfound-title {
-    font-size: clamp(var(--font-size-display-xl), 22.7px + 11.65vw, var(--font-size-display-2xl));
+    font-size: clamp(var(--font-size-display-lg), 97.8px + 2.56vw, var(--font-size-display-xl));
   }
 }
 
@@ -1488,8 +1494,9 @@ textarea,
    Trade-off to weigh: the timer starts at page load for every reveal on the
    page, not when one scrolls into view. Someone who idles at the top for the
    full delay and then scrolls finds the lower sections already visible rather
-   than fading in. 10s sits well past the home hero's own 5s intro while
-   keeping the worst-case blank window short.
+   than fading in. 10s sits well past the home hero's own intro — at most
+   ~3.3s, on the narrowest wrap — while keeping the worst-case blank window
+   short.
    ============================================================ */
 @keyframes reveal-safety-floor {
   to {
@@ -1509,4 +1516,23 @@ textarea,
   .reveal-safety {
     animation-duration: 1ms;
   }
+}
+
+/* ============================================================
+   PAGE SHELL
+
+   The site's one max width. Every page's <main> wears this, and so
+   does the fixed header, because the two have to agree: the nav pill
+   is positioned over the content and reads as belonging to it, so
+   capping either one alone leaves the nav overhanging the page (or
+   floating inside it) on any viewport past the cap.
+
+   Kept as a class rather than a repeated utility so the number lives
+   in one place — it was six literals before, which is six chances to
+   change five of them.
+   ============================================================ */
+.page-shell {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
 }

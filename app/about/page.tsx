@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function About() {
   return (
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex flex-col gap-3xl bg-bg-primary px-md pb-0 pt-md text-text-primary md:gap-6xl md:px-3xl md:pt-3xl lg:gap-6xl lg:px-3xl lg:pb-0 lg:pt-3xl">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-3xl bg-bg-primary px-md pb-0 pt-md text-text-primary md:gap-6xl md:px-3xl md:pt-3xl lg:gap-6xl lg:px-3xl lg:pb-0 lg:pt-3xl">
       {/* Gradient + header + hero grouped so the section gap isn't inserted between them */}
       <div>
         <SiteHeader />
@@ -58,7 +58,7 @@ export default function About() {
             breakpoint. */}
         <section className="relative z-10 pb-3xl pt-4xl md:pb-3xl md:pt-6xl lg:pb-2xl lg:pt-5xl">
           <TitleStars className="relative md:pt-xl lg:pt-2xl">
-            <RevealWords immediate as="h1" className="about-hero-title text-text-primary-highlight">Who am I?</RevealWords>
+            <RevealWords immediate byLine as="h1" className="about-hero-title text-text-primary-highlight">Who am I?</RevealWords>
           </TitleStars>
         </section>
       </div>

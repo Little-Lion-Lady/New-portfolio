@@ -7,6 +7,7 @@ import { SectionReveal } from "./components/section-reveal-context";
 import { Reveal } from "./components/reveal";
 import { HeroCat, AboutCat } from "./components/dynamic-visuals";
 import { SyncedStar } from "./components/synced-star";
+import { HeroClose } from "./components/hero-close";
 import { HeroText } from "./components/hero-text";
 import { Divider } from "./components/divider";
 import { basis, covid, firstTable } from "@/content/stats";
@@ -14,31 +15,29 @@ import { basis, covid, firstTable } from "@/content/stats";
 export default function Home() {
   return (
     // Full-bleed on tablet/mobile (no page padding); desktop keeps px-3xl/py-3xl. Section gap = --2xl.
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-2xl md:pt-[92px] lg:px-3xl lg:pb-0 lg:pt-[92px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-2xl md:pt-[92px] lg:px-3xl lg:pb-0 lg:pt-[92px]">
       {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
       <div>
-        {/* Every piece below is marked `intro`: the whole sequence is skipped,
-            rendered already finished, if this session has seen the home page
-            before — see hero-seen.ts.
-
-            Hero load sequence — nav and headline open together, cat closes:
-              nav       0s    → settles 0.7s
-              headline  0s    → last word settles 5s (REVEAL_SPAN)
-              cat       2.3s  → settles 3.0s
-            The headline's 5s is a wrap, not the point at which it reads as
-            present: with a 69ms stagger over 32 words the last word *starts*
-            at ~2.1s, and everything after that is the tail softly resolving.
-            So the cat follows the whole line being in motion rather than the
-            nominal end — waiting for 5s left a dead beat with nothing moving
-            but a blur no one can see. */}
-        <SiteHeader revealDelay={0} intro />
+        {/* Hero load sequence — nav and headline open together, cat closes:
+              nav       0s   → settles 0.7s
+              headline  0s   → reads as present 1.4s (5-line desktop wrap) to
+                              2.45s (12-line phone wrap)
+              cat       ↑    → starts there, whatever there turns out to be
+            The cat follows the point where the headline READS as finished
+            rather than its nominal end, and measures that point instead of
+            assuming it — see HeroClose. Both halves of that matter: a line is
+            ~93% resolved halfway through its 1.6s on this curve, so timing off
+            the nominal end left almost a second of dead air; and the headline
+            refits its type per breakpoint, so no single number lands right at
+            more than one width. */}
+        <SiteHeader revealDelay={0} />
 
         {/* Hero — fills the viewport (clamped 640px–1500px).
             Text vertically centered in the top 3/4. Image bottom-aligned in the remaining 1/4. */}
         {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
         <section className="relative z-10 flex h-[clamp(640px,calc(100svh-60px),1500px)] w-full flex-col md:h-[clamp(640px,calc(100svh-92px),1500px)] lg:h-[clamp(640px,calc(100svh-100px),1500px)]">
         {/* Text — fits to its bounding box via JS binary search on font-size */}
-        <HeroText revealDelay={0} intro className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:pt-3xl md:pb-2xl lg:pt-lg lg:pb-4xl" />
+        <HeroText revealDelay={0} className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:pt-3xl md:pb-2xl lg:pt-lg lg:pb-4xl" />
         {/* Image + divider — bottom 1/4.5.
             Divider is flex-1 so it stretches from the left page edge.
             Image pulls left with a negative margin to overlap the divider
@@ -50,23 +49,18 @@ export default function Home() {
           {/* Third twinkle star — sits underneath the hero text, lifted just above
               the top of this row so it clears the last line of the headline.
               It reveals with the headline word it sits under, so it sits OUTSIDE
-              the Reveal below: a parent animating opacity multiplies its
+              the HeroClose below: a parent animating opacity multiplies its
               children, and the cat's reveal now runs late enough that it would
               hold this star back past the word it points at. */}
           <SyncedStar
             variant={3}
-            intro
             revealDelay={0}
             className="pointer-events-none absolute left-[3%] -top-[28px] w-8 md:left-[2%] md:-top-[36px] md:w-11 lg:left-[2%] lg:-top-[44px] lg:w-14"
           />
-          {/* noSafetyFloor: the Divider below carries a backdrop-blur, which a
-              reveal running the safety-floor animation would empty out (the
-              animation makes its element a backdrop root). Part of the hero
-              intro, so it plays on mount and needs no floor. */}
-          <Reveal as="div" delay={2.3} noY intro noSafetyFloor className="flex h-full w-full items-end">
+          <HeroClose revealDelay={0} className="flex h-full w-full items-end">
             <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
             <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[30px] max-w-[296px] md:-ml-[64px] md:max-w-[636px] md:min-h-[200px] md:max-h-[280px] lg:-ml-[3.6vw] lg:max-w-[36vw] lg:min-h-[300px]" />
-          </Reveal>
+          </HeroClose>
         </div>
         </section>
       </div>

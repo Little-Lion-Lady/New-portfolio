@@ -21,14 +21,12 @@ import { m, useReducedMotion } from "framer-motion";
 import { Star } from "./dynamic-visuals";
 import { useNearestWordDelay } from "./word-sync";
 import { EASE } from "./motion-timing";
-import { useHeroIntroSkip } from "./hero-seen";
 
 export function SyncedStar({
   variant = 1,
   className,
   headingSelector = "h1",
   revealDelay = 0,
-  intro = false,
 }: {
   variant?: 1 | 2 | 3 | 4;
   className?: string;
@@ -36,8 +34,6 @@ export function SyncedStar({
   headingSelector?: string;
   /** That heading's own reveal delay. */
   revealDelay?: number;
-  /** See Reveal's `intro` — skip the entrance if it already played this session. */
-  intro?: boolean;
 }) {
   // Measured before the star is visible, so the box has to be in the layout
   // from the start — hence the wrapper animating opacity rather than the star
@@ -45,7 +41,6 @@ export function SyncedStar({
   const ref = useRef<HTMLDivElement>(null);
   const { delay, clearance } = useNearestWordDelay(ref, { headingSelector, revealDelay });
   const reducedMotion = useReducedMotion();
-  const skipIntro = useHeroIntroSkip(intro);
 
   return (
     <m.div
@@ -54,13 +49,13 @@ export function SyncedStar({
       // marginTop, not a transform: the y animation below owns transform, and
       // margin shifts an absolutely-positioned box just as well.
       style={clearance ? { marginTop: clearance } : undefined}
-      initial={reducedMotion || skipIntro ? false : { opacity: 0, y: 8, filter: "blur(16px)" }}
+      initial={reducedMotion ? false : { opacity: 0, y: 8, filter: "blur(16px)" }}
       animate={
         delay === null
           ? { opacity: 0 }
           : { opacity: 1, y: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } }
       }
-      transition={skipIntro ? { duration: 0 } : { duration: 0.8, ease: EASE, delay: delay ?? 0 }}
+      transition={{ duration: 0.8, ease: EASE, delay: delay ?? 0 }}
     >
       <Star variant={variant} className="w-full" />
     </m.div>

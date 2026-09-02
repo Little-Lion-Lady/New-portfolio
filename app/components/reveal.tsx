@@ -20,10 +20,9 @@
     normally.
 */
 
-import React, { createContext, useContext, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { m, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
-import { useHeroIntroSkip } from "./hero-seen";
 import {
   EASE,
   DURATION,
@@ -31,6 +30,8 @@ import {
   DURATION_FF,
   WORD_DURATION,
   WORD_STAGGER,
+  LINE_DURATION,
+  LINE_STAGGER,
   Y,
   BLUR_BLOCK,
   BLUR_TEXT,
@@ -101,6 +102,12 @@ export const IN_VIEW = { once: true, amount: "some", margin: "0px 0px 10% 0px" }
 
 
 
+// How many frames the line grouping will wait for the layout to stop moving
+// before it measures anyway. A refit normally settles within one or two; this
+// only exists so a layout that never stops changing (an animating ancestor,
+// say) cannot hold the headline at opacity 0 indefinitely.
+const MAX_SETTLE_FRAMES = 30;
+
 type BlockCustom = { i?: number; delay?: number; duration?: number };
 
 const variants: Variants = {
@@ -144,6 +151,42 @@ const wordVariants: Variants = {
       duration: custom.duration ?? WORD_DURATION,
       ease: EASE,
       delay: (custom.i ?? 0) * (custom.stagger ?? WORD_STAGGER) + (custom.delay ?? 0),
+    },
+    transitionEnd: { filter: "none" },
+  }),
+};
+
+// Line-level reveal: the same blur-in as a word, but every token on a wrapped
+// line shares one delay, so the line resolves as a single object. The line
+// index is measured from the laid-out DOM (see RevealWords' `byLine`) — the
+// copy is fluid and the browser decides where it breaks, so lines cannot be
+// authored.
+const lineVariants: Variants = {
+  hidden: { opacity: 0, filter: BLUR_TEXT },
+  visible: (custom: WordCustom = {}) => ({
+    opacity: 1,
+    filter: "blur(0px)",
+    transition: {
+      duration: custom.duration ?? LINE_DURATION,
+      ease: EASE,
+      delay: (custom.i ?? 0) * (custom.stagger ?? LINE_STAGGER) + (custom.delay ?? 0),
+    },
+    transitionEnd: { filter: "none" },
+  }),
+};
+
+// Firefox has no blur to clear, so the line needs something else to arrive on:
+// the same 16px lift the block reveals use, applied per line.
+const ffLineVariants: Variants = {
+  hidden: { opacity: 0, y: Y, filter: "blur(0px)" },
+  visible: (custom: WordCustom = {}) => ({
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: custom.duration ?? LINE_DURATION,
+      ease: EASE,
+      delay: (custom.i ?? 0) * (custom.stagger ?? LINE_STAGGER) + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
   }),
@@ -224,8 +267,8 @@ export function Reveal({
   blur = false,
   noY = false,
   duration,
-  intro = false,
   immediate = false,
+  hold = false,
   noSafetyFloor = false,
   className,
   style,
@@ -238,13 +281,16 @@ export function Reveal({
   noY?: boolean;
   /** Override the shared block duration for this reveal only, in seconds. */
   duration?: number;
-  /**
-   * Part of the home hero's opening sequence. Such a reveal is skipped —
-   * rendered already finished — once the intro has played in this browsing
-   * session, so returning to the home page does not replay five seconds of it.
-   */
-  intro?: boolean;
   immediate?: boolean;
+  /**
+   * Stay hidden regardless of the trigger. For a caller that derives its own
+   * delay and does not have it yet: starting on a placeholder and swapping the
+   * real one in mid-flight restarts the transition, which is visible. Whoever
+   * sets this owns getting it back to false — pair it with a timeout rather
+   * than a promise that might not resolve, especially alongside
+   * `noSafetyFloor`, or the element never appears.
+   */
+  hold?: boolean;
   /**
    * Opt out of the CSS safety floor (see .reveal-safety in globals.css).
    * The floor animates filter/transform, and an element running such an
@@ -263,14 +309,11 @@ export function Reveal({
   const reducedMotion = useReducedMotion();
   const isFF = useIsFirefox();
   const { active, immediate: ctxImmediate } = useSectionReveal();
-  // Already played this session: land on the finished state rather than
-  // animating. Reuses the reduced-motion variants, which are exactly that.
-  const skipIntro = useHeroIntroSkip(intro);
   // `immediate` (prop or inherited from an immediate SectionReveal) reveals on
   // mount and ignores the in-view gate, so all content appears at once on load.
   const isImmediate = immediate || ctxImmediate;
   const mounted = useHasMounted();
-  const shouldAnimate = isImmediate ? mounted : active && inView;
+  const shouldAnimate = !hold && (isImmediate ? mounted : active && inView);
 
   const Component = m[as] as typeof m.div;
 
@@ -291,7 +334,7 @@ export function Reveal({
       custom={{ i: index, delay, duration }}
       initial="hidden"
       animate={shouldAnimate ? "visible" : "hidden"}
-      variants={reducedMotion || skipIntro ? reducedVariants : isFF ? (noY ? ffVariantsNoY : ffVariants) : blur ? blurVariants : noY ? variantsNoY : variants}
+      variants={reducedMotion ? reducedVariants : isFF ? (noY ? ffVariantsNoY : ffVariants) : blur ? blurVariants : noY ? variantsNoY : variants}
     >
       <RevealTriggerContext.Provider value={trigger}>{children}</RevealTriggerContext.Provider>
     </Component>
@@ -308,8 +351,10 @@ export function RevealWords({
   startIndex = 0,
   delay = 0,
   span,
-  intro = false,
   immediate = false,
+  byLine = false,
+  startLine = 0,
+  ready = true,
 }: {
   children: ReactNode;
   as?: Tag;
@@ -325,19 +370,45 @@ export function RevealWords({
    * individual word takes. Omitted, the span follows from the word count.
    */
   span?: number;
-  /** See Reveal's `intro`. */
-  intro?: boolean;
   immediate?: boolean;
+  /**
+   * Reveal a wrapped line at a time instead of a word at a time. Tokenisation
+   * is unchanged — every word is still its own span, so wrapping, the
+   * highlight spans and the star sync all behave as before — but the tokens
+   * are grouped by their measured `offsetTop` and every token on a line shares
+   * that line's delay. Used by the hero headlines, whose type is fitted to its
+   * box at runtime: nothing here knows where the copy breaks until it is laid
+   * out, so the lines have to be measured rather than authored.
+   *
+   * The cascade waits for the measurement and then freezes it, so a later
+   * refit cannot re-group lines mid-animation.
+   */
+  byLine?: boolean;
+  /**
+   * Hold the line grouping until the caller says its layout is final. For a
+   * headline that sizes itself after mount: the fit lands in an effect, which
+   * is after the frames this would otherwise measure in, and the grouping is
+   * frozen as soon as the cascade starts — so a measurement taken before the
+   * fit is the one that sticks. Stability heuristics do not catch it (two
+   * frames before the fit look perfectly stable), so the caller has to say.
+   * `byLine` only; defaults to true for callers whose type is already final.
+   */
+  ready?: boolean;
+  /**
+   * Line index this element starts at, for a headline split across sibling
+   * RevealWords (the case-study title, the 404). The `byLine` equivalent of
+   * `startIndex`.
+   */
+  startLine?: number;
 }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, IN_VIEW);
   const reducedMotion = useReducedMotion();
   const isFF = useIsFirefox();
   const { active, immediate: ctxImmediate } = useSectionReveal();
-  const skipIntro = useHeroIntroSkip(intro);
   const isImmediate = immediate || ctxImmediate;
   const mounted = useHasMounted();
-  const shouldAnimate = isImmediate ? mounted : active && inView;
+  const inputsReady = isImmediate ? mounted : active && inView;
 
   // Tokenise: string nodes → individual words (trailing space preserved so
   // the rendered text reflowing works naturally). Element nodes stay whole.
@@ -398,6 +469,122 @@ export function RevealWords({
     return { stagger, duration: WORD_DURATION };
   }, [span, count]);
 
+  // ─── Line grouping (byLine only) ───────────────────────────────────────────
+  const tokenRefs = useRef<(HTMLElement | null)[]>([]);
+  const [lineMap, setLineMap] = useState<number[] | null>(null);
+  // Set once the cascade is under way. A resize or a late refit after that
+  // point must not re-group the lines: the delays are already running, and a
+  // token moving to a different line would restart its transition mid-flight.
+  const frozen = useRef(false);
+  const tokenCount = tokens.length;
+
+  useEffect(() => {
+    if (!byLine || !tokenCount || !ready) return;
+    let cancelled = false;
+
+    // Signature of everything that decides where the copy breaks. The grouping
+    // is only trustworthy once this stops changing between frames.
+    const signature = () => {
+      const el = ref.current;
+      if (!el) return "";
+      return `${getComputedStyle(el).fontSize}|${el.clientWidth}|${el.clientHeight}`;
+    };
+    let lastSignature: string | null = null;
+    let settleAttempts = 0;
+
+    const measure = () => {
+      if (cancelled || frozen.current) return;
+      const els = tokenRefs.current.slice(0, tokenCount);
+      if (els.some((el) => !el)) return;
+
+      // Second line of defence: wait for the layout to hold still for a frame.
+      // `ready` is what actually rules out a pre-fit measurement — two frames
+      // taken before a fit look perfectly stable, so this cannot catch that on
+      // its own — but it does absorb a late webfont swap or a reflow arriving
+      // between the gate opening and this running.
+      const sig = signature();
+      if (sig !== lastSignature && settleAttempts < MAX_SETTLE_FRAMES) {
+        lastSignature = sig;
+        settleAttempts += 1;
+        raf = requestAnimationFrame(measure);
+        return;
+      }
+
+      const map: number[] = [];
+      let line = 0;
+      let lineTop = els[0]!.offsetTop;
+      els.forEach((el, i) => {
+        // Tokens on one wrapped line share an offsetTop. The 2px tolerance
+        // absorbs sub-pixel differences between tokens of different heights;
+        // a real line break moves by a whole line-height.
+        if (i > 0 && el!.offsetTop - lineTop > 2) {
+          line += 1;
+          lineTop = el!.offsetTop;
+        }
+        map.push(line);
+      });
+      setLineMap((prev) =>
+        prev && prev.length === map.length && prev.every((v, i) => v === map[i]) ? prev : map,
+      );
+    };
+
+    // Grouping has to wait for the type that will actually be on screen: the
+    // hero fits its font size after mount and the webfont can land later
+    // still, and both change where the copy breaks. Racing fonts.ready against
+    // a short timeout means a font that never resolves delays the headline by
+    // 600ms rather than holding it at opacity 0 until the CSS safety floor.
+    let raf = 0;
+    let fallback = 0;
+    const settled = Promise.race([
+      document.fonts.ready,
+      new Promise<void>((resolve) => setTimeout(resolve, 600)),
+    ]);
+    settled.then(() => {
+      if (cancelled) return;
+      // A frame is the right moment to measure — layout is settled and nothing
+      // is read back mid-write. But requestAnimationFrame does not fire in a
+      // background tab, and the cascade holds until the lines are known, so a
+      // timer backs it up: someone who opens the site in a background tab and
+      // comes back to it finds the headline ready to reveal rather than
+      // waiting on the CSS safety floor. Whichever lands first wins; the
+      // second is a no-op once the grouping stops changing.
+      raf = requestAnimationFrame(measure);
+      fallback = window.setTimeout(measure, 100);
+    });
+
+    const ro = new ResizeObserver(measure);
+    if (ref.current) ro.observe(ref.current);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+      window.clearTimeout(fallback);
+      ro.disconnect();
+    };
+  }, [byLine, tokenCount, ready]);
+
+  // A byLine cascade holds until its lines are known; every other reveal runs
+  // on its trigger alone.
+  const shouldAnimate = inputsReady && (!byLine || lineMap !== null);
+
+  useEffect(() => {
+    if (shouldAnimate) frozen.current = true;
+  }, [shouldAnimate]);
+
+  const cascade = (i: number) =>
+    byLine
+      ? { i: startLine + (lineMap?.[i] ?? 0), stagger: LINE_STAGGER, duration: LINE_DURATION }
+      : { i: startIndex + i, stagger: timing.stagger, duration: timing.duration };
+
+  const tokenVariants = reducedMotion
+    ? reducedVariants
+    : byLine
+      ? isFF
+        ? ffLineVariants
+        : lineVariants
+      : isFF
+        ? ffWordVariants
+        : wordVariants;
+
   return (
     // Published so <SyncedStar>/<TitleStars> can time themselves against the
     // stagger this line actually used rather than the module default, which a
@@ -406,21 +593,38 @@ export function RevealWords({
       ref={ref as unknown as React.RefObject<never>}
       className={className}
       style={style}
-      data-word-stagger={timing.stagger}
+      data-word-stagger={byLine ? LINE_STAGGER : timing.stagger}
+      // The line count, for anything timing itself against this headline.
+      // Three states, and consumers need all three: absent means not
+      // line-grouped at all (time against token indices); 0 means grouped but
+      // not measured yet, so every token's published delay is still a
+      // placeholder 0 and timing against one would fire at 0s; a positive
+      // count means the delays are final.
+      data-lines={byLine ? (lineMap ? lineMap[lineMap.length - 1] + 1 : 0) : undefined}
     >
-      {tokens.map((token, i) => (
-        <m.span
-          key={i}
-          className="reveal-safety"
-          style={{ display: "inline-block", whiteSpace: "pre-wrap" }}
-          custom={{ i: startIndex + i, delay, duration: timing.duration, stagger: timing.stagger }}
-          initial="hidden"
-          animate={shouldAnimate ? "visible" : "hidden"}
-          variants={reducedMotion || skipIntro ? reducedVariants : isFF ? ffWordVariants : wordVariants}
-        >
-          {token}
-        </m.span>
-      ))}
+      {tokens.map((token, i) => {
+        const c = cascade(i);
+        return (
+          <m.span
+            key={i}
+            ref={(el: HTMLElement | null) => {
+              tokenRefs.current[i] = el;
+            }}
+            className="reveal-safety"
+            style={{ display: "inline-block", whiteSpace: "pre-wrap" }}
+            custom={{ ...c, delay }}
+            initial="hidden"
+            animate={shouldAnimate ? "visible" : "hidden"}
+            variants={tokenVariants}
+            // The resolved cascade offset for this token, excluding the
+            // heading's own `delay`. Star sync reads it rather than
+            // recomputing index x stagger, which is wrong under byLine.
+            data-reveal-delay={c.i * c.stagger}
+          >
+            {token}
+          </m.span>
+        );
+      })}
     </Tag>
   );
 }

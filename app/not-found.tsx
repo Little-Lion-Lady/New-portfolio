@@ -22,7 +22,7 @@ import { Reveal, RevealWords } from "./components/reveal";
 // 700px tall by request, so it scrolls.
 export default function NotFound() {
   return (
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] relative flex min-h-[max(700px,100svh)] flex-col bg-bg-primary p-md text-text-primary md:p-3xl lg:h-[max(700px,100svh)]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex min-h-[max(700px,100svh)] flex-col bg-bg-primary p-md text-text-primary md:p-3xl lg:h-[max(700px,100svh)]">
       <SiteHeader />
 
       {/* Fills the viewport, pushing the helper row to the bottom. */}
@@ -34,14 +34,16 @@ export default function NotFound() {
               clamped font size instead of drifting as it scales. */}
           <div className="flex flex-col">
             <RevealWords
+              byLine
               as="h1"
               className="notfound-title whitespace-nowrap text-text-primary-highlight md:-mb-[0.1935em] lg:-mb-[0.1786em]"
             >
               Oops
             </RevealWords>
             <RevealWords
+              byLine
               as="p"
-              startIndex={1}
+              startLine={1}
               className="notfound-title whitespace-nowrap text-text-highlight-dark"
             >
               404 error
