@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Reveal } from "./reveal";
 import { ThemeToggle } from "./theme-toggle";
+import { useWorkMenu, WorkMenuTrigger, WorkMenuPanel, WorkMenuMobileList } from "./work-menu";
 import { useBackdropTone } from "./use-over-media";
 
 // Figma "Header" (436:17272) — a floating glass pill rather than a full-bleed
@@ -37,6 +38,8 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
   // light ink on dark ones. A fixed dark ink disappeared against the dark
   // screenshots that fill the First Table page in dark mode.
   const tone = useBackdropTone(navRef);
+  const { open: workOpen, isDesktop, isMobile, pathname: menuPath, openNow, openOnFocus, close: closeWorkMenu,
+          toggle: toggleWorkMenu, cancelClose, scheduleClose, focusFirstItem } = useWorkMenu();
   const pathname = usePathname();
   // "Work" points back at the home page's work section, so it is offered
   // everywhere except home itself — About, the three case studies and the 404.
@@ -66,7 +69,11 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
       <Reveal immediate noY noSafetyFloor delay={revealDelay}>
         <nav
           ref={navRef}
-          className="pointer-events-auto relative grid grid-cols-4 items-center gap-sm rounded-xs p-xs transition-colors duration-300 md:grid-cols-9 md:gap-x-lg md:gap-y-md md:rounded-sm md:p-md lg:grid-cols-12"
+          className={`pointer-events-auto relative grid grid-cols-5 items-center gap-sm p-xs transition-colors duration-300 md:grid-cols-9 md:gap-x-lg md:gap-y-md md:rounded-sm md:p-md lg:grid-cols-12 ${
+            // Figma gives the expanded mobile pill the next radius up; it is
+            // only ever seen while the list is out.
+            workOpen ? "rounded-sm md:rounded-sm" : "rounded-xs md:rounded-sm"
+          }`}
           style={
             tone
               ? ({
@@ -85,10 +92,21 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           {/* Pill surface — the only thing that reveals on scroll. Sits behind the
               nav content (z-0 + relative children) so the links stay legible at
               full opacity throughout the fade. */}
+          {/* The expanded mobile pill has to carry the menu, and at the top of
+              the page this surface is fully transparent — so without forcing it
+              opaque the rows float over the page with nothing behind them.
+              Figma's mobile "Work nav" is a solid bg-primary card with a drop
+              shadow rather than the glass fill, so the open state swaps to that
+              instead of just raising the glass. md and up are untouched: there
+              the menu brings its own card. */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[inherit] border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] transition-opacity duration-300"
-            style={{ opacity: scrolled ? 1 : 0 }}
+            className={`pointer-events-none absolute inset-0 rounded-[inherit] border border-border-overlay backdrop-blur-[10px] transition-opacity duration-300 ${
+              workOpen && isMobile
+                ? "bg-bg-primary drop-shadow-[0_2px_7.5px_var(--shadows-shadow-02)]"
+                : "bg-utility-inverses-glass"
+            }`}
+            style={{ opacity: scrolled || (workOpen && isMobile) ? 1 : 0 }}
           />
 
           <Link
@@ -100,19 +118,25 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           <p className="relative hidden whitespace-nowrap b-3xs text-text-primary transition-colors md:col-start-3 md:col-span-3 md:block lg:col-start-3 lg:col-span-2 lg:b-2xs">
             Lead Product Designer
           </p>
-          {/* Work stays hidden on mobile — the pill has no room for a second
-              link there, and About is the more useful of the two. */}
+          {/* Work now shows at every breakpoint (mobile included — that is what
+              the fifth column above is for) and opens the case-study menu.
+              See ./work-menu: hover on desktop, tap on tablet and mobile. */}
           {showWork && (
-            <Link
-              href="/#work"
-              className={`tap-target relative hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:block md:justify-self-start lg:col-span-1 lg:b-2xs ${
+            <WorkMenuTrigger
+              open={workOpen}
+              isDesktop={isDesktop}
+              onOpen={openNow}
+              onFocusOpen={openOnFocus}
+              onToggle={toggleWorkMenu}
+              onClose={closeWorkMenu}
+              onScheduleClose={scheduleClose}
+              onArrowDown={focusFirstItem}
+              className={`col-start-3 justify-self-end md:justify-self-start lg:col-span-1 ${
                 bothLinks
                   ? "md:col-start-7 md:col-span-1 lg:col-start-10"
                   : "md:col-start-7 md:col-span-2 lg:col-start-11"
               }`}
-            >
-              Work
-            </Link>
+            />
           )}
           {/* The md span is part of the conditional, not a constant beside it.
               At 9 columns the toggle sits in column 9, so About spanning two
@@ -123,14 +147,32 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           {showAbout && (
             <Link
               href="/about"
-              className={`tap-target relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
+              className={`tap-target relative col-start-4 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
                 bothLinks ? "md:col-start-8 md:col-span-1" : "md:col-start-7 md:col-span-2"
               }`}
             >
               About
             </Link>
           )}
-          <ThemeToggle className="relative col-start-4 justify-self-end md:col-start-9 lg:col-start-12" />
+          {/* Hangs off the nav, not the Work cell — see WorkMenuPanel. Out of
+              flow, so it takes no grid cell. */}
+          {showWork && (
+            <WorkMenuPanel
+              open={workOpen}
+              isDesktop={isDesktop}
+              currentPath={menuPath}
+              onClose={closeWorkMenu}
+              onCancelClose={cancelClose}
+              onScheduleClose={scheduleClose}
+            />
+          )}
+          <ThemeToggle className="relative col-start-5 justify-self-end md:col-start-9 lg:col-start-12" />
+          {/* Below md the list is a row of this same grid, so the pill's glass
+              surface (absolute inset-0) stretches over it and the whole thing
+              expands as one card. */}
+          {showWork && (
+            <WorkMenuMobileList open={workOpen} currentPath={menuPath} onClose={closeWorkMenu} />
+          )}
         </nav>
       </Reveal>
     </header>
