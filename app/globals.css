@@ -1079,6 +1079,32 @@ body {
   }
 }
 
+/*
+  WCAG 2.2 AA (2.5.8 Target Size Minimum) wants every control to present at
+  least a 24×24 CSS-px pointer target. The nav links run 22px tall and the
+  theme toggle is 24×20, because those are the sizes the type and the icon
+  are drawn at in Figma — and the nav pill's height is composed from them.
+
+  So the target grows without the ELEMENT growing: an absolutely-positioned
+  ::after is out of flow, so it enlarges the hit area and contributes nothing
+  to layout. The nav bar keeps its exact height, the type keeps its exact
+  size, and the thing a finger has to land on gets bigger.
+
+  Requires a positioned ancestor — every element this is used on already
+  carries `relative` for the nav pill's stacking order.
+*/
+.tap-target::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 100%;
+  min-height: 24px;
+  min-width: 24px;
+}
+
 /* Re-add a visible focus ring (Tailwind preflight resets outlines) */
 :focus-visible {
   outline: 2px solid var(--text-primary);
@@ -1278,21 +1304,6 @@ h1.d-sm {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
-/* Hero gradient horizontal bleed.
-   Positioned inside the padded content box, so reaching the viewport edge
-   means cancelling the page gutter exactly. That gutter differs per page
-   (home/About step 16>24>72, the case studies 16>40>72), so it's read from
-   --page-gutter, which each <main> declares next to its own px-*. Hardcoding
-   the bleed is what used to push the gradient 8px (mobile) and 16px (tablet)
-   past the viewport, clipping off the rounded top corners.
-   Full bleed at every breakpoint is deliberate: the blur needs to run past
-   the text on both sides so the feathering reads around the copy rather than
-   stopping at a visible margin. */
-.gradient-bleed {
-  left: calc(var(--page-gutter, var(--spacing-5xl)) * -1);
-  right: calc(var(--page-gutter, var(--spacing-5xl)) * -1);
-}
-
 /* Duration is per-breakpoint so the strip travels at ~53px/s, matching the work
    carousels on the home page. A single 36s duration used to make the desktop
    strip run at 85px/s because the cards double in size at md while the duration

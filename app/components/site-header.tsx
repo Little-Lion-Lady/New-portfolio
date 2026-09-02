@@ -93,7 +93,7 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
 
           <Link
             href="/"
-            className="relative col-start-1 col-span-2 b-3xs text-text-primary transition-colors hover:text-text-primary-hover lg:b-2xs"
+            className="tap-target relative col-start-1 col-span-2 b-3xs text-text-primary transition-colors hover:text-text-primary-hover lg:b-2xs"
           >
             Maryna Babych
           </Link>
@@ -105,7 +105,7 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           {showWork && (
             <Link
               href="/#work"
-              className={`relative hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:block md:justify-self-start lg:col-span-1 lg:b-2xs ${
+              className={`tap-target relative hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:block md:justify-self-start lg:col-span-1 lg:b-2xs ${
                 bothLinks
                   ? "md:col-start-7 md:col-span-1 lg:col-start-10"
                   : "md:col-start-7 md:col-span-2 lg:col-start-11"
@@ -123,7 +123,7 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           {showAbout && (
             <Link
               href="/about"
-              className={`relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
+              className={`tap-target relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
                 bothLinks ? "md:col-start-8 md:col-span-1" : "md:col-start-7 md:col-span-2"
               }`}
             >
