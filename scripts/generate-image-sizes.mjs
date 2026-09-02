@@ -10,12 +10,14 @@
   anything else, is what made the case-study pages slow.
 
   Feed it the JSON from scripts/measure-image-boxes.mjs, which drives headless
-  Chrome over CDP and records each image's real box width at four viewports:
+  Chrome over CDP and records each image's real box width at four viewports.
+  Both steps run as one command, on the repo's own Node:
 
-      node scripts/measure-image-boxes.mjs > /tmp/boxes.json   # needs the site running on :3010
-      node scripts/generate-image-sizes.mjs /tmp/boxes.json
+      npm run build && PORT=3010 npm run start   # in another shell
+      npm run images:sizes
 
-  Re-run both whenever a layout changes.
+  Re-run whenever imagery OR a layout changes — a spacing tweak moves flex
+  widths, so the map goes stale on more than just image swaps.
 */
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
