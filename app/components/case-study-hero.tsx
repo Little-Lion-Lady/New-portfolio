@@ -15,7 +15,8 @@ const INTRO_DURATION = DURATION * 1.3;
 // is two lines, the second starting 0.15s behind the first, so at 0.3s both
 // are still resolving and the handover overlaps rather than queues.
 const INTRO_DELAY = 0.3;
-import { ImageCarousel, type WorkImageData } from "./work-image";
+import { ImageCarousel } from "./image-carousel";
+import type { WorkImageData } from "./work-image";
 import { TitleStars } from "./title-stars";
 
 // Figma "Hero" (393:15572 desktop / tablet / mobile).
@@ -122,9 +123,12 @@ export function CaseStudyHero({
           size="lg"
           marquee
           speedScale={images.length / 5}
-          /* The hero rail is the one thing above the fold on a case study, and
-             it loads eagerly like every marquee — rank it above the collages
-             further down so it is not queued behind them. */
+          /* The hero rail is the one thing above the fold on a case study, so
+             it opts out of the rails' load gate: waiting on an
+             IntersectionObserver callback would cost the LCP a round trip for
+             no saving, since this rail is on screen from the first paint.
+             "high" then ranks it above the collages further down the page. */
+          eager
           fetchPriority="high"
         />
       </Reveal>

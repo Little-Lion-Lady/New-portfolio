@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Button } from "./button";
-import { ImageCarousel, type WorkImageData, type WorkImageSize } from "./work-image";
+import { ImageCarousel } from "./image-carousel";
+import type { WorkImageData, WorkImageSize } from "./work-image";
 
 // Figma "Work item" component.
 // Layout per breakpoint:
