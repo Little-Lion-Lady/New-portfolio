@@ -87,6 +87,7 @@ export default function Home() {
           <Reveal index={1} delay={0.3} className="w-full">
             <WorkItem
               number="SW/01"
+              imagePriority="high"
               name="First Table app"
               description={`A ground-up redesign of First Table, the app that gives diners 50% off their first table of the night, now used by ${firstTable.appUsers} people. In the six months since launch, sign-ups are up ${firstTable.signupIncrease} and conversion up ${firstTable.conversionIncrease}.`}
               roles="Growth, Design system, Experimentation"
@@ -103,6 +104,7 @@ export default function Home() {
           <Reveal index={2} className="w-full">
             <WorkItem
               number="SW/02"
+              imagePriority="low"
               // Middle item counter-scrolls, so the three rows don't all drift
               // the same way.
               reverseMarquee
@@ -121,6 +123,7 @@ export default function Home() {
           <Reveal index={3} className="w-full">
             <WorkItem
               number="SW/03"
+              imagePriority="low"
               name="Basis home app"
               description={`The companion app for New Zealand’s first smart electrical panel, built with no product owner and no brief. I owned the strategy. The ${basis.pilotLengthWord} pilot cut household energy bills by ${basis.billReductionActual}.`}
               roles="UX/UI, Research, Product strategy"

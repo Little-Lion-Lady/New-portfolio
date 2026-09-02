@@ -107,8 +107,8 @@ export function SiteHeader({ revealDelay = 0, intro = false }: { revealDelay?: n
               href="/#work"
               className={`relative hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:block md:justify-self-start lg:col-span-1 lg:b-2xs ${
                 bothLinks
-                  ? "md:col-start-6 md:col-span-1 lg:col-start-10"
-                  : "md:col-start-6 md:col-span-2 lg:col-start-11"
+                  ? "md:col-start-7 md:col-span-1 lg:col-start-10"
+                  : "md:col-start-7 md:col-span-2 lg:col-start-11"
               }`}
             >
               Work
@@ -118,7 +118,7 @@ export function SiteHeader({ revealDelay = 0, intro = false }: { revealDelay?: n
             <Link
               href="/about"
               className={`relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:col-span-2 md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
-                bothLinks ? "md:col-start-7" : "md:col-start-6"
+                bothLinks ? "md:col-start-8" : "md:col-start-7"
               }`}
             >
               About

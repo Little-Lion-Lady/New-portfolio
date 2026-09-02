@@ -4,7 +4,7 @@
 //   tablet/desktop — steps sit in a 4-col row; connector is a horizontal line above the text
 // Dot = a text-highlight-dark disc (24px, 20 on mobile) with a bg-light centre;
 // the connector is the same highlight-dark at 2px. Both are SVGs in Figma —
-// _Step icon base fills #FF0000 with an r=4 #F2F4F8 dot, Connector strokes #FF0000.
+// _Step icon base fills #FF0000 with an r=4 #FAFAFA dot, Connector strokes #FF0000.
 // Title text-primary-highlight, body text-secondary; type B-2xs→B-xs→B-sm.
 // Step text stack sits at gap 0 (Figma _Step base): under standard trim the
 // B-2xs/B-xs line box already carries the leading that the old 12/12/16 gap was

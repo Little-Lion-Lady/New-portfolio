@@ -28,15 +28,15 @@
   "text": {
     "textPrimary": {
       "$type": "color",
-      "$value": "{colour.grayLight.700}"
+      "$value": "{colour.grayLight.800}"
     },
     "textPrimaryHover": {
       "$type": "color",
-      "$value": "{colour.grayLight.600}"
+      "$value": "{colour.grayLight.700}"
     },
     "textPrimaryPressed": {
       "$type": "color",
-      "$value": "{colour.grayLight.500}"
+      "$value": "{colour.grayLight.600}"
     },
     "textPrimaryHighight": {
       "$type": "color",
@@ -48,19 +48,19 @@
     },
     "textSecondary": {
       "$type": "color",
-      "$value": "{colour.grayLight.600}"
+      "$value": "{colour.grayLight.700}"
     },
     "textTertiary": {
       "$type": "color",
-      "$value": "{colour.grayLight.400}"
+      "$value": "{colour.grayLight.600}"
     },
     "textQuaternary": {
       "$type": "color",
-      "$value": "{colour.grayLight.300}"
+      "$value": "{colour.grayLight.500}"
     },
     "textDecorative": {
       "$type": "color",
-      "$value": "{colour.grayLight.200}"
+      "$value": "{colour.grayLight.400}"
     },
     "textInverted": {
       "$type": "color",
@@ -427,7 +427,7 @@
     "inverses": {
       "red": {
         "$type": "color",
-        "$value": "{colour.redLight.500}"
+        "$value": "{colour.redLight.600}"
       },
       "white": {
         "$type": "color",

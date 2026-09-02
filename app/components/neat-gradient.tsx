@@ -4,13 +4,18 @@ import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 import { NeatGradient, type NeatConfig } from "@firecms/neat";
 
+// The light/dark background literals below (#fafafa / #0a090a) MUST stay equal
+// to --bg-primary in each theme (gray-light-50 / gray-dark-50 in globals.css).
+// The gradient paints a solid background rather than a transparent one — a
+// transparent WebGL canvas under filter:blur() gets a white fill in Firefox —
+// so any drift here shows up as a seam against the page.
 const lightColors: NeatConfig["colors"] = [
   { color: "#FF0000", enabled: true },
   { color: "#8AA7FF", enabled: true },
   { color: "#8AA7FF", enabled: true },
   { color: "#B498FF", enabled: true },
   { color: "#8AA7FF", enabled: true },
-  { color: "#F2F4F8", enabled: false },
+  { color: "#FAFAFA", enabled: false },
 ];
 
 const darkColors: NeatConfig["colors"] = [
@@ -36,7 +41,7 @@ const defaultConfig: NeatConfig = {
   colorSaturation: 2,
   wireframe: false,
   colorBlending: 5,
-  backgroundColor: "#f2f4f8",
+  backgroundColor: "#fafafa",
   backgroundAlpha: 1,
   grainScale: 4,
   grainSparsity: 0,
@@ -74,7 +79,7 @@ const defaultConfig: NeatConfig = {
   fresnelEnabled: false,
   fresnelPower: 1.3,
   fresnelIntensity: 0,
-  fresnelColor: "#F2F4F8",
+  fresnelColor: "#FAFAFA",
   iridescenceEnabled: false,
   iridescenceIntensity: 0.8,
   iridescenceSpeed: 1.5,
@@ -114,7 +119,7 @@ function paintStaticFallback(canvas: HTMLCanvasElement | null) {
   if (!ctx) return;
   const isDark = document.documentElement.getAttribute("data-theme") === "dark"
     || (!document.documentElement.getAttribute("data-theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
-  ctx.fillStyle = isDark ? "#0a090a" : "#f2f4f8";
+  ctx.fillStyle = isDark ? "#0a090a" : "#fafafa";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
@@ -173,7 +178,7 @@ export function NeatGradientBg({
         gradientRef.current.colors = isDark ? darkColors : lightColors;
         // Solid background matching the page avoids Firefox's white fill on
         // transparent WebGL canvases under filter:blur().
-        gradientRef.current.backgroundColor = isDark ? "#0a090a" : "#f2f4f8";
+        gradientRef.current.backgroundColor = isDark ? "#0a090a" : "#fafafa";
         gradientRef.current.backgroundAlpha = 1;
       }
     };
