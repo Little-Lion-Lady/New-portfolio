@@ -85,18 +85,22 @@ const CLOSE_DELAY = 150;
   sluggish, because by then the reader has already decided to leave — roughly
   half the open duration is the sweet spot.
 
-  The rows cascade in behind the card rather than with it, at a stagger well
-  under their own duration so the three read as one movement rather than three
-  pops. They do NOT cascade back out: on the way out the card's own fade covers
-  them, and staggering an exit just delays the dismissal.
+  The rows come in together, a beat behind the card, rather than one after
+  another. There are only three of them and the card is already moving, so a
+  cascade just drew attention to itself — the list should look like one object
+  arriving, not three. The small delay is what keeps the card leading; the rows
+  themselves start on the same frame.
+
+  On the way out the card's own fade covers them, so they get no exit of their
+  own.
 */
 const OPEN_EASE = [0.16, 1, 0.3, 1] as const;   // expo-out: fast, then settles
 const CLOSE_EASE = [0.4, 0, 1, 1] as const;     // ease-in: accelerates away
 const OPEN_DURATION = 0.26;
 const CLOSE_DURATION = 0.14;
 const ROW_DURATION = 0.24;
-const ROW_STAGGER = 0.035;
-const ROW_DELAY = 0.03;
+// Rows trail the card by a beat, then all move together — no stagger.
+const ROW_DELAY = 0.04;
 
 // Marks the trigger and both panels, so outside-clicks and focus moves resolve
 // by querying the document instead of threading refs through props.
@@ -351,10 +355,11 @@ export function WorkMenuTrigger({
   state of the page you are already on.
 */
 /*
-  Row motion. `hidden`/`visible` are driven by the card's own stagger — a child
-  with no transition of its own would otherwise inherit the parent's, and the
-  card's is tuned for a 342px box rather than a 64px row. No `exit`: the card
-  fades the whole stack out at once.
+  Row motion. Every row runs this identically and starts on the same frame —
+  the parent sets only a delay, not a stagger. The rows carry their own
+  transition because a child without one inherits the parent's, and the card's
+  is tuned for a 342px box rather than a 64px row. No `exit`: the card fades
+  the whole stack out at once.
 */
 const rowMotion = {
   hidden: { opacity: 0, y: -6 },
@@ -478,7 +483,6 @@ export function WorkMenuPanel({
                     transition: {
                       duration: OPEN_DURATION,
                       ease: OPEN_EASE,
-                      staggerChildren: ROW_STAGGER,
                       delayChildren: ROW_DELAY,
                     },
                   },
@@ -544,7 +548,6 @@ export function WorkMenuMobileList({
                 // solid while the pill is still growing — fading in step with
                 // the height makes the whole card look like it is dissolving.
                 opacity: { duration: reduced ? 0 : 0.16, ease: OPEN_EASE },
-                staggerChildren: reduced ? 0 : ROW_STAGGER,
                 delayChildren: reduced ? 0 : ROW_DELAY,
               },
             },
