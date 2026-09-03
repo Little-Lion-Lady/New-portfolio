@@ -44,9 +44,11 @@ function applyTheme(theme: "dark" | "light") {
 //   navigation (ThemeToggle remounts per page) and page refreshes.
 // - Subscribes to OS changes only when the user hasn't made a manual choice.
 // - Sets data-theme on <html>; globals.css resolves all tokens from it.
-// Visual matches the Figma toggle: 24×20 pill, 16px icon, no border. The
-// POINTER target is padded out to 24×24 by .tap-target (globals.css), which
-// uses an out-of-flow ::after so the drawn pill keeps its 24×20 box.
+// Figma 436:17272 wraps the toggle in a 40×40 "Toggle container" with the
+// nav's 12px radius, holding a 16px icon. That box is now the button itself,
+// which means the pointer target is a genuine 40×40 — comfortably past WCAG
+// 2.2's 24×24 minimum without the ::after hit-area trick this used to need —
+// and it takes the same hover and pressed fills as the links beside it.
 export function ThemeToggle({ className = "" }: { className?: string }) {
   // `data-theme` on <html> is the single source of truth — globals.css already
   // resolves every token from it, and applyTheme() below is the only writer.
@@ -87,7 +89,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       suppressHydrationWarning
       whileHover={{ scale: 1.07 }}
       transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`tap-target group relative inline-flex h-[20px] w-[24px] items-center justify-center rounded-full p-[4px] text-text-primary ${className}`}
+      className={`group relative inline-flex size-[40px] items-center justify-center rounded-sm text-text-primary transition-colors duration-200 hover:bg-utility-gray-100 hover:text-text-primary-hover active:bg-utility-gray-200 ${className}`}
     >
       <AnimatePresence mode="wait" initial={false}>
         {isDark ? (

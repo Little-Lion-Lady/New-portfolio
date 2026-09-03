@@ -1080,29 +1080,22 @@ body {
 }
 
 /*
-  WCAG 2.2 AA (2.5.8 Target Size Minimum) wants every control to present at
-  least a 24×24 CSS-px pointer target. The nav links run 22px tall and the
-  theme toggle is 24×20, because those are the sizes the type and the icon
-  are drawn at in Figma — and the nav pill's height is composed from them.
+  Height of the fixed header, including its own outer padding.
 
-  So the target grows without the ELEMENT growing: an absolutely-positioned
-  ::after is out of flow, so it enlarges the hit area and contributes nothing
-  to layout. The nav bar keeps its exact height, the type keeps its exact
-  size, and the thing a finger has to land on gets bigger.
-
-  Requires a positioned ancestor — every element this is used on already
-  carries `relative` for the nav pill's stacking order.
+  The pages need this to clear the header: top padding on <main>, scroll-margin
+  on anchor targets, and the hero's 100svh minus the bar. It used to be written
+  out as three hardcoded pixel values per page across four files, which drifted
+  the moment the nav's padding changed. One definition, measured from the built
+  nav: 54/62/72px of pill plus 12/20/20px of header padding on each side.
 */
-.tap-target::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 100%;
-  min-height: 24px;
-  min-width: 24px;
+:root { --header-height: 78px; }
+
+@media (min-width: 768px) {
+  :root { --header-height: 102px; }
+}
+
+@media (min-width: 1024px) {
+  :root { --header-height: 112px; }
 }
 
 /* Re-add a visible focus ring (Tailwind preflight resets outlines) */

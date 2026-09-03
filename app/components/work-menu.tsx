@@ -279,7 +279,10 @@ export function WorkMenuTrigger({
   return (
     <div
       {...{ [SCOPE_ATTR]: "" }}
-      className={`relative ${className}`}
+      /* Only a positioning shell for the panel — the anchor inside carries the
+         padding and the fills, and stretches to the full grid cell so Work's
+         hover state matches About's rather than shrink-wrapping the word. */
+      className={`relative flex ${className}`}
       onMouseEnter={isDesktop ? onOpen : undefined}
       onMouseLeave={isDesktop ? onScheduleClose : undefined}
     >
@@ -335,7 +338,12 @@ export function WorkMenuTrigger({
           }
           if (event.key === "Escape") onClose();
         }}
-        className="tap-target relative block b-3xs text-text-primary transition-colors hover:text-text-primary-hover lg:b-2xs"
+        /*
+          Matches LINK_CLASS in ./site-header — kept in step by hand rather
+          than imported, because importing it would drag the header's module
+          (and its hooks) into this one for a string.
+        */
+        className="relative flex w-full items-center justify-center rounded-sm px-xs py-sm transition-colors duration-200 b-3xs text-text-primary hover:bg-utility-gray-100 hover:text-text-primary-hover active:bg-utility-gray-200 md:p-sm lg:p-xs lg:b-2xs"
       >
         Work
       </a>

@@ -15,7 +15,7 @@ import { basis, covid, firstTable } from "@/content/stats";
 export default function Home() {
   return (
     // Full-bleed on tablet/mobile (no page padding); desktop keeps px-3xl/py-3xl. Section gap = --2xl.
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[60px] text-text-primary md:px-2xl md:pt-[92px] lg:px-3xl lg:pb-0 lg:pt-[92px]">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[var(--header-height)] text-text-primary md:px-2xl lg:px-3xl lg:pb-0">
       {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
       <div>
         {/* Hero load sequence — nav and headline open together, cat closes:
@@ -35,7 +35,7 @@ export default function Home() {
         {/* Hero — fills the viewport (clamped 640px–1500px).
             Text vertically centered in the top 3/4. Image bottom-aligned in the remaining 1/4. */}
         {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
-        <section className="relative z-10 flex h-[clamp(640px,calc(100svh-60px),1500px)] w-full flex-col md:h-[clamp(640px,calc(100svh-92px),1500px)] lg:h-[clamp(640px,calc(100svh-100px),1500px)]">
+        <section className="relative z-10 flex h-[clamp(640px,calc(100svh-var(--header-height)),1500px)] w-full flex-col">
         {/* Text — fits to its bounding box via JS binary search on font-size */}
         <HeroText revealDelay={0} className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:pt-3xl md:pb-2xl lg:pt-lg lg:pb-4xl" />
         {/* Image + divider — bottom 1/4.5.
@@ -66,7 +66,7 @@ export default function Home() {
       </div>
 
       {/* 01 — Selected works. gap = --xl, pb-3xl. Reveals on scroll, staggered. */}
-      <SectionReveal as="section" id="work" className="relative z-10 flex w-full scroll-mt-[60px] flex-col gap-r-xl pb-3xl md:scroll-mt-[92px] lg:scroll-mt-[92px]">
+      <SectionReveal as="section" id="work" className="relative z-10 flex w-full scroll-mt-[var(--header-height)] flex-col gap-r-xl pb-3xl">
         <Reveal index={0} className="w-full">
           <SectionHeader number="01" name="Selected works" />
         </Reveal>
