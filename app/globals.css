@@ -1833,7 +1833,10 @@ textarea,
    every frame. Black and white survive a hue rotation untouched (no saturation
    to turn), so the lettering itself holds still while its glow moves. */
 .wordmark-hue {
-  animation: button-glow-hue 2s linear infinite;
+  /* Half the CTA's pace. The button is read in a glance while the cursor is on
+     it; this sits in the page and is looked at for longer, where the button's
+     2s reads as restless. */
+  animation: button-glow-hue 4s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
