@@ -53,19 +53,20 @@ const primaryGlowVariants = {
   press: { opacity: 1, scaleY: 1 },
 };
 
-// The five colours step straight down and outwards from the pill edge: 01 is a
-// tight even rim, and each one after it sits lower with more blur, so the light
-// pools under the button. The steps stay small on purpose — spread them wider
-// and the layers separate into visible bands instead of one ramp, with the
-// middle hues dropping out entirely. Blur roughly doubles the offset, which is
-// what keeps each layer soft enough to bleed into the next. The outer layer's
-// fade-out is alpha on --button-glow-05, not extra blur here.
+// The six colours step straight down and outwards from the pill edge: 01 is a
+// tight even rim, and each one after it sits a little lower with a little more
+// blur, so the light pools under the button. Both ramps stay gentle on purpose
+// — widen the offsets and the layers separate into visible bands instead of one
+// gradient, and the middle hues stop registering. The blur growing faster than
+// the offset is what keeps each layer soft enough to bleed into the next. The
+// outer layer's fade-out is alpha on --button-glow-06, not extra blur here.
 const primaryGlowShadow = [
-  "0 0 5px 0 var(--button-glow-01)",
-  "0 1px 3px 0 var(--button-glow-02)",
-  "0 2px 4px 0 var(--button-glow-03)",
-  "0 4px 7px 0 var(--button-glow-04)",
-  "0 6px 12px 0 var(--button-glow-05)",
+  "0 0 4px 0 var(--button-glow-01)",
+  "0 1px 5px 0 var(--button-glow-02)",
+  "0 2px 7px 0 var(--button-glow-03)",
+  "0 3px 9px 0 var(--button-glow-04)",
+  "0 5px 11px 0 var(--button-glow-05)",
+  "0 7px 14px 0 var(--button-glow-06)",
 ].join(", ");
 
 // Figma "Button" component. Three variants × three breakpoints (mobile/tablet/desktop):
@@ -178,7 +179,7 @@ export function Button({
           shadows from showing a gap at the rim. */}
       <m.span
         aria-hidden
-        className="button-glow pointer-events-none absolute inset-0 -z-10 rounded-full bg-[var(--button-glow-02)]"
+        className="button-glow pointer-events-none absolute inset-0 -z-10 rounded-full bg-[var(--button-glow-01)]"
         style={{ boxShadow: primaryGlowShadow }}
         variants={primaryGlowVariants}
         transition={{
