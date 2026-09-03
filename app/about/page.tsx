@@ -293,8 +293,6 @@ export default function About() {
         />
       </Reveal>
 
-      <Divider />
-
       <Reveal delay={0.25} immediate className="w-full">
         <SiteFooter />
       </Reveal>

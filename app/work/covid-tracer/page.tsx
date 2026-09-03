@@ -349,8 +349,6 @@ export default function CovidTracer() {
         />
       </Reveal>
 
-      <Divider />
-
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
         <SiteFooter />
       </Reveal>
