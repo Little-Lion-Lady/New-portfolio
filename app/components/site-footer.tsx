@@ -21,7 +21,8 @@ const CYCLING_WORDS = ["love", "hate", "AI", "coffee", "mischief", "claude", "ca
 // tuning would keep identical between the two — baking it means one source of
 // truth for the artwork and one for the colour cycle (see .wordmark-hue in
 // globals.css, which rotates the export's hue exactly as the CTA rotates its
-// halo's). It replaces the FitText measuring pass the old wordmark needed.
+// halo's). A fixed-ratio image also needs no measuring pass, which is what the
+// old live-text wordmark scaled itself with.
 export function SiteFooter() {
   const dark = useIsDark();
   // Gates two things, both because the footer sits below every page's fold.
