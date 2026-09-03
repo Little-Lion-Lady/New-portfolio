@@ -103,7 +103,7 @@ export default function Home() {
               // the same way.
               reverseMarquee
               name="NZ COVID Tracer app"
-              description={`${covid.installs} New Zealanders downloaded the COVID Tracer app. Only ${covid.btActivationRateBefore} turned on Bluetooth Tracing – feature that anonymously and automatically mapped potential transmissions. I redesigned the onboarding and half a million more people switched it on.`}
+              description={`${covid.installs} New Zealanders downloaded the COVID Tracer app. Only ${covid.btActivationRateBefore} turned on Bluetooth Tracing – a feature that anonymously and automatically mapped potential transmissions. I redesigned the onboarding and half a million more people switched it on.`}
               roles="Onboarding, Research, Usability"
               href="/work/covid-tracer"
               images={[

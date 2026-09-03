@@ -85,7 +85,7 @@ function StatArrow() {
 export const metadata: Metadata = {
   title: "NZ Covid Tracer app — Maryna Babych",
   description:
-    `${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing – feature that anonymously and automatically mapped potential transmissions. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAddedRounded} people switched it on.`,
+    `${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing – a feature that anonymously and automatically mapped potential transmissions. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAddedRounded} people switched it on.`,
 };
 
 export default function CovidTracer() {
@@ -99,7 +99,7 @@ export default function CovidTracer() {
             titleTop="NZ Covid"
             titleBottom="Tracer App"
             lead="How I got half a million New Zealanders to switch on Bluetooth contact tracing"
-            description={`${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing – feature that anonymously and automatically mapped potential transmissions. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAddedRounded} people switched it on.`}
+            description={`${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing – a feature that anonymously and automatically mapped potential transmissions. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAddedRounded} people switched it on.`}
             meta={[
               { label: "Role_", value: "Senior Product Designer" },
               { label: "Scope_", value: "Strategy·UX/UI·Research" },
