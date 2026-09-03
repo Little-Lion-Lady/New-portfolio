@@ -24,10 +24,14 @@ const CYCLING_WORDS = ["love", "hate", "AI", "coffee", "mischief", "claude", "ca
 // halo's). It replaces the FitText measuring pass the old wordmark needed.
 export function SiteFooter() {
   const dark = useIsDark();
-  // Gates the hue animation: a continuously filtered 1744px image repaints a
-  // large area every frame, and the footer sits below every page's fold, so
-  // there is no reason to pay for it until the reader is near it. One-shot —
-  // once started it keeps running rather than stopping on scroll away.
+  // Gates two things, both because the footer sits below every page's fold.
+  // The hue animation, which repaints a large image every frame and has no
+  // reason to run before the reader is near it — one-shot, so once started it
+  // keeps running rather than stopping on scroll away. And the image's own
+  // loading: left to next/image's default the wordmark lazy-loads on
+  // intersection, which is too late for something this large and central, and
+  // it paints blank into a box the layout has already reserved. Flipping to
+  // eager a screen early is the same trick the rails use.
   const [wordmarkRef, wordmarkNear] = useNearViewport<HTMLDivElement>();
 
   return (
@@ -56,6 +60,7 @@ export function SiteFooter() {
             width={1744}
             height={486}
             sizes="115vw"
+            loading={wordmarkNear ? "eager" : "lazy"}
             // height and max-width belong here rather than in className: as
             // Tailwind utilities they lost to next/image's own sizing and the
             // element computed to 0×0, which silently collapsed the wordmark.
