@@ -50,10 +50,17 @@ import { useBackdropTone } from "./use-over-media";
   The box is the anchor itself, not a wrapper around it — so the padding is
   part of the hit area and the pressed state can key off :active, neither of
   which works if the fill lives on a parent div.
+
+  The nav stretches its cells (items-stretch) rather than centring them, so
+  every fill is exactly the row's height whatever the tallest item happens to
+  be. Centring left each box at its own content height, which showed the moment
+  one label wrapped: the name went to two lines and its fill stood a head above
+  its neighbours'. `whitespace-nowrap` stops that wrap in the first place; the
+  stretch keeps the boxes matched regardless.
 */
 const LINK_CLASS =
-  "relative flex items-center rounded-sm px-xs py-sm transition-colors duration-200 " +
-  "b-3xs text-text-primary hover:bg-nav-item-hover active:bg-nav-item-pressed " +
+  "relative flex items-center whitespace-nowrap rounded-sm px-xs py-sm transition-colors duration-200 " +
+  "b-3xs text-nav-ink hover:bg-nav-item-hover active:bg-nav-item-pressed " +
   "md:p-sm lg:p-xs lg:b-2xs";
 
 export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
@@ -110,17 +117,19 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
             16px sides against 8px top/bottom on tablet, which read as a wide
             pill with the items floating in the middle of it.
           */
-          className={`pointer-events-auto relative grid grid-cols-[repeat(4,minmax(0,1fr))_max-content] items-center gap-x-xs gap-y-sm p-3xs transition-colors duration-300 md:grid-cols-[repeat(8,minmax(0,1fr))_max-content] md:gap-y-md md:rounded-sm md:p-3xs lg:grid-cols-[repeat(9,minmax(0,1fr))_max-content] lg:gap-y-lg lg:p-xs ${
+          className={`pointer-events-auto relative grid grid-cols-[repeat(4,minmax(0,1fr))_max-content] items-stretch gap-x-xs gap-y-sm p-3xs transition-colors duration-300 md:grid-cols-[repeat(8,minmax(0,1fr))_max-content] md:gap-y-md md:rounded-sm md:p-3xs lg:grid-cols-[repeat(9,minmax(0,1fr))_max-content] lg:gap-y-lg lg:p-xs ${
             // Figma gives the expanded mobile pill the next radius up; it is
             // only ever seen while the list is out.
             workOpen ? "rounded-sm md:rounded-sm" : "rounded-xs md:rounded-sm"
           }`}
-          /* Only --text-primary now: the links no longer change ink on hover,
-             so the matching -hover override had nothing left reading it. */
+          /* Retints --nav-ink, NOT --text-primary. The Work menu renders
+             inside this element so it can anchor to it, so overriding the
+             global ink here turned the menu's rows — which sit on their own
+             opaque card — white along with the bar. */
           style={
             tone
               ? ({
-                  "--text-primary":
+                  "--nav-ink":
                     tone === "dark"
                       ? "var(--text-over-media-inverted)"
                       : "var(--text-over-media)",
@@ -155,14 +164,19 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
               their positions; only the painted box shrinks. */}
           <Link
             href="/"
-            className={`${LINK_CLASS} col-start-1 col-span-2 justify-self-start lg:col-span-1`}
+            /* Two columns at every breakpoint, not one at lg. The box hugs
+               its text, so the span costs nothing visually — it only reserves
+               room. At one column the nowrap name needed ~115px against a
+               ~90px column between 1024 and 1200, and overran into the role
+               beside it. */
+            className={`${LINK_CLASS} col-start-1 col-span-2 justify-self-start`}
           >
             Maryna Babych
           </Link>
           {/* Figma calls this a "Container" rather than a "Link container": it
               is not interactive, so it takes the padding and radius but none of
               the states. */}
-          <p className="relative hidden whitespace-nowrap rounded-sm p-sm b-3xs text-text-primary md:col-start-3 md:col-span-2 md:flex md:items-center lg:col-start-2 lg:col-span-2 lg:p-xs lg:b-2xs">
+          <p className="relative hidden whitespace-nowrap rounded-sm p-sm b-3xs text-nav-ink md:col-start-3 md:col-span-2 md:flex md:items-center lg:col-start-3 lg:col-span-2 lg:p-xs lg:b-2xs">
             Lead Product Designer
           </p>
           {/* Work now shows at every breakpoint (mobile included — that is what

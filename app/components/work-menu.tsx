@@ -343,7 +343,7 @@ export function WorkMenuTrigger({
           than imported, because importing it would drag the header's module
           (and its hooks) into this one for a string.
         */
-        className="relative flex w-full items-center justify-center rounded-sm px-xs py-sm transition-colors duration-200 b-3xs text-text-primary hover:bg-nav-item-hover active:bg-nav-item-pressed md:p-sm lg:p-xs lg:b-2xs"
+        className="relative flex w-full items-center justify-center whitespace-nowrap rounded-sm px-xs py-sm transition-colors duration-200 b-3xs text-nav-ink hover:bg-nav-item-hover active:bg-nav-item-pressed md:p-sm lg:p-xs lg:b-2xs"
       >
         Work
       </a>
@@ -408,6 +408,9 @@ function Rows({
               sizes="56px"
               className="size-[56px] shrink-0"
             />
+            {/* text-primary, deliberately not the nav's ink: these rows sit on
+                the menu's own opaque card, so they must not follow the bar when
+                it retints itself over photography. */}
             <span className="min-w-0 flex-1 b-xs text-text-primary">{item.label}</span>
           </Link>
         </m.div>

@@ -315,6 +315,21 @@
     swap strength between themes — pressed reading lighter than hover. These
     two are defined per theme so pressed is always the stronger of the pair.
   */
+  /*
+    Ink for the nav's OWN controls, and nothing else.
+
+    <SiteHeader> retints this when the pill is over photography (see
+    useBackdropTone). It used to retint --text-primary directly, which leaked:
+    the Work menu is a descendant of the nav for positioning, so its rows —
+    sitting on their own opaque card — inverted along with the bar and went
+    white on white over a dark photo. A dedicated name means only the things
+    that opt in follow the bar.
+
+    Resolves through --text-primary, so it still tracks the theme; the lazy
+    substitution of custom properties means one definition covers both.
+  */
+  --nav-ink: var(--text-primary);
+
   --nav-item-hover:   var(--colour-base-black-5);
   --nav-item-pressed: var(--colour-base-black-10);
   --utility-inverses-white:  var(--colour-base-white);
@@ -825,6 +840,7 @@
   --color-utility-inverses-glass: var(--utility-inverses-glass);
 
   /* Nav item hover / pressed */
+  --color-nav-ink:          var(--nav-ink);
   --color-nav-item-hover:   var(--nav-item-hover);
   --color-nav-item-pressed: var(--nav-item-pressed);
 
@@ -958,6 +974,7 @@
   /* Radius — @theme inline outputs these as --radius-* CSS vars AND generates
      rounded-* / rounded-tl-* etc. utilities. Reference size primitives directly
      (not via :root aliases) to avoid circular var() references. */
+  --radius-2xs:  var(--size-2);   /* 4px — case-study nav row hover fill */
   --radius-xs:   var(--size-4);   /* 8px — carousel card inner image */
   --radius-sm:   var(--size-6);   /* 12px — carousel cards */
   --radius-md:   var(--size-7);   /* 16px — divider mobile */

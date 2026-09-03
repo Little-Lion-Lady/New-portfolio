@@ -50,11 +50,11 @@ function applyTheme(theme: "dark" | "light") {
 // without the ::after hit-area trick this used to need — and it takes the same
 // hover and pressed fills as the links beside it.
 //
-// Fixed 40px WIDE, but its height stretches to the row. The frames mark the
-// container self-stretch, and the row is taller than 40px below lg (46px,
-// set by the links' 12px vertical padding against 22px type) — so pinning the
-// height left the toggle's fill visibly shorter than the links next to it.
-// The nav sets items-center, hence the explicit self-stretch here to opt out.
+// Fixed 40px WIDE, height left to the row. The frames mark the container
+// self-stretch, and below lg the row is taller than 40px (46px, set by the
+// links' 12px vertical padding against 22px type) — so pinning the height left
+// the toggle's fill visibly shorter than the links next to it. The nav now
+// stretches every cell, so no opt-out is needed here.
 export function ThemeToggle({ className = "" }: { className?: string }) {
   // `data-theme` on <html> is the single source of truth — globals.css already
   // resolves every token from it, and applyTheme() below is the only writer.
@@ -95,7 +95,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       suppressHydrationWarning
       whileHover={{ scale: 1.07 }}
       transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`group relative inline-flex w-[40px] self-stretch items-center justify-center rounded-sm text-text-primary transition-colors duration-200 hover:bg-nav-item-hover active:bg-nav-item-pressed ${className}`}
+      className={`group relative inline-flex w-[40px] items-center justify-center rounded-sm text-nav-ink transition-colors duration-200 hover:bg-nav-item-hover active:bg-nav-item-pressed ${className}`}
     >
       <AnimatePresence mode="wait" initial={false}>
         {isDark ? (
