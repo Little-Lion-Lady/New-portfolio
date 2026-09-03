@@ -3,43 +3,56 @@
 
 export function ArrowRight({ className }: { className?: string }) {
   // Geometry is public/home/arrow-view.svg verbatim, on its own 32×32 viewBox so
-  // it stays diffable against the export. Only the stroke is ours: 2 instead of
-  // the export's 1.7, which reads too thin next to the button label. Rendered
-  // size comes from the caller's className, so the viewBox size is immaterial.
+  // it stays diffable against the export. The export's shortened tail (starts at
+  // x=8, was x=5) and round cap are both taken as-is. Only the stroke is ours: 2
+  // instead of the export's 1.7, which reads too thin next to the button label.
+  // Rendered size comes from the caller's className, so the viewBox is immaterial.
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden className={className}>
       <path
-        d="M19.2285 7.75L27 16.0002L19.2289 24.25M5.00012 15.9392H26.5069"
+        d="M19.2284 7.75L26.9999 16.0002L19.2288 24.25M8 15.9392H26.5068"
         stroke="currentColor"
         strokeWidth="2"
+        strokeLinecap="round"
       />
     </svg>
   );
 }
 
 export function ArrowUpRight({ className }: { className?: string }) {
-  // non-scaling-stroke means these are literal rendered widths, not viewBox
-  // units, so the icon keeps the same line weight at every size it is used at.
+  // Geometry is public/home/Arrow-small.svg verbatim, on its own 24×24 viewBox
+  // (was a hand-built 20×20 pair of paths). The export's own stroke-width of 2 is
+  // dropped on purpose: non-scaling-stroke below makes these literal rendered
+  // widths rather than viewBox units, so the icon keeps one line weight at every
+  // size it is used at — this renders large in the footer links, where a scaling
+  // stroke would come out roughly twice as heavy.
   return (
-    <svg viewBox="0 0 20 20" fill="none" aria-hidden className={`[stroke-width:2px] md:[stroke-width:2.5px] lg:[stroke-width:3px] ${className ?? ""}`}>
-      <path d="M4.82177 2.66699H16.8216V14.667" stroke="currentColor" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
-      <path d="M4.82173 14.5782L16.3966 3.00333" stroke="currentColor" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden className={`[stroke-width:2px] md:[stroke-width:2.5px] lg:[stroke-width:3px] ${className ?? ""}`}>
+      <path
+        d="M5 19L18 6M5 6H18V19"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+      />
     </svg>
   );
 }
 
 
 export function ArrowUpRightSmall({ className }: { className?: string }) {
-  // Geometry is public/home/work/firsttable/Arrow-small.svg verbatim, on its own
-  // 24×24 viewBox; only the hard-coded white is swapped for currentColor. Unlike
-  // ArrowUpRight this has no non-scaling-stroke, so the 2 stroke scales with the
-  // rendered size — 1.67px at size-lg, 2px at size-xl.
+  // Geometry is public/home/Arrow-small.svg verbatim, on its own 24×24 viewBox;
+  // only the hard-coded white is swapped for currentColor. Same asset as
+  // ArrowUpRight, drawn small: this one keeps the export's stroke of 2 and has no
+  // non-scaling-stroke, so the weight scales with the rendered size — 1.67px at
+  // size-lg, 2px at size-xl.
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden className={className}>
       <path
-        d="M5 19L18 6M18 19L18 6H5"
+        d="M5 19L18 6M5 6H18V19"
         stroke="currentColor"
         strokeWidth="2"
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
