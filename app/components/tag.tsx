@@ -59,21 +59,33 @@ export function TagGroup({
   );
 }
 
-// Figma Basis §05 "Chosen" tag (1613:139367). A solid highlight pill —
-// bg-text-highlight-dark, text-bg-primary, B-2xs (14/24), 12 of horizontal
-// padding and none vertical (its height is the text's own line box), fully
-// rounded. Marks the chosen option column on Basis, and labels the two
-// About collage cards.
+// Figma Basis §05 "Chosen" tag (1613:139367). A solid pill — B-2xs (14/24), 12
+// of horizontal padding and none vertical (its height is the text's own line
+// box), fully rounded. Marks the chosen option column on Basis, and labels the
+// two About collage cards.
+//
+// Two tones, because those two jobs want different weights. "highlight" is
+// Figma's own: the loud accent fill that has to win an argument with the
+// column beside it. "muted" is a quiet grey chip, which is what the collage
+// labels want — they sit ON photography and only have to name the card, so the
+// accent read as a second subject competing with the picture.
+const PILL_TONES = {
+  highlight: "bg-text-highlight-dark text-bg-primary",
+  muted: "bg-utility-gray-200 text-text-primary",
+} as const;
+
 export function HighlightPill({
   children,
   className = "",
+  tone = "highlight",
 }: {
   children: ReactNode;
   className?: string;
+  tone?: keyof typeof PILL_TONES;
 }) {
   return (
     <span
-      className={`b-2xs flex items-center justify-center rounded-full bg-text-highlight-dark px-sm text-bg-primary ${className}`}
+      className={`b-2xs flex items-center justify-center rounded-full px-sm ${PILL_TONES[tone]} ${className}`}
     >
       {children}
     </span>

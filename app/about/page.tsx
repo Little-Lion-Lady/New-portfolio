@@ -153,7 +153,31 @@ export default function About() {
               </div>
               <div className="flex flex-col gap-md md:gap-xs lg:gap-sm">
                 {awards.map((a, i) => (
-                  <a key={i} href={a.href} target="_blank" rel="noopener noreferrer" className="group">
+                  /*
+                    Hover/pressed fill on the whole row. The motion is the nav
+                    bar's (see NAV_ITEM_STATES in ../components/site-header): a
+                    ::before that carries the fill and grows outward 1.5px, over
+                    200ms on Framer's [0.25, 0.1, 0.25, 1] — the CSS `ease`. The
+                    colours are the case study nav's, utility-gray-100 lifting to
+                    -200 when pressed.
+
+                    The fill lives on a ::before rather than on padding plus a
+                    negative margin (the way CaseStudyNav does it) because these
+                    rows sit in a flex column: real padding would push them
+                    apart, and an absolutely positioned pseudo takes no layout at
+                    all, so the resting table is untouched.
+
+                    8px out horizontally but only 4px vertically, because the
+                    rows are 8px apart at md — a symmetric 8px would have
+                    neighbouring fills meeting in the middle of the gap.
+                  */
+                  <a
+                    key={i}
+                    href={a.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative isolate before:absolute before:-inset-x-xs before:-inset-y-3xs before:-z-10 before:rounded-xs before:content-[''] before:transition-[background-color,inset] before:duration-200 before:ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:before:-inset-x-[9.5px] hover:before:-inset-y-[5.5px] hover:before:bg-utility-gray-100 active:before:bg-utility-gray-200"
+                  >
                     {/* Mobile: award + year↗ on one row, project (tertiary) below */}
                     <div className="flex flex-col md:hidden">
                       <div className="flex items-start justify-between">

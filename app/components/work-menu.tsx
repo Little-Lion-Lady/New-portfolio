@@ -343,7 +343,7 @@ export function WorkMenuTrigger({
           than imported, because importing it would drag the header's module
           (and its hooks) into this one for a string.
         */
-        className="relative flex w-full items-center justify-center whitespace-nowrap rounded-xs px-xs py-sm transition-colors duration-200 b-3xs text-nav-ink hover:bg-nav-item-hover active:bg-nav-item-pressed md:p-sm lg:p-xs lg:b-2xs"
+        className="relative isolate flex w-full items-center justify-center whitespace-nowrap rounded-xs px-xs py-[10px] transition-colors duration-200 ease-[cubic-bezier(0.25,0.1,0.25,1)] b-3xs text-nav-ink before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:content-[''] before:transition-[background-color,inset] before:duration-200 before:ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:before:bg-nav-item-hover hover:before:-inset-[1.5px] active:before:bg-nav-item-pressed md:px-sm md:py-[10px] lg:p-xs lg:b-2xs"
       >
         Work
       </a>
@@ -392,8 +392,19 @@ function Rows({
             role="menuitem"
             aria-current={currentPath === item.href ? "page" : undefined}
             onClick={onSelect}
-            className={`flex w-full items-center gap-lg rounded-sm p-3xs transition-colors duration-150 hover:bg-utility-gray-100 active:bg-utility-gray-200 ${
-              currentPath === item.href ? "bg-utility-gray-200" : ""
+            /*
+              Two sets of state fills, because the rows sit on two different
+              surfaces. From md they are on the menu's own card and take the
+              opaque grey steps it was drawn with. Below md they are INSIDE the
+              nav pill, whose fill is already utility-gray-200 — so gray-100
+              there is lighter than the surface (a hover that brightens) and the
+              gray-200 current-page fill is invisible against an identical
+              background. Mobile therefore uses the nav's own alpha tokens,
+              which darken whatever they sit on, exactly like the links above
+              them in the same pill.
+            */
+            className={`flex w-full items-center gap-lg rounded-sm p-3xs transition-colors duration-150 hover:bg-nav-item-hover active:bg-nav-item-pressed md:hover:bg-utility-gray-100 md:active:bg-utility-gray-200 ${
+              currentPath === item.href ? "bg-nav-item-pressed md:bg-utility-gray-200" : ""
             }`}
           >
             <GlassImage

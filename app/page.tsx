@@ -15,7 +15,7 @@ import { basis, covid, firstTable } from "@/content/stats";
 export default function Home() {
   return (
     // Full-bleed on tablet/mobile (no page padding); desktop keeps px-3xl/py-3xl. Section gap = --2xl.
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[var(--header-height)] text-text-primary md:px-2xl lg:px-3xl lg:pb-0">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-2xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-r-2xl bg-bg-primary px-md pb-0 pt-[var(--header-clearance)] text-text-primary md:px-2xl lg:px-3xl lg:pb-0">
       {/* Gradient + header + hero grouped so gap-r-2xl isn't inserted between them */}
       <div>
         {/* Hero load sequence — nav and headline open together, cat closes:
@@ -37,7 +37,7 @@ export default function Home() {
         {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
         <section className="relative z-10 flex h-[clamp(640px,calc(100svh-var(--header-height)),1500px)] w-full flex-col">
         {/* Text — fits to its bounding box via JS binary search on font-size */}
-        <HeroText revealDelay={0} className="flex h-[calc(100%-100%/3)] w-full items-center pt-lg pb-3xs md:pt-3xl md:pb-2xl lg:pt-lg lg:pb-4xl" />
+        <HeroText revealDelay={0} className="flex h-[calc(100%-100%/3)] w-full items-center pb-3xs md:pb-2xl lg:pb-4xl" />
         {/* Image + divider — bottom 1/4.5.
             Divider is flex-1 so it stretches from the left page edge.
             Image pulls left with a negative margin to overlap the divider

@@ -146,7 +146,20 @@ export function useNearestWordDelay(
  * `timeout` ms it gives up and answers from `fallbackLines` instead: better a
  * slightly wrong handover than an element that waits forever on a headline
  * that never reported (see Reveal's `hold`).
+ *
+ * The handover keys off the MIDDLE line, not the last one. Waiting for the last
+ * line meant paying the whole cascade before the follower could start, and the
+ * cascade is proportional to the wrap: five lines on a desktop but nine or more
+ * on a phone, so the narrower the screen the longer the wait — backwards, since
+ * that is where there is least on screen to look at. Keying off the midpoint
+ * makes the follower overlap the headline's second half, and keeps the wait
+ * roughly level across widths because the ratio absorbs the line count.
+ *
+ * A ratio rather than a fixed offset from the end: "two lines before the last"
+ * is a third of a desktop headline and a fifth of a mobile one, so it drifts to
+ * a different moment in the reveal at every width.
  */
+const HANDOFF_LINE_RATIO = 0.5;
 export function useHeadlineHandoff({
   headingSelector = "h1",
   revealDelay = 0,
@@ -186,5 +199,10 @@ export function useHeadlineHandoff({
     };
   }, [headingSelector, fallbackLines, timeout]);
 
-  return lines === null ? null : revealDelay + (lines - 1) * LINE_STAGGER + LINE_SETTLE;
+  if (lines === null) return null;
+  // Round DOWN, so an odd count hands over on the line before the midpoint
+  // rather than after it — and so a two-line headline still hands over on its
+  // first line instead of behaving like a one-liner's last.
+  const handoffLine = Math.floor((lines - 1) * HANDOFF_LINE_RATIO);
+  return revealDelay + handoffLine * LINE_STAGGER + LINE_SETTLE;
 }

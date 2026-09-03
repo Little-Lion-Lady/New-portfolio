@@ -135,7 +135,7 @@ export const metadata: Metadata = {
 
 export default function FirstTable() {
   return (
-    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[var(--header-height)] text-text-primary md:px-3xl lg:px-3xl lg:pb-0">
+    <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[var(--header-clearance)] text-text-primary md:px-3xl lg:px-3xl lg:pb-0">
       {/* Gradient + header + hero grouped so gap-r-xl isn't inserted between them */}
       <div>
         <SiteHeader />
