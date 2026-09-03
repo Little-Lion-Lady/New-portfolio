@@ -1393,6 +1393,25 @@ h1.d-sm {
   }
 }
 
+/* ── 404 "Oops!" wordmark (Figma 1704:3992) ────────────────────────────────
+   Drives the size of the exported wordmark rather than any live text. The
+   image's width and the offset that cancels its glow padding are both written
+   in em, so this one font-size scales the artwork and the correction together
+   — the same arrangement site-footer uses for "get in touch".
+   Figma draws 124 at 393, 142 at 1024 and 320 at 1728. The first two are close
+   enough to hold 124 flat up to 1024; above that the ramp hits 142 at 1024 and
+   320 at 1728 exactly. 320 has no token — the display scale stops at 224.
+   ────────────────────────────────────────────────────────────────────────── */
+.notfound-oops {
+  font-size: var(--font-size-display-lg);   /* 124 */
+  line-height: 0;                            /* the image is the whole line box */
+}
+@media (min-width: 1024px) {
+  .notfound-oops {
+    font-size: clamp(var(--font-size-display-xl), -116.9px + 25.284vw, 320px);
+  }
+}
+
 /* ── Case study hero title (Figma "Hero content" D-xs→D-md→D-2xl) ───────────
    Mobile  : D-xs  44 px / lh 1.10
    Tablet  : D-md  80 px / lh 1.15

@@ -1,8 +1,12 @@
+"use client";
+
+import Image from "next/image";
 import { SiteHeader } from "./components/site-header";
 import { Button } from "./components/button";
-import { Reveal, RevealWords } from "./components/reveal";
+import { Reveal } from "./components/reveal";
+import { useIsDark } from "./components/use-is-dark";
 
-// Figma 404 (99:2837 desktop / 436:17550 tablet / 269:3740 mobile).
+// Figma 404 (1704:3993 desktop / 1704:4026 tablet / 1704:4009 mobile).
 // Page padding is a flat 16/40/40 on all four sides; the header overlays it.
 // The hero grows to fill whatever is left and centres the title inside its own
 // generous padding, and the helper row sits at the bottom.
@@ -21,6 +25,8 @@ import { Reveal, RevealWords } from "./components/reveal";
 // Below 700px of viewport the row is necessarily under the fold: the page is
 // 700px tall by request, so it scrolls.
 export default function NotFound() {
+  const dark = useIsDark();
+
   return (
     <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex min-h-[max(700px,100svh)] flex-col bg-bg-primary p-md text-text-primary md:p-3xl lg:h-[max(700px,100svh)]">
       <SiteHeader />
@@ -29,26 +35,33 @@ export default function NotFound() {
       <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-between lg:pb-[clamp(16px,4svh,72px)]">
         {/* Hero — title centred in its own padding. */}
         <div className="flex min-h-0 flex-1 flex-col justify-center gap-lg py-8xl md:pb-8xl md:pt-9xl lg:pb-[clamp(24px,6svh,160px)] lg:pt-[clamp(32px,12svh,260px)]">
-          {/* The two lines overlap: Figma pulls the second up by 40 at desktop
-              and 24 at tablet. Expressed in em so the overlap tracks the
-              clamped font size instead of drifting as it scales. */}
-          <div className="flex flex-col">
-            <RevealWords
-              byLine
-              as="h1"
-              className="notfound-title whitespace-nowrap text-text-primary-highlight md:-mb-[0.1935em] lg:-mb-[0.1786em]"
-            >
-              Oops
-            </RevealWords>
-            <RevealWords
-              byLine
-              as="p"
-              startLine={1}
-              className="notfound-title whitespace-nowrap text-text-highlight-dark"
-            >
-              404 error
-            </RevealWords>
-          </div>
+          {/* One exported wordmark now, where there were two live lines ("Oops"
+              over a red "404 error"). Same arrangement as the footer's: the
+              export carries its glow baked in, .notfound-oops sets the size,
+              and the image is written in ems of that so it and the offset
+              cancelling its 54px of left glow padding scale together — which
+              is what puts the "O" on the page gutter rather than the glow.
+              Measured off the exported pixels: 925 wide, ink starting at 54.
+
+              Still an <h1>: the page keeps its heading, and the alt carries the
+              word the image draws. */}
+          <Reveal as="h1" className="notfound-oops">
+            <Image
+              src={dark ? "/home/Oops_dark.png" : "/home/Oops_light.png"}
+              alt="Oops!"
+              width={925}
+              height={501}
+              priority
+              sizes="(min-width: 1024px) 60vw, 90vw"
+              style={{
+                width: "calc(925em / 320)",
+                maxWidth: "none",
+                height: "auto",
+                marginLeft: "calc(-54em / 320)",
+              }}
+              className="wordmark-hue"
+            />
+          </Reveal>
         </div>
 
         {/* Helper — stacked on mobile; from tablet a 9-col grid (copy in 1-3
