@@ -99,6 +99,7 @@ export function WorkItem({
         marquee
         reverse={reverseMarquee}
         fetchPriority={imagePriority}
+        hoverScale
       />
     </>
   );

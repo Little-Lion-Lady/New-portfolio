@@ -83,6 +83,7 @@ export function ImageCarousel({
   speedScale,
   fetchPriority,
   eager = false,
+  hoverScale = false,
   className = "",
 }: {
   images: WorkImageData[];
@@ -125,6 +126,12 @@ export function ImageCarousel({
    * a page should leave it off; see `useNearViewport` for why the gate exists.
    */
   eager?: boolean;
+  /**
+   * Zoom each photo on hover — see <GlassImage>. Set by the home page's work
+   * rows only; the case-study hero rails leave it off, so the effect stays
+   * where it was asked for.
+   */
+  hoverScale?: boolean;
   className?: string;
 }) {
   /*
@@ -153,6 +160,7 @@ export function ImageCarousel({
           quality={image.quality}
           frameAspectRatio={ratio}
           sizes={ratioSizes(ratio)}
+          hoverScale={hoverScale}
           loading={loading}
           fetchPriority={fetchPriority}
           className={`shrink-0 ${CARD_HEIGHT_CLASS[size]}${margin}`}
@@ -166,6 +174,7 @@ export function ImageCarousel({
         alt={image.alt}
         quality={image.quality}
         sizes={`(min-width: 1024px) ${image.lgWidth?.px ?? 660}px, (min-width: 768px) 480px, 380px`}
+        hoverScale={hoverScale}
         loading={loading}
         fetchPriority={fetchPriority}
         className={`shrink-0 ${CARD_CLASS[size]} ${image.lgWidth?.class ?? CARD_LG_WIDTH}${margin}`}

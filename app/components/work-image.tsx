@@ -121,6 +121,7 @@ export function GlassImage({
   frameAspectClassName,
   objectPosition,
   radiusClassName,
+  hoverScale = false,
   children,
 }: {
   src: string;
@@ -200,6 +201,23 @@ export function GlassImage({
   objectPosition?: string;
   /** Replaces the default radius ramp — see GlassFrame's own `radiusClassName`. */
   radiusClassName?: string;
+  /**
+   * Zoom the photo slightly while the pointer is over its card.
+   *
+   * Opt-in rather than default: it belongs to the home page's work rows, and
+   * the same component draws case-study collages and the Work menu's
+   * thumbnails, where a hover zoom would be noise.
+   *
+   * The whole CARD scales, frame and all. `scale` is a transform, so it takes
+   * no layout space — neighbouring cards stay put and the hovered one grows
+   * over them, which is also why it lifts to z-10 while hovered: siblings
+   * later in the DOM paint on top, so without it the card to the right would
+   * crop the growth.
+   *
+   * `motion-safe:` rather than a reduced-motion override, so under
+   * prefers-reduced-motion the rule is simply never emitted.
+   */
+  hoverScale?: boolean;
   /** Optional overlay content stacked on top of the image (e.g. a decorative icon). */
   children?: ReactNode;
 }) {
@@ -213,7 +231,7 @@ export function GlassImage({
 
   return (
     <div
-      className={`${FRAME_CLASS} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)}${frameAspectClassName ? ` ${frameAspectClassName}` : ""} ${className}`}
+      className={`${FRAME_CLASS}${hoverScale ? " transition-transform duration-500 ease-out motion-safe:hover:scale-[1.05] hover:z-10" : ""} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)}${frameAspectClassName ? ` ${frameAspectClassName}` : ""} ${className}`}
       style={!frameAspectClassName && frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
     >
       <div
