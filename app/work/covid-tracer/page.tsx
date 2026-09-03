@@ -106,9 +106,21 @@ export default function CovidTracer() {
               { label: "Date_", value: "20’ – 21’" },
             ]}
             recognition={[
-              { label: "Recognition_", value: "Best Design Award, Gold" },
-              { label: "Recognition_", value: "Open Source Awards 2021" },
-              { label: "Recognition_", value: "GOOD Design Awards 2021" },
+              {
+                label: "Recognition_",
+                value: "Best Design Award, Gold",
+                href: "https://bestawards.co.nz/social-good/social-good/rush-1/nz-covid-tracer-app-1/",
+              },
+              {
+                label: "Recognition_",
+                value: "Open Source Awards 2021",
+                href: "https://nzosa.org.nz/news-and-media/2021-winners-announced",
+              },
+              {
+                label: "Recognition_",
+                value: "GOOD Design Awards 2021",
+                href: "https://good-design.org/projects/nz-covid-tracer-app/",
+              },
             ]}
             images={[
               { src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" },

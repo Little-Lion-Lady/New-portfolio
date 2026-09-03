@@ -163,11 +163,14 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           {/* Pill surface — the only thing that reveals on scroll. Sits behind the
               nav content (z-0 + relative children) so the links stay legible at
               full opacity throughout the fade. */}
-          {/* A flat utility-gray-200 card — no blur, no hairline, no shadow. The
+          {/* A flat one-token card — no blur, no hairline, no shadow. The
               fill alone is the whole surface, so the pill separates from the
               page by tone rather than by edge treatment: a step off the page's
-              own bg-primary, which flips to a dark step in dark mode because
-              utility-gray-200 is a theme token rather than a fixed grey.
+              own bg-primary. --nav-surface is that step, and it is not the same
+              step in both themes — gray-200 over a near-white page, gray-100
+              over a near-black one, where gray-200 read as a light slab. The
+              Work card shares this token (see globals.css), so the two surfaces
+              cannot drift apart.
 
               The expanded mobile pill has to carry the menu, and at the top of
               the page this surface is fully transparent, so the open state
@@ -175,7 +178,7 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
               the page with nothing behind them. */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[inherit] bg-utility-gray-200 transition-opacity duration-300"
+            className="pointer-events-none absolute inset-0 rounded-[inherit] bg-nav-surface transition-opacity duration-300"
             style={{ opacity: scrolled || (workOpen && isMobile) ? 1 : 0 }}
           />
 

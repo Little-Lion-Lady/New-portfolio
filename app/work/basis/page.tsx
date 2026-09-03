@@ -95,7 +95,11 @@ export default function Basis() {
               { label: "Date_", value: "23’ – 24’" },
             ]}
             recognition={[
-              { label: "Recognition_", value: "Best Design Award, Gold" },
+              {
+                label: "Recognition_",
+                value: "Best Design Award, Gold",
+                href: "https://bestawards.co.nz/industrial-design/consumer/basis/basis-smart-panel-1/",
+              },
             ]}
             images={[
               { src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" },

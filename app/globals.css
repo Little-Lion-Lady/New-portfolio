@@ -336,6 +336,33 @@
      is behind it. */
   --nav-item-hover:   var(--colour-base-black-5);
   --nav-item-pressed: var(--colour-base-black-10);
+
+  /*
+    The Work dropdown card, from md up — its own surface and its rows' state
+    fills.
+
+    Light mode keeps what the card was drawn with: a bg-primary card, opaque
+    grey steps for hover and pressed. Dark mode points all three at the nav
+    instead (see the dark blocks), because there the card hangs off a
+    utility-gray-200 pill and a bg-primary card read as a second, darker
+    surface floating under it rather than as an extension of the bar.
+
+    Named rather than written as `dark:` utilities on the rows so the two
+    themes cannot disagree about which fill wins: hover, pressed and the
+    current-page fill are one token each, resolved by the cascade.
+  */
+  /*
+    The nav pill's own fill, and the Work card's in dark mode. A name of its
+    own because the two have to move together — the card hangs off the bar and
+    reads as one surface with it — and because dark mode sits a step below
+    light: utility-gray-200 is the right step off a near-white page, but over
+    a near-black one it read as a light grey slab, so dark takes gray-100.
+  */
+  --nav-surface: var(--utility-gray-200);
+
+  --work-menu-surface:        var(--bg-primary);
+  --work-menu-item-hover:     var(--utility-gray-100);
+  --work-menu-item-pressed:   var(--utility-gray-200);
   --utility-inverses-white:  var(--colour-base-white);
   --utility-inverses-orange: var(--colour-orange-400);
   --utility-inverses-purple: var(--colour-purple-300);
@@ -545,6 +572,15 @@
        themes. */
     --nav-item-hover:   var(--colour-base-white-10);
     --nav-item-pressed: var(--colour-base-white-25);
+
+    /* The card joins the nav in dark mode — same surface as the pill, and the
+       nav's own alpha state fills, which lift whatever they sit on rather than
+       stepping to a fixed grey. See the light definitions. */
+    --nav-surface: var(--utility-gray-100);
+
+    --work-menu-surface:        var(--nav-surface);
+    --work-menu-item-hover:     var(--nav-item-hover);
+    --work-menu-item-pressed:   var(--nav-item-pressed);
     --utility-inverses-white:  var(--colour-blue-900-20);
     --utility-inverses-orange: var(--colour-orange-400);
     --utility-inverses-purple: var(--colour-purple-500);
@@ -691,6 +727,13 @@
      themes. */
   --nav-item-hover:   var(--colour-base-white-10);
   --nav-item-pressed: var(--colour-base-white-25);
+
+  /* See the media-query block above. */
+  --nav-surface: var(--utility-gray-100);
+
+  --work-menu-surface:        var(--nav-surface);
+  --work-menu-item-hover:     var(--nav-item-hover);
+  --work-menu-item-pressed:   var(--nav-item-pressed);
   --utility-inverses-white:  var(--colour-blue-900-20);
   --utility-inverses-orange: var(--colour-orange-400);
   --utility-inverses-purple: var(--colour-purple-500);
@@ -847,6 +890,14 @@
   --color-nav-ink:          var(--nav-ink);
   --color-nav-item-hover:   var(--nav-item-hover);
   --color-nav-item-pressed: var(--nav-item-pressed);
+
+  /* Nav pill fill (and the Work card's, in dark mode) */
+  --color-nav-surface: var(--nav-surface);
+
+  /* Work dropdown card (md+) — surface and row state fills */
+  --color-work-menu-surface:      var(--work-menu-surface);
+  --color-work-menu-item-hover:   var(--work-menu-item-hover);
+  --color-work-menu-item-pressed: var(--work-menu-item-pressed);
 
   /* Insight card opaque inner fill */
   --color-utility-inverses-white: var(--utility-inverses-white);
@@ -1709,4 +1760,35 @@ textarea,
   width: 100%;
   max-width: 1440px;
   margin-inline: auto;
+}
+
+/* ============================================================
+   RAIL BLEED
+
+   The marquee rails (work rows, case-study heroes, the About artwork
+   strip) are meant to run edge to edge and be cropped by the SCREEN.
+   They used to size themselves to the page shell — `100% + 2 gutters`,
+   or a matching negative margin — which is the same thing right up
+   until the viewport passes the shell's 1440px cap. Past it the crop
+   moved inboard with the shell and the rail sat marooned with dead
+   space either side of it.
+
+   Sizing to the viewport instead puts the crop back on the screen edge
+   at every width. Below the cap this is identical to what it replaced,
+   since there the shell IS the viewport.
+
+   The negative inline margin re-centres the over-wide box on the shell:
+   needed where the rail is a stretched block (the artwork strip), and
+   harmless where the parent is already `items-center` (the carousels),
+   because a symmetric margin leaves the centre where it was.
+
+   `100vw` counts a classic scrollbar's width, so on a platform with
+   non-overlay scrollbars the rail overhangs by half of one either side
+   and is clipped there rather than exactly on the edge. On a looping
+   marquee that is invisible, and <body>'s `overflow-x: clip` means it
+   never becomes a horizontal scrollbar.
+   ============================================================ */
+.rail-bleed {
+  width: 100vw;
+  margin-inline: calc((100% - 100vw) / 2);
 }
