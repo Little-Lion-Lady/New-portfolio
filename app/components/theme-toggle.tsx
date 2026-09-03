@@ -44,11 +44,17 @@ function applyTheme(theme: "dark" | "light") {
 //   navigation (ThemeToggle remounts per page) and page refreshes.
 // - Subscribes to OS changes only when the user hasn't made a manual choice.
 // - Sets data-theme on <html>; globals.css resolves all tokens from it.
-// Figma 436:17272 wraps the toggle in a 40×40 "Toggle container" with the
-// nav's 12px radius, holding a 16px icon. That box is now the button itself,
-// which means the pointer target is a genuine 40×40 — comfortably past WCAG
-// 2.2's 24×24 minimum without the ::after hit-area trick this used to need —
-// and it takes the same hover and pressed fills as the links beside it.
+// Figma 436:17272 wraps the toggle in a "Toggle container" with the nav's 12px
+// radius, holding a 16px icon. That box is the button itself, so the pointer
+// target is the whole thing — comfortably past WCAG 2.2's 24×24 minimum
+// without the ::after hit-area trick this used to need — and it takes the same
+// hover and pressed fills as the links beside it.
+//
+// Fixed 40px WIDE, but its height stretches to the row. The frames mark the
+// container self-stretch, and the row is taller than 40px below lg (46px,
+// set by the links' 12px vertical padding against 22px type) — so pinning the
+// height left the toggle's fill visibly shorter than the links next to it.
+// The nav sets items-center, hence the explicit self-stretch here to opt out.
 export function ThemeToggle({ className = "" }: { className?: string }) {
   // `data-theme` on <html> is the single source of truth — globals.css already
   // resolves every token from it, and applyTheme() below is the only writer.
@@ -89,7 +95,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       suppressHydrationWarning
       whileHover={{ scale: 1.07 }}
       transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`group relative inline-flex size-[40px] items-center justify-center rounded-sm text-text-primary transition-colors duration-200 hover:bg-nav-item-hover active:bg-nav-item-pressed ${className}`}
+      className={`group relative inline-flex w-[40px] self-stretch items-center justify-center rounded-sm text-text-primary transition-colors duration-200 hover:bg-nav-item-hover active:bg-nav-item-pressed ${className}`}
     >
       <AnimatePresence mode="wait" initial={false}>
         {isDark ? (

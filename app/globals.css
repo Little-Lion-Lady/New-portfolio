@@ -135,6 +135,10 @@
   --colour-base-white-25: rgba(255, 255, 255, 0.25);
   --colour-base-white-50: rgba(255, 255, 255, 0.5);
   --colour-base-white-70: rgba(255, 255, 255, 0.7);
+  /* Not in the Figma Base/black collection yet — added because the nav's hover
+     state needs a step below 10%, which is already heavier than the states the
+     frames draw. Worth adding to the Figma ramp on the next token sync. */
+  --colour-base-black-5:  rgba(0, 0, 0, 0.05);
   --colour-base-black-10: rgba(0, 0, 0, 0.1);
   --colour-base-black-25: rgba(0, 0, 0, 0.25);
   --colour-base-black-50: rgba(0, 0, 0, 0.5);
@@ -292,10 +296,18 @@
   /*
     Nav item hover / pressed.
 
-    White at low alpha rather than an opaque grey: the nav pill is a glass
+    A translucent tint rather than an opaque grey: the nav pill is a glass
     surface that can sit over photography, and a solid fill punches a flat
-    patch through it. A translucent white lifts whatever is behind it instead,
-    which is the same trick the pill itself uses.
+    patch through it. A tint shades whatever is behind it instead, which is the
+    same trick the pill itself uses.
+
+    The two themes tint in opposite directions — black on the light pill, white
+    on the dark one — so each darkens or lifts against its own ground rather
+    than washing out.
+
+    5% and 10% because the frames' own states (#f2f2f2 and #ebebeb over a
+    #fafafa page) work out to roughly 3% and 6% black; the primitive ramp
+    starting at 10% would have been about three times heavier than drawn.
 
     Not the --utility-white-* scale, deliberately. That scale flips to BLACK in
     dark mode and reverses its magnitude doing it (white-50 becomes black-50,
@@ -303,8 +315,8 @@
     swap strength between themes — pressed reading lighter than hover. These
     two are defined per theme so pressed is always the stronger of the pair.
   */
-  --nav-item-hover:   var(--colour-base-white-50);
-  --nav-item-pressed: var(--colour-base-white-70);
+  --nav-item-hover:   var(--colour-base-black-5);
+  --nav-item-pressed: var(--colour-base-black-10);
   --utility-inverses-white:  var(--colour-base-white);
   --utility-inverses-orange: var(--colour-orange-400);
   --utility-inverses-purple: var(--colour-purple-300);
@@ -1116,16 +1128,16 @@ body {
   on anchor targets, and the hero's 100svh minus the bar. It used to be written
   out as three hardcoded pixel values per page across four files, which drifted
   the moment the nav's padding changed. One definition, measured from the built
-  nav: 54/62/72px of pill plus 12/20/20px of header padding on each side.
+  nav: 54/54/56px of pill plus 12/20/20px of header padding on each side.
 */
 :root { --header-height: 78px; }
 
 @media (min-width: 768px) {
-  :root { --header-height: 102px; }
+  :root { --header-height: 94px; }
 }
 
 @media (min-width: 1024px) {
-  :root { --header-height: 112px; }
+  :root { --header-height: 96px; }
 }
 
 /* Re-add a visible focus ring (Tailwind preflight resets outlines) */

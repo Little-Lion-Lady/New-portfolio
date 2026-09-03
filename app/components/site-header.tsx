@@ -103,11 +103,14 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
             Gutters are a flat 8px horizontally at every breakpoint; the
             vertical gap only shows once the mobile menu adds a second row.
 
-            Nav padding runs the other way to the link padding — 4px on mobile,
-            16/8 on tablet, 16 on desktop — because the link boxes now carry
-            most of the pill's internal space themselves.
+            Nav padding is uniform on every edge — 4px up to lg, 8px from
+            there — and deliberately much tighter than the link padding inside
+            it. The link boxes already carry the pill's internal space, so the
+            pill only needs enough to keep their fills off its border. It was
+            16px sides against 8px top/bottom on tablet, which read as a wide
+            pill with the items floating in the middle of it.
           */
-          className={`pointer-events-auto relative grid grid-cols-[repeat(4,minmax(0,1fr))_max-content] items-center gap-x-xs gap-y-sm p-3xs transition-colors duration-300 md:grid-cols-[repeat(8,minmax(0,1fr))_max-content] md:gap-y-md md:rounded-sm md:px-md md:py-xs lg:grid-cols-[repeat(9,minmax(0,1fr))_max-content] lg:gap-y-lg lg:p-md ${
+          className={`pointer-events-auto relative grid grid-cols-[repeat(4,minmax(0,1fr))_max-content] items-center gap-x-xs gap-y-sm p-3xs transition-colors duration-300 md:grid-cols-[repeat(8,minmax(0,1fr))_max-content] md:gap-y-md md:rounded-sm md:p-3xs lg:grid-cols-[repeat(9,minmax(0,1fr))_max-content] lg:gap-y-lg lg:p-xs ${
             // Figma gives the expanded mobile pill the next radius up; it is
             // only ever seen while the list is out.
             workOpen ? "rounded-sm md:rounded-sm" : "rounded-xs md:rounded-sm"
@@ -145,7 +148,15 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
             style={{ opacity: scrolled || (workOpen && isMobile) ? 1 : 0 }}
           />
 
-          <Link href="/" className={`${LINK_CLASS} col-start-1 col-span-2 lg:col-span-1`}>
+          {/* justify-self-start makes the box hug the name instead of
+              stretching to fill its columns — a grid item stretches by default,
+              which left the hover fill running the width of two columns for a
+              two-word label. The column SPAN stays, so the items after it keep
+              their positions; only the painted box shrinks. */}
+          <Link
+            href="/"
+            className={`${LINK_CLASS} col-start-1 col-span-2 justify-self-start lg:col-span-1`}
+          >
             Maryna Babych
           </Link>
           {/* Figma calls this a "Container" rather than a "Link container": it
