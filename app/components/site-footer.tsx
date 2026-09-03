@@ -45,13 +45,18 @@ export function SiteFooter() {
     <div className="relative w-full">
       <footer className="grid w-full grid-cols-4 gap-x-lg pt-4xl pb-4xs md:gap-y-xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-0 dt:pb-4xl">
         {/* Wordmark — the lettering meets the page gutters, not the image box.
-            The export is 1744px wide but its glow occupies 110px of that on the
-            left and 111px on the right, leaving the letterforms themselves
-            spanning 1523px (measured off the exported pixels; both the light and
-            dark files carry identical bounds). Sizing the image to the cell would
-            therefore inset the "g" and the "h" by the width of their own glow, so
-            it is blown up by 1744/1523 and pulled left by the 110px margin, both
-            as ratios of the cell so they hold at every breakpoint.
+            The export is 1683px wide but its glow occupies 80px of that on each
+            side, leaving the letterforms themselves spanning 1523px (measured
+            off the exported pixels; both the light and dark files carry
+            identical bounds). Sizing the image to the cell would therefore inset
+            the "g" and the "h" by the width of their own glow, so it is blown up
+            by 1683/1523 and pulled left by the 80px margin, both as ratios of
+            the cell so they hold at every breakpoint.
+
+            Re-derive all three numbers whenever the asset is re-exported — the
+            glow padding has changed between exports while the 1523px lettering
+            stayed put, and stale numbers here shift the wordmark off the gutter
+            rather than failing visibly.
 
             The glow now spills past the page gutters. That is the point — it is
             also why <footer> can no longer clip its overflow. Nothing scrolls:
@@ -70,10 +75,10 @@ export function SiteFooter() {
             // Tailwind utilities they lost to next/image's own sizing and the
             // element computed to 0×0, which silently collapsed the wordmark.
             style={{
-              width: "calc(100% * 1744 / 1523)",
+              width: "calc(100% * 1683 / 1523)",
               maxWidth: "none",
               height: "auto",
-              marginLeft: "calc(-100% * 110 / 1523)",
+              marginLeft: "calc(-100% * 80 / 1523)",
             }}
             className={wordmarkNear ? "wordmark-hue" : undefined}
           />

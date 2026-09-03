@@ -1868,6 +1868,26 @@ textarea,
   animation: button-glow-hue 4s linear infinite alternate;
 }
 
+/* The two wordmark exports do not share a base palette: light is warm, dark is
+   blue. Their yellow-green bands therefore sit in different places, and one arc
+   cannot clear both — the warm arc above runs straight through the dark
+   assets' green. Measured on the exports: Gettouch_dark is dirty 190-320 and
+   Oops_dark 170-310, so 330->520 (round through 0 to 160) is the arc that
+   clears both. Only the name is overridden; duration and direction stay.
+
+   Re-derive this whenever an asset is re-exported. If the dark exports are ever
+   re-made warm to match light, this whole block becomes unnecessary. */
+@keyframes wordmark-hue-dark {
+  from { filter: hue-rotate(330deg); }
+  to   { filter: hue-rotate(520deg); }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .wordmark-hue { animation-name: wordmark-hue-dark; }
+}
+
+:root[data-theme="dark"] .wordmark-hue { animation-name: wordmark-hue-dark; }
+
 @media (prefers-reduced-motion: reduce) {
   .wordmark-hue { animation: none; }
 }
