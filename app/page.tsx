@@ -83,7 +83,7 @@ export default function Home() {
               number="SW/01"
               imagePriority="high"
               name="First Table app"
-              description={`A ground-up redesign of First Table, the app that gives diners 50% off their first table of the night, now used by ${firstTable.appUsers} people. In the six months since launch, sign-ups are up ${firstTable.signupIncrease} and conversion up ${firstTable.conversionIncrease}.`}
+              description={`A ground-up redesign of First Table, the app with ${firstTable.appUsers} users, that gives diners 50% their food bill. In the six months since redesign, sign-ups were up ${firstTable.signupIncrease} and conversion up ${firstTable.conversionIncrease}.`}
               roles="Growth, Design system, Experimentation"
               href="/work/first-table"
               images={[
@@ -103,7 +103,7 @@ export default function Home() {
               // the same way.
               reverseMarquee
               name="NZ COVID Tracer app"
-              description={`${covid.installs} New Zealanders downloaded the COVID Tracer app. Only ${covid.btActivationRateBefore} turned on Bluetooth Tracing, the part that logged contacts automatically. I redesigned the onboarding and half a million more people switched it on.`}
+              description={`${covid.installs} New Zealanders downloaded the COVID Tracer app. Only ${covid.btActivationRateBefore} turned on Bluetooth Tracing – feature that anonymously and automatically mapped potential transmissions. I redesigned the onboarding and half a million more people switched it on.`}
               roles="Onboarding, Research, Usability"
               href="/work/covid-tracer"
               images={[
@@ -119,7 +119,7 @@ export default function Home() {
               number="SW/03"
               imagePriority="low"
               name="Basis home app"
-              description={`The companion app for New Zealand’s first smart electrical panel, built with no product owner and no brief. I owned the strategy. The ${basis.pilotLengthWord} pilot cut household energy bills by ${basis.billReductionActual}.`}
+              description={`The companion app for New Zealand’s first smart electrical panel, built with no product owner and no brief. I defined the strategy and led delivery end to end. Result: a ${basis.billReductionActual} cut in household energy bills across a ${basis.pilotLengthWord} pilot.`}
               roles="UX/UI, Research, Product strategy"
               href="/work/basis"
               images={[
@@ -155,12 +155,12 @@ export default function Home() {
             <p className="b-sm text-text-secondary md:b-md lg:b-md">
               With 9+ years of experience, I&apos;ve taken products from{" "}
               <span className="text-text-highlight-dark">0→1</span>{" "}
-              and brought tired ones back to life. I work in the open with engineers and PMs, and I
-              care as much about{" "}
-              <span className="text-text-highlight-dark">how a team works as what it ships</span>:
-              shared systems, testing habits, people getting better at their craft. My work has
-              reached millions of users across three continents and won{" "}
-              <span className="text-text-highlight-dark">four Best Design Awards</span>.
+              and brought tired ones back to life. I do my best work in{" "}
+              <span className="text-text-highlight-dark">close collaboration</span> with engineers,
+              designers and PMs, where{" "}
+              <span className="text-text-highlight-dark">ideas get challenged and sharpened</span>{" "}
+              before they ship. This approach allowed me to reach millions of users and won{" "}
+              <span className="text-text-highlight-dark">multiple design awards</span>.
             </p>
             <Button variant="primary" label="About me" href="/about" className="self-start" />
           </div>
