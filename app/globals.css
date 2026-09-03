@@ -1470,7 +1470,9 @@ h1.d-sm {
 
   TIMING — the lift is a hover, so it follows the hover rule rather than the
   open/close one: in is quick and direct, out is softer and a little longer, so
-  the rail settles rather than snapping back.
+  the rail settles rather than snapping back. 150ms in, 250ms out — one step
+  down the scale from where this landed first, which was accurate to the rule
+  but still read a touch slow under the pointer.
 
   Both ends run on --ease-in-out, NOT the --ease-smooth-out this started on.
   That curve is cubic-bezier(0.22, 1, 0.36, 1): its first control point sits at
@@ -1501,15 +1503,15 @@ h1.d-sm {
   .image-marquee-card,
   .image-marquee-track:has(.image-marquee-card) > * {
     /* Resting state owns the hover-OUT timing. */
-    transition: scale var(--duration-medium) var(--ease-in-out),
-                translate var(--duration-medium) var(--ease-in-out);
+    transition: scale var(--duration-fast) var(--ease-in-out),
+                translate var(--duration-fast) var(--ease-in-out);
   }
 
   .image-marquee-card:hover,
   .image-marquee-track:has(.image-marquee-card) > *:hover ~ *,
   .image-marquee-track:has(.image-marquee-card) > *:has(~ *:hover) {
     /* ...and hovering overrides it with the quicker hover-IN. */
-    transition-duration: var(--duration-fast);
+    transition-duration: var(--duration-quick);
   }
 
   .image-marquee-card:hover {
