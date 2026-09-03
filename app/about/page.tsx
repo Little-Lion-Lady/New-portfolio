@@ -91,7 +91,7 @@ export default function About() {
             Tablet/mobile: stacked (description → history), gap 80/40. */}
         <Reveal index={1} delay={0.25} className="flex flex-col gap-3xl md:gap-6xl wide:grid wide:grid-cols-12 wide:items-start wide:gap-lg">
           {/* Description + CV button */}
-          <div className="flex flex-col gap-3xl md:pb-2xl wide:col-start-1 wide:col-span-5">
+          <div className="flex flex-col gap-2xl md:gap-3xl md:pb-2xl wide:col-start-1 wide:col-span-5">
             {/* Paragraphs at gap-r-sm. The container's gap-3xl separates
                 this block from the CV button, so sibling <p>s would sit far
                 enough apart to read as separate sections. */}
@@ -122,7 +122,10 @@ export default function About() {
             {/* ── Experience ── */}
             <div className="flex flex-col gap-r-sm">
               <div>
-                <p className="b-xs md:b-sm text-text-primary mb-sm">Experience</p>
+                {/* pt on mobile only: from md the two columns sit side by
+                    side and the grid's own gap does this, but stacked they run
+                    straight on from the CV button above. */}
+                <p className="b-xs md:b-sm text-text-primary pt-lg mb-sm md:pt-0">Experience</p>
                 <Divider />
               </div>
               <div className="flex flex-col gap-md md:gap-sm lg:gap-md">
