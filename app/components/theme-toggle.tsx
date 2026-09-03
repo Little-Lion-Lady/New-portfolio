@@ -44,8 +44,8 @@ function applyTheme(theme: "dark" | "light") {
 //   navigation (ThemeToggle remounts per page) and page refreshes.
 // - Subscribes to OS changes only when the user hasn't made a manual choice.
 // - Sets data-theme on <html>; globals.css resolves all tokens from it.
-// Figma 436:17272 wraps the toggle in a "Toggle container" with the nav's 12px
-// radius, holding a 16px icon. That box is the button itself, so the pointer
+// Figma 436:17272 wraps the toggle in a "Toggle container" holding a 16px
+// icon; the radius matches the links beside it (8px). That box is the button itself, so the pointer
 // target is the whole thing — comfortably past WCAG 2.2's 24×24 minimum
 // without the ::after hit-area trick this used to need — and it takes the same
 // hover and pressed fills as the links beside it.
@@ -95,7 +95,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       suppressHydrationWarning
       whileHover={{ scale: 1.07 }}
       transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`group relative inline-flex w-[40px] items-center justify-center rounded-sm text-nav-ink transition-colors duration-200 hover:bg-nav-item-hover active:bg-nav-item-pressed ${className}`}
+      className={`group relative inline-flex w-[40px] items-center justify-center rounded-xs text-nav-ink transition-colors duration-200 hover:bg-nav-item-hover active:bg-nav-item-pressed ${className}`}
     >
       <AnimatePresence mode="wait" initial={false}>
         {isDark ? (

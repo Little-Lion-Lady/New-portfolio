@@ -45,7 +45,8 @@ import { useBackdropTone } from "./use-over-media";
 
   Padding steps DOWN as the viewport grows, because the type steps up: 12px
   vertical on mobile and tablet against 12px type, 8px on desktop against 14px.
-  The radius is a flat 12px at every breakpoint.
+  The radius is a flat 8px at every breakpoint — a step under the pill's own,
+  so a fill sits inside the pill's corner rather than fighting it.
 
   The box is the anchor itself, not a wrapper around it — so the padding is
   part of the hit area and the pressed state can key off :active, neither of
@@ -59,7 +60,7 @@ import { useBackdropTone } from "./use-over-media";
   stretch keeps the boxes matched regardless.
 */
 const LINK_CLASS =
-  "relative flex items-center whitespace-nowrap rounded-sm px-xs py-sm transition-colors duration-200 " +
+  "relative flex items-center whitespace-nowrap rounded-xs px-xs py-sm transition-colors duration-200 " +
   "b-3xs text-nav-ink hover:bg-nav-item-hover active:bg-nav-item-pressed " +
   "md:p-sm lg:p-xs lg:b-2xs";
 
@@ -176,7 +177,7 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           {/* Figma calls this a "Container" rather than a "Link container": it
               is not interactive, so it takes the padding and radius but none of
               the states. */}
-          <p className="relative hidden whitespace-nowrap rounded-sm p-sm b-3xs text-nav-ink md:col-start-3 md:col-span-2 md:flex md:items-center lg:col-start-3 lg:col-span-2 lg:p-xs lg:b-2xs">
+          <p className="relative hidden whitespace-nowrap rounded-xs p-sm b-3xs text-nav-ink md:col-start-3 md:col-span-2 md:flex md:items-center lg:col-start-3 lg:col-span-2 lg:p-xs lg:b-2xs">
             Lead Product Designer
           </p>
           {/* Work now shows at every breakpoint (mobile included — that is what

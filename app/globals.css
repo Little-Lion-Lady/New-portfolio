@@ -974,7 +974,6 @@
   /* Radius — @theme inline outputs these as --radius-* CSS vars AND generates
      rounded-* / rounded-tl-* etc. utilities. Reference size primitives directly
      (not via :root aliases) to avoid circular var() references. */
-  --radius-2xs:  var(--size-2);   /* 4px — case-study nav row hover fill */
   --radius-xs:   var(--size-4);   /* 8px — carousel card inner image */
   --radius-sm:   var(--size-6);   /* 12px — carousel cards */
   --radius-md:   var(--size-7);   /* 16px — divider mobile */

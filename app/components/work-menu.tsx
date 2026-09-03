@@ -343,7 +343,7 @@ export function WorkMenuTrigger({
           than imported, because importing it would drag the header's module
           (and its hooks) into this one for a string.
         */
-        className="relative flex w-full items-center justify-center whitespace-nowrap rounded-sm px-xs py-sm transition-colors duration-200 b-3xs text-nav-ink hover:bg-nav-item-hover active:bg-nav-item-pressed md:p-sm lg:p-xs lg:b-2xs"
+        className="relative flex w-full items-center justify-center whitespace-nowrap rounded-xs px-xs py-sm transition-colors duration-200 b-3xs text-nav-ink hover:bg-nav-item-hover active:bg-nav-item-pressed md:p-sm lg:p-xs lg:b-2xs"
       >
         Work
       </a>

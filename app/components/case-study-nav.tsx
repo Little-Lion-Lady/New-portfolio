@@ -68,7 +68,11 @@ export function CaseStudyNav({
       animate="rest"
       /*
         Figma 1107:11261 draws the hover fill as an 8px border in the fill's own
-        colour — i.e. 8px of colour around the content, at a 4px radius.
+        colour — i.e. 8px of colour around the content.
+
+        Radius is 8px (rounded-xs) rather than the frame's 4px, by request: it
+        matches the thumbnail's own corners, so the fill and the image it wraps
+        read as one shape instead of two nested radii.
 
         Written as padding plus a matching negative margin rather than padding
         alone. Padding by itself would inset the row's content 8px from the
@@ -76,8 +80,15 @@ export function CaseStudyNav({
         above it and every other section on the page — in the RESTING state,
         where there is no fill to justify it. This way the resting row is
         pixel-identical to before and the fill grows outward on hover.
+
+        No `w-full`, deliberately. Pinning the width to 100% of the parent makes
+        the negative margins SHIFT the row rather than widen it: it bled 8px
+        past the left edge and stopped 8px short of the right, putting "View"
+        16px inside the page's right edge. Left to `auto`, a block-level flex
+        row fills the parent plus both negative margins, which is the symmetric
+        bleed this wants.
       */
-      className="group -m-xs flex w-full items-center gap-lg rounded-2xs p-xs transition-colors duration-200 hover:bg-utility-gray-100 active:bg-utility-gray-200 md:grid md:grid-cols-9 md:items-center lg:grid-cols-12 lg:items-center"
+      className="group -m-xs flex items-center gap-lg rounded-xs p-xs transition-colors duration-200 hover:bg-utility-gray-100 active:bg-utility-gray-200 md:grid md:grid-cols-9 md:items-center lg:grid-cols-12 lg:items-center"
     >
       {/* Thumbnail */}
       <div className="shrink-0 md:col-start-1 md:col-span-2 md:pr-md lg:pr-2xl">
