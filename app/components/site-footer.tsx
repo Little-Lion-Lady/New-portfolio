@@ -65,15 +65,10 @@ export function SiteFooter() {
         </p>
       </div>
 
-      {/* Colophon — M-xs → M-md → M-lg */}
-      <div className="col-start-1 col-span-4 row-start-3 flex items-center md:col-span-3 md:-mb-lg dt:col-span-2 dt:row-start-2 dt:pt-4xl dt:!-mb-2xl">
-        <p className="b-2xs text-text-tertiary pb-3xs md:pb-0 md:b-sm lg:b-xs dt:b-sm">©2026_Maryna_Babych</p>
-      </div>
-
       {/* Wordmark — FitText measures and scales to exactly fill viewport width. */}
       <div
         ref={wordmarkWrapRef}
-        className="relative col-start-1 col-span-4 row-start-4 md:col-span-3 dt:!col-span-6 dt:row-start-3"
+        className="relative col-start-1 col-span-4 row-start-3 md:col-span-3 dt:!col-span-6 dt:row-start-2"
       >
         <FitText
           className="-ml-[var(--page-gutter)] w-screen self-start font-medium leading-[1.15] lowercase tracking-[-0.12em] text-text-highlight pl-[var(--page-gutter)]"
@@ -81,6 +76,27 @@ export function SiteFooter() {
         >
           get in touch
         </FitText>
+      </div>
+
+      {/* Colophon — M-xs → M-md → M-lg. Last line of the footer, sitting under
+          the wordmark and flush with the page's right edge, so it reads as the
+          wordmark's signature rather than as another column of the grid above
+          it. Spans every column at each breakpoint (the wordmark stops at 3 of
+          4 on tablet) because justify-end can only reach the right edge if the
+          cell does.
+
+          Pulled up so it sits just under the wordmark's descenders. Two things
+          separate them and the margin closes both: the grid's own row gap (24px
+          from md until dt, none either side of that), and the half-leading in
+          the wordmark's line box.
+
+          The leading part is in vw because FitText scales the wordmark to the
+          viewport, so it has no fixed size to subtract — measured across four
+          widths it holds at ~0.167 × vw, and at leading-[1.15] the half-leading
+          is 0.075 of that, i.e. ~1.25vw. A per-breakpoint pixel value would be
+          right at three widths and wrong at every width between them. */}
+      <div className="col-start-1 col-span-4 row-start-4 -mt-[1.25vw] flex items-center justify-end md:-mt-[calc(1.25vw+var(--spacing-xl))] dt:!-mt-[1.25vw] dt:!col-span-6 dt:row-start-3">
+        <p className="b-3xs text-text-tertiary text-right md:b-sm lg:b-xs dt:b-sm">©2026_Maryna_Babych</p>
       </div>
     </footer>
 

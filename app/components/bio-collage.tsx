@@ -37,7 +37,7 @@ export function BioCollage() {
         sizes="(min-width: 1400px) 320px, (min-width: 768px) 200px, 50vw"
         className={`flex-1 self-start ${CARD_HEIGHT}`}
       >
-        <HighlightPill className={PILL_POSITION}>Outside me</HighlightPill>
+        <HighlightPill tone="muted" className={PILL_POSITION}>Outside me</HighlightPill>
       </GlassImage>
 
       {/* Bottom-aligned on tablet; full height everywhere else. */}
@@ -47,7 +47,7 @@ export function BioCollage() {
           className={CARD_HEIGHT}
           innerClassName="bg-gradient-to-b from-[var(--colour-blue-200)] to-[var(--colour-red-light-200)] dark:from-[var(--colour-blue-600)] dark:to-[var(--colour-red-light-950)]"
         >
-          <HighlightPill className={PILL_POSITION}>Inner me</HighlightPill>
+          <HighlightPill tone="muted" className={PILL_POSITION}>Inner me</HighlightPill>
           {/* Cat overlay — a child of the card, so it is positioned and clipped
               by the frame rather than floating over the whole collage.
               It is given a box with BOTH a width and a height (as a share of

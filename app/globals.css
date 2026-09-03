@@ -330,6 +330,10 @@
   */
   --nav-ink: var(--text-primary);
 
+  /* Alphas, not opaque grey steps: the pill has a fill of its own once
+     scrolled (utility-gray-200) and nothing at all at the top of the page, so a
+     fixed grey would have to be right against both. An alpha darkens whatever
+     is behind it. */
   --nav-item-hover:   var(--colour-base-black-5);
   --nav-item-pressed: var(--colour-base-black-10);
   --utility-inverses-white:  var(--colour-base-white);
@@ -1140,21 +1144,38 @@ body {
 /*
   Height of the fixed header, including its own outer padding.
 
-  The pages need this to clear the header: top padding on <main>, scroll-margin
-  on anchor targets, and the hero's 100svh minus the bar. It used to be written
-  out as three hardcoded pixel values per page across four files, which drifted
-  the moment the nav's padding changed. One definition, measured from the built
-  nav: 54/54/56px of pill plus 12/20/20px of header padding on each side.
+  The pages need this to clear the header: scroll-margin on anchor targets and
+  the hero's 100svh minus the bar. It used to be written out as three hardcoded
+  pixel values per page across four files, which drifted the moment the nav's
+  padding changed. One definition, measured from the built nav: 50/50/56px of
+  pill plus --header-pad on each side.
+
+  --header-clearance is what a page's own top padding uses instead. It stops at
+  the BOTTOM EDGE of the pill rather than at the bottom of the header's padding
+  box, because that padding is already a gap — counting it and then starting the
+  page's spacing below it paid for the same air twice, which is what made the
+  hero sit low.
 */
-:root { --header-height: 78px; }
+:root {
+  --header-pad: 12px;
+  --header-height: 74px;
+}
 
 @media (min-width: 768px) {
-  :root { --header-height: 94px; }
+  :root {
+    --header-pad: 20px;
+    --header-height: 90px;
+  }
 }
 
 @media (min-width: 1024px) {
-  :root { --header-height: 96px; }
+  :root {
+    --header-pad: 20px;
+    --header-height: 96px;
+  }
 }
+
+:root { --header-clearance: calc(var(--header-height) - var(--header-pad)); }
 
 /* Re-add a visible focus ring (Tailwind preflight resets outlines) */
 :focus-visible {

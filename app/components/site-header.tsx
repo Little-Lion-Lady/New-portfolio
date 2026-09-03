@@ -1,16 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Reveal } from "./reveal";
 import { ThemeToggle } from "./theme-toggle";
 import { useWorkMenu, WorkMenuTrigger, WorkMenuPanel, WorkMenuMobileList } from "./work-menu";
-import { useBackdropTone } from "./use-over-media";
 
-// Figma "Header" (436:17272) — a floating glass pill rather than a full-bleed
-// band. The header itself stays transparent and only pads the pill in from the
-// viewport edge; the pill carries the fill, hairline and blur.
+// Figma "Header" (436:17272) — a floating pill rather than a full-bleed band.
+// The header itself stays transparent and only pads the pill in from the
+// viewport edge; the pill carries the fill.
 //
 //   breakpoint   header pad          pill pad   radius            grid
 //   mobile       spacing-sm  12      xs   8     radius-xs   8      4 cols, gap 12
@@ -23,28 +22,42 @@ import { useBackdropTone } from "./use-over-media";
 // Type: B-3xs (12/22) on mobile+tablet, B-2xs (14/24) on desktop.
 //
 // `revealDelay` syncs the header's entrance with whatever it should arrive
-// alongside — the home page passes the hero cat's 2s so the two land together.
+// alongside. The home page passes 0 — the header leads the hero rather than
+// waiting on it.
 //
-// The pill's chrome is revealed on scroll (unchanged behaviour): fill, hairline
-// and the 10px backdrop-blur live on an overlay element whose opacity is driven
-// by scrollY, so the nav text itself never fades — only the surface behind it.
+// The pill's fill is revealed on scroll (unchanged behaviour): it lives on an
+// overlay element whose opacity is driven by scrollY, so the nav text itself
+// never fades — only the surface behind it.
 /*
   The nav's "Link container" — Figma 436:17272 (spec) and 1786:139483 (states).
 
   Every nav control now sits in a padded, rounded box rather than being bare
   text, and that box is what carries the interactive states:
 
-    hover    nav-item-hover    white at low alpha
-    pressed  nav-item-pressed  white, a little stronger
+    hover    nav-item-hover    black at low alpha (light) / white at low alpha (dark)
+    pressed  nav-item-pressed  black, a little stronger / white, a little stronger
 
-  Translucent white rather than an opaque grey because the pill is a glass
-  surface that can sit over photography — a solid fill punches a flat patch
-  through it, while white lifts whatever is behind. The ink does NOT change
-  with either state: the fill alone carries it, so the label stays put and the
-  over-media ink swap (see useBackdropTone) is left to do its own job.
+  Alphas rather than opaque grey steps, in both themes: the pill's own fill is
+  utility-gray-200, so an opaque hover would have to be picked against THAT
+  rather than against the page, and it would then be wrong at the top of the
+  page where the pill is transparent and the fill sits straight on content. An
+  alpha darkens whatever is behind it and is right in both places. The ink does
+  NOT change with either state: the fill alone carries it, so the label stays
+  put.
 
-  Padding steps DOWN as the viewport grows, because the type steps up: 12px
+  --nav-ink now resolves to --text-primary and nothing else. The nav used to
+  sample the luminance behind the pill (useBackdropTone) and retint the ink over
+  photography, which the glass surface needed. The pill is opaque once scrolled,
+  so the ink only has to be right against its own fill — and sampling actively
+  hurt: over a dark screenshot the swap turned the labels white while the pill
+  stayed light grey, which is where the text disappeared.
+
+  Padding steps DOWN as the viewport grows, because the type steps up: 10px
   vertical on mobile and tablet against 12px type, 8px on desktop against 14px.
+  The vertical value is what sets the row height, and 10px against the 22px
+  line-height is what lands it on 42. It is an arbitrary value rather than a
+  spacing token because the scale steps 8 → 12 with nothing between; the
+  horizontal padding stays on the tokens.
   The radius is a flat 8px at every breakpoint — a step under the pill's own,
   so a fill sits inside the pill's corner rather than fighting it.
 
@@ -59,21 +72,44 @@ import { useBackdropTone } from "./use-over-media";
   its neighbours'. `whitespace-nowrap` stops that wrap in the first place; the
   stretch keeps the boxes matched regardless.
 */
+/*
+  The hover fill grows outward on hover, matching the lift of the theme toggle
+  beside it — see ThemeToggle's whileHover — on the same 200ms and the same
+  curve (Framer's [0.25, 0.1, 0.25, 1] IS the CSS `ease` keyword), without
+  pulling motion into a link.
+
+  It grows by a FIXED 1.5px per side, not by a scale factor. Scale is
+  proportional to the box, so one value cannot serve a row of different widths:
+  1.07 on the 40px toggle is 1.4px per side, but on the 109px "Maryna Babych" it
+  is 3.8px — enough to eat the nav's whole 4px padding and put the fill's left
+  edge flush against the pill's outer edge on tablet. A fixed inset grows every
+  item by the same visible amount, which is what "matching the toggle" actually
+  means, and it stays inside the pill whatever the label says. 1.5px is the
+  toggle's own growth under 1.07.
+
+  What grows is a ::before carrying the fill, NOT the anchor: moving the anchor
+  took its label with it, and a resize of 12px type reads as a zoom, with
+  re-rasterised glyphs going soft mid-transition. The toggle can scale bodily
+  because its content is a vector icon; a text link cannot. So the box grows and
+  the label holds still.
+
+  `isolate` is what keeps `before:-z-10` honest. Without a stacking context on
+  the anchor, a negative z-index escapes it and the fill drops behind the pill's
+  own surface, which is opaque once scrolled — the hover would simply vanish.
+*/
+const NAV_ITEM_STATES =
+  "isolate transition-colors duration-200 ease-[cubic-bezier(0.25,0.1,0.25,1)] " +
+  "before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:content-[''] " +
+  "before:transition-[background-color,inset] before:duration-200 before:ease-[cubic-bezier(0.25,0.1,0.25,1)] " +
+  "hover:before:bg-nav-item-hover hover:before:-inset-[1.5px] active:before:bg-nav-item-pressed";
+
 const LINK_CLASS =
-  "relative flex items-center whitespace-nowrap rounded-xs px-xs py-sm transition-colors duration-200 " +
-  "b-3xs text-nav-ink hover:bg-nav-item-hover active:bg-nav-item-pressed " +
-  "md:p-sm lg:p-xs lg:b-2xs";
+  `relative flex items-center whitespace-nowrap rounded-xs px-xs py-[10px] ${NAV_ITEM_STATES} ` +
+  "b-3xs text-nav-ink " +
+  "md:px-sm md:py-[10px] lg:p-xs lg:b-2xs";
 
 export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
   const [scrolled, setScrolled] = useState(false);
-  const navRef = useRef<HTMLElement>(null);
-  // Over a photo the glass pill isn't enough contrast on its own, so the nav
-  // re-points --text-primary at an over-media token and every child that uses
-  // text-text-primary (links, role, theme toggle) follows. Which token depends
-  // on the photo's own luminance under the pill: dark ink on light photos,
-  // light ink on dark ones. A fixed dark ink disappeared against the dark
-  // screenshots that fill the First Table page in dark mode.
-  const tone = useBackdropTone(navRef);
   const { open: workOpen, isDesktop, isMobile, pathname: menuPath, openNow, openOnFocus, close: closeWorkMenu,
           toggle: toggleWorkMenu, cancelClose, scheduleClose, focusFirstItem } = useWorkMenu();
   const pathname = usePathname();
@@ -98,13 +134,13 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
       {/* Fades in with the same blur-and-opacity Reveal as the page content.
           `immediate` rather than the in-view gate: the header is fixed and
           always on screen, so there is nothing to scroll into view. */}
-      {/* noSafetyFloor: the pill's backdrop-blur is the whole point of the
-          glass surface, and a reveal running the safety-floor animation turns
-          itself into a backdrop root, which empties that blur. This reveal
-          plays on mount, so it is not the one the floor is insuring against. */}
+      {/* noSafetyFloor: kept from the glass era, when a reveal running the
+          safety-floor animation turned itself into a backdrop root and emptied
+          the pill's backdrop-blur. There is no blur left to protect, but the
+          reasoning still stands on its own — this reveal plays on mount, so it
+          is not the one the floor is insuring against. */}
       <Reveal immediate noY noSafetyFloor delay={revealDelay}>
         <nav
-          ref={navRef}
           /*
             Column counts come straight from the spec: the last column is
             max-content for the toggle, the rest share the remaining width.
@@ -123,38 +159,23 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
             // only ever seen while the list is out.
             workOpen ? "rounded-sm md:rounded-sm" : "rounded-xs md:rounded-sm"
           }`}
-          /* Retints --nav-ink, NOT --text-primary. The Work menu renders
-             inside this element so it can anchor to it, so overriding the
-             global ink here turned the menu's rows — which sit on their own
-             opaque card — white along with the bar. */
-          style={
-            tone
-              ? ({
-                  "--nav-ink":
-                    tone === "dark"
-                      ? "var(--text-over-media-inverted)"
-                      : "var(--text-over-media)",
-                } as CSSProperties)
-              : undefined
-          }
         >
           {/* Pill surface — the only thing that reveals on scroll. Sits behind the
               nav content (z-0 + relative children) so the links stay legible at
               full opacity throughout the fade. */}
-          {/* The expanded mobile pill has to carry the menu, and at the top of
-              the page this surface is fully transparent — so without forcing it
-              opaque the rows float over the page with nothing behind them.
-              Figma's mobile "Work nav" is a solid bg-primary card with a drop
-              shadow rather than the glass fill, so the open state swaps to that
-              instead of just raising the glass. md and up are untouched: there
-              the menu brings its own card. */}
+          {/* A flat utility-gray-200 card — no blur, no hairline, no shadow. The
+              fill alone is the whole surface, so the pill separates from the
+              page by tone rather than by edge treatment: a step off the page's
+              own bg-primary, which flips to a dark step in dark mode because
+              utility-gray-200 is a theme token rather than a fixed grey.
+
+              The expanded mobile pill has to carry the menu, and at the top of
+              the page this surface is fully transparent, so the open state
+              forces it opaque regardless of scroll or the rows would float over
+              the page with nothing behind them. */}
           <div
             aria-hidden
-            className={`pointer-events-none absolute inset-0 rounded-[inherit] border border-border-overlay backdrop-blur-[10px] transition-opacity duration-300 ${
-              workOpen && isMobile
-                ? "bg-bg-primary drop-shadow-[0_2px_7.5px_var(--shadows-shadow-02)]"
-                : "bg-utility-inverses-glass"
-            }`}
+            className="pointer-events-none absolute inset-0 rounded-[inherit] bg-utility-gray-200 transition-opacity duration-300"
             style={{ opacity: scrolled || (workOpen && isMobile) ? 1 : 0 }}
           />
 
@@ -177,7 +198,7 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           {/* Figma calls this a "Container" rather than a "Link container": it
               is not interactive, so it takes the padding and radius but none of
               the states. */}
-          <p className="relative hidden whitespace-nowrap rounded-xs p-sm b-3xs text-nav-ink md:col-start-3 md:col-span-2 md:flex md:items-center lg:col-start-3 lg:col-span-2 lg:p-xs lg:b-2xs">
+          <p className="relative hidden whitespace-nowrap rounded-xs px-sm py-[10px] b-3xs text-nav-ink md:col-start-3 md:col-span-2 md:flex md:items-center lg:col-start-3 lg:col-span-2 lg:p-xs lg:b-2xs">
             Lead Product Designer
           </p>
           {/* Work now shows at every breakpoint (mobile included — that is what

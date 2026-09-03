@@ -62,8 +62,15 @@ export const LINE_STAGGER = 0.15;
 
 // When a line READS as arrived, which is not when it finishes. EASE front-loads
 // hard — cubic-bezier(0.32,0.72,0,1) is ~93% of the way there at half its
-// duration — so the back half of a line reveal is a blur too faint to register.
-// Anything handing over to the headline should hand over here, at 0.8s into a
-// line rather than 1.6s; waiting for the nominal end buys most of a second of
-// dead air with nothing visibly moving. Used by useHeadlineHandoff.
-export const LINE_SETTLE = LINE_DURATION / 2;
+// duration — so most of a line reveal is a blur too faint to register. Anything
+// handing over to the headline should hand over here rather than at the nominal
+// end; waiting for 1.6s buys most of a second of dead air with nothing visibly
+// moving. Used by useHeadlineHandoff.
+//
+// A quarter of the duration, not half. The handover already waits out the line
+// cascade before this even starts — nine lines on a phone is 1.2s of stagger —
+// so half a duration on top put the cat 2s from the top of the page and another
+// 0.91s from settled. At a quarter the curve is still ~80% resolved, which is
+// past the point where the eye has the line, and the cat overlaps the headline's
+// tail instead of queueing behind it.
+export const LINE_SETTLE = LINE_DURATION / 4;
