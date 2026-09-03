@@ -1825,3 +1825,18 @@ textarea,
   .button-glow-host:focus-visible .button-glow { animation: none; }
 }
 
+/* Footer wordmark — the "get in touch" export already carries the CTA's six glow
+   colours, baked into the PNG, so rotating the whole image's hue walks them
+   round the wheel exactly as the button's halo does. Unlike the button there is
+   nothing here to hover, so it runs continuously; site-footer.tsx only adds the
+   class once the footer is near the viewport, since this repaints a large image
+   every frame. Black and white survive a hue rotation untouched (no saturation
+   to turn), so the lettering itself holds still while its glow moves. */
+.wordmark-hue {
+  animation: button-glow-hue 2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmark-hue { animation: none; }
+}
+
