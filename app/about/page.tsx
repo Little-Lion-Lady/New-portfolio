@@ -85,21 +85,18 @@ export default function About() {
         <Reveal index={1} delay={0.5} className="flex flex-col gap-3xl md:gap-6xl wide:grid wide:grid-cols-12 wide:items-start wide:gap-lg">
           {/* Description + CV button */}
           <div className="flex flex-col gap-3xl md:pb-2xl wide:col-start-1 wide:col-span-5">
-            {/* Two paragraphs at gap-r-sm. The container's gap-3xl separates
+            {/* Paragraphs at gap-r-sm. The container's gap-3xl separates
                 this block from the CV button, so sibling <p>s would sit far
                 enough apart to read as separate sections. */}
             <div className="flex flex-col gap-r-sm">
               <p className="b-xs text-text-secondary md:b-sm">
-                I&apos;ve been designing products with the teams that build them, in agencies,
-                startups, and now an international marketplace. Agency work taught me to move fast
-                and ask the dumb question early. Product work taught me to own things past launch.
-                Both left me with the same aim: make the product easy to use, and give the team the
-                systems and evidence to keep it that way.
-              </p>
-              <p className="b-xs text-text-secondary md:b-sm">
-                I lead design direction, systems and research while staying on the tools. My
-                favourite part is still working out what&apos;s possible with product and
-                engineering before I fall for something nobody can build.
+                I lead design direction, systems, and research, and I still stay hands-on with the
+                tools. I&apos;ve designed products with the teams that build them: in agencies,
+                startups, and now a mature product company. Agency work taught me to move fast and
+                validate early. Product work taught me to own things past launch. Both left me with
+                the same aim: make the product easy to use, make a real impact on the business and
+                the people using it, and leave the team with the systems and evidence to keep it
+                that way.
               </p>
             </div>
             <Button
