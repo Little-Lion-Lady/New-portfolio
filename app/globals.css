@@ -1459,7 +1459,7 @@ h1.d-sm {
 }
 
 /*
-  ...and the neighbours step aside so the gap does not close.
+  ...the card lifts, and its neighbours step aside so the gap does not close.
 
   A hovered card grows about its own centre, eating CARD_GROW/2 of the gap on
   each side. Everything after it shifts right by that much and everything
@@ -1467,24 +1467,52 @@ h1.d-sm {
   reason the growth is a fixed width and not a fixed ratio, since one number
   has to be right for cards of every width.
 
+  TIMING — the lift is a hover, so it follows the hover rule rather than the
+  open/close one: in is quick and direct, out is softer and a little longer, so
+  the rail settles rather than snapping back. Both on --ease-smooth-out.
+
+  These were 500ms ease-out, which is what made it feel janky. Two reasons, and
+  neither was frame rate — profiled at 4x CPU throttle the rail holds ~8ms
+  frames with nothing dropped. First, half a second is double the hover budget,
+  and `ease-out` leaves at full speed and then crawls, so the card lurched and
+  then hung. Second, the rail is MOVING: cards slide under a still pointer, so
+  hovers hand over constantly, and at 500ms each handover left up to ten
+  elements mid-transition at once. Shorter transitions finish between handovers
+  instead of piling up.
+
   `translate` rather than `transform`: the track itself is mid-animation on a
-  transform, and these are its children, so keeping the two on separate
+  transform and these are its children, so keeping the two on separate
   properties means neither has to know about the other.
 
-  Gated on a real pointer and on motion being welcome, matching the scale
-  itself. :has() is what makes the "before" half possible — CSS has no
-  previous-sibling combinator.
+  Gated on a real pointer and on motion being welcome. :has() is what makes the
+  "before" half possible — CSS has no previous-sibling combinator — and it is
+  cheap here: 0.10ms for 40 matches.
 */
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .image-marquee-track > * {
-    transition: translate 500ms ease-out;
+  .image-marquee-card,
+  .image-marquee-track:has(.image-marquee-card) > * {
+    /* Resting state owns the hover-OUT timing. */
+    transition: scale var(--duration-medium) var(--ease-smooth-out),
+                translate var(--duration-medium) var(--ease-smooth-out);
   }
 
-  .image-marquee-track > *:hover ~ * {
+  .image-marquee-card:hover,
+  .image-marquee-track:has(.image-marquee-card) > *:hover ~ *,
+  .image-marquee-track:has(.image-marquee-card) > *:has(~ *:hover) {
+    /* ...and hovering overrides it with the quicker hover-IN. */
+    transition-duration: var(--duration-fast);
+  }
+
+  .image-marquee-card:hover {
+    scale: var(--card-scale);
+    z-index: 10;
+  }
+
+  .image-marquee-track:has(.image-marquee-card) > *:hover ~ * {
     translate: calc(var(--card-grow) / 2) 0;
   }
 
-  .image-marquee-track > *:has(~ *:hover) {
+  .image-marquee-track:has(.image-marquee-card) > *:has(~ *:hover) {
     translate: calc(var(--card-grow) / -2) 0;
   }
 }

@@ -194,14 +194,13 @@ export function ImageCarousel({
           quality={image.quality}
           frameAspectRatio={ratio}
           sizes={ratioSizes(ratio)}
-          hoverScale={hoverScale}
           ariaHidden={hidden}
           frameStyle={
             hoverScale ? growVars(widthAt(ratio, "base"), widthAt(ratio, "md"), widthAt(ratio, "lg")) : undefined
           }
           loading={loading}
           fetchPriority={fetchPriority}
-          className={`image-marquee-card shrink-0 ${CARD_HEIGHT_CLASS[size]}${margin}`}
+          className={`${hoverScale ? "image-marquee-card " : ""}shrink-0 ${CARD_HEIGHT_CLASS[size]}${margin}`}
         />
       );
     }
@@ -212,12 +211,11 @@ export function ImageCarousel({
         alt={image.alt}
         quality={image.quality}
         sizes={`(min-width: 1024px) ${image.lgWidth?.px ?? 660}px, (min-width: 768px) 480px, 380px`}
-        hoverScale={hoverScale}
         ariaHidden={hidden}
         frameStyle={hoverScale ? growVars(380, 480, image.lgWidth?.px ?? 660) : undefined}
         loading={loading}
         fetchPriority={fetchPriority}
-        className={`image-marquee-card shrink-0 ${CARD_CLASS[size]} ${image.lgWidth?.class ?? CARD_LG_WIDTH}${margin}`}
+        className={`${hoverScale ? "image-marquee-card " : ""}shrink-0 ${CARD_CLASS[size]} ${image.lgWidth?.class ?? CARD_LG_WIDTH}${margin}`}
       />
     );
   };

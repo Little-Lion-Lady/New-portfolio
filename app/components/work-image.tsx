@@ -121,7 +121,6 @@ export function GlassImage({
   frameAspectClassName,
   objectPosition,
   radiusClassName,
-  hoverScale = false,
   frameStyle,
   ariaHidden = false,
   children,
@@ -204,29 +203,10 @@ export function GlassImage({
   /** Replaces the default radius ramp — see GlassFrame's own `radiusClassName`. */
   radiusClassName?: string;
   /**
-   * Zoom the photo slightly while the pointer is over its card.
-   *
-   * Opt-in rather than default: it belongs to the home page's work rows, and
-   * the same component draws case-study collages and the Work menu's
-   * thumbnails, where a hover zoom would be noise.
-   *
-   * The whole CARD scales, frame and all. `scale` is a transform, so it takes
-   * no layout space — neighbouring cards stay put and the hovered one grows
-   * over them, which is also why it lifts to z-10 while hovered: siblings
-   * later in the DOM paint on top, so without it the card to the right would
-   * crop the growth.
-   *
-   * The factor comes from --card-scale rather than being hard-coded, because
-   * these cards are height-sized and take their width from the photo's ratio:
-   * one shared factor would grow a 350px card by 17px and a 660px card by 33px,
-   * and no single sibling shift could then hold every gap. The caller sets a
-   * per-card factor that grows every card by the SAME number of pixels.
-   *
-   * `motion-safe:` rather than a reduced-motion override, so under
-   * prefers-reduced-motion the rule is simply never emitted.
+   * Extra custom properties for the frame. Used by the home rows to hand each
+   * card its per-breakpoint --card-scale-* factors; the motion that reads them
+   * lives in globals.css under .image-marquee-card.
    */
-  hoverScale?: boolean;
-  /** Extra custom properties for the frame — e.g. the --card-scale trio. */
   frameStyle?: CSSProperties;
   /** Hide from assistive tech (the marquee's duplicated set). */
   ariaHidden?: boolean;
@@ -243,7 +223,7 @@ export function GlassImage({
 
   return (
     <div
-      className={`${FRAME_CLASS}${hoverScale ? " transition-transform duration-500 ease-out motion-safe:hover:scale-[var(--card-scale,1.05)] hover:z-10" : ""} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)}${frameAspectClassName ? ` ${frameAspectClassName}` : ""} ${className}`}
+      className={`${FRAME_CLASS} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)}${frameAspectClassName ? ` ${frameAspectClassName}` : ""} ${className}`}
       aria-hidden={ariaHidden || undefined}
       style={
         !frameAspectClassName && frameAspectRatio
