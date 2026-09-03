@@ -1382,6 +1382,7 @@ h1.d-sm {
   --duration-slow:   400ms; /* panel open, content reveal */
 
   --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1); /* open/close, slide, resize */
+  --ease-in-out:     ease-in-out; /* icon/text swap, reveal, hover grow */
 }
 
 /* Page curtain — route transition panel.
@@ -1469,7 +1470,15 @@ h1.d-sm {
 
   TIMING — the lift is a hover, so it follows the hover rule rather than the
   open/close one: in is quick and direct, out is softer and a little longer, so
-  the rail settles rather than snapping back. Both on --ease-smooth-out.
+  the rail settles rather than snapping back.
+
+  Both ends run on --ease-in-out, NOT the --ease-smooth-out this started on.
+  That curve is cubic-bezier(0.22, 1, 0.36, 1): its first control point sits at
+  y=1, so it leaps to nearly full progress on the first frames and then crawls
+  the rest. Right for a surface arriving from off-screen, wrong here — it gave
+  the card no ease IN at all, which is what read as unfinished even once the
+  durations were fixed. ease-in-out eases at both ends, so the card gathers
+  speed and settles instead of snapping into motion.
 
   These were 500ms ease-out, which is what made it feel janky. Two reasons, and
   neither was frame rate — profiled at 4x CPU throttle the rail holds ~8ms
@@ -1492,8 +1501,8 @@ h1.d-sm {
   .image-marquee-card,
   .image-marquee-track:has(.image-marquee-card) > * {
     /* Resting state owns the hover-OUT timing. */
-    transition: scale var(--duration-medium) var(--ease-smooth-out),
-                translate var(--duration-medium) var(--ease-smooth-out);
+    transition: scale var(--duration-medium) var(--ease-in-out),
+                translate var(--duration-medium) var(--ease-in-out);
   }
 
   .image-marquee-card:hover,
