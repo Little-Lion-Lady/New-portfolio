@@ -394,17 +394,19 @@ function Rows({
             onClick={onSelect}
             /*
               Two sets of state fills, because the rows sit on two different
-              surfaces. From md they are on the menu's own card and take the
-              opaque grey steps it was drawn with. Below md they are INSIDE the
-              nav pill, whose fill is already utility-gray-200 — so gray-100
-              there is lighter than the surface (a hover that brightens) and the
+              surfaces. From md they are on the menu's own card and take its
+              tokens — opaque grey steps in light mode, the nav's own alphas in
+              dark, where the card shares the pill's surface (see
+              --work-menu-* in globals.css). Below md they are INSIDE the nav
+              pill, whose fill is already utility-gray-200 — so gray-100 there
+              is lighter than the surface (a hover that brightens) and the
               gray-200 current-page fill is invisible against an identical
               background. Mobile therefore uses the nav's own alpha tokens,
               which darken whatever they sit on, exactly like the links above
               them in the same pill.
             */
-            className={`flex w-full items-center gap-lg rounded-sm p-3xs transition-colors duration-150 hover:bg-nav-item-hover active:bg-nav-item-pressed md:hover:bg-utility-gray-100 md:active:bg-utility-gray-200 ${
-              currentPath === item.href ? "bg-nav-item-pressed md:bg-utility-gray-200" : ""
+            className={`flex w-full items-center gap-lg rounded-sm p-3xs transition-colors duration-150 hover:bg-nav-item-hover active:bg-nav-item-pressed md:hover:bg-work-menu-item-hover md:active:bg-work-menu-item-pressed ${
+              currentPath === item.href ? "bg-nav-item-pressed md:bg-work-menu-item-pressed" : ""
             }`}
           >
             <GlassImage
@@ -521,7 +523,7 @@ export function WorkMenuPanel({
           exit="exit"
           // Grows out of the corner it hangs from rather than its own middle.
           style={{ transformOrigin: "top right" }}
-          className="absolute right-0 top-full z-10 hidden w-[342px] max-w-full flex-col gap-3xs rounded-md border border-border-overlay bg-bg-primary p-xs drop-shadow-[0_2px_7.5px_var(--shadows-shadow-02)] md:flex"
+          className="absolute right-0 top-full z-10 hidden w-[342px] max-w-full flex-col gap-3xs rounded-md border border-border-overlay bg-work-menu-surface p-xs drop-shadow-[0_2px_7.5px_var(--shadows-shadow-02)] md:flex"
         >
           <Rows currentPath={currentPath} onSelect={onClose} reduced={!!reduced} />
         </m.div>

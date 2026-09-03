@@ -18,6 +18,7 @@ const INTRO_DELAY = 0.3;
 import { ImageCarousel } from "./image-carousel";
 import type { WorkImageData } from "./work-image";
 import { TitleStars } from "./title-stars";
+import { ArrowUpRightSmall } from "./icons";
 
 // Figma "Hero" (393:15572 desktop / tablet / mobile).
 // Title (two-tone, fluid) + description (lead + body) + meta + image carousel.
@@ -27,18 +28,59 @@ import { TitleStars } from "./title-stars";
 //   meta     — always a single column (meta rows then recognition rows stacked)
 //   images   — ImageCarousel (same cards as the home work section), size="lg" so
 //              the desktop cards are 500px tall instead of 400px
-function MetaRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-start">
-      <p className="b-2xs whitespace-nowrap text-text-tertiary lg:b-sm">{label}</p>
+/*
+  A meta row, optionally a link out.
+
+  With `href` the whole row becomes the target and wears the About page's
+  awards-table treatment: the same ::before fill (utility-gray-100 lifting to
+  -200 when pressed) on the same 200ms [0.25, 0.1, 0.25, 1] curve, the same
+  nudge outwards on hover, the text stepping up to text-primary, and the arrow
+  drifting up-right. Written out rather than shared with the About page because
+  the two rows are different shapes — that one is a 6-column grid, this is a
+  label/value pair — so only the state treatment is common, and lifting it into
+  a component would leave a wrapper that takes the fill classes as a prop.
+
+  The fill is on a pseudo-element for the same reason it is there: these rows
+  sit flush in a flex column, so real padding would push them apart.
+*/
+function MetaRow({ label, value, href }: { label: string; value: string; href?: string }) {
+  const content = (
+    <>
+      <p className="b-2xs whitespace-nowrap text-text-tertiary transition-colors lg:b-sm group-hover:text-text-primary">{label}</p>
       {/* Value wraps rather than clipping — First Table's Scope line is long
-          enough to run past the mobile gutter (it overflows in Figma too). */}
-      <p className="b-2xs min-w-0 text-text-secondary lg:b-sm">{value}</p>
-    </div>
+          enough to run past the mobile gutter (it overflows in Figma too).
+          The arrow is inline INSIDE this paragraph, not a flex sibling, so it
+          follows the last word onto whatever line that ends up on instead of
+          being pinned to the row's top-right. */}
+      <p className="b-2xs min-w-0 text-text-secondary transition-colors lg:b-sm group-hover:text-text-primary">
+        {value}
+        {href && (
+          <ArrowUpRightSmall className="ml-3xs inline-block size-sm align-[-0.15em] transition-transform duration-200 ease-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px] group-hover:scale-[1.1] lg:size-lg lg:align-[-0.2em]" />
+        )}
+      </p>
+    </>
+  );
+
+  if (!href) {
+    return <div className="flex items-start">{content}</div>;
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      /* self-start: the row is a flex item in a column, so it would otherwise
+         stretch the full meta width and the hover fill would run far past the
+         text. Hugging the content keeps the fill on the words. */
+      className="group relative isolate flex max-w-full items-start self-start before:absolute before:-inset-x-xs before:-inset-y-3xs before:-z-10 before:rounded-xs before:content-[''] before:transition-[background-color,inset] before:duration-200 before:ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:before:-inset-x-[9.5px] hover:before:-inset-y-[5.5px] hover:before:bg-utility-gray-100 active:before:bg-utility-gray-200"
+    >
+      {content}
+    </a>
   );
 }
 
-type MetaItem = { label: string; value: string };
+type MetaItem = { label: string; value: string; href?: string };
 
 export function CaseStudyHero({
   titleTop,
@@ -108,7 +150,7 @@ export function CaseStudyHero({
             </div>
             <div className="flex flex-col md:col-start-5 md:col-span-4">
               {recognition.map((r, i) => (
-                <MetaRow key={i} label={r.label} value={r.value} />
+                <MetaRow key={i} label={r.label} value={r.value} href={r.href} />
               ))}
             </div>
           </Reveal>
