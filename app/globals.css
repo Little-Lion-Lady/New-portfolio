@@ -288,6 +288,13 @@
   --shadows-shadow-01: var(--colour-gray-light-950-50);
   --shadows-shadow-02: var(--colour-gray-light-950-10);
   --shadows-glow-01:   var(--colour-gray-light-50-30);
+  /* Primary-pill hover glow — five stacked colour shadows that step down and
+     out from the pill edge (cool at the rim, warm as it falls). Light mode: mid steps, read against the near-black pill. */
+  --button-glow-01: var(--colour-purple-400);
+  --button-glow-02: var(--colour-blue-500);
+  --button-glow-03: var(--colour-teal-500);
+  --button-glow-04: var(--colour-orange-400);
+  --button-glow-05: var(--colour-red-light-500);
 
   /* Figma "Utility/inverses" collection — light values. `white` is the Insight
      card's inner fill; the rest are accent slots that invert to a different hue
@@ -563,6 +570,13 @@
        than the light-blue glow the blue-100 value produced. */
     --shadows-shadow-02: var(--colour-base-black);
     --shadows-glow-01:   var(--colour-blue-100);
+    /* Primary-pill hover glow — five stacked colour shadows that step down and
+       out from the pill edge (cool at the rim, warm as it falls). Dark mode: one step lighter so they stay legible around the white pill. */
+    --button-glow-01: var(--colour-purple-300);
+    --button-glow-02: var(--colour-blue-400);
+    --button-glow-03: var(--colour-teal-400);
+    --button-glow-04: var(--colour-orange-300);
+    --button-glow-05: var(--colour-red-dark-400);
 
     /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
        wash here, not an opaque fill, and red/teal swap hue rather than step. */
@@ -718,6 +732,13 @@
      effect's softness comes from the 20px blur, not from alpha. */
   --shadows-shadow-02: var(--colour-base-black);
   --shadows-glow-01:   var(--colour-blue-100);
+  /* Primary-pill hover glow — five stacked colour shadows that step down and
+     out from the pill edge (cool at the rim, warm as it falls). Dark mode: one step lighter so they stay legible around the white pill. */
+  --button-glow-01: var(--colour-purple-300);
+  --button-glow-02: var(--colour-blue-400);
+  --button-glow-03: var(--colour-teal-400);
+  --button-glow-04: var(--colour-orange-300);
+  --button-glow-05: var(--colour-red-dark-400);
 
   /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
      wash here, not an opaque fill, and red/teal swap hue rather than step. */
@@ -1792,3 +1813,24 @@ textarea,
   width: 100vw;
   margin-inline: calc((100% - 100vw) / 2);
 }
+
+/* Primary-pill hover halo — the colour cycle.
+   The halo layer (see button.tsx) paints five colour shadows; rotating the
+   hue of the whole layer walks that fixed stack through the spectrum, so one
+   button reads pink/orange, then green/yellow, then blue/purple as it sits
+   under the cursor. Gated on hover so idle buttons don't animate a filter. */
+@keyframes button-glow-hue {
+  from { filter: hue-rotate(0deg); }
+  to   { filter: hue-rotate(360deg); }
+}
+
+.button-glow-host:hover .button-glow,
+.button-glow-host:focus-visible .button-glow {
+  animation: button-glow-hue 6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-glow-host:hover .button-glow,
+  .button-glow-host:focus-visible .button-glow { animation: none; }
+}
+

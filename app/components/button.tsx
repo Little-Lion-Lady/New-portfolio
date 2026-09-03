@@ -43,6 +43,27 @@ const primaryPressTintVariants = {
   press: { opacity: 0.14 },
 };
 
+// Multi-colour hover halo. It grows from scaleY(0.9), so the light blooms
+// outwards from the pill's centre line rather than just fading in. The hue
+// cycle itself is CSS (.button-glow / @keyframes button-glow-hue in
+// globals.css) — a filter animation, so it stays off the main thread.
+const primaryGlowVariants = {
+  rest: { opacity: 0, scaleY: 0.9 },
+  hover: { opacity: 1, scaleY: 1 },
+  press: { opacity: 1, scaleY: 1 },
+};
+
+// The five colours step straight down and outwards from the pill edge: 01 is a
+// tight even rim, and each one after it sits lower with more blur, so the light
+// pools under the button. Reads as one coherent halo rather than five lights.
+const primaryGlowShadow = [
+  "0 0 6px 1px var(--button-glow-01)",
+  "0 1px 5px 1px var(--button-glow-02)",
+  "0 3px 9px 1px var(--button-glow-03)",
+  "0 6px 16px 2px var(--button-glow-04)",
+  "0 10px 26px 2px var(--button-glow-05)",
+].join(", ");
+
 // Figma "Button" component. Three variants × three breakpoints (mobile/tablet/desktop):
 //   primary (Type=Button, Size=lg) — filled pill, text-inverted
 //   link    (Type=Link,   Size=lg) — oversized text link (footer socials), text-primary-highlight
@@ -142,12 +163,25 @@ export function Button({
       animate="rest"
       variants={primaryScaleVariants}
       transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`relative inline-flex items-center gap-2xs overflow-hidden rounded-full pl-lg pr-lg py-xs b-2xs text-text-inverted md:gap-xs md:pl-xl md:pr-xl md:py-sm md:b-xs lg:gap-2xs lg:pl-2xl lg:pr-2xl lg:py-sm lg:b-sm [font-weight:var(--font-weight-book)]! ${className}`}
+      className={`button-glow-host relative isolate inline-flex items-center gap-2xs rounded-full pl-lg pr-lg py-xs b-2xs text-text-inverted md:gap-xs md:pl-xl md:pr-xl md:py-sm md:b-xs lg:gap-2xs lg:pl-2xl lg:pr-2xl lg:py-sm lg:b-sm [font-weight:var(--font-weight-book)]! ${className}`}
       style={{
         boxShadow:
           "0 10px 10px -10px var(--shadows-shadow-01), 0 10px 30px 1px var(--shadows-shadow-02)",
       }}
     >
+      {/* Stacked colour halo — sits behind the pill fill (hence -z-10, and why
+          the pill no longer clips its overflow). Its own background keeps the
+          shadows from showing a gap at the rim. */}
+      <m.span
+        aria-hidden
+        className="button-glow pointer-events-none absolute inset-0 -z-10 rounded-full bg-[var(--button-glow-02)]"
+        style={{ boxShadow: primaryGlowShadow }}
+        variants={primaryGlowVariants}
+        transition={{
+          opacity: { duration: 0.2, ease: "linear" },
+          scaleY: { duration: 0.4, ease: [0.2, 0.715, 0.205, 0.99] },
+        }}
+      />
       <span aria-hidden className="absolute inset-0 rounded-full bg-component-bg-button-primary" />
       <m.span
         aria-hidden
