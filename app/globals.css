@@ -1829,14 +1829,24 @@ textarea,
    hue of the whole layer walks that fixed stack through the spectrum, so one
    button reads pink/orange, then green/yellow, then blue/purple as it sits
    under the cursor. Gated on hover so idle buttons don't animate a filter. */
+/* Sweeps 230deg to 380deg (i.e. round to 20deg) rather than the full circle,
+   because a full circle runs the baked palette through yellow-green and the
+   glow goes olive. Measured on the exported pixels: the share of the glow's
+   colour weight sitting in the 55-165 hue band is 0 up to 30deg, climbs to 1.0
+   at 130deg, and is back to 0 by 230deg — so 230->20 is the whole clean arc,
+   blue through violet, magenta and coral to amber.
+
+   Paired with `alternate` on every rule below. The range is an arc, not a
+   loop: running it one way and restarting would jump amber back to blue, so it
+   reverses along the same arc instead and never crosses the band. */
 @keyframes button-glow-hue {
-  from { filter: hue-rotate(0deg); }
-  to   { filter: hue-rotate(360deg); }
+  from { filter: hue-rotate(230deg); }
+  to   { filter: hue-rotate(380deg); }
 }
 
 .button-glow-host:hover .button-glow,
 .button-glow-host:focus-visible .button-glow {
-  animation: button-glow-hue 2s linear infinite;
+  animation: button-glow-hue 2s linear infinite alternate;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1855,7 +1865,7 @@ textarea,
   /* Half the CTA's pace. The button is read in a glance while the cursor is on
      it; this sits in the page and is looked at for longer, where the button's
      2s reads as restless. */
-  animation: button-glow-hue 4s linear infinite;
+  animation: button-glow-hue 4s linear infinite alternate;
 }
 
 @media (prefers-reduced-motion: reduce) {
