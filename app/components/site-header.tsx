@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Reveal } from "./reveal";
 import { ThemeToggle } from "./theme-toggle";
+import { useWorkMenu, WorkMenuTrigger, WorkMenuPanel, WorkMenuMobileList } from "./work-menu";
 import { useBackdropTone } from "./use-over-media";
 
 // Figma "Header" (436:17272) — a floating glass pill rather than a full-bleed
@@ -27,6 +28,42 @@ import { useBackdropTone } from "./use-over-media";
 // The pill's chrome is revealed on scroll (unchanged behaviour): fill, hairline
 // and the 10px backdrop-blur live on an overlay element whose opacity is driven
 // by scrollY, so the nav text itself never fades — only the surface behind it.
+/*
+  The nav's "Link container" — Figma 436:17272 (spec) and 1786:139483 (states).
+
+  Every nav control now sits in a padded, rounded box rather than being bare
+  text, and that box is what carries the interactive states:
+
+    hover    nav-item-hover    white at low alpha
+    pressed  nav-item-pressed  white, a little stronger
+
+  Translucent white rather than an opaque grey because the pill is a glass
+  surface that can sit over photography — a solid fill punches a flat patch
+  through it, while white lifts whatever is behind. The ink does NOT change
+  with either state: the fill alone carries it, so the label stays put and the
+  over-media ink swap (see useBackdropTone) is left to do its own job.
+
+  Padding steps DOWN as the viewport grows, because the type steps up: 12px
+  vertical on mobile and tablet against 12px type, 8px on desktop against 14px.
+  The radius is a flat 8px at every breakpoint — a step under the pill's own,
+  so a fill sits inside the pill's corner rather than fighting it.
+
+  The box is the anchor itself, not a wrapper around it — so the padding is
+  part of the hit area and the pressed state can key off :active, neither of
+  which works if the fill lives on a parent div.
+
+  The nav stretches its cells (items-stretch) rather than centring them, so
+  every fill is exactly the row's height whatever the tallest item happens to
+  be. Centring left each box at its own content height, which showed the moment
+  one label wrapped: the name went to two lines and its fill stood a head above
+  its neighbours'. `whitespace-nowrap` stops that wrap in the first place; the
+  stretch keeps the boxes matched regardless.
+*/
+const LINK_CLASS =
+  "relative flex items-center whitespace-nowrap rounded-xs px-xs py-sm transition-colors duration-200 " +
+  "b-3xs text-nav-ink hover:bg-nav-item-hover active:bg-nav-item-pressed " +
+  "md:p-sm lg:p-xs lg:b-2xs";
+
 export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -37,6 +74,8 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
   // light ink on dark ones. A fixed dark ink disappeared against the dark
   // screenshots that fill the First Table page in dark mode.
   const tone = useBackdropTone(navRef);
+  const { open: workOpen, isDesktop, isMobile, pathname: menuPath, openNow, openOnFocus, close: closeWorkMenu,
+          toggle: toggleWorkMenu, cancelClose, scheduleClose, focusFirstItem } = useWorkMenu();
   const pathname = usePathname();
   // "Work" points back at the home page's work section, so it is offered
   // everywhere except home itself — About, the three case studies and the 404.
@@ -66,18 +105,35 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
       <Reveal immediate noY noSafetyFloor delay={revealDelay}>
         <nav
           ref={navRef}
-          className="pointer-events-auto relative grid grid-cols-4 items-center gap-sm rounded-xs p-xs transition-colors duration-300 md:grid-cols-9 md:gap-x-lg md:gap-y-md md:rounded-sm md:p-md lg:grid-cols-12"
+          /*
+            Column counts come straight from the spec: the last column is
+            max-content for the toggle, the rest share the remaining width.
+            Gutters are a flat 8px horizontally at every breakpoint; the
+            vertical gap only shows once the mobile menu adds a second row.
+
+            Nav padding is uniform on every edge — 4px up to lg, 8px from
+            there — and deliberately much tighter than the link padding inside
+            it. The link boxes already carry the pill's internal space, so the
+            pill only needs enough to keep their fills off its border. It was
+            16px sides against 8px top/bottom on tablet, which read as a wide
+            pill with the items floating in the middle of it.
+          */
+          className={`pointer-events-auto relative grid grid-cols-[repeat(4,minmax(0,1fr))_max-content] items-stretch gap-x-xs gap-y-sm p-3xs transition-colors duration-300 md:grid-cols-[repeat(8,minmax(0,1fr))_max-content] md:gap-y-md md:rounded-sm md:p-3xs lg:grid-cols-[repeat(9,minmax(0,1fr))_max-content] lg:gap-y-lg lg:p-xs ${
+            // Figma gives the expanded mobile pill the next radius up; it is
+            // only ever seen while the list is out.
+            workOpen ? "rounded-sm md:rounded-sm" : "rounded-xs md:rounded-sm"
+          }`}
+          /* Retints --nav-ink, NOT --text-primary. The Work menu renders
+             inside this element so it can anchor to it, so overriding the
+             global ink here turned the menu's rows — which sit on their own
+             opaque card — white along with the bar. */
           style={
             tone
               ? ({
-                  "--text-primary":
+                  "--nav-ink":
                     tone === "dark"
                       ? "var(--text-over-media-inverted)"
                       : "var(--text-over-media)",
-                  "--text-primary-hover":
-                    tone === "dark"
-                      ? "var(--text-over-media-inverted-hover)"
-                      : "var(--text-over-media-hover)",
                 } as CSSProperties)
               : undefined
           }
@@ -85,52 +141,98 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           {/* Pill surface — the only thing that reveals on scroll. Sits behind the
               nav content (z-0 + relative children) so the links stay legible at
               full opacity throughout the fade. */}
+          {/* The expanded mobile pill has to carry the menu, and at the top of
+              the page this surface is fully transparent — so without forcing it
+              opaque the rows float over the page with nothing behind them.
+              Figma's mobile "Work nav" is a solid bg-primary card with a drop
+              shadow rather than the glass fill, so the open state swaps to that
+              instead of just raising the glass. md and up are untouched: there
+              the menu brings its own card. */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[inherit] border border-border-overlay bg-utility-inverses-glass backdrop-blur-[10px] transition-opacity duration-300"
-            style={{ opacity: scrolled ? 1 : 0 }}
+            className={`pointer-events-none absolute inset-0 rounded-[inherit] border border-border-overlay backdrop-blur-[10px] transition-opacity duration-300 ${
+              workOpen && isMobile
+                ? "bg-bg-primary drop-shadow-[0_2px_7.5px_var(--shadows-shadow-02)]"
+                : "bg-utility-inverses-glass"
+            }`}
+            style={{ opacity: scrolled || (workOpen && isMobile) ? 1 : 0 }}
           />
 
+          {/* justify-self-start makes the box hug the name instead of
+              stretching to fill its columns — a grid item stretches by default,
+              which left the hover fill running the width of two columns for a
+              two-word label. The column SPAN stays, so the items after it keep
+              their positions; only the painted box shrinks. */}
           <Link
             href="/"
-            className="relative col-start-1 col-span-2 b-3xs text-text-primary transition-colors hover:text-text-primary-hover lg:b-2xs"
+            /* Two columns at every breakpoint, not one at lg. The box hugs
+               its text, so the span costs nothing visually — it only reserves
+               room. At one column the nowrap name needed ~115px against a
+               ~90px column between 1024 and 1200, and overran into the role
+               beside it. */
+            className={`${LINK_CLASS} col-start-1 col-span-2 justify-self-start`}
           >
             Maryna Babych
           </Link>
-          <p className="relative hidden whitespace-nowrap b-3xs text-text-primary transition-colors md:col-start-3 md:col-span-3 md:block lg:col-start-3 lg:col-span-2 lg:b-2xs">
+          {/* Figma calls this a "Container" rather than a "Link container": it
+              is not interactive, so it takes the padding and radius but none of
+              the states. */}
+          <p className="relative hidden whitespace-nowrap rounded-xs p-sm b-3xs text-nav-ink md:col-start-3 md:col-span-2 md:flex md:items-center lg:col-start-3 lg:col-span-2 lg:p-xs lg:b-2xs">
             Lead Product Designer
           </p>
-          {/* Work stays hidden on mobile — the pill has no room for a second
-              link there, and About is the more useful of the two. */}
+          {/* Work now shows at every breakpoint (mobile included — that is what
+              the fifth column above is for) and opens the case-study menu.
+              See ./work-menu: hover on desktop, tap on tablet and mobile. */}
           {showWork && (
-            <Link
-              href="/#work"
-              className={`relative hidden b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:block md:justify-self-start lg:col-span-1 lg:b-2xs ${
+            <WorkMenuTrigger
+              open={workOpen}
+              isDesktop={isDesktop}
+              onOpen={openNow}
+              onFocusOpen={openOnFocus}
+              onToggle={toggleWorkMenu}
+              onClose={closeWorkMenu}
+              onScheduleClose={scheduleClose}
+              onArrowDown={focusFirstItem}
+              /* With both links out, Work and About take the two columns
+                 before the toggle. With About hidden, Work slides into
+                 About's column so the right-hand cluster stays tight against
+                 the toggle rather than leaving a hole in the grid. */
+              className={
                 bothLinks
-                  ? "md:col-start-7 md:col-span-1 lg:col-start-10"
-                  : "md:col-start-7 md:col-span-2 lg:col-start-11"
-              }`}
-            >
-              Work
-            </Link>
+                  ? "col-start-3 md:col-start-7 lg:col-start-8"
+                  : "col-start-4 md:col-start-8 lg:col-start-9"
+              }
+            />
           )}
-          {/* The md span is part of the conditional, not a constant beside it.
-              At 9 columns the toggle sits in column 9, so About spanning two
-              columns from 8 reaches into it — and a grid item cannot share a
-              cell, so the toggle wrapped onto a second row and the pill grew to
-              90px. It only collided when both links showed, because that is the
-              only case that puts About at column 8. */}
+          {/* About always sits in the column immediately before the toggle,
+              whether or not Work is showing — so it never has to move. */}
           {showAbout && (
             <Link
               href="/about"
-              className={`relative col-start-3 justify-self-end b-3xs text-text-primary transition-colors hover:text-text-primary-hover md:justify-self-start lg:col-start-11 lg:col-span-1 lg:b-2xs ${
-                bothLinks ? "md:col-start-8 md:col-span-1" : "md:col-start-7 md:col-span-2"
-              }`}
+              className={`${LINK_CLASS} col-start-4 justify-center md:col-start-8 lg:col-start-9`}
             >
               About
             </Link>
           )}
-          <ThemeToggle className="relative col-start-4 justify-self-end md:col-start-9 lg:col-start-12" />
+          {/* Hangs off the nav, not the Work cell — see WorkMenuPanel. Out of
+              flow, so it takes no grid cell. */}
+          {showWork && (
+            <WorkMenuPanel
+              open={workOpen}
+              isDesktop={isDesktop}
+              currentPath={menuPath}
+              onClose={closeWorkMenu}
+              onCancelClose={cancelClose}
+              onScheduleClose={scheduleClose}
+            />
+          )}
+          <ThemeToggle className="col-start-5 md:col-start-9 lg:col-start-10" />
+          {/* Below md the list is a row of this same grid, so the pill's glass
+              surface (absolute inset-0) stretches over it and the whole thing
+              expands as one card. */}
+          {showWork && (
+            <WorkMenuMobileList open={workOpen} currentPath={menuPath} onClose={closeWorkMenu} />
+          )}
         </nav>
       </Reveal>
     </header>

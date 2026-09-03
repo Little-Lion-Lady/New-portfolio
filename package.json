@@ -6,7 +6,7 @@
     "node": ">=20 <25"
   },
   "scripts": {
-    "dev": "WATCHPACK_POLLING=true next dev --webpack --hostname localhost",
+    "dev": "next dev --hostname localhost",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -14,12 +14,11 @@
     "images:sizes": "node scripts/measure-image-boxes.mjs > /tmp/image-boxes.json && node scripts/generate-image-sizes.mjs /tmp/image-boxes.json"
   },
   "dependencies": {
-    "@firecms/neat": "^1.0.1",
     "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.38.0",
     "geist": "^1.7.0",
     "lottie-react": "^2.4.1",
-    "next": "16.2.2",
+    "next": "16.3.4",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
@@ -29,7 +28,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.2",
+    "eslint-config-next": "16.3.4",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

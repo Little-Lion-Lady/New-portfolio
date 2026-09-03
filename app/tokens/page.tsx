@@ -9,6 +9,18 @@
 */
 
 import type { CSSProperties, ReactNode } from "react";
+import type { Metadata } from "next";
+
+/*
+  Keep the design-system reference out of the index. It is an internal tool:
+  every swatch, ramp and component rendered raw, including the deliberately
+  low-contrast decorative tokens — so a crawler reads it as a page riddled with
+  accessibility failures and counts them against the domain. robots.ts also
+  disallows it; this is the half that binds crawlers which ignore robots.txt.
+*/
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 import { Button } from "../components/button";
 import { ThemeToggle } from "../components/theme-toggle";
@@ -31,7 +43,6 @@ import {
   DesignMedia,
   OutcomeMedia,
 } from "../components/media-block";
-import { GradientBg } from "../components/gradient-bg";
 
 const STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
@@ -292,15 +303,6 @@ export default function DesignSystem() {
             <FlowDiagram />
             <DesignMedia />
             <OutcomeMedia />
-          </div>
-        </Demo>
-
-        <Demo name="Gradient backdrop" full>
-          {/* Contained preview, not a page backdrop: gutter 0 so the gradient
-              fills this box exactly instead of overhanging it and relying on
-              overflow-hidden to clip the excess. */}
-          <div className="[--page-gutter:0px] relative h-[320px] w-full overflow-hidden rounded-[var(--size-6)]">
-            <GradientBg height="320px" fullWidth />
           </div>
         </Demo>
 

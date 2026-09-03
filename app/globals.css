@@ -135,6 +135,10 @@
   --colour-base-white-25: rgba(255, 255, 255, 0.25);
   --colour-base-white-50: rgba(255, 255, 255, 0.5);
   --colour-base-white-70: rgba(255, 255, 255, 0.7);
+  /* Not in the Figma Base/black collection yet — added because the nav's hover
+     state needs a step below 10%, which is already heavier than the states the
+     frames draw. Worth adding to the Figma ramp on the next token sync. */
+  --colour-base-black-5:  rgba(0, 0, 0, 0.05);
   --colour-base-black-10: rgba(0, 0, 0, 0.1);
   --colour-base-black-25: rgba(0, 0, 0, 0.25);
   --colour-base-black-50: rgba(0, 0, 0, 0.5);
@@ -289,6 +293,45 @@
      card's inner fill; the rest are accent slots that invert to a different hue
      in dark rather than to a lighter step of the same one. */
   --utility-inverses-glass:  var(--colour-gray-light-50-30);
+  /*
+    Nav item hover / pressed.
+
+    A translucent tint rather than an opaque grey: the nav pill is a glass
+    surface that can sit over photography, and a solid fill punches a flat
+    patch through it. A tint shades whatever is behind it instead, which is the
+    same trick the pill itself uses.
+
+    The two themes tint in opposite directions — black on the light pill, white
+    on the dark one — so each darkens or lifts against its own ground rather
+    than washing out.
+
+    5% and 10% because the frames' own states (#f2f2f2 and #ebebeb over a
+    #fafafa page) work out to roughly 3% and 6% black; the primitive ramp
+    starting at 10% would have been about three times heavier than drawn.
+
+    Not the --utility-white-* scale, deliberately. That scale flips to BLACK in
+    dark mode and reverses its magnitude doing it (white-50 becomes black-50,
+    white-70 becomes black-25), so a hover/pressed pair built from it would
+    swap strength between themes — pressed reading lighter than hover. These
+    two are defined per theme so pressed is always the stronger of the pair.
+  */
+  /*
+    Ink for the nav's OWN controls, and nothing else.
+
+    <SiteHeader> retints this when the pill is over photography (see
+    useBackdropTone). It used to retint --text-primary directly, which leaked:
+    the Work menu is a descendant of the nav for positioning, so its rows —
+    sitting on their own opaque card — inverted along with the bar and went
+    white on white over a dark photo. A dedicated name means only the things
+    that opt in follow the bar.
+
+    Resolves through --text-primary, so it still tracks the theme; the lazy
+    substitution of custom properties means one definition covers both.
+  */
+  --nav-ink: var(--text-primary);
+
+  --nav-item-hover:   var(--colour-base-black-5);
+  --nav-item-pressed: var(--colour-base-black-10);
   --utility-inverses-white:  var(--colour-base-white);
   --utility-inverses-orange: var(--colour-orange-400);
   --utility-inverses-purple: var(--colour-purple-300);
@@ -493,6 +536,11 @@
     /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
        wash here, not an opaque fill, and red/teal swap hue rather than step. */
     --utility-inverses-glass:  var(--colour-base-white-10);
+    /* See the light definition — white at low alpha over the dark pill
+       lifts it the same way, so the pair keeps hover < pressed in both
+       themes. */
+    --nav-item-hover:   var(--colour-base-white-10);
+    --nav-item-pressed: var(--colour-base-white-25);
     --utility-inverses-white:  var(--colour-blue-900-20);
     --utility-inverses-orange: var(--colour-orange-400);
     --utility-inverses-purple: var(--colour-purple-500);
@@ -634,6 +682,11 @@
   /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
      wash here, not an opaque fill, and red/teal swap hue rather than step. */
   --utility-inverses-glass:  var(--colour-base-white-10);
+  /* See the light definition — white at low alpha over the dark pill
+     lifts it the same way, so the pair keeps hover < pressed in both
+     themes. */
+  --nav-item-hover:   var(--colour-base-white-10);
+  --nav-item-pressed: var(--colour-base-white-25);
   --utility-inverses-white:  var(--colour-blue-900-20);
   --utility-inverses-orange: var(--colour-orange-400);
   --utility-inverses-purple: var(--colour-purple-500);
@@ -785,6 +838,11 @@
 
   /* Carousel glass fill */
   --color-utility-inverses-glass: var(--utility-inverses-glass);
+
+  /* Nav item hover / pressed */
+  --color-nav-ink:          var(--nav-ink);
+  --color-nav-item-hover:   var(--nav-item-hover);
+  --color-nav-item-pressed: var(--nav-item-pressed);
 
   /* Insight card opaque inner fill */
   --color-utility-inverses-white: var(--utility-inverses-white);
@@ -1079,6 +1137,25 @@ body {
   }
 }
 
+/*
+  Height of the fixed header, including its own outer padding.
+
+  The pages need this to clear the header: top padding on <main>, scroll-margin
+  on anchor targets, and the hero's 100svh minus the bar. It used to be written
+  out as three hardcoded pixel values per page across four files, which drifted
+  the moment the nav's padding changed. One definition, measured from the built
+  nav: 54/54/56px of pill plus 12/20/20px of header padding on each side.
+*/
+:root { --header-height: 78px; }
+
+@media (min-width: 768px) {
+  :root { --header-height: 94px; }
+}
+
+@media (min-width: 1024px) {
+  :root { --header-height: 96px; }
+}
+
 /* Re-add a visible focus ring (Tailwind preflight resets outlines) */
 :focus-visible {
   outline: 2px solid var(--text-primary);
@@ -1278,21 +1355,6 @@ h1.d-sm {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
-/* Hero gradient horizontal bleed.
-   Positioned inside the padded content box, so reaching the viewport edge
-   means cancelling the page gutter exactly. That gutter differs per page
-   (home/About step 16>24>72, the case studies 16>40>72), so it's read from
-   --page-gutter, which each <main> declares next to its own px-*. Hardcoding
-   the bleed is what used to push the gradient 8px (mobile) and 16px (tablet)
-   past the viewport, clipping off the rounded top corners.
-   Full bleed at every breakpoint is deliberate: the blur needs to run past
-   the text on both sides so the feathering reads around the copy rather than
-   stopping at a visible margin. */
-.gradient-bleed {
-  left: calc(var(--page-gutter, var(--spacing-5xl)) * -1);
-  right: calc(var(--page-gutter, var(--spacing-5xl)) * -1);
-}
-
 /* Duration is per-breakpoint so the strip travels at ~53px/s, matching the work
    carousels on the home page. A single 36s duration used to make the desktop
    strip run at 85px/s because the cards double in size at md while the duration
@@ -1320,6 +1382,7 @@ h1.d-sm {
   --duration-slow:   400ms; /* panel open, content reveal */
 
   --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1); /* open/close, slide, resize */
+  --ease-in-out:     ease-in-out; /* icon/text swap, reveal, hover grow */
 }
 
 /* Page curtain — route transition panel.
@@ -1364,6 +1427,8 @@ h1.d-sm {
 }
 
 .image-marquee-track {
+  /* Keep in step with CARD_GROW in ./components/image-carousel.tsx. */
+  --card-grow: 24px;
   --image-marquee-duration: 43.75s;
   /* The duration covers one full set of cards, so a row with fewer cards
      travels less distance in the same time and reads as slower. Rows that hold
@@ -1373,6 +1438,94 @@ h1.d-sm {
      card and the same duration reads faster, so both moved together. */
   animation: image-marquee calc(var(--image-marquee-duration) * var(--image-marquee-scale, 1))
     linear infinite;
+}
+
+/*
+  Hover growth on the home rows' cards.
+  ------------------------------------
+  <ImageCarousel> hands each card three scale factors — one per breakpoint —
+  chosen so every card grows by the same NUMBER OF PIXELS of width (CARD_GROW)
+  rather than the same ratio. This picks the one for the current viewport.
+*/
+.image-marquee-card {
+  --card-scale: var(--card-scale-base, 1.05);
+}
+
+@media (min-width: 768px) {
+  .image-marquee-card { --card-scale: var(--card-scale-md, 1.05); }
+}
+
+@media (min-width: 1024px) {
+  .image-marquee-card { --card-scale: var(--card-scale-lg, 1.05); }
+}
+
+/*
+  ...the card lifts, and its neighbours step aside so the gap does not close.
+
+  A hovered card grows about its own centre, eating CARD_GROW/2 of the gap on
+  each side. Everything after it shifts right by that much and everything
+  before it shifts left, which restores every gap in the rail at once — the
+  reason the growth is a fixed width and not a fixed ratio, since one number
+  has to be right for cards of every width.
+
+  TIMING — the lift is a hover, so it follows the hover rule rather than the
+  open/close one: in is quick and direct, out is softer and a little longer, so
+  the rail settles rather than snapping back. 150ms in, 250ms out — one step
+  down the scale from where this landed first, which was accurate to the rule
+  but still read a touch slow under the pointer.
+
+  Both ends run on --ease-in-out, NOT the --ease-smooth-out this started on.
+  That curve is cubic-bezier(0.22, 1, 0.36, 1): its first control point sits at
+  y=1, so it leaps to nearly full progress on the first frames and then crawls
+  the rest. Right for a surface arriving from off-screen, wrong here — it gave
+  the card no ease IN at all, which is what read as unfinished even once the
+  durations were fixed. ease-in-out eases at both ends, so the card gathers
+  speed and settles instead of snapping into motion.
+
+  These were 500ms ease-out, which is what made it feel janky. Two reasons, and
+  neither was frame rate — profiled at 4x CPU throttle the rail holds ~8ms
+  frames with nothing dropped. First, half a second is double the hover budget,
+  and `ease-out` leaves at full speed and then crawls, so the card lurched and
+  then hung. Second, the rail is MOVING: cards slide under a still pointer, so
+  hovers hand over constantly, and at 500ms each handover left up to ten
+  elements mid-transition at once. Shorter transitions finish between handovers
+  instead of piling up.
+
+  `translate` rather than `transform`: the track itself is mid-animation on a
+  transform and these are its children, so keeping the two on separate
+  properties means neither has to know about the other.
+
+  Gated on a real pointer and on motion being welcome. :has() is what makes the
+  "before" half possible — CSS has no previous-sibling combinator — and it is
+  cheap here: 0.10ms for 40 matches.
+*/
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .image-marquee-card,
+  .image-marquee-track:has(.image-marquee-card) > * {
+    /* Resting state owns the hover-OUT timing. */
+    transition: scale var(--duration-fast) var(--ease-in-out),
+                translate var(--duration-fast) var(--ease-in-out);
+  }
+
+  .image-marquee-card:hover,
+  .image-marquee-track:has(.image-marquee-card) > *:hover ~ *,
+  .image-marquee-track:has(.image-marquee-card) > *:has(~ *:hover) {
+    /* ...and hovering overrides it with the quicker hover-IN. */
+    transition-duration: var(--duration-quick);
+  }
+
+  .image-marquee-card:hover {
+    scale: var(--card-scale);
+    z-index: 10;
+  }
+
+  .image-marquee-track:has(.image-marquee-card) > *:hover ~ * {
+    translate: calc(var(--card-grow) / 2) 0;
+  }
+
+  .image-marquee-track:has(.image-marquee-card) > *:has(~ *:hover) {
+    translate: calc(var(--card-grow) / -2) 0;
+  }
 }
 
 /* Same keyframes played backwards — the row travels left-to-right. */

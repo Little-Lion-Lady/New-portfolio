@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { blurFor } from "./image-blur";
 import { sizesFor } from "./image-sizes";
 
@@ -121,6 +121,8 @@ export function GlassImage({
   frameAspectClassName,
   objectPosition,
   radiusClassName,
+  frameStyle,
+  ariaHidden = false,
   children,
 }: {
   src: string;
@@ -200,6 +202,14 @@ export function GlassImage({
   objectPosition?: string;
   /** Replaces the default radius ramp — see GlassFrame's own `radiusClassName`. */
   radiusClassName?: string;
+  /**
+   * Extra custom properties for the frame. Used by the home rows to hand each
+   * card its per-breakpoint --card-scale-* factors; the motion that reads them
+   * lives in globals.css under .image-marquee-card.
+   */
+  frameStyle?: CSSProperties;
+  /** Hide from assistive tech (the marquee's duplicated set). */
+  ariaHidden?: boolean;
   /** Optional overlay content stacked on top of the image (e.g. a decorative icon). */
   children?: ReactNode;
 }) {
@@ -214,7 +224,12 @@ export function GlassImage({
   return (
     <div
       className={`${FRAME_CLASS} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)}${frameAspectClassName ? ` ${frameAspectClassName}` : ""} ${className}`}
-      style={!frameAspectClassName && frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
+      aria-hidden={ariaHidden || undefined}
+      style={
+        !frameAspectClassName && frameAspectRatio
+          ? { aspectRatio: frameAspectRatio, ...frameStyle }
+          : frameStyle
+      }
     >
       <div
         className={`${INNER_CLASS}${aspectClassName ? ` ${aspectClassName}` : aspectRatio ? "" : " h-full"}`}

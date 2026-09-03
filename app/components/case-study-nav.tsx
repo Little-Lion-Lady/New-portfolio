@@ -22,7 +22,10 @@ function ViewLabel({ size = "sm" }: { size?: "sm" | "md" }) {
   const arrowSize = size === "md" ? "size-xl" : "size-md md:size-lg";
   return (
     <span
-      className={`inline-flex items-center ${viewGap} ${viewText} text-text-primary transition-colors group-hover:text-text-primary-hover`}
+      /* No colour shift on hover: the frames draw View at text-primary in the
+         hover state too, so the row's background fill carries it alone — the
+         same call as the nav's links. */
+      className={`inline-flex items-center ${viewGap} ${viewText} text-text-primary`}
     >
       <span>View</span>
       <m.span
@@ -63,7 +66,29 @@ export function CaseStudyNav({
       whileHover="hover"
       whileTap={{ scale: 0.98 }}
       animate="rest"
-      className="group flex w-full items-center gap-lg md:grid md:grid-cols-9 md:items-center lg:grid-cols-12 lg:items-center"
+      /*
+        Figma 1107:11261 draws the hover fill as an 8px border in the fill's own
+        colour — i.e. 8px of colour around the content.
+
+        Radius is 8px (rounded-xs) rather than the frame's 4px, by request: it
+        matches the thumbnail's own corners, so the fill and the image it wraps
+        read as one shape instead of two nested radii.
+
+        Written as padding plus a matching negative margin rather than padding
+        alone. Padding by itself would inset the row's content 8px from the
+        content column, so the thumbnail would stop lining up with the divider
+        above it and every other section on the page — in the RESTING state,
+        where there is no fill to justify it. This way the resting row is
+        pixel-identical to before and the fill grows outward on hover.
+
+        No `w-full`, deliberately. Pinning the width to 100% of the parent makes
+        the negative margins SHIFT the row rather than widen it: it bled 8px
+        past the left edge and stopped 8px short of the right, putting "View"
+        16px inside the page's right edge. Left to `auto`, a block-level flex
+        row fills the parent plus both negative margins, which is the symmetric
+        bleed this wants.
+      */
+      className="group -m-xs flex items-center gap-lg rounded-xs p-xs transition-colors duration-200 hover:bg-utility-gray-100 active:bg-utility-gray-200 md:grid md:grid-cols-9 md:items-center lg:grid-cols-12 lg:items-center"
     >
       {/* Thumbnail */}
       <div className="shrink-0 md:col-start-1 md:col-span-2 md:pr-md lg:pr-2xl">
@@ -80,7 +105,7 @@ export function CaseStudyNav({
           (lg:contents) so subtitle/heading become direct grid cells on desktop. */}
       <div className="flex min-w-0 flex-1 flex-col gap-3xs md:col-start-3 md:col-span-4 md:self-center lg:contents">
         <div className="flex flex-col lg:contents">
-          <p className="b-xs text-text-tertiary md:b-sm lg:b-md lg:col-start-3 lg:col-span-2 lg:self-center">
+          <p className="b-xs text-text-tertiary md:b-sm lg:b-md lg:col-start-3 lg:col-span-3 lg:self-center">
             Next<span className="lg:hidden"> case study</span>
           </p>
           <p className="b-xs text-text-primary md:b-sm lg:b-md lg:col-start-6 lg:col-span-4 lg:self-center">
