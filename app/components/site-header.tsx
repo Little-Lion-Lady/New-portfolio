@@ -34,8 +34,14 @@ import { useBackdropTone } from "./use-over-media";
   Every nav control now sits in a padded, rounded box rather than being bare
   text, and that box is what carries the interactive states:
 
-    hover    utility-gray-100
-    pressed  utility-gray-200   (the same pair the Work menu's rows use)
+    hover    nav-item-hover    white at low alpha
+    pressed  nav-item-pressed  white, a little stronger
+
+  Translucent white rather than an opaque grey because the pill is a glass
+  surface that can sit over photography — a solid fill punches a flat patch
+  through it, while white lifts whatever is behind. The ink does NOT change
+  with either state: the fill alone carries it, so the label stays put and the
+  over-media ink swap (see useBackdropTone) is left to do its own job.
 
   Padding steps DOWN as the viewport grows, because the type steps up: 12px
   vertical on mobile and tablet against 12px type, 8px on desktop against 14px.
@@ -47,8 +53,8 @@ import { useBackdropTone } from "./use-over-media";
 */
 const LINK_CLASS =
   "relative flex items-center rounded-sm px-xs py-sm transition-colors duration-200 " +
-  "b-3xs text-text-primary hover:bg-utility-gray-100 hover:text-text-primary-hover " +
-  "active:bg-utility-gray-200 md:p-sm lg:p-xs lg:b-2xs";
+  "b-3xs text-text-primary hover:bg-nav-item-hover active:bg-nav-item-pressed " +
+  "md:p-sm lg:p-xs lg:b-2xs";
 
 export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
   const [scrolled, setScrolled] = useState(false);
@@ -106,6 +112,8 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
             // only ever seen while the list is out.
             workOpen ? "rounded-sm md:rounded-sm" : "rounded-xs md:rounded-sm"
           }`}
+          /* Only --text-primary now: the links no longer change ink on hover,
+             so the matching -hover override had nothing left reading it. */
           style={
             tone
               ? ({
@@ -113,10 +121,6 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
                     tone === "dark"
                       ? "var(--text-over-media-inverted)"
                       : "var(--text-over-media)",
-                  "--text-primary-hover":
-                    tone === "dark"
-                      ? "var(--text-over-media-inverted-hover)"
-                      : "var(--text-over-media-hover)",
                 } as CSSProperties)
               : undefined
           }

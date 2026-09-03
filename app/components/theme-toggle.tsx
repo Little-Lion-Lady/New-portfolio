@@ -89,7 +89,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       suppressHydrationWarning
       whileHover={{ scale: 1.07 }}
       transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`group relative inline-flex size-[40px] items-center justify-center rounded-sm text-text-primary transition-colors duration-200 hover:bg-utility-gray-100 hover:text-text-primary-hover active:bg-utility-gray-200 ${className}`}
+      className={`group relative inline-flex size-[40px] items-center justify-center rounded-sm text-text-primary transition-colors duration-200 hover:bg-nav-item-hover active:bg-nav-item-pressed ${className}`}
     >
       <AnimatePresence mode="wait" initial={false}>
         {isDark ? (

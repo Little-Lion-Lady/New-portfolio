@@ -289,6 +289,22 @@
      card's inner fill; the rest are accent slots that invert to a different hue
      in dark rather than to a lighter step of the same one. */
   --utility-inverses-glass:  var(--colour-gray-light-50-30);
+  /*
+    Nav item hover / pressed.
+
+    White at low alpha rather than an opaque grey: the nav pill is a glass
+    surface that can sit over photography, and a solid fill punches a flat
+    patch through it. A translucent white lifts whatever is behind it instead,
+    which is the same trick the pill itself uses.
+
+    Not the --utility-white-* scale, deliberately. That scale flips to BLACK in
+    dark mode and reverses its magnitude doing it (white-50 becomes black-50,
+    white-70 becomes black-25), so a hover/pressed pair built from it would
+    swap strength between themes — pressed reading lighter than hover. These
+    two are defined per theme so pressed is always the stronger of the pair.
+  */
+  --nav-item-hover:   var(--colour-base-white-50);
+  --nav-item-pressed: var(--colour-base-white-70);
   --utility-inverses-white:  var(--colour-base-white);
   --utility-inverses-orange: var(--colour-orange-400);
   --utility-inverses-purple: var(--colour-purple-300);
@@ -493,6 +509,11 @@
     /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
        wash here, not an opaque fill, and red/teal swap hue rather than step. */
     --utility-inverses-glass:  var(--colour-base-white-10);
+    /* See the light definition — white at low alpha over the dark pill
+       lifts it the same way, so the pair keeps hover < pressed in both
+       themes. */
+    --nav-item-hover:   var(--colour-base-white-10);
+    --nav-item-pressed: var(--colour-base-white-25);
     --utility-inverses-white:  var(--colour-blue-900-20);
     --utility-inverses-orange: var(--colour-orange-400);
     --utility-inverses-purple: var(--colour-purple-500);
@@ -634,6 +655,11 @@
   /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
      wash here, not an opaque fill, and red/teal swap hue rather than step. */
   --utility-inverses-glass:  var(--colour-base-white-10);
+  /* See the light definition — white at low alpha over the dark pill
+     lifts it the same way, so the pair keeps hover < pressed in both
+     themes. */
+  --nav-item-hover:   var(--colour-base-white-10);
+  --nav-item-pressed: var(--colour-base-white-25);
   --utility-inverses-white:  var(--colour-blue-900-20);
   --utility-inverses-orange: var(--colour-orange-400);
   --utility-inverses-purple: var(--colour-purple-500);
@@ -785,6 +811,10 @@
 
   /* Carousel glass fill */
   --color-utility-inverses-glass: var(--utility-inverses-glass);
+
+  /* Nav item hover / pressed */
+  --color-nav-item-hover:   var(--nav-item-hover);
+  --color-nav-item-pressed: var(--nav-item-pressed);
 
   /* Insight card opaque inner fill */
   --color-utility-inverses-white: var(--utility-inverses-white);
