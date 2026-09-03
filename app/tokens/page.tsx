@@ -226,7 +226,7 @@ export default function DesignSystem() {
         <Demo name="Button — primary hover glow, frozen across the hue cycle" full>
           <div className="flex flex-col gap-xl">
             <p className="b-xs text-text-secondary max-w-[var(--size-80)]">
-              Hover the primary button above to watch the halo cycle for real — six
+              Hover the primary button above to watch the halo cycle for real — two
               seconds a lap. Below is that same component with the halo pinned open
               and the animation parked, so the colours can be compared side by side.
             </p>

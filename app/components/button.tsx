@@ -167,10 +167,6 @@ export function Button({
       variants={primaryScaleVariants}
       transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
       className={`button-glow-host relative isolate inline-flex items-center gap-2xs rounded-full pl-lg pr-lg py-xs b-2xs text-text-inverted md:gap-xs md:pl-xl md:pr-xl md:py-sm md:b-xs lg:gap-2xs lg:pl-2xl lg:pr-2xl lg:py-sm lg:b-sm [font-weight:var(--font-weight-book)]! ${className}`}
-      style={{
-        boxShadow:
-          "0 10px 10px -10px var(--shadows-shadow-01), 0 10px 30px 1px var(--shadows-shadow-02)",
-      }}
     >
       {/* Stacked colour halo — sits behind the pill fill (hence -z-10, and why
           the pill no longer clips its overflow). Its own background keeps the
