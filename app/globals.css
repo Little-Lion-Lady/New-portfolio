@@ -1426,6 +1426,8 @@ h1.d-sm {
 }
 
 .image-marquee-track {
+  /* Keep in step with CARD_GROW in ./components/image-carousel.tsx. */
+  --card-grow: 24px;
   --image-marquee-duration: 43.75s;
   /* The duration covers one full set of cards, so a row with fewer cards
      travels less distance in the same time and reads as slower. Rows that hold
@@ -1435,6 +1437,56 @@ h1.d-sm {
      card and the same duration reads faster, so both moved together. */
   animation: image-marquee calc(var(--image-marquee-duration) * var(--image-marquee-scale, 1))
     linear infinite;
+}
+
+/*
+  Hover growth on the home rows' cards.
+  ------------------------------------
+  <ImageCarousel> hands each card three scale factors — one per breakpoint —
+  chosen so every card grows by the same NUMBER OF PIXELS of width (CARD_GROW)
+  rather than the same ratio. This picks the one for the current viewport.
+*/
+.image-marquee-card {
+  --card-scale: var(--card-scale-base, 1.05);
+}
+
+@media (min-width: 768px) {
+  .image-marquee-card { --card-scale: var(--card-scale-md, 1.05); }
+}
+
+@media (min-width: 1024px) {
+  .image-marquee-card { --card-scale: var(--card-scale-lg, 1.05); }
+}
+
+/*
+  ...and the neighbours step aside so the gap does not close.
+
+  A hovered card grows about its own centre, eating CARD_GROW/2 of the gap on
+  each side. Everything after it shifts right by that much and everything
+  before it shifts left, which restores every gap in the rail at once — the
+  reason the growth is a fixed width and not a fixed ratio, since one number
+  has to be right for cards of every width.
+
+  `translate` rather than `transform`: the track itself is mid-animation on a
+  transform, and these are its children, so keeping the two on separate
+  properties means neither has to know about the other.
+
+  Gated on a real pointer and on motion being welcome, matching the scale
+  itself. :has() is what makes the "before" half possible — CSS has no
+  previous-sibling combinator.
+*/
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .image-marquee-track > * {
+    transition: translate 500ms ease-out;
+  }
+
+  .image-marquee-track > *:hover ~ * {
+    translate: calc(var(--card-grow) / 2) 0;
+  }
+
+  .image-marquee-track > *:has(~ *:hover) {
+    translate: calc(var(--card-grow) / -2) 0;
+  }
 }
 
 /* Same keyframes played backwards — the row travels left-to-right. */

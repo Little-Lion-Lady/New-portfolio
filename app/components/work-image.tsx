@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { blurFor } from "./image-blur";
 import { sizesFor } from "./image-sizes";
 
@@ -122,6 +122,8 @@ export function GlassImage({
   objectPosition,
   radiusClassName,
   hoverScale = false,
+  frameStyle,
+  ariaHidden = false,
   children,
 }: {
   src: string;
@@ -214,10 +216,20 @@ export function GlassImage({
    * later in the DOM paint on top, so without it the card to the right would
    * crop the growth.
    *
+   * The factor comes from --card-scale rather than being hard-coded, because
+   * these cards are height-sized and take their width from the photo's ratio:
+   * one shared factor would grow a 350px card by 17px and a 660px card by 33px,
+   * and no single sibling shift could then hold every gap. The caller sets a
+   * per-card factor that grows every card by the SAME number of pixels.
+   *
    * `motion-safe:` rather than a reduced-motion override, so under
    * prefers-reduced-motion the rule is simply never emitted.
    */
   hoverScale?: boolean;
+  /** Extra custom properties for the frame — e.g. the --card-scale trio. */
+  frameStyle?: CSSProperties;
+  /** Hide from assistive tech (the marquee's duplicated set). */
+  ariaHidden?: boolean;
   /** Optional overlay content stacked on top of the image (e.g. a decorative icon). */
   children?: ReactNode;
 }) {
@@ -231,8 +243,13 @@ export function GlassImage({
 
   return (
     <div
-      className={`${FRAME_CLASS}${hoverScale ? " transition-transform duration-500 ease-out motion-safe:hover:scale-[1.05] hover:z-10" : ""} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)}${frameAspectClassName ? ` ${frameAspectClassName}` : ""} ${className}`}
-      style={!frameAspectClassName && frameAspectRatio ? { aspectRatio: frameAspectRatio } : undefined}
+      className={`${FRAME_CLASS}${hoverScale ? " transition-transform duration-500 ease-out motion-safe:hover:scale-[var(--card-scale,1.05)] hover:z-10" : ""} ${radiusClassName ?? (mini ? MINI_RADIUS_CLASS : RADIUS_CLASS)}${frameAspectClassName ? ` ${frameAspectClassName}` : ""} ${className}`}
+      aria-hidden={ariaHidden || undefined}
+      style={
+        !frameAspectClassName && frameAspectRatio
+          ? { aspectRatio: frameAspectRatio, ...frameStyle }
+          : frameStyle
+      }
     >
       <div
         className={`${INNER_CLASS}${aspectClassName ? ` ${aspectClassName}` : aspectRatio ? "" : " h-full"}`}

@@ -56,6 +56,33 @@ const CARD_LG_WIDTH = "lg:w-[660px]";
 const CARD_HEIGHTS = { lg: 400, md: 340, base: 260 } as const;
 
 /*
+  Hover growth, in pixels of extra WIDTH — not a scale factor.
+
+  The cards share a height and take their width from each photo's ratio, so a
+  single factor grows a narrow card by half as many pixels as a wide one. The
+  gap either side would then close by a different amount per card, and the
+  sibling shift that reopens it (see .image-marquee-track in globals.css) is
+  one number for the whole rail. Fixing the WIDTH growth instead makes that one
+  number exactly right for every card: each shifts by half of this.
+
+  Height still grows by a per-card amount, which nothing is measured against —
+  there is no neighbour above or below.
+*/
+const CARD_GROW = 24;
+
+// The per-breakpoint scale factors that turn CARD_GROW into a `scale`, given
+// the width the card actually has at that breakpoint. Read by --card-scale in
+// globals.css, which picks the one matching the current viewport.
+function growVars(base: number, md: number, lg: number): CSSProperties {
+  const f = (w: number) => (w > 0 ? (w + CARD_GROW) / w : 1);
+  return {
+    "--card-scale-base": f(base),
+    "--card-scale-md": f(md),
+    "--card-scale-lg": f(lg),
+  } as CSSProperties;
+}
+
+/*
   `sizes` for a height-sized card.
 
   These cards are sized by HEIGHT and take their width from the photo's own
@@ -68,6 +95,13 @@ const CARD_HEIGHTS = { lg: 400, md: 340, base: 260 } as const;
   Deriving the width from the ratio the card is already using removes the guess
   entirely, and stays correct when imagery is swapped.
 */
+// A height-sized card's width at a given breakpoint, from the photo's ratio.
+function widthAt(ratio: string, bp: keyof typeof CARD_HEIGHTS): number {
+  const [w, h] = ratio.split("/").map(Number);
+  if (!w || !h) return 0;
+  return (CARD_HEIGHTS[bp] * w) / h;
+}
+
 function ratioSizes(ratio: string): string {
   const [w, h] = ratio.split("/").map(Number);
   if (!w || !h) return "(min-width: 1024px) 720px, (min-width: 768px) 560px, 420px";
@@ -145,7 +179,7 @@ export function ImageCarousel({
   const [railRef, railNear] = useNearViewport<HTMLDivElement>();
   const loading = eager || railNear ? "eager" : "lazy";
 
-  const card = (image: WorkImageData, key: string, gap: boolean) => {
+  const card = (image: WorkImageData, key: string, gap: boolean, hidden = false) => {
     // A known intrinsic ratio switches the card from a fixed
     // box to a fixed height. The per-image lgWidth override existed to undo a
     // bad crop, so it is skipped when the real ratio is available.
@@ -161,9 +195,13 @@ export function ImageCarousel({
           frameAspectRatio={ratio}
           sizes={ratioSizes(ratio)}
           hoverScale={hoverScale}
+          ariaHidden={hidden}
+          frameStyle={
+            hoverScale ? growVars(widthAt(ratio, "base"), widthAt(ratio, "md"), widthAt(ratio, "lg")) : undefined
+          }
           loading={loading}
           fetchPriority={fetchPriority}
-          className={`shrink-0 ${CARD_HEIGHT_CLASS[size]}${margin}`}
+          className={`image-marquee-card shrink-0 ${CARD_HEIGHT_CLASS[size]}${margin}`}
         />
       );
     }
@@ -175,9 +213,11 @@ export function ImageCarousel({
         quality={image.quality}
         sizes={`(min-width: 1024px) ${image.lgWidth?.px ?? 660}px, (min-width: 768px) 480px, 380px`}
         hoverScale={hoverScale}
+        ariaHidden={hidden}
+        frameStyle={hoverScale ? growVars(380, 480, image.lgWidth?.px ?? 660) : undefined}
         loading={loading}
         fetchPriority={fetchPriority}
-        className={`shrink-0 ${CARD_CLASS[size]} ${image.lgWidth?.class ?? CARD_LG_WIDTH}${margin}`}
+        className={`image-marquee-card shrink-0 ${CARD_CLASS[size]} ${image.lgWidth?.class ?? CARD_LG_WIDTH}${margin}`}
       />
     );
   };
@@ -222,16 +262,24 @@ export function ImageCarousel({
     // just shift the box left instead of widening it. Sizing it to
     // `100% + 2 × gutter` and letting `items-center` centre it lands the edges
     // exactly on the viewport, which is also where overflow-hidden then clips.
-    <div ref={railRef} className={`w-[calc(100%+var(--page-gutter)*2)] overflow-hidden ${className}`}>
+    /*
+      overflow-x clips the bleed; overflow-y stays visible so a hovered card can
+      grow past the rail's own box instead of being cropped by it. `clip` rather
+      than `hidden` on x is what allows that: a `visible` axis paired with
+      `hidden` computes to `auto`, but paired with `clip` it stays visible.
+    */
+    <div ref={railRef} className={`w-[calc(100%+var(--page-gutter)*2)] overflow-x-clip overflow-y-visible ${className}`}>
       <div
         className={`image-marquee-track flex w-max items-center${reverse ? " image-marquee-track--reverse" : ""}`}
         style={scale ? ({ "--image-marquee-scale": scale } as CSSProperties) : undefined}
       >
         {images.map((image) => card(image, `a-${image.src}`, true))}
-        {/* Duplicate set — decorative only, so it stays out of the a11y tree. */}
-        <div aria-hidden className="flex w-max items-center">
-          {images.map((image) => card(image, `b-${image.src}`, true))}
-        </div>
+        {/* Duplicate set — decorative, so each card is aria-hidden individually
+            rather than sharing one hidden wrapper. The wrapper would break the
+            sibling selectors that shift neighbours aside on hover: a card in
+            one set is not a sibling of a card in the other, so a hover in the
+            duplicate could not push the originals. Flat, they all are. */}
+        {images.map((image) => card(image, `b-${image.src}`, true, true))}
       </div>
     </div>
   );
