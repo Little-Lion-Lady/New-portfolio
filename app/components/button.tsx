@@ -55,13 +55,16 @@ const primaryGlowVariants = {
 
 // The five colours step straight down and outwards from the pill edge: 01 is a
 // tight even rim, and each one after it sits lower with more blur, so the light
-// pools under the button. Reads as one coherent halo rather than five lights.
+// pools under the button. The steps are deliberately small — widening them past
+// roughly double the previous offset separates the layers into visible bands
+// instead of one ramp, and the middle hues stop registering at all. The last
+// layer's fade-out is alpha on --button-glow-05, not extra blur here.
 const primaryGlowShadow = [
-  "0 0 6px 1px var(--button-glow-01)",
-  "0 1px 5px 1px var(--button-glow-02)",
-  "0 3px 9px 1px var(--button-glow-03)",
-  "0 6px 16px 2px var(--button-glow-04)",
-  "0 10px 26px 2px var(--button-glow-05)",
+  "0 0 6px 0 var(--button-glow-01)",
+  "0 2px 4px 0 var(--button-glow-02)",
+  "0 3px 6px 0 var(--button-glow-03)",
+  "0 5px 10px 0 var(--button-glow-04)",
+  "0 8px 18px 1px var(--button-glow-05)",
 ].join(", ");
 
 // Figma "Button" component. Three variants × three breakpoints (mobile/tablet/desktop):

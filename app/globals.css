@@ -289,12 +289,14 @@
   --shadows-shadow-02: var(--colour-gray-light-950-10);
   --shadows-glow-01:   var(--colour-gray-light-50-30);
   /* Primary-pill hover glow — five stacked colour shadows that step down and
-     out from the pill edge (cool at the rim, warm as it falls). Light mode: mid steps, read against the near-black pill. */
+     out from the pill edge (cool at the rim, warm as it falls).
+   05 is the outermost layer and runs at 35% so the halo fades into the page
+   rather than ending on a band of colour. Light mode: mid steps, read against the near-black pill. */
   --button-glow-01: var(--colour-purple-400);
   --button-glow-02: var(--colour-blue-500);
   --button-glow-03: var(--colour-teal-500);
   --button-glow-04: var(--colour-orange-400);
-  --button-glow-05: var(--colour-red-light-500);
+  --button-glow-05: color-mix(in srgb, var(--colour-red-light-500) 35%, transparent);
 
   /* Figma "Utility/inverses" collection — light values. `white` is the Insight
      card's inner fill; the rest are accent slots that invert to a different hue
@@ -571,12 +573,14 @@
     --shadows-shadow-02: var(--colour-base-black);
     --shadows-glow-01:   var(--colour-blue-100);
     /* Primary-pill hover glow — five stacked colour shadows that step down and
-       out from the pill edge (cool at the rim, warm as it falls). Dark mode: one step lighter so they stay legible around the white pill. */
+       out from the pill edge (cool at the rim, warm as it falls).
+   05 is the outermost layer and runs at 35% so the halo fades into the page
+   rather than ending on a band of colour. Dark mode: one step lighter so they stay legible around the white pill. */
     --button-glow-01: var(--colour-purple-300);
     --button-glow-02: var(--colour-blue-400);
     --button-glow-03: var(--colour-teal-400);
     --button-glow-04: var(--colour-orange-300);
-    --button-glow-05: var(--colour-red-dark-400);
+    --button-glow-05: color-mix(in srgb, var(--colour-red-dark-400) 35%, transparent);
 
     /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
        wash here, not an opaque fill, and red/teal swap hue rather than step. */
@@ -733,12 +737,14 @@
   --shadows-shadow-02: var(--colour-base-black);
   --shadows-glow-01:   var(--colour-blue-100);
   /* Primary-pill hover glow — five stacked colour shadows that step down and
-     out from the pill edge (cool at the rim, warm as it falls). Dark mode: one step lighter so they stay legible around the white pill. */
+     out from the pill edge (cool at the rim, warm as it falls).
+   05 is the outermost layer and runs at 35% so the halo fades into the page
+   rather than ending on a band of colour. Dark mode: one step lighter so they stay legible around the white pill. */
   --button-glow-01: var(--colour-purple-300);
   --button-glow-02: var(--colour-blue-400);
   --button-glow-03: var(--colour-teal-400);
   --button-glow-04: var(--colour-orange-300);
-  --button-glow-05: var(--colour-red-dark-400);
+  --button-glow-05: color-mix(in srgb, var(--colour-red-dark-400) 35%, transparent);
 
   /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
      wash here, not an opaque fill, and red/teal swap hue rather than step. */
