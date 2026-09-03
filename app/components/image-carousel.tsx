@@ -253,20 +253,18 @@ export function ImageCarousel({
   }
 
   return (
-    // Bleed out to the viewport edge by growing past the page's own gutter on
-    // both sides. A negative margin does NOT work here: the parent is a
-    // `flex-col items-center` column, so the wrapper is a non-stretched flex
-    // item whose used width is whatever `w-*` says — negative margins would
-    // just shift the box left instead of widening it. Sizing it to
-    // `100% + 2 × gutter` and letting `items-center` centre it lands the edges
-    // exactly on the viewport, which is also where overflow-hidden then clips.
+    // Bleed out to the viewport edge: `.rail-bleed` sizes the wrapper to the
+    // viewport rather than to the page shell, so the rail is cropped by the
+    // screen at every width instead of by the shell's 1440px cap (see
+    // globals.css). `items-center` on the parent centres the over-wide box,
+    // which is also where overflow-x then clips.
     /*
       overflow-x clips the bleed; overflow-y stays visible so a hovered card can
       grow past the rail's own box instead of being cropped by it. `clip` rather
       than `hidden` on x is what allows that: a `visible` axis paired with
       `hidden` computes to `auto`, but paired with `clip` it stays visible.
     */
-    <div ref={railRef} className={`w-[calc(100%+var(--page-gutter)*2)] overflow-x-clip overflow-y-visible ${className}`}>
+    <div ref={railRef} className={`rail-bleed overflow-x-clip overflow-y-visible ${className}`}>
       <div
         className={`image-marquee-track flex w-max items-center${reverse ? " image-marquee-track--reverse" : ""}`}
         style={scale ? ({ "--image-marquee-scale": scale } as CSSProperties) : undefined}

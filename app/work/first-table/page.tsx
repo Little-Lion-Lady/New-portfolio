@@ -154,7 +154,11 @@ export default function FirstTable() {
               { label: "Date_", value: "25’ – 26’" },
             ]}
             recognition={[
-              { label: "Recognition_", value: "Best Design Award, Finalist" },
+              {
+                label: "Recognition_",
+                value: "Best Design Award, Finalist",
+                href: "https://bestawards.co.nz/digital/digital-products/first-table/first-table-app/",
+              },
             ]}
             images={[
               { src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" },

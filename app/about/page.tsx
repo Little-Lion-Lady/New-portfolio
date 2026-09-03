@@ -64,27 +64,34 @@ export default function About() {
       </div>
 
       {/* Hero rule — fades in between the title and the Overview header, so the
-          three land in reading order: words from 0s, rule at 0.3s, header at
-          0.5s. `noY` because a 16px lift on a 1px rule reads as a glitch, not a
+          three land in reading order: words from 0s, rule at 0.15s, header at
+          0.25s. Halved from 0.3/0.5: the reveal itself runs 910ms on a curve
+          that is ~93% resolved at half of that, so a half-second lead-in on top
+          of it read as the page hesitating before it started. The order is what
+          the offsets are for, and it survives the tighter spacing — the rule
+          still leaves rest while the title is mid-blur, and the header while
+          the rule is.
+
+          `noY` because a 16px lift on a 1px rule reads as a glitch, not a
           reveal; `immediate` matches the title and header, which both reveal on
           mount rather than on an in-view trigger. */}
-      <Reveal immediate noY delay={0.3} className="w-full">
+      <Reveal immediate noY delay={0.15} className="w-full">
         <Divider />
       </Reveal>
 
       {/* 01 — Overview. Figma closes the section with pb --lg/--xl/--lg
           (32/72/64) before the next rule. */}
       <SectionReveal as="section" immediate className="flex flex-col gap-r-xl pb-r-lg md:pb-r-xl lg:pb-r-lg">
-        <Reveal index={0} delay={0.5} className="w-full">
+        <Reveal index={0} delay={0.25} className="w-full">
           <SectionHeader number="01" name="Overview" />
         </Reveal>
 
         {/* Desktop: Figma's 12-column content grid (20px gutters) — description
             in columns 1-5, history in 7-12, so column 6 is left empty.
             Tablet/mobile: stacked (description → history), gap 80/40. */}
-        <Reveal index={1} delay={0.5} className="flex flex-col gap-3xl md:gap-6xl wide:grid wide:grid-cols-12 wide:items-start wide:gap-lg">
+        <Reveal index={1} delay={0.25} className="flex flex-col gap-3xl md:gap-6xl wide:grid wide:grid-cols-12 wide:items-start wide:gap-lg">
           {/* Description + CV button */}
-          <div className="flex flex-col gap-3xl md:pb-2xl wide:col-start-1 wide:col-span-5">
+          <div className="flex flex-col gap-2xl md:gap-3xl md:pb-2xl wide:col-start-1 wide:col-span-5">
             {/* Paragraphs at gap-r-sm. The container's gap-3xl separates
                 this block from the CV button, so sibling <p>s would sit far
                 enough apart to read as separate sections. */}
@@ -115,7 +122,10 @@ export default function About() {
             {/* ── Experience ── */}
             <div className="flex flex-col gap-r-sm">
               <div>
-                <p className="b-xs md:b-sm text-text-primary mb-sm">Experience</p>
+                {/* pt on mobile only: from md the two columns sit side by
+                    side and the grid's own gap does this, but stacked they run
+                    straight on from the CV button above. */}
+                <p className="b-xs md:b-sm text-text-primary pt-lg mb-sm md:pt-0">Experience</p>
                 <Divider />
               </div>
               <div className="flex flex-col gap-md md:gap-sm lg:gap-md">
@@ -211,7 +221,7 @@ export default function About() {
 
       {/* 02 — Biography */}
       <SectionReveal as="section" immediate className="flex flex-col gap-r-xl">
-        <Reveal index={0} delay={0.5} className="w-full">
+        <Reveal index={0} delay={0.25} className="w-full">
           <SectionHeader number="02" name="Biography" />
         </Reveal>
 
@@ -220,7 +230,7 @@ export default function About() {
             Desktop: the 12-col page grid — images 1-5, text 7-12.
             Paragraph spacing is one blank line in Figma, so the gap between
             <p>s is exactly the body line-height at each step. */}
-        <Reveal index={1} delay={0.5} className="flex flex-col gap-3xl md:grid md:grid-cols-9 md:items-start md:gap-lg wide:grid-cols-12">
+        <Reveal index={1} delay={0.25} className="flex flex-col gap-3xl md:grid md:grid-cols-9 md:items-start md:gap-lg wide:grid-cols-12">
           {/* Images */}
           <div className="md:col-start-1 md:col-span-4 wide:col-span-5">
             <BioCollage />
@@ -249,13 +259,13 @@ export default function About() {
 
       {/* 03 — Artwork */}
       <SectionReveal as="section" immediate className="flex flex-col gap-r-xl">
-        <Reveal index={0} delay={0.5} className="w-full">
+        <Reveal index={0} delay={0.25} className="w-full">
           <SectionHeader number="03" name="Artwork" />
         </Reveal>
 
         {/* Figma holds this paragraph to 7 of the 12 desktop columns; tablet
             and mobile run it full width. */}
-        <Reveal index={1} delay={0.5} className="w-full wide:grid wide:grid-cols-12 wide:gap-x-lg">
+        <Reveal index={1} delay={0.25} className="w-full wide:grid wide:grid-cols-12 wide:gap-x-lg">
           <p className="b-xs text-text-secondary md:b-sm wide:col-span-7">
             I&apos;ve been creating art for as long as I can remember. While I began by honing my
             digital skills, working in the tech industry inspired me to explore traditional mediums.
@@ -267,7 +277,7 @@ export default function About() {
         {/* Image strip — continuous right-to-left marquee of 7 original
             artworks; falls back to a manual scroll strip for reduced-motion.
             See ArtworkStrip for the full-bleed/loop/pause mechanics. */}
-        <Reveal index={2} delay={0.5} className="w-full">
+        <Reveal index={2} delay={0.25} className="w-full">
           <ArtworkStrip names={artwork} />
         </Reveal>
       </SectionReveal>
@@ -275,7 +285,7 @@ export default function About() {
       <Divider />
 
       {/* Case study nav */}
-      <Reveal delay={0.5} immediate className="w-full">
+      <Reveal delay={0.25} immediate className="w-full">
         <CaseStudyNav
           title="NZ COVID Tracer app"
           href="/work/covid-tracer"
@@ -285,7 +295,7 @@ export default function About() {
 
       <Divider />
 
-      <Reveal delay={0.5} immediate className="w-full">
+      <Reveal delay={0.25} immediate className="w-full">
         <SiteFooter />
       </Reveal>
     </main>

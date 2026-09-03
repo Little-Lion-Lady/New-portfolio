@@ -49,9 +49,11 @@ function Card({
   );
 }
 
-// Full-bleed, edge-to-edge past <main>'s own px-md/xl/5xl gutter — see the
-// about page comment this replaced. Bleeds via a matching negative margin.
-const BLEED_CLASS = "-mx-md md:-mx-3xl lg:-mx-3xl";
+// Full-bleed, edge-to-edge past <main>'s own gutter. Sized to the viewport
+// rather than to the page shell (see `.rail-bleed` in globals.css): a negative
+// margin matching the gutter stops at the shell's 1440px cap, which left the
+// strip cropped inboard with dead space either side on a wide screen.
+const BLEED_CLASS = "rail-bleed";
 
 // Continuous right-to-left loop. Reduced-motion users get the original
 // manually-scrollable single-set strip back instead — freezing the animated
