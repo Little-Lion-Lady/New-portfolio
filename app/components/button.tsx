@@ -53,20 +53,18 @@ const primaryGlowVariants = {
   press: { opacity: 1, scaleY: 1 },
 };
 
-// The six colours step straight down and outwards from the pill edge: 01 is a
-// tight even rim, and each one after it sits a little lower with a little more
-// blur, so the light pools under the button. Both ramps stay gentle on purpose
-// — widen the offsets and the layers separate into visible bands instead of one
-// gradient, and the middle hues stop registering. The blur growing faster than
-// the offset is what keeps each layer soft enough to bleed into the next. The
-// outer layer's fade-out is alpha on --button-glow-06, not extra blur here.
+// Hand-tuned drop shadows, one per colour, in Figma order: x / y / blur /
+// spread. Not a generated ramp — the offsets are not monotonic (04 sits above
+// 03) and the blurs jump around, both on purpose, so resist "tidying" them into
+// a sequence. 06 is the wide bloom that carries the halo out into the page; its
+// 124px blur is why the pill can no longer clip its overflow.
 const primaryGlowShadow = [
-  "0 0 4px 0 var(--button-glow-01)",
-  "0 1px 5px 0 var(--button-glow-02)",
-  "0 2px 7px 0 var(--button-glow-03)",
-  "0 3px 9px 0 var(--button-glow-04)",
-  "0 5px 11px 0 var(--button-glow-05)",
-  "0 7px 14px 0 var(--button-glow-06)",
+  "0 1px 3.8px 1px var(--button-glow-01)",
+  "0 5px 2.5px -1px var(--button-glow-02)",
+  "0 10px 5px -3px var(--button-glow-03)",
+  "0 8px 4px -3px var(--button-glow-04)",
+  "0 11px 14.3px -2px var(--button-glow-05)",
+  "0 22px 124px -5px var(--button-glow-06)",
 ].join(", ");
 
 // Figma "Button" component. Three variants × three breakpoints (mobile/tablet/desktop):

@@ -288,22 +288,20 @@
   --shadows-shadow-01: var(--colour-gray-light-950-50);
   --shadows-shadow-02: var(--colour-gray-light-950-10);
   --shadows-glow-01:   var(--colour-gray-light-50-30);
-  /* Primary-pill hover glow — six stacked colour shadows that step down and
-     out from the pill edge, each blurrier than the last so they bleed into one
-     another instead of banding. Hand-picked hexes rather than steps off the
-     token ramps: the ramps carry no magenta or amber, and the halo needs a wide
-     arc of the wheel to read as separate layers (inside roughly 50 degrees the
-     six collapse into a single-tone glow). Worth adding to Figma on the next
-     token sync. One set serves both themes — the halo sits outside the pill
-     either way, and button-glow-hue rotates the whole stack on hover
-     regardless. 06 is the outermost and runs at 40% so the halo dissolves into
-     the page instead of ending on a band of colour. */
-  --button-glow-01: #ff8335;
-  --button-glow-02: #d943ff;
-  --button-glow-03: #d8b8ff;
-  --button-glow-04: #ffbf3e;
-  --button-glow-05: #ff0443;
-  --button-glow-06: color-mix(in srgb, #ff0004 40%, transparent);
+  /* Primary-pill hover glow — six stacked colour shadows, hand-tuned. Colours
+     live here; each layer's offset, blur and spread live with the stack in
+     button.tsx. Hand-picked hexes rather than steps off the token ramps, which
+     carry no magenta or amber — worth adding to Figma on the next token sync.
+     One set serves both themes: the halo sits outside the pill either way, and
+     button-glow-hue rotates the whole stack on hover regardless. 06 is the
+     outermost and runs at 50% so the halo dissolves into the page instead of
+     ending on a band of colour. */
+  --button-glow-01: #ffab3d;
+  --button-glow-02: #ff8fcb;
+  --button-glow-03: #ffbcf4;
+  --button-glow-04: #fdf8ff;
+  --button-glow-05: #ffbe9c;
+  --button-glow-06: color-mix(in srgb, #ffd798 50%, transparent);
 
   /* Figma "Utility/inverses" collection — light values. `white` is the Insight
      card's inner fill; the rest are accent slots that invert to a different hue
