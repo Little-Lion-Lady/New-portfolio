@@ -1,6 +1,12 @@
 "use client";
 
 import Image from "next/image";
+// Static imports rather than string paths: they put a content hash in the URL,
+// so a re-exported asset gets a new URL. With "/home/Gettouch_light.png" the
+// optimizer URL keys on path + width + quality only, so replacing the file
+// leaves every cached copy — browser, CDN — serving the previous artwork.
+import gettouchLight from "@/public/home/Gettouch_light.png";
+import gettouchDark from "@/public/home/Gettouch_dark.png";
 import { Button } from "./button";
 import { CyclingWord } from "./cycling-word";
 import { Star } from "./dynamic-visuals";
@@ -56,10 +62,8 @@ export function SiteFooter() {
           className="col-start-1 col-span-4 row-start-1 dt:col-span-6"
         >
           <Image
-            src={dark ? "/home/Gettouch_dark.png" : "/home/Gettouch_light.png"}
+            src={dark ? gettouchDark : gettouchLight}
             alt="Get in touch"
-            width={1744}
-            height={486}
             sizes="115vw"
             loading={wordmarkNear ? "eager" : "lazy"}
             // height and max-width belong here rather than in className: as

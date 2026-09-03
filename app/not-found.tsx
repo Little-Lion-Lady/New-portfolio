@@ -1,6 +1,10 @@
 "use client";
 
 import Image from "next/image";
+// Static imports — see site-footer.tsx: the content hash in the URL is what
+// makes a re-exported asset actually reach a browser that cached the old one.
+import oopsLight from "@/public/home/Oops_light.png";
+import oopsDark from "@/public/home/Oops_dark.png";
 import { SiteHeader } from "./components/site-header";
 import { Button } from "./components/button";
 import { Reveal } from "./components/reveal";
@@ -47,10 +51,8 @@ export default function NotFound() {
               word the image draws. */}
           <Reveal as="h1" className="notfound-oops">
             <Image
-              src={dark ? "/home/Oops_dark.png" : "/home/Oops_light.png"}
+              src={dark ? oopsDark : oopsLight}
               alt="Oops!"
-              width={925}
-              height={501}
               priority
               sizes="(min-width: 1024px) 60vw, 90vw"
               style={{
