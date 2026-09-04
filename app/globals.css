@@ -1485,7 +1485,13 @@ h1.d-sm {
   --duration-slow:   400ms; /* panel open, content reveal */
 
   --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1); /* open/close, slide, resize */
-  --ease-in-out:     ease-in-out; /* icon/text swap, reveal, hover grow */
+  --ease-in-out:     ease-in-out; /* icon/text swap, reveal */
+  /* Direct response to the pointer. Decelerates like --ease-smooth-out but
+     without its leap: measured over a card's 24px hover growth, this moves
+     2.5px on the first frame against that curve's 5.7px, and reaches halfway
+     at 50ms rather than 25ms. Use it wherever the user's own movement is what
+     starts the motion — see .image-marquee-card:hover. */
+  --ease-out:        cubic-bezier(0.25, 0.46, 0.45, 0.94); /* hover grow */
 }
 
 /* Page curtain — route transition panel.
@@ -1577,13 +1583,24 @@ h1.d-sm {
   down the scale from where this landed first, which was accurate to the rule
   but still read a touch slow under the pointer.
 
-  Both ends run on --ease-in-out, NOT the --ease-smooth-out this started on.
-  That curve is cubic-bezier(0.22, 1, 0.36, 1): its first control point sits at
-  y=1, so it leaps to nearly full progress on the first frames and then crawls
-  the rest. Right for a surface arriving from off-screen, wrong here — it gave
-  the card no ease IN at all, which is what read as unfinished even once the
-  durations were fixed. ease-in-out eases at both ends, so the card gathers
-  speed and settles instead of snapping into motion.
+  The two ends run on DIFFERENT curves, because they answer to different
+  things. Hovering out is the system settling once the pointer has gone, so it
+  keeps --ease-in-out. Hovering IN is a direct response to the pointer, and a
+  response has to be visible on the frame it is asked for.
+
+  Both ends used to run on --ease-in-out, and that is what read as the card
+  taking a few frames to start. ease-in-out is cubic-bezier(0.42, 0, 0.58, 1):
+  it spends its first third nearly stationary. Traced at 120Hz over the 24px
+  growth, the card moved 0.14px on its first frame and 0.58px on its second —
+  sub-pixel, so nothing was on screen yet — and was still only a tenth of the
+  way there at 41ms. Nothing was dropping frames; the curve was simply holding
+  the card still while the pointer waited on it.
+
+  --ease-out moves 2.5px on the first frame and is halfway at 50ms, so the card
+  answers immediately and then settles. --ease-smooth-out was tried here first
+  and is too much for a hover: its first control point sits at y=1, so it
+  covers 5.7px in one frame and crawls the rest — right for a surface arriving
+  from off-screen, a lurch under the pointer.
 
   These were 500ms ease-out, which is what made it feel janky. Two reasons, and
   neither was frame rate — profiled at 4x CPU throttle the rail holds ~8ms
@@ -1613,8 +1630,9 @@ h1.d-sm {
   .image-marquee-card:hover,
   .image-marquee-track:has(.image-marquee-card) > *:hover ~ *,
   .image-marquee-track:has(.image-marquee-card) > *:has(~ *:hover) {
-    /* ...and hovering overrides it with the quicker hover-IN. */
+    /* ...and hovering overrides it with the quicker, decelerating hover-IN. */
     transition-duration: var(--duration-quick);
+    transition-timing-function: var(--ease-out);
   }
 
   .image-marquee-card:hover {
