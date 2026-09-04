@@ -130,6 +130,30 @@ function Demo({ name, full, children }: { name: string; full?: boolean; children
   );
 }
 
+// Points around the primary button's hover hue cycle. Six is enough to see the
+// whole wheel without the row wrapping on a laptop.
+const GLOW_STOPS = [0, 60, 120, 180, 240, 300];
+
+// The real Button, with its halo forced visible and the hue animation parked at
+// one angle. Deliberately not a copy of the pill's markup — a hand-rolled
+// stand-in would quietly drift from the shipped component, which is the one
+// thing this page exists to prevent. The overrides have to beat framer-motion's
+// inline styles, hence `!`. The angle rides in on a custom property because a
+// template-interpolated class name never reaches Tailwind's scanner.
+function GlowStop({ deg }: { deg: number }) {
+  return (
+    <div className="flex flex-col items-center gap-sm">
+      <div
+        style={{ "--preview-hue": `${deg}deg` } as CSSProperties}
+        className="[&_.button-glow]:opacity-100! [&_.button-glow]:[transform:scaleY(1)]! [&_.button-glow]:[animation:none]! [&_.button-glow]:[filter:hue-rotate(var(--preview-hue))]"
+      >
+        <Button variant="primary" label="About me" href="#" />
+      </div>
+      <Label>{deg}°</Label>
+    </div>
+  );
+}
+
 function Swatch({ token, css }: { token: string; css?: CSSProperties }) {
   return (
     <div className="flex flex-col gap-3xs">
@@ -197,6 +221,24 @@ export default function DesignSystem() {
           <Button variant="link" label="LinkedIn" href="#" />
           <Button variant="view" label="View" href="#" />
           <Button variant="view" size="md" label="View" href="#" />
+        </Demo>
+
+        <Demo name="Button — primary hover glow, frozen across the hue cycle" full>
+          <div className="flex flex-col gap-xl">
+            <p className="b-xs text-text-secondary max-w-[var(--size-80)]">
+              Hover the primary button above to watch the halo cycle for real — two
+              seconds a lap. Below is that same component with the halo pinned open
+              and the animation parked, so the colours can be compared side by side.
+            </p>
+            {/* Grid rather than flex-wrap: six across leaves an orphan on the
+                second row at most widths, and the halos need the breathing room
+                a fixed column count gives them. */}
+            <div className="grid grid-cols-2 gap-xl md:grid-cols-3 xl:grid-cols-6">
+              {GLOW_STOPS.map((deg) => (
+                <GlowStop key={deg} deg={deg} />
+              ))}
+            </div>
+          </div>
         </Demo>
 
         <Demo name="Theme toggle & icons">

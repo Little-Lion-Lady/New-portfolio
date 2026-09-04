@@ -43,9 +43,35 @@ const primaryPressTintVariants = {
   press: { opacity: 0.14 },
 };
 
+// Multi-colour hover halo. It grows from scaleY(0.9), so the light blooms
+// outwards from the pill's centre line rather than just fading in. The hue
+// cycle itself is CSS (.button-glow / @keyframes button-glow-hue in
+// globals.css) — a filter animation, so it stays off the main thread.
+const primaryGlowVariants = {
+  rest: { opacity: 0, scaleY: 0.9 },
+  hover: { opacity: 1, scaleY: 1 },
+  press: { opacity: 1, scaleY: 1 },
+};
+
+// Hand-tuned drop shadows, one per colour, in Figma order: x / y / blur /
+// spread. Not a generated ramp — the offsets are not monotonic (04 sits above
+// 03) and the blurs jump around, both on purpose, so resist "tidying" them into
+// a sequence. 06 is the wide bloom that carries the halo out into the page; its
+// 124px blur is why the pill can no longer clip its overflow.
+const primaryGlowShadow = [
+  "0 1px 3.8px 1px var(--button-glow-01)",
+  "0 5px 2.5px -1px var(--button-glow-02)",
+  "0 10px 5px -3px var(--button-glow-03)",
+  "0 8px 4px -3px var(--button-glow-04)",
+  "0 11px 14.3px -2px var(--button-glow-05)",
+  "0 22px 124px -5px var(--button-glow-06)",
+].join(", ");
+
 // Figma "Button" component. Three variants × three breakpoints (mobile/tablet/desktop):
 //   primary (Type=Button, Size=lg) — filled pill, text-inverted
-//   link    (Type=Link,   Size=lg) — oversized text link (footer socials), text-primary-highlight
+//   link    (Type=Link,   Size=md at mobile / lg from tablet) — footer socials,
+//           text-primary-highlight. Mobile is Figma's Size=md Link: body-md type
+//           and a 20px arrow, not a scaled-down version of the lg one.
 //   view    (Type=Link,   Size=sm) — mono uppercase inline link ("View"), text-primary
 // Every size/gap/padding/colour below is taken from the Figma component spec,
 // except the primary pill: its label, padding and arrow each sit one step below
@@ -89,7 +115,7 @@ export function Button({
         whileHover="hover"
         whileTap={{ scale: 0.95 }}
         animate="rest"
-        className={`inline-flex items-center gap-xs d-2xs [font-weight:var(--font-weight-book)]! text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-sm md:d-xs ${className}`}
+        className={`inline-flex items-center gap-xs b-md [font-weight:var(--font-weight-book)]! text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-sm md:d-xs ${className}`}
       >
         <span>{label}</span>
         <m.span
@@ -97,7 +123,7 @@ export function Button({
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="inline-flex shrink-0"
         >
-          <ArrowUpRight className="size-2xl lg:size-3xl" />
+          <ArrowUpRight className="size-lg md:size-2xl lg:size-3xl" />
         </m.span>
       </LinkTag>
     );
@@ -142,12 +168,21 @@ export function Button({
       animate="rest"
       variants={primaryScaleVariants}
       transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`relative inline-flex items-center gap-2xs overflow-hidden rounded-full pl-lg pr-lg py-xs b-2xs text-text-inverted md:gap-xs md:pl-xl md:pr-xl md:py-sm md:b-xs lg:gap-2xs lg:pl-2xl lg:pr-2xl lg:py-sm lg:b-sm [font-weight:var(--font-weight-book)]! ${className}`}
-      style={{
-        boxShadow:
-          "0 10px 10px -10px var(--shadows-shadow-01), 0 10px 30px 1px var(--shadows-shadow-02)",
-      }}
+      className={`button-glow-host relative isolate inline-flex items-center gap-2xs rounded-full pl-lg pr-lg py-xs b-2xs text-text-inverted md:gap-xs md:pl-xl md:pr-xl md:py-sm md:b-xs lg:gap-2xs lg:pl-2xl lg:pr-2xl lg:py-sm lg:b-sm [font-weight:var(--font-weight-book)]! ${className}`}
     >
+      {/* Stacked colour halo — sits behind the pill fill (hence -z-10, and why
+          the pill no longer clips its overflow). Its own background keeps the
+          shadows from showing a gap at the rim. */}
+      <m.span
+        aria-hidden
+        className="button-glow pointer-events-none absolute inset-0 -z-10 rounded-full bg-[var(--button-glow-01)]"
+        style={{ boxShadow: primaryGlowShadow }}
+        variants={primaryGlowVariants}
+        transition={{
+          opacity: { duration: 0.2, ease: "linear" },
+          scaleY: { duration: 0.4, ease: [0.2, 0.715, 0.205, 0.99] },
+        }}
+      />
       <span aria-hidden className="absolute inset-0 rounded-full bg-component-bg-button-primary" />
       <m.span
         aria-hidden

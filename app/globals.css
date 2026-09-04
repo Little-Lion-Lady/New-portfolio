@@ -288,6 +288,20 @@
   --shadows-shadow-01: var(--colour-gray-light-950-50);
   --shadows-shadow-02: var(--colour-gray-light-950-10);
   --shadows-glow-01:   var(--colour-gray-light-50-30);
+  /* Primary-pill hover glow — six stacked colour shadows, hand-tuned. Colours
+     live here; each layer's offset, blur and spread live with the stack in
+     button.tsx. Hand-picked hexes rather than steps off the token ramps, which
+     carry no magenta or amber — worth adding to Figma on the next token sync.
+     One set serves both themes: the halo sits outside the pill either way, and
+     button-glow-hue rotates the whole stack on hover regardless. 06 is the
+     outermost and runs at 50% so the halo dissolves into the page instead of
+     ending on a band of colour. */
+  --button-glow-01: #ffab3d;
+  --button-glow-02: #ff8fcb;
+  --button-glow-03: #ffbcf4;
+  --button-glow-04: #fdf8ff;
+  --button-glow-05: #ffbe9c;
+  --button-glow-06: color-mix(in srgb, #ffd798 50%, transparent);
 
   /* Figma "Utility/inverses" collection — light values. `white` is the Insight
      card's inner fill; the rest are accent slots that invert to a different hue
@@ -563,7 +577,6 @@
        than the light-blue glow the blue-100 value produced. */
     --shadows-shadow-02: var(--colour-base-black);
     --shadows-glow-01:   var(--colour-blue-100);
-
     /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
        wash here, not an opaque fill, and red/teal swap hue rather than step. */
     --utility-inverses-glass:  var(--colour-base-white-10);
@@ -718,7 +731,6 @@
      effect's softness comes from the 20px blur, not from alpha. */
   --shadows-shadow-02: var(--colour-base-black);
   --shadows-glow-01:   var(--colour-blue-100);
-
   /* Figma "Utility/inverses" collection, dark mode. `white` is a 20% Blue/900
      wash here, not an opaque fill, and red/teal swap hue rather than step. */
   --utility-inverses-glass:  var(--colour-base-white-10);
@@ -1381,6 +1393,25 @@ h1.d-sm {
   }
 }
 
+/* ── 404 "Oops!" wordmark (Figma 1704:3992) ────────────────────────────────
+   Drives the size of the exported wordmark rather than any live text. The
+   image's width and the offset that cancels its glow padding are both written
+   in em, so this one font-size scales the artwork and the correction together
+   — the same arrangement site-footer uses for "get in touch".
+   Figma draws 124 at 393, 142 at 1024 and 320 at 1728. The first two are close
+   enough to hold 124 flat up to 1024; above that the ramp hits 142 at 1024 and
+   320 at 1728 exactly. 320 has no token — the display scale stops at 224.
+   ────────────────────────────────────────────────────────────────────────── */
+.notfound-oops {
+  font-size: var(--font-size-display-lg);   /* 124 */
+  line-height: 0;                            /* the image is the whole line box */
+}
+@media (min-width: 1024px) {
+  .notfound-oops {
+    font-size: clamp(var(--font-size-display-xl), -116.9px + 25.284vw, 320px);
+  }
+}
+
 /* ── Case study hero title (Figma "Hero content" D-xs→D-md→D-2xl) ───────────
    Mobile  : D-xs  44 px / lh 1.10
    Tablet  : D-md  80 px / lh 1.15
@@ -1454,7 +1485,13 @@ h1.d-sm {
   --duration-slow:   400ms; /* panel open, content reveal */
 
   --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1); /* open/close, slide, resize */
-  --ease-in-out:     ease-in-out; /* icon/text swap, reveal, hover grow */
+  --ease-in-out:     ease-in-out; /* icon/text swap, reveal */
+  /* Direct response to the pointer. Decelerates like --ease-smooth-out but
+     without its leap: measured over a card's 24px hover growth, this moves
+     2.5px on the first frame against that curve's 5.7px, and reaches halfway
+     at 50ms rather than 25ms. Use it wherever the user's own movement is what
+     starts the motion — see .image-marquee-card:hover. */
+  --ease-out:        cubic-bezier(0.25, 0.46, 0.45, 0.94); /* hover grow */
 }
 
 /* Page curtain — route transition panel.
@@ -1546,13 +1583,24 @@ h1.d-sm {
   down the scale from where this landed first, which was accurate to the rule
   but still read a touch slow under the pointer.
 
-  Both ends run on --ease-in-out, NOT the --ease-smooth-out this started on.
-  That curve is cubic-bezier(0.22, 1, 0.36, 1): its first control point sits at
-  y=1, so it leaps to nearly full progress on the first frames and then crawls
-  the rest. Right for a surface arriving from off-screen, wrong here — it gave
-  the card no ease IN at all, which is what read as unfinished even once the
-  durations were fixed. ease-in-out eases at both ends, so the card gathers
-  speed and settles instead of snapping into motion.
+  The two ends run on DIFFERENT curves, because they answer to different
+  things. Hovering out is the system settling once the pointer has gone, so it
+  keeps --ease-in-out. Hovering IN is a direct response to the pointer, and a
+  response has to be visible on the frame it is asked for.
+
+  Both ends used to run on --ease-in-out, and that is what read as the card
+  taking a few frames to start. ease-in-out is cubic-bezier(0.42, 0, 0.58, 1):
+  it spends its first third nearly stationary. Traced at 120Hz over the 24px
+  growth, the card moved 0.14px on its first frame and 0.58px on its second —
+  sub-pixel, so nothing was on screen yet — and was still only a tenth of the
+  way there at 41ms. Nothing was dropping frames; the curve was simply holding
+  the card still while the pointer waited on it.
+
+  --ease-out moves 2.5px on the first frame and is halfway at 50ms, so the card
+  answers immediately and then settles. --ease-smooth-out was tried here first
+  and is too much for a hover: its first control point sits at y=1, so it
+  covers 5.7px in one frame and crawls the rest — right for a surface arriving
+  from off-screen, a lurch under the pointer.
 
   These were 500ms ease-out, which is what made it feel janky. Two reasons, and
   neither was frame rate — profiled at 4x CPU throttle the rail holds ~8ms
@@ -1582,8 +1630,9 @@ h1.d-sm {
   .image-marquee-card:hover,
   .image-marquee-track:has(.image-marquee-card) > *:hover ~ *,
   .image-marquee-track:has(.image-marquee-card) > *:has(~ *:hover) {
-    /* ...and hovering overrides it with the quicker hover-IN. */
+    /* ...and hovering overrides it with the quicker, decelerating hover-IN. */
     transition-duration: var(--duration-quick);
+    transition-timing-function: var(--ease-out);
   }
 
   .image-marquee-card:hover {
@@ -1792,3 +1841,72 @@ textarea,
   width: 100vw;
   margin-inline: calc((100% - 100vw) / 2);
 }
+
+/* Primary-pill hover halo — the colour cycle.
+   The halo layer (see button.tsx) paints five colour shadows; rotating the
+   hue of the whole layer walks that fixed stack through the spectrum, so one
+   button reads pink/orange, then green/yellow, then blue/purple as it sits
+   under the cursor. Gated on hover so idle buttons don't animate a filter. */
+/* Sweeps 230deg to 380deg (i.e. round to 20deg) rather than the full circle,
+   because a full circle runs the baked palette through yellow-green and the
+   glow goes olive. Measured on the exported pixels: the share of the glow's
+   colour weight sitting in the 55-165 hue band is 0 up to 30deg, climbs to 1.0
+   at 130deg, and is back to 0 by 230deg — so 230->20 is the whole clean arc,
+   blue through violet, magenta and coral to amber.
+
+   Paired with `alternate` on every rule below. The range is an arc, not a
+   loop: running it one way and restarting would jump amber back to blue, so it
+   reverses along the same arc instead and never crosses the band. */
+@keyframes button-glow-hue {
+  from { filter: hue-rotate(230deg); }
+  to   { filter: hue-rotate(380deg); }
+}
+
+.button-glow-host:hover .button-glow,
+.button-glow-host:focus-visible .button-glow {
+  animation: button-glow-hue 2s linear infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-glow-host:hover .button-glow,
+  .button-glow-host:focus-visible .button-glow { animation: none; }
+}
+
+/* Footer wordmark — the "get in touch" export already carries the CTA's six glow
+   colours, baked into the PNG, so rotating the whole image's hue walks them
+   round the wheel exactly as the button's halo does. Unlike the button there is
+   nothing here to hover, so it runs continuously; site-footer.tsx only adds the
+   class once the footer is near the viewport, since this repaints a large image
+   every frame. Black and white survive a hue rotation untouched (no saturation
+   to turn), so the lettering itself holds still while its glow moves. */
+.wordmark-hue {
+  /* Half the CTA's pace. The button is read in a glance while the cursor is on
+     it; this sits in the page and is looked at for longer, where the button's
+     2s reads as restless. */
+  animation: button-glow-hue 4s linear infinite alternate;
+}
+
+/* The two wordmark exports do not share a base palette: light is warm, dark is
+   blue. Their yellow-green bands therefore sit in different places, and one arc
+   cannot clear both — the warm arc above runs straight through the dark
+   assets' green. Measured on the exports: Gettouch_dark is dirty 190-320 and
+   Oops_dark 170-310, so 330->520 (round through 0 to 160) is the arc that
+   clears both. Only the name is overridden; duration and direction stay.
+
+   Re-derive this whenever an asset is re-exported. If the dark exports are ever
+   re-made warm to match light, this whole block becomes unnecessary. */
+@keyframes wordmark-hue-dark {
+  from { filter: hue-rotate(330deg); }
+  to   { filter: hue-rotate(520deg); }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .wordmark-hue { animation-name: wordmark-hue-dark; }
+}
+
+:root[data-theme="dark"] .wordmark-hue { animation-name: wordmark-hue-dark; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmark-hue { animation: none; }
+}
+
