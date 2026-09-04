@@ -372,6 +372,8 @@ export default function FirstTable() {
         />
       </Reveal>
 
+      <Divider />
+
       <Reveal delay={0.6} immediate className="relative z-10 w-full">
         <SiteFooter />
       </Reveal>

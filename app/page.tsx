@@ -167,6 +167,8 @@ export default function Home() {
         </Reveal>
       </SectionReveal>
 
+      <Divider />
+
       <Reveal className="w-full">
         <SiteFooter />
       </Reveal>
