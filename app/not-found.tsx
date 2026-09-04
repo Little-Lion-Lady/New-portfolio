@@ -3,8 +3,8 @@
 import Image from "next/image";
 // Static imports — see site-footer.tsx: the content hash in the URL is what
 // makes a re-exported asset actually reach a browser that cached the old one.
-import oopsLight from "@/public/home/Oops_light.png";
-import oopsDark from "@/public/home/Oops_dark.png";
+import oopsLight from "@/public/home/Oops_light.svg";
+import oopsDark from "@/public/home/Oops_dark.svg";
 import { SiteHeader } from "./components/site-header";
 import { Button } from "./components/button";
 import { Reveal } from "./components/reveal";
@@ -45,7 +45,12 @@ export default function NotFound() {
               and the image is written in ems of that so it and the offset
               cancelling its 54px of left glow padding scale together — which
               is what puts the "O" on the page gutter rather than the glow.
-              Measured off the exported pixels: 925 wide, ink starting at 54.
+              Measured off the export: 925 viewBox, ink starting at 54.1 and
+              spanning 759.8 — the SVG matches the PNG it replaces to within a
+              tenth, so the em maths carries over untouched. SVG because the
+              raster version soft-focused on wide screens; `unoptimized` because
+              next/image refuses SVG through the optimizer and there is nothing
+              to optimize. Both themes share these bounds.
 
               Still an <h1>: the page keeps its heading, and the alt carries the
               word the image draws. */}
@@ -54,7 +59,7 @@ export default function NotFound() {
               src={dark ? oopsDark : oopsLight}
               alt="Oops!"
               priority
-              sizes="(min-width: 1024px) 60vw, 90vw"
+              unoptimized
               style={{
                 width: "calc(925em / 320)",
                 maxWidth: "none",

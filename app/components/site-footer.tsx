@@ -1,12 +1,13 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import Image from "next/image";
 // Static imports rather than string paths: they put a content hash in the URL,
-// so a re-exported asset gets a new URL. With "/home/Gettouch_light.png" the
+// so a re-exported asset gets a new URL. With a plain "/home/..." string the
 // optimizer URL keys on path + width + quality only, so replacing the file
 // leaves every cached copy — browser, CDN — serving the previous artwork.
-import gettouchLight from "@/public/home/Gettouch_light.png";
-import gettouchDark from "@/public/home/Gettouch_dark.png";
+import gettouchLight from "@/public/home/Gettouch_light.svg";
+import gettouchDark from "@/public/home/Gettouch_dark.svg";
 import { Button } from "./button";
 import { CyclingWord } from "./cycling-word";
 import { Star } from "./dynamic-visuals";
@@ -14,6 +15,17 @@ import { useIsDark } from "./use-is-dark";
 import { useNearViewport } from "./use-near-viewport";
 
 const CYCLING_WORDS = ["love", "hate", "AI", "coffee", "mischief", "claude", "care", "passion"];
+
+// Geometry of the two wordmark exports, measured with getBBox on the glyph
+// group so the filter is excluded — these are the letterforms, not the glow.
+// Both files carry the same lettering at the same size (inkW is identical) but
+// different glow padding, so the ratios that put the "g" and the "h" on the
+// gutters differ per theme. Re-measure on re-export; stale numbers slide the
+// wordmark off the gutter rather than failing visibly.
+const WORDMARK = {
+  light: { viewBox: 1704, inkX: 110.1, inkW: 1483.3, bottomPad: 193.6 },
+  dark: { viewBox: 1644, inkX: 80, inkW: 1483.3, bottomPad: 149.7 },
+} as const;
 
 // Figma "Footer" (node 361:4884) — the wordmark now leads the block rather than
 // closing it, and everything else hangs beneath it:
@@ -31,6 +43,7 @@ const CYCLING_WORDS = ["love", "hate", "AI", "coffee", "mischief", "claude", "ca
 // old live-text wordmark scaled itself with.
 export function SiteFooter() {
   const dark = useIsDark();
+  const mark = dark ? WORDMARK.dark : WORDMARK.light;
   // Gates two things, both because the footer sits below every page's fold.
   // The hue animation, which repaints a large image every frame and has no
   // reason to run before the reader is near it — one-shot, so once started it
@@ -45,18 +58,17 @@ export function SiteFooter() {
     <div className="relative w-full">
       <footer className="grid w-full grid-cols-4 gap-x-lg pt-4xl pb-4xs md:gap-y-xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-0 dt:pb-4xl">
         {/* Wordmark — the lettering meets the page gutters, not the image box.
-            The export is 1683px wide but its glow occupies 80px of that on each
-            side, leaving the letterforms themselves spanning 1523px (measured
-            off the exported pixels; both the light and dark files carry
-            identical bounds). Sizing the image to the cell would therefore inset
-            the "g" and the "h" by the width of their own glow, so it is blown up
-            by 1683/1523 and pulled left by the 80px margin, both as ratios of
-            the cell so they hold at every breakpoint.
+            The export's glow sits inside its viewBox, so sizing the image to
+            the cell would inset the "g" and the "h" by the width of their own
+            glow. It is blown up by viewBox/inkW and pulled left by inkX, both
+            as ratios of the cell so they hold at every breakpoint — see
+            WORDMARK above for the measurements and the caveat about re-exports.
 
-            Re-derive all three numbers whenever the asset is re-exported — the
-            glow padding has changed between exports while the 1523px lettering
-            stayed put, and stale numbers here shift the wordmark off the gutter
-            rather than failing visibly.
+            SVG rather than PNG because the wordmark is the widest thing on the
+            page: a raster export soft-focused once the viewport outgrew it, and
+            these scale to any width. They also need no optimizing, hence
+            `unoptimized` — next/image refuses SVG through the optimizer unless
+            dangerouslyAllowSVG is set, which is not worth turning on for this.
 
             The glow now spills past the page gutters. That is the point — it is
             also why <footer> can no longer clip its overflow. Nothing scrolls:
@@ -93,16 +105,16 @@ export function SiteFooter() {
           <Image
             src={dark ? gettouchDark : gettouchLight}
             alt="Get in touch"
-            sizes="115vw"
+            unoptimized
             loading={wordmarkNear ? "eager" : "lazy"}
             // height and max-width belong here rather than in className: as
             // Tailwind utilities they lost to next/image's own sizing and the
             // element computed to 0×0, which silently collapsed the wordmark.
             style={{
-              width: "calc(100% * 1683 / 1523)",
+              width: `calc(100% * ${mark.viewBox} / ${mark.inkW})`,
               maxWidth: "none",
               height: "auto",
-              marginLeft: "calc(-100% * 80 / 1523)",
+              marginLeft: `calc(-100% * ${mark.inkX} / ${mark.inkW})`,
             }}
             className={wordmarkNear ? "wordmark-hue" : undefined}
           />
@@ -117,12 +129,13 @@ export function SiteFooter() {
 
             The mobile top padding is Figma's 72px minus the wordmark's own
             bottom glow padding, which the image box carries as layout space and
-            Figma's live text does not: 150px of the 426px export sits under the
-            letterforms, which is 150/1523 of the cell once the image is scaled.
-            Subtracting it puts 72px between the lettering and the links rather
-            than 72px plus a variable gap. Re-derive the 150 on re-export, as
-            with the width and margin above. */}
-        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-[calc(var(--spacing-5xl)_-_100%*150/1523)] md:flex-row md:items-center md:gap-6xl md:pt-0 dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)/2)]">
+            Figma's live text does not. That padding differs between the two
+            exports, so it rides in on a custom property rather than a literal —
+            the breakpoints stay in the class, the per-theme number does not. */}
+        <div
+          style={{ "--wordmark-bottom-pad": `${mark.bottomPad}` } as CSSProperties}
+          className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-[calc(var(--spacing-5xl)_-_100%*var(--wordmark-bottom-pad)/1483.3)] md:flex-row md:items-center md:gap-6xl md:pt-0 dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)/2)]"
+        >
           <Button variant="link" label="LinkedIn" href="https://www.linkedin.com/in/marynababych/" target="_blank" rel="noopener noreferrer" />
           <Button variant="link" label="Email" href="mailto:maryna.babych@gmail.com" target="_blank" rel="noopener noreferrer" />
         </div>
