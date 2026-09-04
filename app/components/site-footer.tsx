@@ -64,8 +64,32 @@ export function SiteFooter() {
             is cut at the viewport rather than at the content edge. */}
         <div
           ref={wordmarkRef}
-          className="col-start-1 col-span-4 row-start-1 dt:col-span-6"
+          className="relative col-start-1 col-span-4 row-start-1 dt:col-span-6"
         >
+          {/* Stars — anchored to the wordmark's top edge rather than the
+              footer's. Pinned to the footer they sat on the lettering at wide
+              widths: the desktop footer has no top padding, so "top-0" put them
+              inside the type rather than above it, and the taller the wordmark
+              scaled the further in they reached. bottom-full lands the cluster's
+              base on the image's top edge, which is ~10px above the cap line at
+              every width, so they clear the letterforms without a per-breakpoint
+              offset to keep in step. It also matches Figma's mobile frame, where
+              the star box bottom sits exactly on the wordmark's box top.
+
+              The box needs explicit dimensions for bottom-full to have a height
+              to work from — the two stars inside are absolutely positioned, so
+              it has no size of its own. Each size is the cluster's own extent:
+              the offset of the lower-left star plus a star's width. */}
+          <div className="pointer-events-none absolute bottom-full right-0 h-[54px] w-[54px] md:h-[78px] md:w-[94px] lg:h-[104px] lg:w-[114px]">
+            <Star
+              variant={4}
+              className="absolute right-[26px] top-[6px] w-7 md:right-[46px] md:top-0 md:w-12 lg:!right-[50px] lg:!w-16"
+            />
+            <Star
+              variant={4}
+              className="absolute right-0 top-[26px] w-7 md:top-[30px] md:w-12 lg:!top-[40px] lg:!w-16"
+            />
+          </div>
           <Image
             src={dark ? gettouchDark : gettouchLight}
             alt="Get in touch"
@@ -123,19 +147,6 @@ export function SiteFooter() {
           <p className="b-3xs text-text-tertiary md:b-sm lg:b-xs dt:b-sm">©2026_Maryna_Babych</p>
         </div>
       </footer>
-
-      {/* Stars — top right, breaking above the wordmark. Outside <footer> so its
-          overflow-x-clip cannot cut them. */}
-      <div className="pointer-events-none absolute right-0 top-0">
-        <Star
-          variant={4}
-          className="absolute right-[26px] top-[6px] w-7 md:right-[46px] md:top-0 md:w-12 lg:!right-[50px] lg:!w-16"
-        />
-        <Star
-          variant={4}
-          className="absolute right-0 top-[26px] w-7 md:top-[30px] md:w-12 lg:!top-[40px] lg:!w-16"
-        />
-      </div>
     </div>
   );
 }
