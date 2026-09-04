@@ -69,7 +69,9 @@ const primaryGlowShadow = [
 
 // Figma "Button" component. Three variants × three breakpoints (mobile/tablet/desktop):
 //   primary (Type=Button, Size=lg) — filled pill, text-inverted
-//   link    (Type=Link,   Size=lg) — oversized text link (footer socials), text-primary-highlight
+//   link    (Type=Link,   Size=md at mobile / lg from tablet) — footer socials,
+//           text-primary-highlight. Mobile is Figma's Size=md Link: body-md type
+//           and a 20px arrow, not a scaled-down version of the lg one.
 //   view    (Type=Link,   Size=sm) — mono uppercase inline link ("View"), text-primary
 // Every size/gap/padding/colour below is taken from the Figma component spec,
 // except the primary pill: its label, padding and arrow each sit one step below
@@ -113,7 +115,7 @@ export function Button({
         whileHover="hover"
         whileTap={{ scale: 0.95 }}
         animate="rest"
-        className={`inline-flex items-center gap-xs d-2xs [font-weight:var(--font-weight-book)]! text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-sm md:d-xs ${className}`}
+        className={`inline-flex items-center gap-xs b-md [font-weight:var(--font-weight-book)]! text-text-primary-highlight transition-colors hover:text-text-primary-hover md:gap-sm md:d-xs ${className}`}
       >
         <span>{label}</span>
         <m.span
@@ -121,7 +123,7 @@ export function Button({
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="inline-flex shrink-0"
         >
-          <ArrowUpRight className="size-2xl lg:size-3xl" />
+          <ArrowUpRight className="size-lg md:size-2xl lg:size-3xl" />
         </m.span>
       </LinkTag>
     );
