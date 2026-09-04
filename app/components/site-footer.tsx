@@ -111,6 +111,10 @@ export function SiteFooter() {
         {/* Socials — vertical on mobile, horizontal md+. Indents to column 2 on
             desktop, where the design sets them in from the wordmark's edge.
 
+            Desktop top padding is half Figma's 10xl (224px). Written as the
+            token halved rather than a flat 112px, since there is no token at
+            that step and the relationship to the spec is the point.
+
             The mobile top padding is Figma's 72px minus the wordmark's own
             bottom glow padding, which the image box carries as layout space and
             Figma's live text does not: 150px of the 426px export sits under the
@@ -118,7 +122,7 @@ export function SiteFooter() {
             Subtracting it puts 72px between the lettering and the links rather
             than 72px plus a variable gap. Re-derive the 150 on re-export, as
             with the width and margin above. */}
-        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-[calc(var(--spacing-5xl)_-_100%*150/1523)] md:flex-row md:items-center md:gap-6xl md:pt-0 dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-10xl">
+        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-[calc(var(--spacing-5xl)_-_100%*150/1523)] md:flex-row md:items-center md:gap-6xl md:pt-0 dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)/2)]">
           <Button variant="link" label="LinkedIn" href="https://www.linkedin.com/in/marynababych/" target="_blank" rel="noopener noreferrer" />
           <Button variant="link" label="Email" href="mailto:maryna.babych@gmail.com" target="_blank" rel="noopener noreferrer" />
         </div>
