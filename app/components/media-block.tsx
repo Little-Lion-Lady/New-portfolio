@@ -36,7 +36,7 @@ export function ApproachMedia() {
   );
 }
 
-// §04 Design — top-wide shot leading into the big-image-plus-stack row below.
+// §04 Design — the wide onboarding flow diagram above the design boards.
 export function FlowDiagram() {
   return (
     <GlassImage
@@ -48,29 +48,28 @@ export function FlowDiagram() {
   );
 }
 
-// §04 Design — big image beside a stacked pair, then a wide full-width shot below.
+// §04 Design — two annotated design boards, then a wide full-width shot below.
 export function DesignMedia() {
   return (
     <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col">
-      <div className="flex gap-2xs md:gap-sm lg:gap-md">
+      {/* Figma 1144:10318 — the two boards stack full-width through tablet and
+          split into two equal 818 columns at desktop. Same frame ratio on both
+          from md up, so equal flex shares already resolve one shared height;
+          min-w-0 stops each frame's aspect-derived min-width from claiming
+          more than its flex share and overflowing the row. */}
+      <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col lg:flex-row">
         <GlassImage
-          src="/home/work/covid-tracer/MOH7.jpg"
-          alt={COVID_ALT}
-          aspectRatio="873/969"
-          className="flex-[5] self-start lg:flex-1"
+          src="/home/work/covid-tracer/MOH_33.png"
+          alt="Five dashboard variants showing every Bluetooth Tracing status state"
+          frameAspectClassName="aspect-[361/220] md:aspect-[944/500] lg:aspect-[818/500]"
+          className="w-full lg:min-w-0 lg:flex-1"
         />
-        <div className="flex gap-2xs md:gap-sm lg:gap-md flex-[4] flex-col lg:flex-1">
-          <GlassImage
-            src="/home/work/covid-tracer/MOH8.jpg"
-            alt={COVID_ALT}
-            className="h-[150px] flex-1 md:h-[192px] lg:h-[500px]"
-          />
-          <GlassImage
-            src="/home/work/covid-tracer/MOH9.jpg"
-            alt={COVID_ALT}
-            className="h-[150px] flex-1 md:h-[192px] lg:h-[500px]"
-          />
-        </div>
+        <GlassImage
+          src="/home/work/covid-tracer/MOH_34.png"
+          alt="Poster scan sign-in screen, before and after the redesign"
+          frameAspectClassName="aspect-[361/200] md:aspect-[944/500] lg:aspect-[818/500]"
+          className="w-full lg:min-w-0 lg:flex-1"
+        />
       </div>
       <GlassImage
         src="/home/work/covid-tracer/MOH10.jpg"
@@ -82,86 +81,121 @@ export function DesignMedia() {
   );
 }
 
-// §06 Outcome — two rows: pair of wide shots, then phone frames + wide shot.
-// (A third image, the section's "headline" shot, is inline in page.tsx.)
+// §05 Validation — the two test rounds: a click heatmap and the round's metrics
+// beside a recorded session. Figma 1831:42841 (desktop) / 1831:50704 (tablet) /
+// 1831:50716 (mobile). Desktop pairs the two narrow shots into one 816 column
+// beside the 816-wide session recording; tablet keeps that pair as a row of two
+// but takes the full width, and mobile stacks all three.
+export function ValidationMedia() {
+  return (
+    <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col lg:flex-row lg:items-start">
+      <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col md:flex-row md:items-stretch lg:min-w-0 lg:flex-1">
+        {/* The heatmap and the metrics sheet have different ratios but share a
+            row height from md up — the justified-row technique used by MOH4/MOH5
+            above: flex-basis 0, flex-grow proportional to each frame's own
+            ratio, and a matching frame aspect per breakpoint. */}
+        <GlassImage
+          src="/home/work/covid-tracer/MOH_29.png"
+          alt="Click heatmap over the poster scan screen from the first test round"
+          frameAspectClassName="aspect-[361/612] md:aspect-[389/679] lg:aspect-[400/679]"
+          className="w-full md:w-auto md:min-w-0 md:flex-[0.5729] lg:flex-[0.5891]"
+        />
+        <GlassImage
+          src="/home/work/covid-tracer/MOH_30.png"
+          alt="Test round metrics — mislick rate, duration, success and bounce — above the two-screen funnel"
+          frameAspectClassName="aspect-[361/528] md:aspect-[539/680] lg:aspect-[400/680]"
+          className="w-full md:w-auto md:min-w-0 md:flex-[0.7926] lg:flex-[0.5882]"
+        />
+      </div>
+      <GlassImage
+        src="/home/work/covid-tracer/MOH_31.png"
+        alt="Recorded usability session running the Bluetooth Tracing prototype"
+        frameAspectClassName="aspect-[361/262] md:aspect-[944/722] lg:aspect-[816/680]"
+        className="w-full lg:min-w-0 lg:flex-1"
+      />
+    </div>
+  );
+}
+
+// §06 Outcome — the shipped screens, the app-store ratings, the launch numbers
+// and the Ministry press shot. Figma 1144:10358 (desktop) / 1144:10512 (tablet)
+// / 1831:50683 (mobile).
+//
+// The shipped screens ship as two different exports rather than one responsive
+// crop: desktop gets all six in a single wide strip, tablet and mobile get them
+// as two rows of three. The two sets also sit in a different order — desktop
+// leads with the strip and then pairs the ratings card with the launch numbers,
+// while tablet/mobile run ratings → strip 1 → strip 2 → numbers straight down —
+// so each breakpoint gets its own block rather than one reordered flex column.
+const OUTCOME_RATINGS_ALT =
+  "NZ COVID Tracer app store listing, March 2020 beside July 2021: the rating rises from 2.1 to 4.2 stars";
+const OUTCOME_NUMBERS_ALT =
+  "Launch numbers: 2.8+ million registered users, 300,000,000+ poster scans and manual entries, 1.5+ million users with active Bluetooth tracing";
+const OUTCOME_SCREENS_ALT = "The shipped NZ COVID Tracer onboarding and dashboard screens";
+
 export function OutcomeMedia() {
   return (
     <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col">
-      {/* Row 1 — stacks through tablet, side-by-side only at desktop */}
-      <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col lg:flex-row lg:items-stretch">
-        {/* MOH12 + MOH13 share one row height from lg up — same justified-row
-            technique as MOH4/MOH5 above. */}
+      {/* Mobile + tablet — one full-width column, screens split across two shots */}
+      <div className="flex gap-2xs md:gap-sm flex-col lg:hidden">
+        <GlassImage
+          src="/home/work/covid-tracer/MOH11.jpg"
+          alt={OUTCOME_RATINGS_ALT}
+          frameAspectClassName="aspect-[361/225] md:aspect-[944/500]"
+          className="w-full"
+        />
+        <GlassImage
+          src="/home/work/covid-tracer/Mobile_screenshots_1.png"
+          alt={OUTCOME_SCREENS_ALT}
+          sizes="(min-width: 1024px) 64px, (min-width: 768px) 829px, 362px"
+          frameAspectClassName="aspect-[361/225] md:aspect-[944/583]"
+          className="w-full"
+        />
+        <GlassImage
+          src="/home/work/covid-tracer/Mobile_screenshots_2.png"
+          alt={OUTCOME_SCREENS_ALT}
+          sizes="(min-width: 1024px) 64px, (min-width: 768px) 829px, 362px"
+          frameAspectClassName="aspect-[361/225] md:aspect-[944/583]"
+          className="w-full"
+        />
         <GlassImage
           src="/home/work/covid-tracer/MOH12.jpg"
-          alt={COVID_ALT}
-          frameAspectClassName="aspect-[361/240] md:aspect-[647/420]"
-          className="w-full lg:w-auto lg:flex-[1.5405]"
-        />
-        <GlassImage
-          src="/home/work/covid-tracer/MOH13.jpg"
-          alt={COVID_ALT}
-          frameAspectClassName="aspect-[361/168] md:aspect-[884/420]"
-          className="w-full lg:w-auto lg:flex-[2.1048]"
-        />
-      </div>
-      {/* Row 2 — MOH14, MOH15 and MOH16 all share one row height from md up.
-          Nesting MOH14+MOH15 in their own sub-row and stretching that whole
-          sub-row against MOH16 doesn't resolve correctly: the outer stretch
-          gives the sub-row a height taken from its own aspect-ratio, but
-          when that gets rounded up to match MOH16's taller hypothetical
-          height, the sub-row's *own* children re-stretch to the new (taller)
-          height and overflow the sub-row's already-fixed width — MOH15 spills
-          under MOH16. A flat, single-level row (all three as direct
-          flex-basis:0 siblings) resolves one consistent height for all three
-          at once, same as the MOH4/MOH5 and MOH12/MOH13 pairs above — so md+
-          uses that flat row, and only mobile (where MOH14/MOH15 must stay
-          paired above MOH16) keeps the nested layout. */}
-      <div className="flex flex-col gap-2xs md:hidden">
-        {/* Figma 1144:18252 — the pair is 99w each inside the 361 column, gap 6,
-            centred; not two half-width cards filling the row. */}
-        <div className="flex justify-center gap-2xs">
-          <GlassImage
-            src="/home/work/covid-tracer/MOH14.jpg"
-            alt={COVID_ALT}
-            frameAspectRatio="99/200"
-            className="w-[27.42%]"
-          />
-          <GlassImage
-            src="/home/work/covid-tracer/MOH15.jpg"
-            alt={COVID_ALT}
-            frameAspectRatio="99/200"
-            className="w-[27.42%]"
-          />
-        </div>
-        <GlassImage
-          src="/home/work/covid-tracer/MOH16.jpg"
-          alt={COVID_ALT}
-          frameAspectRatio="361/200"
-          objectPosition="left"
+          alt={OUTCOME_NUMBERS_ALT}
+          frameAspectClassName="aspect-[361/225] md:aspect-[944/600]"
           className="w-full"
         />
       </div>
-      <div className="hidden md:flex md:items-stretch md:gap-sm lg:gap-md">
+      {/* Desktop — the wide six-screen strip, then ratings beside the numbers */}
+      <div className="hidden lg:flex lg:flex-col lg:gap-md">
         <GlassImage
-          src="/home/work/covid-tracer/MOH14.jpg"
-          alt={COVID_ALT}
-          frameAspectRatio="226/457"
-          className="flex-[0.4945]"
+          src="/home/work/covid-tracer/Desktop_screenshots.png"
+          alt={OUTCOME_SCREENS_ALT}
+          sizes="(min-width: 1024px) 1374px, 64px"
+          frameAspectClassName="lg:aspect-[1648/574]"
+          className="w-full"
         />
-        <GlassImage
-          src="/home/work/covid-tracer/MOH15.jpg"
-          alt={COVID_ALT}
-          frameAspectRatio="226/458"
-          className="flex-[0.4934]"
-        />
-        <GlassImage
-          src="/home/work/covid-tracer/MOH16.jpg"
-          alt={COVID_ALT}
-          frameAspectRatio="1013/470"
-          objectPosition="left"
-          className="flex-[2.1553]"
-        />
+        <div className="flex gap-md">
+          <GlassImage
+            src="/home/work/covid-tracer/MOH11.jpg"
+            alt={OUTCOME_RATINGS_ALT}
+            frameAspectClassName="lg:aspect-[818/500]"
+            className="min-w-0 flex-1"
+          />
+          <GlassImage
+            src="/home/work/covid-tracer/MOH12.jpg"
+            alt={OUTCOME_NUMBERS_ALT}
+            frameAspectClassName="lg:aspect-[818/500]"
+            className="min-w-0 flex-1"
+          />
+        </div>
       </div>
+      <GlassImage
+        src="/home/work/covid-tracer/MOH16.jpg"
+        alt="Dr Ashley Bloomfield holding up the NZ COVID Tracer app at a Ministry of Health briefing"
+        frameAspectClassName="aspect-[361/200] md:aspect-[944/455] lg:aspect-[1648/710]"
+        objectPosition="left"
+        className="w-full"
+      />
     </div>
   );
 }

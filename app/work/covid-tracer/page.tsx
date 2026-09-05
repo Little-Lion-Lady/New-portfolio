@@ -19,9 +19,9 @@ import {
   ApproachMedia,
   FlowDiagram,
   DesignMedia,
+  ValidationMedia,
   OutcomeMedia,
 } from "../../components/media-block";
-import { GlassImage } from "../../components/work-image";
 import { covid } from "@/content/stats";
 
 const findings = [
@@ -270,6 +270,9 @@ export default function CovidTracer() {
             <Stat size="sm" value={`${covid.usabilityScoreBefore} → ${covid.usabilityScoreAfter}`} label="Usability score improvement" />
           </Stats>
         </Reveal>
+        <Reveal index={2} delay={0.6} className="w-full">
+          <ValidationMedia />
+        </Reveal>
       </SectionReveal>
 
       <Divider />
@@ -279,49 +282,36 @@ export default function CovidTracer() {
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="06" name="Outcome" />
         </Reveal>
-        {/* Tablet uses Figma's 9-col grid (image 1-3, content 5-9); desktop the
-            12-col page grid (image 1-6, content 8-12). */}
-        <Reveal index={1} delay={0.6} className="flex w-full flex-col gap-r-lg md:grid md:grid-cols-9 md:gap-x-lg lg:grid-cols-12">
-          {/* Content (tablet/desktop: right) */}
-          <div className="flex flex-col gap-lg md:gap-xl md:col-start-5 md:col-span-5 md:row-start-1 lg:gap-3xl lg:col-start-8 lg:col-span-5">
-            <KeyParagraph>
-              A month after launch, Bluetooth adoption was up and scanning hadn’t dropped. That
-              combination was the point: people turned Bluetooth on without deciding it let them off
-              the hook for scanning. The app’s rating had also doubled by the time I wrapped the
-              project.
-            </KeyParagraph>
-            {/* Figma 1144:10659 (mobile) / 1144:10505 (tablet) give the arrow a
-                column of its own — two ~38% stat columns either side of a
-                ~22-24% gutter — instead of sizing it to the glyph. Desktop keeps
-                the content-width column and a 20px gap. */}
-            <div className="grid grid-cols-[39fr_22fr_39fr] items-start gap-y-xs md:grid-cols-[38fr_24fr_38fr] md:gap-y-3xl lg:grid-cols-[1fr_auto_1fr] lg:gap-x-lg">
-              <Stat size="sm" highlight value={covid.btDevicesBefore} label="Daily active BT devices" />
-              <StatArrow />
-              <Stat size="sm" highlight value={covid.btDevicesAfter} label={`${covid.btGrowth} growth`} />
-              <Stat size="sm" highlight value={covid.posterScansBefore} label="Daily poster scans" />
-              <StatArrow />
-              <Stat size="sm" highlight value={covid.posterScansAfter} label={`${covid.posterScanGrowth} growth`} />
-            </div>
+        {/* Figma 1144:10345 — the key paragraph and the before→after stats sit
+            in one row on desktop (paragraph cols 1-5, stats cols 7-11 of the
+            12-col page grid) and stack in a 5-of-9 column on tablet. The
+            section's headline shot is no longer part of this row; it leads the
+            image run below instead. */}
+        <Reveal
+          index={1}
+          delay={0.6}
+          className="flex w-full flex-col gap-lg md:grid md:grid-cols-9 md:gap-x-lg md:gap-y-xl lg:grid-cols-12 lg:gap-y-0"
+        >
+          <KeyParagraph className="md:col-start-1 md:col-span-5 md:row-start-1">
+            A month after launch, Bluetooth adoption was up and scanning hadn’t dropped. That
+            combination was the point: people turned Bluetooth on without deciding it let them off
+            the hook for scanning. The app’s rating had also doubled by the time I wrapped the
+            project.
+          </KeyParagraph>
+          {/* Figma 1144:10659 (mobile) / 1144:10505 (tablet) / 1144:10345
+              (desktop) give the arrow a column of its own — two ~38% stat
+              columns either side of a ~22-24% gutter — instead of sizing it to
+              the glyph. */}
+          <div className="grid grid-cols-[39fr_22fr_39fr] items-start gap-y-xs md:col-start-1 md:col-span-5 md:row-start-2 md:grid-cols-[38fr_24fr_38fr] md:gap-y-3xl lg:col-start-7 lg:col-span-5 lg:row-start-1">
+            <Stat size="sm" highlight value={covid.btDevicesBefore} label="Daily active BT devices" />
+            <StatArrow />
+            <Stat size="sm" highlight value={covid.btDevicesAfter} label={`${covid.btGrowth} growth`} />
+            <Stat size="sm" highlight value={covid.posterScansBefore} label="Daily poster scans" />
+            <StatArrow />
+            <Stat size="sm" highlight value={covid.posterScansAfter} label={`${covid.posterScanGrowth} growth`} />
           </div>
-          {/* Headline image (desktop: left) */}
-          {/* Figma sizes this card differently at every step — 361×225 mobile
-              (1609:135725), 301.33×276 tablet (1144:18118), 814×500 desktop
-              (1144:18063) — so the ratio is responsive rather than one value.
-              On mobile it stacks under the content as the first shot of the
-              image run; from tablet up it sits beside the content. */}
-          <GlassImage
-            src="/home/work/covid-tracer/MOH11.jpg"
-            alt={`NZ COVID Tracer app store listing, March 2020 beside July 2021: the rating rises from ${covid.appRatingBefore} to ${covid.appRatingAfter} stars`}
-            aspectClassName="aspect-[361/225] md:aspect-[904/828] lg:aspect-[814/500]"
-            className="w-full self-start md:col-start-1 md:col-span-3 md:row-start-1 lg:col-span-6"
-          />
         </Reveal>
-        {/* From tablet up the section's own gap-r-lg (40/64) is exactly Figma's
-            gap between the columns row and the images container. On mobile the
-            columns row ends with MOH11 — the first shot of the image run — so
-            the gap to MOH12 is only 8 (1144:10666), and 24 is taken back off
-            the 32. Still a positive 8px gap, so nothing can overlap. */}
-        <Reveal index={2} delay={0.6} className="w-full -mt-xl md:mt-0">
+        <Reveal index={2} delay={0.6} className="w-full">
           <OutcomeMedia />
         </Reveal>
       </SectionReveal>
