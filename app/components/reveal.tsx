@@ -15,6 +15,8 @@
 
   Both components:
   - Respect prefers-reduced-motion — instant fade.
+  - Animate identically in every browser. See the note on the removed Firefox
+    variant set below before reintroducing any per-browser branch here.
   - Gate on <SectionReveal> context when nested inside one; outside any
     SectionReveal the context default is `true` so the in-view trigger fires
     normally.
@@ -27,7 +29,6 @@ import {
   EASE,
   DURATION,
   STAGGER,
-  DURATION_FF,
   WORD_DURATION,
   WORD_STAGGER,
   LINE_DURATION,
@@ -50,31 +51,30 @@ export function useRevealTrigger() {
   return useContext(RevealTriggerContext);
 }
 
-// SSR-safe Firefox detection, computed once and shared across every Reveal/
-// RevealWords instance (a page can render dozens) instead of once per
-// instance. useSyncExternalStore lets the client value differ from the
-// server's `false` on the very first client render with no hydration warning
-// and no extra setState-in-effect render, unlike a useState+useEffect pair.
-let cachedIsFirefox: boolean | null = null;
-function getIsFirefoxSnapshot() {
-  if (cachedIsFirefox === null) cachedIsFirefox = /Firefox/.test(navigator.userAgent);
-  return cachedIsFirefox;
-}
-function getIsFirefoxServerSnapshot() {
-  return false;
-}
-function subscribeNoop() {
-  return () => {};
-}
-function useIsFirefox() {
-  return useSyncExternalStore(subscribeNoop, getIsFirefoxSnapshot, getIsFirefoxServerSnapshot);
-}
+// Firefox once had its own variant set — opacity + y, no blur — selected by a
+// UA sniff behind useSyncExternalStore. It could never work, because the
+// snapshot that decides it is not the snapshot Framer Motion mounts from:
+//
+//   hydrated load  — the server snapshot (`false`) is what renders, so Framer
+//                    builds its initial values from the BLUR variants and the
+//                    painted blur(10px) animates out. Firefox blurred.
+//   client-side nav — the components mount fresh, the very first render already
+//                    has the client snapshot (`true`), so Framer mounts from
+//                    filter:blur(0px). Firefox did not blur.
+//
+// Same browser, same page, opposite result depending only on how you arrived —
+// which is exactly how it was reported ("sometimes the blur reveal doesn't
+// trigger"). Firefox 155 paints the blur reveal without measurable jank, so
+// the special case is gone rather than repaired: one variant set, one result.
 
 // Has this component committed on the client yet? `immediate` reveals need one
 // render in the hidden state before they animate, which is what the old
-// useState(false) + setState-in-effect pair bought. Same trick as
-// useIsFirefox above: the server snapshot is false and the client snapshot is
-// true, so the value flips across hydration with no extra state.
+// useState(false) + setState-in-effect pair bought. useSyncExternalStore's
+// server snapshot is false and its client snapshot is true, so the value flips
+// across hydration with no extra state.
+function subscribeNoop() {
+  return () => {};
+}
 function getMountedSnapshot() {
   return true;
 }
@@ -175,74 +175,10 @@ const lineVariants: Variants = {
   }),
 };
 
-// Firefox has no blur to clear, so the line needs something else to arrive on:
-// the same 16px lift the block reveals use, applied per line.
-const ffLineVariants: Variants = {
-  hidden: { opacity: 0, y: Y, filter: "blur(0px)" },
-  visible: (custom: WordCustom = {}) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: custom.duration ?? LINE_DURATION,
-      ease: EASE,
-      delay: (custom.i ?? 0) * (custom.stagger ?? LINE_STAGGER) + (custom.delay ?? 0),
-    },
-    transitionEnd: { filter: "none" },
-  }),
-};
-
 // For prefers-reduced-motion — instant, no animation.
 const reducedVariants: Variants = {
   hidden: { opacity: 0, filter: "blur(0px)" },
   visible: { opacity: 1, filter: "blur(0px)", transition: { duration: 0.01 }, transitionEnd: { filter: "none" } },
-};
-
-// For Firefox — opacity + y only (no blur). filter:blur(0px) must be explicit
-// in every state so Framer Motion overwrites the stale blur from the initial
-// hidden state instead of carrying it forward. With no blur to paint there is
-// nothing to hide behind, so these run slightly shorter.
-const ffVariants: Variants = {
-  hidden: { opacity: 0, y: Y, filter: "blur(0px)" },
-  visible: (custom: BlockCustom = {}) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: custom.duration ?? DURATION_FF,
-      ease: EASE,
-      delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
-    },
-    transitionEnd: { filter: "none" },
-  }),
-};
-
-const ffVariantsNoY: Variants = {
-  hidden: { opacity: 0, filter: "blur(0px)" },
-  visible: (custom: BlockCustom = {}) => ({
-    opacity: 1,
-    filter: "blur(0px)",
-    transition: {
-      duration: custom.duration ?? DURATION_FF,
-      ease: EASE,
-      delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
-    },
-    transitionEnd: { filter: "none" },
-  }),
-};
-
-const ffWordVariants: Variants = {
-  hidden: { opacity: 0, filter: "blur(0px)" },
-  visible: (custom: WordCustom = {}) => ({
-    opacity: 1,
-    filter: "blur(0px)",
-    transition: {
-      duration: custom.duration ?? DURATION_FF,
-      ease: EASE,
-      delay: (custom.i ?? 0) * (custom.stagger ?? WORD_STAGGER) + (custom.delay ?? 0),
-    },
-    transitionEnd: { filter: "none" },
-  }),
 };
 
 const blurVariants: Variants = {
@@ -307,7 +243,6 @@ export function Reveal({
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, IN_VIEW);
   const reducedMotion = useReducedMotion();
-  const isFF = useIsFirefox();
   const { active, immediate: ctxImmediate } = useSectionReveal();
   // `immediate` (prop or inherited from an immediate SectionReveal) reveals on
   // mount and ignores the in-view gate, so all content appears at once on load.
@@ -334,7 +269,7 @@ export function Reveal({
       custom={{ i: index, delay, duration }}
       initial="hidden"
       animate={shouldAnimate ? "visible" : "hidden"}
-      variants={reducedMotion ? reducedVariants : isFF ? (noY ? ffVariantsNoY : ffVariants) : blur ? blurVariants : noY ? variantsNoY : variants}
+      variants={reducedMotion ? reducedVariants : blur ? blurVariants : noY ? variantsNoY : variants}
     >
       <RevealTriggerContext.Provider value={trigger}>{children}</RevealTriggerContext.Provider>
     </Component>
@@ -404,7 +339,6 @@ export function RevealWords({
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, IN_VIEW);
   const reducedMotion = useReducedMotion();
-  const isFF = useIsFirefox();
   const { active, immediate: ctxImmediate } = useSectionReveal();
   const isImmediate = immediate || ctxImmediate;
   const mounted = useHasMounted();
@@ -575,15 +509,7 @@ export function RevealWords({
       ? { i: startLine + (lineMap?.[i] ?? 0), stagger: LINE_STAGGER, duration: LINE_DURATION }
       : { i: startIndex + i, stagger: timing.stagger, duration: timing.duration };
 
-  const tokenVariants = reducedMotion
-    ? reducedVariants
-    : byLine
-      ? isFF
-        ? ffLineVariants
-        : lineVariants
-      : isFF
-        ? ffWordVariants
-        : wordVariants;
+  const tokenVariants = reducedMotion ? reducedVariants : byLine ? lineVariants : wordVariants;
 
   return (
     // Published so <SyncedStar>/<TitleStars> can time themselves against the
