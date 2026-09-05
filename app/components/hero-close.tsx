@@ -14,6 +14,15 @@
   the handover point; until it has one this holds, so the cat cannot start on a
   placeholder delay and then jump when the real one arrives.
 
+  A plain crossfade: opacity only, linear, over HERO_CLOSE_DURATION, with no
+  entrance blur and no movement. Every part of that is deliberate. This is the
+  one reveal on the site with neither a stagger nor sibling movement to cover
+  how hard the shared EASE front-loads — on that curve it crossed from
+  invisible to fully present in about 200ms and read as a pop — and its
+  subjects are line art, which BLUR_HERO_CLOSE explains blur cannot soften.
+  Strip both and what is left has to carry the arrival on its own, which only
+  works if the fade is even: hence linear, and hence the long duration.
+
   noSafetyFloor: the Divider carries a backdrop-blur, and an element running
   the floor's filter/transform animation becomes a backdrop root, which empties
   it out. That makes the hold above load-bearing — useHeadlineHandoff falls
@@ -23,6 +32,7 @@
 
 import type { ReactNode } from "react";
 import { Reveal } from "./reveal";
+import { BLUR_HERO_CLOSE, EASE_SETTLE, HERO_CLOSE_DURATION } from "./motion-timing";
 import { useHeadlineHandoff } from "./word-sync";
 
 export function HeroClose({
@@ -38,7 +48,17 @@ export function HeroClose({
   const delay = useHeadlineHandoff({ revealDelay });
 
   return (
-    <Reveal as="div" delay={delay ?? 0} hold={delay === null} noY noSafetyFloor className={className}>
+    <Reveal
+      as="div"
+      delay={delay ?? 0}
+      hold={delay === null}
+      duration={HERO_CLOSE_DURATION}
+      ease={EASE_SETTLE}
+      blurPx={BLUR_HERO_CLOSE}
+      noY
+      noSafetyFloor
+      className={className}
+    >
       {children}
     </Reveal>
   );
