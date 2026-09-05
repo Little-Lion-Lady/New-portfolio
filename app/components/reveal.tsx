@@ -108,17 +108,32 @@ export const IN_VIEW = { once: true, amount: "some", margin: "0px 0px 10% 0px" }
 // say) cannot hold the headline at opacity 0 indefinitely.
 const MAX_SETTLE_FRAMES = 30;
 
-type BlockCustom = { i?: number; delay?: number; duration?: number };
+type BlockCustom = {
+  i?: number;
+  delay?: number;
+  duration?: number;
+  /** Override the shared EASE for this reveal only. See EASE_SETTLE. */
+  ease?: [number, number, number, number];
+  /**
+   * Entrance blur radius in px, overriding BLUR_BLOCK. For subject matter a
+   * wide radius destroys rather than softens - see BLUR_HERO_CLOSE.
+   */
+  blurPx?: number;
+};
 
 const variants: Variants = {
-  hidden: { opacity: 0, y: Y, filter: BLUR_BLOCK },
+  hidden: (custom: BlockCustom = {}) => ({
+    opacity: 0,
+    y: Y,
+    filter: custom.blurPx === undefined ? BLUR_BLOCK : `blur(${custom.blurPx}px)`,
+  }),
   visible: (custom: BlockCustom = {}) => ({
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
     transition: {
       duration: custom.duration ?? DURATION,
-      ease: EASE,
+      ease: custom.ease ?? EASE,
       delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
@@ -126,13 +141,16 @@ const variants: Variants = {
 };
 
 const variantsNoY: Variants = {
-  hidden: { opacity: 0, filter: BLUR_BLOCK },
+  hidden: (custom: BlockCustom = {}) => ({
+    opacity: 0,
+    filter: custom.blurPx === undefined ? BLUR_BLOCK : `blur(${custom.blurPx}px)`,
+  }),
   visible: (custom: BlockCustom = {}) => ({
     opacity: 1,
     filter: "blur(0px)",
     transition: {
       duration: custom.duration ?? DURATION,
-      ease: EASE,
+      ease: custom.ease ?? EASE,
       delay: (custom.i ?? 0) * STAGGER + (custom.delay ?? 0),
     },
     transitionEnd: { filter: "none" },
@@ -203,6 +221,8 @@ export function Reveal({
   blur = false,
   noY = false,
   duration,
+  ease,
+  blurPx,
   immediate = false,
   hold = false,
   noSafetyFloor = false,
@@ -217,6 +237,14 @@ export function Reveal({
   noY?: boolean;
   /** Override the shared block duration for this reveal only, in seconds. */
   duration?: number;
+  /**
+   * Override the shared EASE for this reveal only. For a reveal that has
+   * neither a stagger nor sibling movement to cover how hard EASE front-loads
+   * — see EASE_SETTLE in motion-timing.ts.
+   */
+  ease?: [number, number, number, number];
+  /** Entrance blur radius in px, overriding BLUR_BLOCK. See BLUR_HERO_CLOSE. */
+  blurPx?: number;
   immediate?: boolean;
   /**
    * Stay hidden regardless of the trigger. For a caller that derives its own
@@ -266,7 +294,7 @@ export function Reveal({
         noSafetyFloor ? className : className ? `reveal-safety ${className}` : "reveal-safety"
       }
       style={style}
-      custom={{ i: index, delay, duration }}
+      custom={{ i: index, delay, duration, ease, blurPx }}
       initial="hidden"
       animate={shouldAnimate ? "visible" : "hidden"}
       variants={reducedMotion ? reducedVariants : blur ? blurVariants : noY ? variantsNoY : variants}

@@ -73,3 +73,43 @@ export const LINE_STAGGER = 0.15;
 // past the point where the eye has the line, and the cat overlaps the headline's
 // tail instead of queueing behind it.
 export const LINE_SETTLE = LINE_DURATION / 4;
+
+// ─── The hero's closing beat ─────────────────────────────────────────────────
+// The divider and the cat are ONE reveal, with no stagger and no movement
+// beside it. EASE spends its travel almost entirely up front — 85% resolved in
+// the first 28% of the duration — which every other reveal gets away with
+// because something else covers it: the headline staggers five lines 150ms
+// apart, block reveals lift 16px. With nothing to cover it, that curve measured
+// 2% -> 76% opacity in 200ms of a nominally 910ms reveal, which is a pop
+// however long the duration claims to be.
+//
+// Linear, so the visible range really is 0-100% of the duration. Every shaped
+// curve concentrates its travel somewhere, and wherever that is, the rest of
+// the duration is time the viewer cannot see anything change. Softening EASE
+// to cubic-bezier(.25,.1,.25,1) was tried first and still read as a pop: it
+// widened the perceptible fade to ~676ms, but the blur was the real culprit
+// (see BLUR_HERO_CLOSE below), and only linear puts the change everywhere.
+//
+// Deliberately NOT the shared EASE — changing that would reshape every reveal
+// on the site to fix the one that is unusual in having nothing to hide behind.
+export const EASE_SETTLE = [0, 0, 1, 1] as [number, number, number, number];
+export const HERO_CLOSE_DURATION = 0.7;
+
+// No entrance blur on the closing beat, unlike every other reveal.
+//
+// Blur softens a shape by spreading it over its own width; on line art there is
+// no width to spread into, so it erases instead. The cat is ~2px strokes and
+// the divider is a 1px hairline. Measured on the cat region, recoverable detail
+// against radius: 8px start put every legible edge in the last 500ms of a
+// 1400ms reveal (the length this ran at when measured), and dropping to 3px
+// barely moved it, because anything above
+// ~1px still smears a 2px stroke. Whatever the curve does, the drawing only
+// exists once the radius is nearly gone - so the visible range collapses to the
+// tail no matter how the timing is shaped.
+//
+// Without it the strokes are present from the first frame and simply gain
+// contrast, which is what makes the visible range actually span 0-100%. With
+// the y lift dropped too, that even fade is the whole of the entrance, which
+// is why the curve above has to stay linear. Raise this to 1-2 for a hint of
+// softness; past that the cat pops again however long the duration.
+export const BLUR_HERO_CLOSE = 0;
