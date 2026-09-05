@@ -1840,6 +1840,32 @@ textarea,
 .rail-bleed {
   width: 100vw;
   margin-inline: calc((100% - 100vw) / 2);
+
+  /*
+    Vertical room for a hovered card to grow into, added as padding and taken
+    straight back off as margin — so the clip box is 64px taller while the
+    layout is byte-for-byte what it was.
+
+    The rail is otherwise exactly as tall as its cards, and `overflow-y:
+    visible` is what is supposed to let a hovered card grow past it. At rest
+    that works. While a compositor-driven transform is running, Gecko applies
+    this element's border box as a clip on BOTH axes, so the growing card was
+    cut off mid-animation and snapped back when the animation ended and the
+    main thread repainted. It read as the hover stuttering; nothing was
+    actually dropping frames, which is why every frame-timing measurement of it
+    came back clean. Blink honours overflow-y here, so it only ever showed in
+    Firefox.
+
+    32px covers the worst case with room to spare. A card grows by CARD_GROW
+    (24px) of WIDTH and takes its height from the photo's ratio, so the tallest
+    growth belongs to the narrowest card: 24 / 0.448 = 53.5px, i.e. 26.8px past
+    each edge. That is the same number at every breakpoint — the ratio cancels
+    the card height out — so one value serves all three.
+
+    Raise this if CARD_GROW grows or a narrower photo joins a rail.
+  */
+  padding-block: 32px;
+  margin-block: -32px;
 }
 
 /* Primary-pill hover halo — the colour cycle.
