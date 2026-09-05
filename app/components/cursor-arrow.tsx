@@ -14,9 +14,11 @@
   it, so hover states are untouched and there is exactly one seam to manage —
   hiding this element wherever the native cursor takes over.
 
-  The swing fires at rest, not on movement: the frame after the pointer stops,
-  the arrow rocks through one cycle and settles. Moving again springs it back
-  to 0 rather than cutting.
+  The swing fires the frame the pointer stops, and it reads the gesture that
+  just ended: it leads in the direction of travel, scales with how fast the
+  pointer was going, and does not fire at all for a slow drift or for movement
+  that was mostly vertical. Moving again springs it back to 0 rather than
+  cutting.
 
   Two nested elements, deliberately. The outer one carries position, written
   straight to motion values from the pointermove listener with no smoothing —
@@ -27,7 +29,7 @@
 */
 
 import { useEffect, useRef, useState } from "react";
-import { m, useMotionValue, useReducedMotion, type Easing, type Variants } from "framer-motion";
+import { m, useMotionValue, useReducedMotion } from "framer-motion";
 
 // Matches useWorkMenu's gate, and the `@media (hover: none)` reset in the CSS:
 // no cursor to replace where there is no cursor.
@@ -40,23 +42,134 @@ const HOVER_QUERY = "(hover: hover) and (pointer: fine)";
 const HOTSPOT_X = 7;
 const HOTSPOT_Y = 3;
 
-// One full cycle, +3 out and -2.5 back. The three legs are 3, 5.5 and 2.5
-// degrees, so `times` splits the duration in those proportions (3/11, 5.5/11,
-// 2.5/11) rather than evenly, which would run the long middle leg at more than
-// twice the speed of the short return and lurch through the crossing.
-const SWING = [0, 3, -2.5, 0];
-const SWING_TIMES = [0, 0.273, 0.773, 1];
-const SWING_DURATION = 0.3;
+// One cycle: out the way the pointer was travelling, back through to the far
+// side, then home.
+//
+// The shape is a damped sine sampled into keyframes, not three eased legs. A
+// three-keyframe swing has to pick an easing per leg, and every choice was a
+// compromise: the curve that left 0 fast enough to be seen departed like a
+// flick, and the one that departed gently spent 45ms below the angle the eye
+// can resolve. A sine has neither problem — it leaves equilibrium at its
+// maximum speed and slows into each extreme on its own, because that is what
+// the motion actually is, and its velocity is continuous the whole way rather
+// than being pinned to zero at each keyframe.
+//
+// It also produces the return ratio for free. With envelope e^(-DECAY*u) over
+// one period, the second extreme is e^(-DECAY/2) of the first, so DECAY =
+// -2*ln(2.5/3) = 0.3646 reproduces the 2.5/3 that was tuned by hand.
+// Duration runs the other way to amplitude: fastest flicks keep the tight
+// 0.38s cycle, and slower ones stretch. A small arc played at the fast cycle's
+// pace reads as a twitch rather than a swing — the eye has less angle to
+// follow, so the same duration feels hurried. Stretching it back out keeps a
+// gentle flick gentle instead of merely small.
+//
+// Interpolated on the raw speed fraction, not the squared one used for
+// amplitude: the point here is a steady spread across the range rather than a
+// flat low end.
+const MIN_DURATION = 0.38;
+const MAX_DURATION = 0.58;
 
-// Easing per leg, and the first leg is the whole point. A pendulum leaves rest
-// at zero velocity, which is what easeInOut models and what it looked like
-// here — but a 32px arrow has to turn something like a degree before the eye
-// catches it, and easeInOut spent 48ms getting there. The trigger was already
-// one frame; the rest of the delay was this curve. circOut leaves at maximum
-// velocity instead and crosses 1deg in 19ms, so the swing starts when the
-// pointer stops rather than shortly afterwards. The other two legs keep
-// easeInOut — nothing is waiting on them, and the pendulum reading is free.
-const SWING_EASE: Easing[] = ["circOut", "easeInOut", "easeInOut"];
+const DECAY = -2 * Math.log(2.5 / 3);
+
+// Samples per cycle. Sized against the LONGEST cycle, not the shortest: at 44
+// samples the spacing is 13ms at MAX_DURATION and 9ms at MIN_DURATION, both
+// comfortably under a frame, so the linear interpolation between them is finer
+// than the display can show and the result is the curve itself rather than an
+// approximation of it.
+const SWING_SAMPLES = 44;
+
+// The envelope has already decayed a little by the time the sine reaches its
+// first extreme at a quarter period, so divide it out — otherwise `amp` would
+// undershoot the amplitude the speed ramp asked for.
+const PEAK_NORM = Math.exp(-DECAY * 0.25);
+
+function swingKeyframes(dir: number, amp: number) {
+  const frames: number[] = [];
+  for (let i = 0; i <= SWING_SAMPLES; i++) {
+    const u = i / SWING_SAMPLES;
+    frames.push(
+      (dir * amp * Math.exp(-DECAY * u) * Math.sin(2 * Math.PI * u)) / PEAK_NORM,
+    );
+  }
+  // sin(2*pi) is 0 to floating-point noise; land on exactly rest.
+  frames[frames.length - 1] = 0;
+  return frames;
+}
+
+// ─── Reading the gesture ─────────────────────────────────────────────────────
+
+// Pixels the pointer must cover within a frame to still count as moving. A
+// hand does not stop cleanly: a trackpad keeps reporting sub-pixel motion
+// through the finger settling and lifting, and counting bare events let every
+// one of those postpone the swing. Measuring distance ignores the jitter.
+//
+// 2px per frame is 120px/s. That is well under MIN_SPEED, so the two rules
+// cooperate: a drift slower than this is called a stop, and a stop that slow
+// does not swing anyway.
+const STOP_DISTANCE = 2;
+
+// Velocity is measured as displacement over a span of at least VELOCITY_SPAN,
+// never per event. Per-event velocity is meaningless here — a 1ms gap between
+// two coalesced samples reports thousands of px/s — and a low-pass filter over
+// it was worse, because it assumes a steady event rate. Real devices do not
+// deliver one event per frame: a trackpad, a lower-polling mouse, or a busy
+// frame all produce gaps, and a filter that gets reset on those gaps never
+// accumulates. That is what made the swing stop firing entirely.
+//
+// Instead, keep raw positions for GESTURE_WINDOW and, at the stop, take the
+// fastest pair of samples spanning at least VELOCITY_SPAN. That is independent
+// of how often events arrive, and it ignores the settling tail for free: the
+// tail covers almost no distance, so it can never be the fastest span.
+const GESTURE_WINDOW = 250;
+const VELOCITY_SPAN = 40;
+
+// Below MIN_SPEED there is no swing at all. Between it and MAX_SPEED the lead
+// amplitude ramps to MAX_AMP, and above MAX_SPEED it clamps.
+//
+// The ramp is exponential: amplitude multiplies rather than adds as speed
+// climbs, so the arc is nearly flat through the bottom of the band and then
+// runs away at the top. That is what lets the floor sit low enough to catch a
+// gentle flick without the band between there and a real throw feeling busy —
+// a slow flick gets a fraction of a degree, a fast one gets the lot.
+//
+// RAMP_CURVE is the steepness. It is an exponent, so it bites hard: 3 puts the
+// midpoint of the speed band at about a fifth of MAX_AMP, where a straight
+// ramp would put it at half. Raise it to quieten the bottom further, lower it
+// towards 0 to approach a straight line.
+//
+// Amplitude leaves 0 at the floor, so the swing grows out of nothing rather
+// than appearing at a step; with MIN_VISIBLE_AMP the first swing you can
+// actually see starts near 850px/s.
+const MIN_SPEED = 800;
+const MAX_SPEED = 1700;
+const MIN_AMP = 0;
+const MAX_AMP = 10;
+const RAMP_CURVE = 3;
+// e**RAMP_CURVE - 1, so the curve below lands exactly on MAX_AMP at t = 1.
+const RAMP_NORM = Math.exp(RAMP_CURVE) - 1;
+
+// A 32px arrow turning less than this cannot be seen — under a tenth of a
+// pixel at the tail — so there is nothing to animate. Without it, every stop
+// just above MIN_SPEED would still queue a render and a 44-keyframe animation
+// for motion no one can perceive.
+const MIN_VISIBLE_AMP = 0.1;
+
+// The swing leads horizontally, so a gesture with more vertical than
+// horizontal travel has no side to lead towards. Comparing the components of
+// the displacement is a 45-degree cone around straight up and straight down.
+function leadFor(dx: number, dy: number, speed: number) {
+  if (speed < MIN_SPEED) return null;
+  if (Math.abs(dx) <= Math.abs(dy)) return null;
+  const t = Math.min(1, (speed - MIN_SPEED) / (MAX_SPEED - MIN_SPEED));
+  const amp =
+    MIN_AMP + ((MAX_AMP - MIN_AMP) * (Math.exp(RAMP_CURVE * t) - 1)) / RAMP_NORM;
+  if (amp < MIN_VISIBLE_AMP) return null;
+  return {
+    dir: Math.sign(dx),
+    amp,
+    duration: MAX_DURATION + (MIN_DURATION - MAX_DURATION) * t,
+  };
+}
 
 // The exit. Damping sits just past critical for this stiffness and mass —
 // 2*sqrt(k*m) = 2*sqrt(260*0.6) = 24.98 — so the return to 0 is monotonic and
@@ -64,14 +177,6 @@ const SWING_EASE: Easing[] = ["circOut", "easeInOut", "easeInOut"];
 // out before it turns, which is the interruption being absorbed rather than
 // the spring overshooting.
 const SPRING = { type: "spring" as const, stiffness: 260, damping: 26, mass: 0.6 };
-
-const VARIANTS: Variants = {
-  rest: { rotate: 0, transition: SPRING },
-  swing: {
-    rotate: SWING,
-    transition: { duration: SWING_DURATION, times: SWING_TIMES, ease: SWING_EASE },
-  },
-};
 
 // Whether this element is one the DOM arrow is responsible for. `cursor`
 // inherits, so with `cursor: none` on body every element resolves to "none"
@@ -83,18 +188,19 @@ function ownsCursor(el: Element) {
   return getComputedStyle(el).cursor === "none";
 }
 
+type Lead = { dir: number; amp: number; duration: number };
+
 export function CursorArrow() {
   const reducedMotion = useReducedMotion();
   const [enabled, setEnabled] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [swinging, setSwinging] = useState(false);
+  const [swing, setSwing] = useState<Lead | null>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Both booleans are mirrored in refs so the move handler can skip a setState
-  // that would not change anything. pointermove fires per frame; React state
-  // must not.
+  // Mirrored in refs so the move handler can skip a setState that would not
+  // change anything. pointermove fires per frame; React state must not.
   const visibleRef = useRef(false);
   const swingRef = useRef(false);
 
@@ -129,12 +235,25 @@ export function CursorArrow() {
     // pointermoves of a slow sweep, restarting the swing on every frame.
     //
     // Chrome dispatches input ahead of rAF within a frame, so the tick that
-    // follows the last move clears the flag and the next one fires: ~16.7ms at
-    // 60Hz, one frame, the floor. The loop runs only between a move and the
+    // follows the last move clears the counter and the next one fires: ~16.7ms
+    // at 60Hz, one frame, the floor. The loop runs only between a move and the
     // swing arming — once it fires there is nothing to poll until the pointer
     // moves again.
     let frame = 0;
-    let movedSinceTick = false;
+    let movedSinceTick = 0;
+
+    let lastX = 0;
+    let lastY = 0;
+    let lastT = 0;
+    let havePos = false;
+
+    // Raw positions over the last GESTURE_WINDOW. Nothing here is reset when a
+    // stop is declared — a quiet frame is not evidence that the preceding
+    // gesture never happened, and wiping the history on one was what stopped
+    // the swing firing at all. The window trims itself by time instead, so a
+    // gesture ages out on its own and a stop that follows a long drift finds
+    // nothing fast enough to swing about.
+    const samples: { t: number; x: number; y: number }[] = [];
 
     const show = (next: boolean) => {
       if (visibleRef.current === next) return;
@@ -145,18 +264,50 @@ export function CursorArrow() {
     const stopSwing = () => {
       if (!swingRef.current) return;
       swingRef.current = false;
-      setSwinging(false);
+      setSwing(null);
     };
 
+    // Both edges of the swing are gated on the same distance test, and that is
+    // the point: cancelling on any pointermove let a settling trackpad kill the
+    // swing ~8ms after it started, over and over, so a fast flick followed by a
+    // normal hand-settle produced no visible swing at all. Real movement exits
+    // the swing; jitter is not real movement.
     const tick = () => {
-      if (movedSinceTick) {
-        movedSinceTick = false;
+      if (movedSinceTick >= STOP_DISTANCE) {
+        movedSinceTick = 0;
+        stopSwing();
         frame = requestAnimationFrame(tick);
         return;
       }
+      movedSinceTick = 0;
       frame = 0;
+      // Already swung for this stop — jitter must not restart it.
+      if (swingRef.current) return;
+
+      // Fastest pair spanning at least VELOCITY_SPAN. The window holds ~20
+      // samples at most, so the pairwise scan is a few hundred comparisons,
+      // once, at the moment the pointer stops.
+      let bestSpeed = 0;
+      let bestDx = 0;
+      let bestDy = 0;
+      for (let i = 0; i < samples.length; i++) {
+        for (let j = i + 1; j < samples.length; j++) {
+          const span = samples[j].t - samples[i].t;
+          if (span < VELOCITY_SPAN) continue;
+          const dx = samples[j].x - samples[i].x;
+          const dy = samples[j].y - samples[i].y;
+          const speed = (Math.hypot(dx, dy) / span) * 1000;
+          if (speed > bestSpeed) {
+            bestSpeed = speed;
+            bestDx = dx;
+            bestDy = dy;
+          }
+        }
+      }
+      const lead = leadFor(bestDx, bestDy, bestSpeed);
+      if (!lead) return;
       swingRef.current = true;
-      setSwinging(true);
+      setSwing(lead);
     };
 
     const onMove = (event: PointerEvent) => {
@@ -172,9 +323,29 @@ export function CursorArrow() {
       }
       show(owns);
 
-      stopSwing();
       if (reducedMotion) return;
-      movedSinceTick = true;
+
+      const now = performance.now();
+      const dx = event.clientX - lastX;
+      const dy = event.clientY - lastY;
+      const dt = now - lastT;
+      lastX = event.clientX;
+      lastY = event.clientY;
+      lastT = now;
+
+      // dt over ~100ms means the pointer re-entered rather than travelled;
+      // that displacement is not a velocity.
+      // dt over ~100ms means the pointer re-entered rather than travelled;
+      // that displacement is not a velocity, so drop the history and start the
+      // window fresh from here.
+      if (havePos && dt >= 100) samples.length = 0;
+      if (havePos && dt > 0) movedSinceTick += Math.hypot(dx, dy);
+      havePos = true;
+
+      samples.push({ t: now, x: event.clientX, y: event.clientY });
+      const cutoff = now - GESTURE_WINDOW;
+      while (samples.length && samples[0].t < cutoff) samples.shift();
+
       // requestAnimationFrame never returns 0, so it doubles as "not running".
       if (!frame) frame = requestAnimationFrame(tick);
     };
@@ -184,8 +355,10 @@ export function CursorArrow() {
     const onLeave = () => {
       cancelAnimationFrame(frame);
       frame = 0;
-      movedSinceTick = false;
       lastTarget = null;
+      havePos = false;
+      samples.length = 0;
+      movedSinceTick = 0;
       stopSwing();
       show(false);
     };
@@ -207,9 +380,15 @@ export function CursorArrow() {
     <m.div aria-hidden className="cursor-arrow-root" style={{ x, y, opacity: visible ? 1 : 0 }}>
       <m.div
         className="cursor-arrow"
-        variants={VARIANTS}
-        initial="rest"
-        animate={swinging ? "swing" : "rest"}
+        initial={{ rotate: 0 }}
+        animate={
+          swing
+            ? {
+                rotate: swingKeyframes(swing.dir, swing.amp),
+                transition: { duration: swing.duration, ease: "linear" },
+              }
+            : { rotate: 0, transition: SPRING }
+        }
       />
     </m.div>
   );
