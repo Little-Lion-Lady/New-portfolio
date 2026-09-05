@@ -32,6 +32,13 @@ const FILL = 0.9;
 // entrance from that (see HeroClose), so the sequence re-times itself.
 const SCALE = 0.94;
 
+// Ceiling on the fitted size. The search fills the box, so on a very wide or
+// short viewport it keeps growing the type past the point where the headline
+// reads as a headline rather than a wall. Applied after SCALE, so it only
+// binds at the top end and every narrower breakpoint is untouched — at 1200
+// the fit lands near 50px and never reaches this.
+const MAX_FONT_SIZE = 60;
+
 // Plain text for probe measurement — must match the visible content exactly
 // (spans are inline and don't change line-wrap metrics).
 const PLAIN =
@@ -46,7 +53,7 @@ export function HeroText({
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const probeRef = useRef<HTMLParagraphElement>(null);
-  const [fontSize, setFontSize] = useState(64);
+  const [fontSize, setFontSize] = useState(MAX_FONT_SIZE);
   // Has the binary search below applied a size yet? The reveal groups the
   // headline by its measured line wrap, and the wrap at the placeholder size
   // above is not the wrap at the fitted size — so the cascade waits for this
@@ -78,7 +85,7 @@ export function HeroText({
           hi = mid;
         }
       }
-      setFontSize(lo * SCALE);
+      setFontSize(Math.min(lo * SCALE, MAX_FONT_SIZE));
       setFitted(true);
     };
 
