@@ -129,7 +129,7 @@ export function CaseStudyHero({
   return (
     <div className="flex w-full flex-col gap-r-lg">
       {/* Title + description (inner Hero block) */}
-      <div className="flex w-full flex-col gap-3xl pt-2xl md:pt-sm lg:gap-7xl lg:pt-3xl">
+      <div className="flex w-full flex-col gap-3xl pt-2xl md:pt-6xl lg:gap-7xl lg:pt-3xl">
         {/* Title — two lines, fluid, revealed a line at a time. `immediate` (like the
             rest of the hero) so it reveals on mount: an in-view trigger only
             fires once scroll restoration settles, which on a client-side nav
