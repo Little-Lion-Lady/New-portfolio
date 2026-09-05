@@ -10,7 +10,6 @@
   sitting empty until the full image decodes.
 */
 export const IMAGE_BLUR: Record<string, string> = {
-  "/home/Getintouch.png": "data:image/webp;base64,UklGRrwAAABXRUJQVlA4WAoAAAAQAAAADwAABAAAQUxQSFEAAAAAABIOMjc5LQBLUgcLAFlJABPO2/+oot4mu/fQssDkogA9//r9lrj/j8P/+//788MRP9JsWDg1QypMaVNhYD8+DAsoBQAAAAAAAAAAAAAAAAAAVlA4IEQAAADwAQCdASoQAAUAA8BgJaACdAEVK//GsAAA/ie7gmN/HUI3pL2YiJJNpqUjyjny/9S9FKCgIDkGfLZFTiNIhOjYDDgAAA==",
   "/home/about/ABOUT2.jpg": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAABQAQCdASoMABAAA8BgJQBOgCgAAP7vGtjjDWw9j63QQjhtKIAAAA==",
   "/home/about/ABOUT2_Dark.jpg": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADQAQCdASoMABAAA8BgJagCdAEO/gPIAAD+zIZPGjQf/4Js//p0hvR6QdddLR3J/wAAAA==",
   "/home/about/ART1.jpg": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAABQAgCdASoLABAAA8BgJbACdAEWmWzNMFHZ8AAA/uv+nde7AKgbLqQcZJ70QKBNaYvBrUVssrnz/hBAzSGhDhngrbDEgFWsbb56ynUz1pYHteBxhOV+1puzyL99I1/x81j74XPpmYn53DW81S1rAAAA",
