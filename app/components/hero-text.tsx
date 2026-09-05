@@ -35,9 +35,25 @@ const SCALE = 0.94;
 // Ceiling on the fitted size. The search fills the box, so on a very wide or
 // short viewport it keeps growing the type past the point where the headline
 // reads as a headline rather than a wall. Applied after SCALE, so it only
-// binds at the top end and every narrower breakpoint is untouched — at 1200
-// the fit lands near 50px and never reaches this.
+// binds at the top end.
 const MAX_FONT_SIZE = 60;
+
+// Tablet gets its own, lower ceiling. The fit is driven by available height,
+// and a tablet has plenty of it against a narrow column, so the search happily
+// returns ~52px — at which point the copy wraps to eight lines of near
+// edge-to-edge type. 42 keeps it as a headline. Phones never reach either
+// ceiling (the fit lands around 35px), so only this band needs the override.
+//
+// 768/1024 are the md/lg boundaries the rest of the site is built on — see the
+// `sizes` attributes throughout media-block and image-carousel.
+const TABLET_MAX_FONT_SIZE = 42;
+const TABLET_QUERY = "(min-width: 768px) and (max-width: 1023px)";
+
+// Read per fit() rather than cached: the ResizeObserver re-runs the fit on
+// every resize, so crossing a breakpoint re-caps without any extra listener.
+function maxFontSize() {
+  return window.matchMedia(TABLET_QUERY).matches ? TABLET_MAX_FONT_SIZE : MAX_FONT_SIZE;
+}
 
 // Plain text for probe measurement — must match the visible content exactly
 // (spans are inline and don't change line-wrap metrics).
@@ -85,7 +101,7 @@ export function HeroText({
           hi = mid;
         }
       }
-      setFontSize(Math.min(lo * SCALE, MAX_FONT_SIZE));
+      setFontSize(Math.min(lo * SCALE, maxFontSize()));
       setFitted(true);
     };
 
