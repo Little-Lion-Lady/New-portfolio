@@ -115,7 +115,7 @@ export default function About() {
             </div>
             <Button
               variant="primary"
-              label="Download CV"
+              label="View CV"
               href="https://drive.google.com/file/d/1IS3YF8ZU8F0Hq9wtomTK1RdZa4r5vrXl/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
