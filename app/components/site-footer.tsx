@@ -58,8 +58,12 @@ export function SiteFooter() {
               The box needs explicit dimensions for bottom-full to have a height
               to work from — the two stars inside are absolutely positioned, so
               it has no size of its own. Each size is the cluster's own extent:
-              the offset of the lower-left star plus a star's width. */}
-          <div className="pointer-events-none absolute bottom-full right-0 h-[54px] w-[54px] md:h-[78px] md:w-[94px] lg:h-[104px] lg:w-[114px]">
+              the offset of the lower-left star plus a star's width.
+
+              The nudge left and down is a percentage of that box rather than a
+              pixel value, so one pair of numbers holds at all three sizes
+              instead of three pairs drifting apart. */}
+          <div className="pointer-events-none absolute bottom-full right-0 h-[54px] w-[54px] -translate-x-[8%] translate-y-[8%] md:h-[78px] md:w-[94px] lg:h-[104px] lg:w-[114px]">
             <Star
               variant={4}
               className="absolute right-[26px] top-[6px] w-7 md:right-[46px] md:top-0 md:w-12 lg:!right-[50px] lg:!w-16"
@@ -87,11 +91,11 @@ export function SiteFooter() {
             token halved rather than a flat 112px, since there is no token at
             that step and the relationship to the spec is the point.
 
-            The mobile top padding is Figma's 72px flat. It used to subtract the
-            wordmark's glow padding, which an exported image carried as layout
-            space; trimmed live text carries none, so the spec value applies as
-            written. */}
-        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-5xl md:flex-row md:items-center md:gap-6xl md:pt-0 dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)/2)]">
+            Top padding steps 72 / 96 / 112 across the breakpoints. It used to
+            subtract the wordmark's glow padding, which an exported image carried
+            as layout space; trimmed live text carries none, so these are the
+            spacing tokens as written. */}
+        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-5xl md:flex-row md:items-center md:gap-6xl md:pt-7xl dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)/2)]">
           <Button variant="link" label="LinkedIn" href="https://www.linkedin.com/in/marynababych/" target="_blank" rel="noopener noreferrer" />
           <Button variant="link" label="Email" href="mailto:maryna.babych@gmail.com" target="_blank" rel="noopener noreferrer" />
         </div>
