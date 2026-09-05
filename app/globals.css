@@ -1751,6 +1751,58 @@ textarea,
   }
 }
 
+/* ── The swinging arrow (see cursor-arrow.tsx) ──────────────────────────────
+   A `cursor: url()` is composited by the OS and cannot be transformed, so the
+   default arrow — and only the default arrow — is redrawn as a DOM element
+   that can rotate. `.cursor-none` is added to <body> by the component on
+   mount, never here: a no-JS visit must keep the native arrow above rather
+   than end up with no cursor at all.
+
+   Only body is blanked. Every selector above still declares its own cursor, so
+   links keep the native hand and text fields the native I-beam, hotspots and
+   all. Since `cursor` inherits, "computed cursor is none" is exactly the set
+   of elements the DOM arrow is responsible for — which is the test the
+   component runs to decide when to hide itself. */
+@media (hover: hover) and (pointer: fine) {
+  body.cursor-none {
+    cursor: none;
+  }
+}
+
+.cursor-arrow-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* Above .page-curtain (100). The native cursor stayed visible through a
+     route sweep, so its replacement has to as well. */
+  z-index: 200;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.cursor-arrow {
+  width: 32px;
+  height: 32px;
+  background-image: url("/home/Cursor.svg");
+  background-size: 32px 32px;
+  background-repeat: no-repeat;
+  /* The measured hotspot: the swing pivots on the arrow's tip, not its box. */
+  transform-origin: 7px 3px;
+  will-change: transform;
+}
+
+/* Themed by swapping the file, mirroring the native cursor above — same two
+   selectors, same pre-mapped dark twin. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .cursor-arrow {
+    background-image: url("/home/Cursor-dark.svg");
+  }
+}
+
+[data-theme="dark"] .cursor-arrow {
+  background-image: url("/home/Cursor-dark.svg");
+}
+
 /* ============================================================
    REVEAL SAFETY FLOOR
 

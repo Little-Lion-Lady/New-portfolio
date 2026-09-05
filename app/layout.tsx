@@ -4,6 +4,7 @@ import { GeistMono } from "geist/font/mono";
 import { LazyMotion, domAnimation } from "framer-motion";
 import { Analytics } from "@vercel/analytics/next";
 import { PageCurtain } from "./components/page-curtain";
+import { CursorArrow } from "./components/cursor-arrow";
 import { siteUrl } from "./site-url";
 import "./globals.css";
 
@@ -105,6 +106,8 @@ export default function RootLayout({
           {children}
           {/* Route transition: sweeps up over the outgoing page, swaps, sweeps off. */}
           <PageCurtain />
+          {/* The default arrow, as a DOM element so it can swing at rest. */}
+          <CursorArrow />
         </LazyMotion>
         <Analytics />
       </body>
