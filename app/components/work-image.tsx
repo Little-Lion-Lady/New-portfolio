@@ -123,6 +123,7 @@ export function GlassImage({
   radiusClassName,
   frameStyle,
   ariaHidden = false,
+  hairline = true,
   children,
 }: {
   src: string;
@@ -210,6 +211,12 @@ export function GlassImage({
   frameStyle?: CSSProperties;
   /** Hide from assistive tech (the marquee's duplicated set). */
   ariaHidden?: boolean;
+  /**
+   * Draws the card's 1px inset hairline. Off for the few exports that already
+   * carry their own border or a card edge of their own, where the ring reads
+   * as a second, doubled outline.
+   */
+  hairline?: boolean;
   /** Optional overlay content stacked on top of the image (e.g. a decorative icon). */
   children?: ReactNode;
 }) {
@@ -265,7 +272,7 @@ export function GlassImage({
         )}
         {children}
       </div>
-      <div aria-hidden className={RING_CLASS} />
+      {hairline && <div aria-hidden className={RING_CLASS} />}
     </div>
   );
 }

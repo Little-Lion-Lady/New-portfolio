@@ -136,7 +136,7 @@ export default function Basis() {
               two-column block on desktop. Heights follow Figma's crop at tablet
               and desktop — 944×500 / 1648×700 — with mobile pulled in to 260. */}
           <GlassImage
-            src="/home/work/basis/BasisConsumer.png"
+            src="/home/work/basis/BasisConsumer.jpg"
             alt="The Basis smart electrical panel, shown closed, open and with its cover removed"
             sizes="(min-width: 1400px) 1648px, (min-width: 768px) 944px, 100vw"
             objectPosition="top"
