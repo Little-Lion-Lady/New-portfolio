@@ -31,7 +31,13 @@ export function SiteFooter() {
 
   return (
     <div className="relative w-full">
-      <footer className="grid w-full grid-cols-4 gap-x-lg pt-4xl pb-4xs md:gap-y-xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-0 dt:pb-4xl">
+      {/* Desktop gains top padding where it previously had none. It also gives
+          the star cluster somewhere to live: the stars hang off the wordmark
+          cell's top edge, so with pt-0 they broke out above the footer and into
+          the section before it. 8xl clears the 104px cluster at this size.
+          The padding belongs on the grid rather than the wordmark cell — inside
+          the cell it would push the stars away from the lettering they sit on. */}
+      <footer className="grid w-full grid-cols-4 gap-x-lg pt-4xl pb-4xs md:gap-y-xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-8xl dt:pb-4xl">
         {/* Wordmark — live text rather than an exported asset, so it stays sharp
             at any width and there is no export to keep the layout in step with.
             The glow is .wordmark in globals.css, rebuilt from the Figma spec.
@@ -91,11 +97,12 @@ export function SiteFooter() {
             token halved rather than a flat 112px, since there is no token at
             that step and the relationship to the spec is the point.
 
-            Top padding steps 72 / 96 / 112 across the breakpoints. It used to
+            Top padding steps 72 / 96 / 134.4 across the breakpoints. The
+            desktop value is 0.6 of 10xl — half of Figma's 224, then 20% more. It used to
             subtract the wordmark's glow padding, which an exported image carried
             as layout space; trimmed live text carries none, so these are the
             spacing tokens as written. */}
-        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-5xl md:flex-row md:items-center md:gap-6xl md:pt-7xl dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)/2)]">
+        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-5xl md:flex-row md:items-center md:gap-6xl md:pt-7xl dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)*0.6)]">
           <Button variant="link" label="LinkedIn" href="https://www.linkedin.com/in/marynababych/" target="_blank" rel="noopener noreferrer" />
           <Button variant="link" label="Email" href="mailto:maryna.babych@gmail.com" target="_blank" rel="noopener noreferrer" />
         </div>
