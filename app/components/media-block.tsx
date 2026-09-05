@@ -59,13 +59,13 @@ export function DesignMedia() {
           more than its flex share and overflowing the row. */}
       <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col lg:flex-row">
         <GlassImage
-          src="/home/work/covid-tracer/MOH_33.png"
+          src="/home/work/covid-tracer/MOH_33.jpg"
           alt="Five dashboard variants showing every Bluetooth Tracing status state"
           frameAspectClassName="aspect-[361/220] md:aspect-[944/500] lg:aspect-[818/500]"
           className="w-full lg:min-w-0 lg:flex-1"
         />
         <GlassImage
-          src="/home/work/covid-tracer/MOH_34.png"
+          src="/home/work/covid-tracer/MOH_34.jpg"
           alt="Poster scan sign-in screen, before and after the redesign"
           frameAspectClassName="aspect-[361/200] md:aspect-[944/500] lg:aspect-[818/500]"
           className="w-full lg:min-w-0 lg:flex-1"
@@ -88,29 +88,40 @@ export function DesignMedia() {
 // but takes the full width, and mobile stacks all three.
 export function ValidationMedia() {
   return (
-    <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col lg:flex-row lg:items-start">
+    <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col lg:flex-row lg:items-stretch">
       <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col md:flex-row md:items-stretch lg:min-w-0 lg:flex-1">
         {/* The heatmap and the metrics sheet have different ratios but share a
             row height from md up — the justified-row technique used by MOH4/MOH5
-            above: flex-basis 0, flex-grow proportional to each frame's own
-            ratio, and a matching frame aspect per breakpoint. */}
+            above: flex-basis 0, flex-grow proportional to each image's own
+            ratio, with that same ratio on the frame. Both carry their TRUE
+            ratio rather than Figma's frame, which trims the metric cards' icons
+            off the top of the sheet at tablet and desktop; matching ratios
+            still resolve one shared row height, so nothing is cropped and the
+            row still lines up. */}
         <GlassImage
-          src="/home/work/covid-tracer/MOH_29.png"
+          src="/home/work/covid-tracer/MOH_29.jpg"
           alt="Click heatmap over the poster scan screen from the first test round"
-          frameAspectClassName="aspect-[361/612] md:aspect-[389/679] lg:aspect-[400/679]"
-          className="w-full md:w-auto md:min-w-0 md:flex-[0.5729] lg:flex-[0.5891]"
+          frameAspectRatio="560/947"
+          className="w-full md:w-auto md:min-w-0 md:flex-[0.5913]"
         />
         <GlassImage
           src="/home/work/covid-tracer/MOH_30.png"
           alt="Test round metrics — mislick rate, duration, success and bounce — above the two-screen funnel"
-          frameAspectClassName="aspect-[361/528] md:aspect-[539/680] lg:aspect-[400/680]"
-          className="w-full md:w-auto md:min-w-0 md:flex-[0.7926] lg:flex-[0.5882]"
+          frameAspectRatio="651/947"
+          hairline={false}
+          className="w-full md:w-auto md:min-w-0 md:flex-[0.6874]"
         />
       </div>
+      {/* At desktop this sits beside the pair and takes its height from them
+          rather than from a ratio of its own: the pair's shared height follows
+          from their two true ratios, so any fixed aspect here would be the
+          taller box and would stretch the pair instead (the nesting trap
+          documented on the §06 rows below). aspect-auto + the row's stretch
+          makes the recording follow the pair exactly, at every desktop width. */}
       <GlassImage
-        src="/home/work/covid-tracer/MOH_31.png"
+        src="/home/work/covid-tracer/MOH_31.jpg"
         alt="Recorded usability session running the Bluetooth Tracing prototype"
-        frameAspectClassName="aspect-[361/262] md:aspect-[944/722] lg:aspect-[816/680]"
+        frameAspectClassName="aspect-[361/262] md:aspect-[944/722] lg:aspect-auto"
         className="w-full lg:min-w-0 lg:flex-1"
       />
     </div>
@@ -145,7 +156,7 @@ export function OutcomeMedia() {
           className="w-full"
         />
         <GlassImage
-          src="/home/work/covid-tracer/Mobile_screenshots_1.png"
+          src="/home/work/covid-tracer/Mobile_screenshots_1.jpg"
           alt={OUTCOME_SCREENS_ALT}
           sizes="(min-width: 1024px) 64px, (min-width: 768px) 829px, 362px"
           frameAspectClassName="aspect-[361/225] md:aspect-[944/583]"
@@ -168,7 +179,7 @@ export function OutcomeMedia() {
       {/* Desktop — the wide six-screen strip, then ratings beside the numbers */}
       <div className="hidden lg:flex lg:flex-col lg:gap-md">
         <GlassImage
-          src="/home/work/covid-tracer/Desktop_screenshots.png"
+          src="/home/work/covid-tracer/Desktop_screenshots.jpg"
           alt={OUTCOME_SCREENS_ALT}
           sizes="(min-width: 1024px) 1374px, 64px"
           frameAspectClassName="lg:aspect-[1648/574]"

@@ -282,27 +282,29 @@ export default function CovidTracer() {
         <Reveal index={0} delay={0.6} className="w-full">
           <SectionHeader number="06" name="Outcome" />
         </Reveal>
-        {/* Figma 1144:10345 — the key paragraph and the before→after stats sit
-            in one row on desktop (paragraph cols 1-5, stats cols 7-11 of the
-            12-col page grid) and stack in a 5-of-9 column on tablet. The
-            section's headline shot is no longer part of this row; it leads the
-            image run below instead. */}
+        {/* Figma 1144:10345 (desktop) / 1144:10501 (tablet) — the key paragraph
+            and the before→after stats sit in one row on desktop (paragraph cols
+            1-5, stats cols 7-11 of the 12-col page grid). On tablet they stack:
+            the paragraph runs the full width and only the stats keep the
+            5-of-9 column, so the stat rows sit 16 apart rather than desktop's
+            40. The section's headline shot is no longer part of this row; it
+            leads the image run below instead. */}
         <Reveal
           index={1}
           delay={0.6}
           className="flex w-full flex-col gap-lg md:grid md:grid-cols-9 md:gap-x-lg md:gap-y-xl lg:grid-cols-12 lg:gap-y-0"
         >
-          <KeyParagraph className="md:col-start-1 md:col-span-5 md:row-start-1">
+          <KeyParagraph className="md:col-start-1 md:col-span-9 md:row-start-1 lg:col-span-5">
             A month after launch, Bluetooth adoption was up and scanning hadn’t dropped. That
             combination was the point: people turned Bluetooth on without deciding it let them off
-            the hook for scanning. The app’s rating had also doubled by the time I wrapped the
-            project.
+            the hook for scanning. While at the end of my tenure on the project the app rating
+            score doubled from {covid.appRatingBefore} to {covid.appRatingAfter} stars.
           </KeyParagraph>
           {/* Figma 1144:10659 (mobile) / 1144:10505 (tablet) / 1144:10345
               (desktop) give the arrow a column of its own — two ~38% stat
               columns either side of a ~22-24% gutter — instead of sizing it to
               the glyph. */}
-          <div className="grid grid-cols-[39fr_22fr_39fr] items-start gap-y-xs md:col-start-1 md:col-span-5 md:row-start-2 md:grid-cols-[38fr_24fr_38fr] md:gap-y-3xl lg:col-start-7 lg:col-span-5 lg:row-start-1">
+          <div className="grid grid-cols-[39fr_22fr_39fr] items-start gap-y-xs md:col-start-1 md:col-span-5 md:row-start-2 md:grid-cols-[38fr_24fr_38fr] md:gap-y-md lg:col-start-7 lg:col-span-5 lg:row-start-1 lg:gap-y-3xl">
             <Stat size="sm" highlight value={covid.btDevicesBefore} label="Daily active BT devices" />
             <StatArrow />
             <Stat size="sm" highlight value={covid.btDevicesAfter} label={`${covid.btGrowth} growth`} />

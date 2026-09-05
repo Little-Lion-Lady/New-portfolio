@@ -77,11 +77,11 @@ export const covid = {
   posterScansAfter: "672,605",
   posterScanGrowth: "9%",
   mislickBefore: "18%",
-  mislickAfter: "5.3%",
+  mislickAfter: "8%",
   dropoffBefore: "55%",
   dropoffAfter: "12%",
   taskSuccessBefore: "38.7%",
-  taskSuccessAfter: "92%",
+  taskSuccessAfter: "64%",
   usabilityScoreBefore: "47",
   usabilityScoreAfter: "81",
   /** App Store rating, read off the March 2020 / July 2021 comparison (MOH11.jpg). */
