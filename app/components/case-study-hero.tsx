@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Reveal, RevealWords } from "./reveal";
 import { DURATION } from "./motion-timing";
 
@@ -43,6 +44,32 @@ import { ArrowUpRightSmall } from "./icons";
   The fill is on a pseudo-element for the same reason it is there: these rows
   sit flush in a flex column, so real padding would push them apart.
 */
+/*
+  Splits a "·"-separated value into per-item nowrap spans.
+
+  Without this the value wraps on its own spaces, so a long Scope line breaks
+  mid-item ("…Research·A/B" / "testing"). Each item is held together and the
+  only break opportunities are the separators, which is where the eye expects
+  the line to turn. Values with no "·" (a job title, an award name) keep normal
+  word wrapping — one long phrase has to break somewhere.
+*/
+function wrapAtSeparators(value: string) {
+  if (!value.includes("·")) return value;
+  const items = value.split("·");
+  return items.map((item, i) => (
+    <Fragment key={i}>
+      <span className="whitespace-nowrap">
+        {item}
+        {i < items.length - 1 && "·"}
+      </span>
+      {/* Adjacent inline spans with no whitespace between them carry no soft
+          wrap opportunity, so nowrap items alone would push the whole line to
+          overflow. <wbr> is the break the separator itself does not provide. */}
+      {i < items.length - 1 && <wbr />}
+    </Fragment>
+  ));
+}
+
 function MetaRow({ label, value, href }: { label: string; value: string; href?: string }) {
   const content = (
     <>
@@ -53,7 +80,7 @@ function MetaRow({ label, value, href }: { label: string; value: string; href?: 
           follows the last word onto whatever line that ends up on instead of
           being pinned to the row's top-right. */}
       <p className="b-2xs min-w-0 text-text-secondary transition-colors lg:b-sm group-hover:text-text-primary">
-        {value}
+        {wrapAtSeparators(value)}
         {href && (
           <ArrowUpRightSmall className="ml-3xs inline-block size-sm align-[-0.15em] transition-transform duration-200 ease-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px] group-hover:scale-[1.1] lg:size-lg lg:align-[-0.2em]" />
         )}
@@ -138,17 +165,17 @@ export function CaseStudyHero({
             <p className="b-xs text-text-secondary lg:b-sm">{description}</p>
           </Reveal>
 
-          {/* Meta block (desktop: left, c1-5) — in step with the text block.
+          {/* Meta block (desktop: left, c1-6) — in step with the text block.
               Mobile and desktop stack the context rows over the recognition
-              rows; tablet alone splits them across Figma's 9-col grid (c1-3
-              and c5-7). */}
-          <Reveal immediate delay={INTRO_DELAY} duration={INTRO_DURATION} className="flex flex-col md:grid md:grid-cols-9 md:gap-x-lg lg:flex lg:flex-col lg:col-start-1 lg:col-span-5 lg:row-start-1">
-            <div className="flex flex-col md:col-start-1 md:col-span-3">
+              rows; tablet alone splits them across Figma's 9-col grid (c1-4
+              and c6-9). */}
+          <Reveal immediate delay={INTRO_DELAY} duration={INTRO_DURATION} className="flex flex-col md:grid md:grid-cols-9 md:gap-x-lg lg:flex lg:flex-col lg:col-start-1 lg:col-span-6 lg:row-start-1">
+            <div className="flex flex-col md:col-start-1 md:col-span-4">
               {meta.map((m, i) => (
                 <MetaRow key={i} label={m.label} value={m.value} />
               ))}
             </div>
-            <div className="flex flex-col md:col-start-5 md:col-span-4">
+            <div className="flex flex-col md:col-start-6 md:col-span-4">
               {recognition.map((r, i) => (
                 <MetaRow key={i} label={r.label} value={r.value} href={r.href} />
               ))}
