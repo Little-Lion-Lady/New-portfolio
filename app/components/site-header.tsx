@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Reveal } from "./reveal";
 import { ThemeToggle } from "./theme-toggle";
@@ -110,17 +109,13 @@ const LINK_CLASS =
 
 export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
   const [scrolled, setScrolled] = useState(false);
-  const { open: workOpen, isDesktop, isMobile, pathname: menuPath, openNow, openOnFocus, close: closeWorkMenu,
+  const { open: workOpen, hoverOpens, isMobile, pathname: menuPath, openNow, openOnFocus, close: closeWorkMenu,
           toggle: toggleWorkMenu, cancelClose, scheduleClose, focusFirstItem } = useWorkMenu();
-  const pathname = usePathname();
-  // "Work" points back at the home page's work section, so it is offered
-  // everywhere except home itself — About, the three case studies and the 404.
-  // "About" is offered everywhere except the About page. Case studies and the
-  // 404 therefore carry BOTH, which is the only case needing two nav cells.
-  const isAbout = pathname === "/about";
-  const showWork = pathname !== "/";
-  const showAbout = !isAbout;
-  const bothLinks = showWork && showAbout;
+  // Work and About are on every page, home and About included. Work points at
+  // the home page's work section (/#work), which is a same-page scroll on home
+  // rather than a navigation; About on the About page is a no-op link. Both are
+  // cheaper than a nav whose contents move between pages: the row is now the
+  // same five cells everywhere, so nothing shifts as you navigate.
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 0);
@@ -207,56 +202,51 @@ export function SiteHeader({ revealDelay = 0 }: { revealDelay?: number } = {}) {
           {/* Work now shows at every breakpoint (mobile included — that is what
               the fifth column above is for) and opens the case-study menu.
               See ./work-menu: hover on desktop, tap on tablet and mobile. */}
-          {showWork && (
-            <WorkMenuTrigger
-              open={workOpen}
-              isDesktop={isDesktop}
-              onOpen={openNow}
-              onFocusOpen={openOnFocus}
-              onToggle={toggleWorkMenu}
-              onClose={closeWorkMenu}
-              onScheduleClose={scheduleClose}
-              onArrowDown={focusFirstItem}
-              /* With both links out, Work and About take the two columns
-                 before the toggle. With About hidden, Work slides into
-                 About's column so the right-hand cluster stays tight against
-                 the toggle rather than leaving a hole in the grid. */
-              className={
-                bothLinks
-                  ? "col-start-3 md:col-start-7 lg:col-start-8"
-                  : "col-start-4 md:col-start-8 lg:col-start-9"
-              }
-            />
-          )}
-          {/* About always sits in the column immediately before the toggle,
-              whether or not Work is showing — so it never has to move. */}
-          {showAbout && (
-            <Link
-              href="/about"
-              className={`${LINK_CLASS} col-start-4 justify-center md:col-start-8 lg:col-start-9`}
-            >
-              About
-            </Link>
-          )}
+          <WorkMenuTrigger
+            open={workOpen}
+            hoverOpens={hoverOpens}
+            isMobile={isMobile}
+            onOpen={openNow}
+            onFocusOpen={openOnFocus}
+            onToggle={toggleWorkMenu}
+            onClose={closeWorkMenu}
+            onScheduleClose={scheduleClose}
+            onArrowDown={focusFirstItem}
+            /* Work and About take the two columns before the toggle, on
+               every page — the cluster stays tight against the toggle and
+               nothing in the row moves between routes. */
+            className="col-start-3 md:col-start-7 lg:col-start-8"
+          />
+          {/* About sits in the column immediately before the toggle, with Work
+              in the one before that — fixed positions on every page. */}
+          <Link
+            href="/about"
+            className={`${LINK_CLASS} col-start-4 justify-center md:col-start-8 lg:col-start-9`}
+          >
+            About
+          </Link>
           {/* Hangs off the nav, not the Work cell — see WorkMenuPanel. Out of
               flow, so it takes no grid cell. */}
-          {showWork && (
-            <WorkMenuPanel
-              open={workOpen}
-              isDesktop={isDesktop}
-              currentPath={menuPath}
-              onClose={closeWorkMenu}
-              onCancelClose={cancelClose}
-              onScheduleClose={scheduleClose}
-            />
-          )}
+          <WorkMenuPanel
+            open={workOpen}
+            hoverOpens={hoverOpens}
+            currentPath={menuPath}
+            onClose={closeWorkMenu}
+            onCancelClose={cancelClose}
+            onScheduleClose={scheduleClose}
+          />
           <ThemeToggle className="col-start-5 md:col-start-9 lg:col-start-10" />
           {/* Below md the list is a row of this same grid, so the pill's glass
               surface (absolute inset-0) stretches over it and the whole thing
               expands as one card. */}
-          {showWork && (
-            <WorkMenuMobileList open={workOpen} currentPath={menuPath} onClose={closeWorkMenu} />
-          )}
+          <WorkMenuMobileList
+            open={workOpen}
+            hoverOpens={hoverOpens}
+            currentPath={menuPath}
+            onClose={closeWorkMenu}
+            onCancelClose={cancelClose}
+            onScheduleClose={scheduleClose}
+          />
         </nav>
       </Reveal>
     </header>

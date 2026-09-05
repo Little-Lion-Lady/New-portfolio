@@ -15,9 +15,13 @@ import { GlassImage } from "./work-image";
   Three presentations of one list, because the design asks for two shapes and
   two triggers:
 
-    desktop (lg+)   hover opens a floating card anchored under the Work link
-    tablet (md–lg)  tap opens that same floating card
-    mobile (<md)    tap expands the nav pill itself, list inside the pill
+    mouse (any width)  hover opens the menu — the card from md up, the pill's
+                       own inline list below it
+    touch              tap opens the same thing, the standard disclosure tap
+
+  Shape is a breakpoint question (md+ floating card, <md list inside the pill);
+  opening is a POINTER question and nothing else. A narrow desktop window is
+  still a mouse and should still open on hover.
 
   The mobile case is why the open state lives in a hook rather than inside one
   self-contained component: the trigger sits in a single grid cell of the nav
@@ -56,11 +60,16 @@ export const CASE_STUDIES = [
   },
 ] as const;
 
-// Desktop is the only breakpoint that opens on hover. Matched on the same
-// 1024px the `lg:` utilities use, AND on the pointer actually being a mouse — a
-// hover-open menu on a touch device reporting a wide viewport (an iPad in
-// landscape, a Surface) would fire on the tap meant to follow the link.
-const DESKTOP_QUERY = "(min-width: 1024px) and (hover: hover) and (pointer: fine)";
+// Hover opens the menu wherever there is a real pointer to hover WITH — at any
+// width, mobile and tablet breakpoints included. There is no viewport clause:
+// a narrow window on a laptop is still a mouse, and gating on 1024px left it
+// tap-only there for no reason the user could see.
+//
+// The pointer clause stays, and is the whole gate: on a touch device a
+// hover-open menu fires on the tap meant to follow the link, so a touch
+// device (including one reporting a wide viewport — an iPad in landscape, a
+// Surface) keeps the tap-to-toggle path.
+const HOVER_QUERY = "(hover: hover) and (pointer: fine)";
 
 // Below md the list lives INSIDE the pill rather than in its own card, so the
 // pill has to become an opaque surface while it is open — see the header's
@@ -109,23 +118,23 @@ const TRIGGER_ATTR = "data-work-menu-trigger";
 
 export function useWorkMenu() {
   const [open, setOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [hoverOpens, setHoverOpens] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const closeTimer = useRef<number | undefined>(undefined);
   const pathname = usePathname();
 
   useEffect(() => {
-    const desktop = window.matchMedia(DESKTOP_QUERY);
+    const hoverable = window.matchMedia(HOVER_QUERY);
     const mobile = window.matchMedia(MOBILE_QUERY);
     const sync = () => {
-      setIsDesktop(desktop.matches);
+      setHoverOpens(hoverable.matches);
       setIsMobile(mobile.matches);
     };
     sync();
-    desktop.addEventListener("change", sync);
+    hoverable.addEventListener("change", sync);
     mobile.addEventListener("change", sync);
     return () => {
-      desktop.removeEventListener("change", sync);
+      hoverable.removeEventListener("change", sync);
       mobile.removeEventListener("change", sync);
     };
   }, []);
@@ -226,7 +235,7 @@ export function useWorkMenu() {
   }, [open]);
 
   return {
-    open, isDesktop, isMobile, pathname,
+    open, hoverOpens, isMobile, pathname,
     openNow, openOnFocus, close, toggle, cancelClose, scheduleClose, focusFirstItem,
   };
 }
@@ -238,25 +247,39 @@ export function useWorkMenu() {
   before hydration and with JS off, and right-click / open-in-new-tab should
   behave. The menu layers on top —
 
-    desktop  hover (and keyboard focus) opens; click still goes to /#work
+    mouse    hover (and keyboard focus) opens; a plain click toggles it and
+             does NOT navigate
     touch    the tap opens the menu instead of navigating, the standard
-             disclosure pattern; the rows do the navigating
+             disclosure pattern
 
-  The touch path has to opt out of the page curtain. <PageCurtain> listens for
+  Either way the rows do the navigating. A plain click is a disclosure control
+  at every pointer type: with a mouse the menu is usually already open under
+  the cursor when the click lands, so sweeping to /#work took the reader away
+  from the three links they had just been offered — the click read as a
+  mis-click rather than a choice. Now it closes what hover opened.
+
+  Only a PLAIN left click is intercepted. The href is still live for
+  cmd/ctrl/shift/middle-click and for the context menu, so "open the work
+  section in a new tab" behaves, and with JS off the anchor is all that is
+  left and it navigates.
+
+  Intercepting means opting out of the page curtain. <PageCurtain> listens for
   anchor clicks in the CAPTURE phase and drives the navigation itself, so it
   had already decided to leave the page before this component's onClick ran —
   which is why preventDefault() here looked like it was being ignored (verified
   in a browser: handler ran, defaultPrevented was true, router still went to
   "/"). data-no-curtain is the curtain's own documented escape hatch, and it is
-  set only when the tap is meant to open the menu. On desktop the attribute is
-  absent, so a click sweeps to the work section exactly like every other link.
+  now unconditional: no click on this element is ever a navigation the curtain
+  should sweep for. The modifier clicks above never reach the curtain either —
+  it ignores them, exactly as it must for every other link.
 
-  A plain <a> rather than next/link because the element is conditionally not a
-  navigation at all; the curtain does the routing on the path where it is one.
+  A plain <a> rather than next/link because the element is not a navigation at
+  all on the path the curtain would otherwise take.
 */
 export function WorkMenuTrigger({
   open,
-  isDesktop,
+  hoverOpens,
+  isMobile,
   onOpen,
   onFocusOpen,
   onToggle,
@@ -266,7 +289,10 @@ export function WorkMenuTrigger({
   className = "",
 }: {
   open: boolean;
-  isDesktop: boolean;
+  /** A real pointer is present, so hover opens the menu and click navigates. */
+  hoverOpens: boolean;
+  /** Below md, where the list expands the pill instead of hanging off it. */
+  isMobile: boolean;
   onOpen: () => void;
   /** Like onOpen, but ignores the refocus Escape performs. */
   onFocusOpen: () => void;
@@ -283,35 +309,43 @@ export function WorkMenuTrigger({
          padding and the fills, and stretches to the full grid cell so Work's
          hover state matches About's rather than shrink-wrapping the word. */
       className={`relative flex ${className}`}
-      onMouseEnter={isDesktop ? onOpen : undefined}
-      onMouseLeave={isDesktop ? onScheduleClose : undefined}
+      onMouseEnter={hoverOpens ? onOpen : undefined}
+      onMouseLeave={hoverOpens ? onScheduleClose : undefined}
     >
       {/* eslint-disable-next-line @next/next/no-html-link-for-pages --
           The rule assumes any in-app href should be a <Link>. Here it must not
           be: Next 16's Link navigates even after the composed onClick has
-          called preventDefault(), so the touch path could not open the menu
-          without also leaving the page. See the block comment above. The
-          client-side transition the rule is protecting is preserved by the
-          router.push() below. */}
+          called preventDefault(), so a click could not open the menu without
+          also leaving the page. See the block comment above. The client-side
+          transition the rule protects is not lost — a plain click never
+          navigates from here at all, and the rows inside the menu are real
+          <Link>s. */}
       <a
         href="/#work"
         {...{ [TRIGGER_ATTR]: "" }}
         aria-haspopup="menu"
         aria-expanded={open}
-        // Only while the tap is a menu toggle — see the block comment above.
-        {...(isDesktop ? {} : { "data-no-curtain": "" })}
+        // A plain click is always a menu toggle — see the block comment above.
+        data-no-curtain=""
         onClick={(event) => {
           // Anything that isn't a plain left click keeps its native behaviour,
           // so cmd/ctrl/middle-click still opens the work section in a new tab.
           if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
-          if (isDesktop) {
-            // Let the curtain take it. Closing here just stops the menu
-            // hanging over the sweep.
-            onClose();
-            return;
-          }
           event.preventDefault();
-          onToggle();
+          /*
+            Below md the trigger only ever OPENS. The list is inside the pill
+            there, so a second tap on Work — the row the thumb is already
+            resting against, right above the list it just opened — collapsed
+            the pill under the finger, which read as the menu dismissing
+            itself. Dismissal on mobile is deliberate and outward: a tap (or a
+            hover-out, on a narrow window with a mouse) anywhere outside the
+            pill, Escape, or picking a row. Those all still close it.
+
+            From md up the card hangs clear of the pill, so a click on the
+            trigger is an unambiguous "put it away" and stays a toggle.
+          */
+          if (isMobile) onOpen();
+          else onToggle();
         }}
         onFocus={(event) => {
           /*
@@ -458,14 +492,15 @@ function Rows({
 */
 export function WorkMenuPanel({
   open,
-  isDesktop,
+  hoverOpens,
   currentPath,
   onClose,
   onCancelClose,
   onScheduleClose,
 }: {
   open: boolean;
-  isDesktop: boolean;
+  /** A real pointer is present, so hover opens the menu and click navigates. */
+  hoverOpens: boolean;
   currentPath: string;
   onClose: () => void;
   onCancelClose: () => void;
@@ -486,8 +521,8 @@ export function WorkMenuPanel({
           {...{ [SCOPE_ATTR]: "" }}
           role="menu"
           aria-label="Case studies"
-          onMouseEnter={isDesktop ? onCancelClose : undefined}
-          onMouseLeave={isDesktop ? onScheduleClose : undefined}
+          onMouseEnter={hoverOpens ? onCancelClose : undefined}
+          onMouseLeave={hoverOpens ? onScheduleClose : undefined}
           variants={
             reduced
               ? {
@@ -545,12 +580,18 @@ export function WorkMenuPanel({
 */
 export function WorkMenuMobileList({
   open,
+  hoverOpens,
   currentPath,
   onClose,
+  onCancelClose,
+  onScheduleClose,
 }: {
   open: boolean;
+  hoverOpens: boolean;
   currentPath: string;
   onClose: () => void;
+  onCancelClose: () => void;
+  onScheduleClose: () => void;
 }) {
   const reduced = useReducedMotion();
 
@@ -561,6 +602,17 @@ export function WorkMenuMobileList({
           {...{ [SCOPE_ATTR]: "" }}
           role="menu"
           aria-label="Case studies"
+          /*
+            Same hover pairing the floating card has, and for a sharper reason:
+            this list is a SIBLING row of the nav grid, not a child of the
+            trigger's wrapper, so moving the pointer down off Work and onto the
+            rows fires the wrapper's mouseleave and nothing was cancelling the
+            close it scheduled. The menu closed on the way to the very links it
+            was offering. Cancelling here makes the trigger and the list read as
+            one hover surface; leaving the list still closes it.
+          */
+          onMouseEnter={hoverOpens ? onCancelClose : undefined}
+          onMouseLeave={hoverOpens ? onScheduleClose : undefined}
           variants={{
             hidden: { height: 0, opacity: 0 },
             visible: {
