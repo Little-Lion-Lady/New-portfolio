@@ -315,26 +315,6 @@ export function Reveal({
   const mounted = useHasMounted();
   const shouldAnimate = !hold && (isImmediate ? mounted : active && inView);
 
-  /*
-    The floor is insurance against the reveal never running (see .reveal-safety
-    in globals.css). Once it HAS run, the insurance is spent — and leaving it
-    on the element is not free.
-
-    A CSS animation counts as running from page load, all the way through its
-    delay, so every reveal wrapper carries an active animation of `filter` and
-    `transform` for the site's first 10.3 seconds. Gecko gives an element with
-    an active filter animation its own rasterised surface for the whole
-    subtree, and the first thing inside to animate pays to build it: a work
-    row's carousel stuttered on the first hover and only the first, which is
-    always inside that window. Blink absorbs it, so this only ever showed up
-    in Firefox.
-
-    Retiring on completion rather than on trigger keeps the cover whole — a
-    reveal that starts and never finishes still has its floor.
-  */
-  const [revealed, setRevealed] = useState(false);
-  const floored = !noSafetyFloor && !revealed;
-
   const Component = m[as] as typeof m.div;
 
   // Same delay the variants above apply, shared with the subtree so nested
@@ -348,15 +328,12 @@ export function Reveal({
     <Component
       ref={ref as unknown as React.RefObject<HTMLDivElement>}
       className={
-        !floored ? className : className ? `reveal-safety ${className}` : "reveal-safety"
+        noSafetyFloor ? className : className ? `reveal-safety ${className}` : "reveal-safety"
       }
       style={style}
       custom={{ i: index, delay, duration }}
       initial="hidden"
       animate={shouldAnimate ? "visible" : "hidden"}
-      onAnimationComplete={(definition) => {
-        if (definition === "visible") setRevealed(true);
-      }}
       variants={reducedMotion ? reducedVariants : isFF ? (noY ? ffVariantsNoY : ffVariants) : blur ? blurVariants : noY ? variantsNoY : variants}
     >
       <RevealTriggerContext.Provider value={trigger}>{children}</RevealTriggerContext.Provider>
@@ -593,11 +570,6 @@ export function RevealWords({
     if (shouldAnimate) frozen.current = true;
   }, [shouldAnimate]);
 
-  // Same floor, same retirement — see <Reveal>. Every token carries the class,
-  // and they land in cascade order, so the last one by index is the last to
-  // finish and can speak for all of them.
-  const [revealed, setRevealed] = useState(false);
-
   const cascade = (i: number) =>
     byLine
       ? { i: startLine + (lineMap?.[i] ?? 0), stagger: LINE_STAGGER, duration: LINE_DURATION }
@@ -638,19 +610,12 @@ export function RevealWords({
             ref={(el: HTMLElement | null) => {
               tokenRefs.current[i] = el;
             }}
-            className={revealed ? undefined : "reveal-safety"}
+            className="reveal-safety"
             style={{ display: "inline-block", whiteSpace: "pre-wrap" }}
             custom={{ ...c, delay }}
             initial="hidden"
             animate={shouldAnimate ? "visible" : "hidden"}
             variants={tokenVariants}
-            onAnimationComplete={
-              i === tokens.length - 1
-                ? (definition) => {
-                    if (definition === "visible") setRevealed(true);
-                  }
-                : undefined
-            }
             // The resolved cascade offset for this token, excluding the
             // heading's own `delay`. Star sync reads it rather than
             // recomputing index x stagger, which is wrong under byLine.
