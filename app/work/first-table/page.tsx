@@ -143,7 +143,7 @@ export default function FirstTable() {
           <CaseStudyHero
             titleTop="First Table"
             titleBottom="booking app"
-            lead="A full rebuild of the booking app."
+            lead="A full rebuild of a restaurant booking app"
             description={`First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months later the onboarding completion was up ${firstTable.onboardingCompletionIncrease} and conversion up ${firstTable.conversionIncrease}.`}
             meta={[
               { label: "Role_", value: "Lead Product Designer" },
