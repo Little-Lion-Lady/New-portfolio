@@ -27,7 +27,6 @@ export const DURATION = 0.91;
 // is only a fraction through: the group arrives as one continuous cascade
 // rather than a sequence of discrete pops.
 export const STAGGER = 0.09;
-export const DURATION_FF = 0.78;
 export const WORD_DURATION = 1.45;
 // Words need a far tighter stagger than blocks: the hero runs 33 of them, so
 // the block value would drag its reveal out past three seconds. At 35ms the
