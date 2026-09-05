@@ -59,13 +59,13 @@ export function DesignMedia() {
           more than its flex share and overflowing the row. */}
       <div className="flex gap-2xs md:gap-sm lg:gap-md flex-col lg:flex-row">
         <GlassImage
-          src="/home/work/covid-tracer/MOH_33.jpg"
+          src="/home/work/covid-tracer/MOH_33.png"
           alt="Five dashboard variants showing every Bluetooth Tracing status state"
           frameAspectClassName="aspect-[361/220] md:aspect-[944/500] lg:aspect-[818/500]"
           className="w-full lg:min-w-0 lg:flex-1"
         />
         <GlassImage
-          src="/home/work/covid-tracer/MOH_34.jpg"
+          src="/home/work/covid-tracer/MOH_34.png"
           alt="Poster scan sign-in screen, before and after the redesign"
           frameAspectClassName="aspect-[361/200] md:aspect-[944/500] lg:aspect-[818/500]"
           className="w-full lg:min-w-0 lg:flex-1"
@@ -99,7 +99,7 @@ export function ValidationMedia() {
             still resolve one shared row height, so nothing is cropped and the
             row still lines up. */}
         <GlassImage
-          src="/home/work/covid-tracer/MOH_29.jpg"
+          src="/home/work/covid-tracer/MOH_29.png"
           alt="Click heatmap over the poster scan screen from the first test round"
           frameAspectRatio="560/947"
           className="w-full md:w-auto md:min-w-0 md:flex-[0.5913]"
@@ -119,7 +119,7 @@ export function ValidationMedia() {
           documented on the §06 rows below). aspect-auto + the row's stretch
           makes the recording follow the pair exactly, at every desktop width. */}
       <GlassImage
-        src="/home/work/covid-tracer/MOH_31.jpg"
+        src="/home/work/covid-tracer/MOH_31.png"
         alt="Recorded usability session running the Bluetooth Tracing prototype"
         frameAspectClassName="aspect-[361/262] md:aspect-[944/722] lg:aspect-auto"
         className="w-full lg:min-w-0 lg:flex-1"
@@ -156,7 +156,7 @@ export function OutcomeMedia() {
           className="w-full"
         />
         <GlassImage
-          src="/home/work/covid-tracer/Mobile_screenshots_1.jpg"
+          src="/home/work/covid-tracer/Mobile_screenshots_1.png"
           alt={OUTCOME_SCREENS_ALT}
           sizes="(min-width: 1024px) 64px, (min-width: 768px) 829px, 362px"
           frameAspectClassName="aspect-[361/225] md:aspect-[944/583]"
@@ -179,7 +179,7 @@ export function OutcomeMedia() {
       {/* Desktop — the wide six-screen strip, then ratings beside the numbers */}
       <div className="hidden lg:flex lg:flex-col lg:gap-md">
         <GlassImage
-          src="/home/work/covid-tracer/Desktop_screenshots.jpg"
+          src="/home/work/covid-tracer/Desktop_screenshots.png"
           alt={OUTCOME_SCREENS_ALT}
           sizes="(min-width: 1024px) 1374px, 64px"
           frameAspectClassName="lg:aspect-[1648/574]"
