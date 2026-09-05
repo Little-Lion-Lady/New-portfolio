@@ -9,6 +9,7 @@
   Regenerate whenever imagery is added or replaced.
 */
 export const IMAGE_RATIOS: Record<string, string> = {
+  "/home/work/basis/B0.jpg": "1000/571",
   "/home/work/basis/BS1.jpg": "956/800",
   "/home/work/basis/BS12.png": "1866/1812",
   "/home/work/basis/BS13.png": "1640/1120",
@@ -103,8 +104,8 @@ export const IMAGE_RATIOS: Record<string, string> = {
   "/home/work/firsttable/8_light.png": "1717/842",
   "/home/work/firsttable/9.png": "2342/833",
   "/home/work/firsttable/9_dark.png": "2343/833",
-  "/home/work/firsttable/FT1.jpg": "1128/800",
+  "/home/work/firsttable/FT1.jpg": "1854/1315",
   "/home/work/firsttable/FT2.jpg": "860/800",
-  "/home/work/firsttable/FT3.jpg": "1128/800",
+  "/home/work/firsttable/FT3.jpg": "1855/1316",
   "/home/work/firsttable/FirstTable_08.jpg": "1128/800",
 };

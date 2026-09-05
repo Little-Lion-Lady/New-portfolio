@@ -21,6 +21,7 @@ export const IMAGE_SIZES: Record<string, string> = {
   "/home/about/ART6.jpg": "(min-width: 1024px) 425px, (min-width: 768px) 425px, 213px",
   "/home/about/ART7.jpg": "(min-width: 1024px) 425px, (min-width: 768px) 425px, 213px",
   "/home/about/ME1.JPG": "(min-width: 1024px) 275px, (min-width: 768px) 175px, 178px",
+  "/home/work/basis/B0.jpg": "(min-width: 1024px) 709px, (min-width: 768px) 601px, 460px",
   "/home/work/basis/BasisConsumer.jpg": "(min-width: 1024px) 1374px, (min-width: 768px) 829px, 362px",
   "/home/work/basis/BS1.jpg": "(min-width: 1024px) 483px, (min-width: 768px) 411px, 315px",
   "/home/work/basis/BS12.png": "(min-width: 1024px) 562px, (min-width: 768px) 829px, 362px",
@@ -43,7 +44,7 @@ export const IMAGE_SIZES: Record<string, string> = {
   "/home/work/basis/BS28.png": "(min-width: 1024px) 336px, (min-width: 768px) 284px, 223px",
   "/home/work/basis/BS29.png": "(min-width: 1024px) 336px, (min-width: 768px) 284px, 223px",
   "/home/work/basis/BS3.png": "(min-width: 1024px) 570px, (min-width: 768px) 484px, 371px",
-  "/home/work/basis/BS4.jpg": "(min-width: 1024px) 935px, (min-width: 768px) 829px, 608px",
+  "/home/work/basis/BS4.jpg": "(min-width: 1024px) 446px, (min-width: 768px) 829px, 362px",
   "/home/work/basis/BS5.jpg": "(min-width: 1024px) 446px, (min-width: 768px) 829px, 362px",
   "/home/work/basis/BS6.jpg": "(min-width: 1024px) 446px, (min-width: 768px) 829px, 362px",
   "/home/work/basis/BS7.png": "(min-width: 1024px) 917px, (min-width: 768px) 829px, 362px",
@@ -96,7 +97,7 @@ export const IMAGE_SIZES: Record<string, string> = {
   "/home/work/firsttable/FirstTable_08.jpg": "(min-width: 1024px) 570px, (min-width: 768px) 484px, 371px",
   "/home/work/firsttable/FT1.jpg": "(min-width: 1024px) 570px, (min-width: 768px) 484px, 371px",
   "/home/work/firsttable/FT2.jpg": "(min-width: 1024px) 435px, (min-width: 768px) 370px, 283px",
-  "/home/work/firsttable/FT3.jpg": "(min-width: 1024px) 570px, (min-width: 768px) 484px, 371px",
+  "/home/work/firsttable/FT3.jpg": "(min-width: 1024px) 570px, (min-width: 768px) 484px, 370px",
 };
 
 /** Undefined for anything unmeasured, which leaves next/image on its own default. */
