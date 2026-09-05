@@ -535,7 +535,12 @@ export function FTRedesignMedia() {
         darkSrc={`${FT}/9_dark.png`}
         alt="First Table single-step booking flow"
         sizes="100vw"
-        className="w-full aspect-[361/148] md:aspect-[944/342] lg:aspect-[1584/609]"
+        /* The export is one wide strip of screens; the old per-breakpoint frame
+           ratios were all narrower than the file, so object-cover shaved the
+           outer screens off at every size. Sizing the inner box to the photo's
+           own 2342x833 ratio keeps the whole flow visible as the frame scales. */
+        aspectRatio="2342/833"
+        className="w-full"
       />
       <div className="flex gap-r-2xs flex-col md:flex-row md:items-start">
         {REDESIGN_DETAILS.map((d) => (

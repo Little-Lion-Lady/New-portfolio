@@ -10,6 +10,7 @@
   sitting empty until the full image decodes.
 */
 export const IMAGE_BLUR: Record<string, string> = {
+  "/home/Gettouch_dark.png": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4WAoAAAAQAAAADwAAAwAAQUxQSEEAAAAAEVtOaXJxdy9zY000SHeRDU7q9v+7nPCJtfHpzefp508125JwW1poOU2Gb4J4eVwrAhUDAAAAAAAAAAAAAAAAAABWUDggPAAAALABAJ0BKhAABAADwGAlsAJ0AQ72nkAA/sj/0JoMzpIzfjOT3kevmhedU+4gwCvPAWUCE/qe9ikOWpEAAA==",
   "/home/about/ABOUT2.jpg": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAABQAQCdASoMABAAA8BgJQBOgCgAAP7vGtjjDWw9j63QQjhtKIAAAA==",
   "/home/about/ABOUT2_Dark.jpg": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADQAQCdASoMABAAA8BgJagCdAEO/gPIAAD+zIZPGjQf/4Js//p0hvR6QdddLR3J/wAAAA==",
   "/home/about/ART1.jpg": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAABQAgCdASoLABAAA8BgJbACdAEWmWzNMFHZ8AAA/uv+nde7AKgbLqQcZJ70QKBNaYvBrUVssrnz/hBAzSGhDhngrbDEgFWsbb56ynUz1pYHteBxhOV+1puzyL99I1/x81j74XPpmYn53DW81S1rAAAA",
@@ -20,6 +21,7 @@ export const IMAGE_BLUR: Record<string, string> = {
   "/home/about/ART6.jpg": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoNABAAA8BgJbACdAEO9uWSQAAA/uv4c+ocOXhOAMs4yfYytDvvuOoLz/eI2+K6y2pL+O7XCk+L1O1NS8igPmbAAAA=",
   "/home/about/ART7.jpg": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoKABAAA8BgJZQC7AELITZvsAD+5yGovHoiPKvlcnoPcUvTaPAef1dYv9wgzcdihjfAkrDqrv7fcgAA",
   "/home/about/ME1.JPG": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoJABAAA8BgJbACdAD5gti9bAAAAP7f9P4tSF1MXptJEXyq4vJjAE+mPT5Hu3Rb/NDyHwyKGWzgnd2d2HVR4HBJ1ofhuO/OXIgeX6EHo+cBHhnIFUNeBqAA",
+  "/home/work/basis/B0.jpg": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAAkAA8BgJYwC/OEQA3oytOAA/vImuBFelsNkRlMuskwCL2qt7Woh5fB30w5k4q/kDeKJk4g0TJ/RU8X9fkxr7v64D+AA",
   "/home/work/basis/BS1.jpg": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwAgCdASoQAA0AA8BgJZwAGy3qbX5tW0wUYAD+88PrnERY6QLryewk4nfyxfSPgMHpEV/CKnP8GPR5b2e1Kj65SxwmvogKtGtju+9G7kFLnB8ONqrdzoJY1BMcAA==",
   "/home/work/basis/BS12.png": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4WAoAAAAQAAAADwAADwAAQUxQSBwAAAABH6AQQADE3zWF0YiIOIGAhJD/s7xzIKL/IfQCVlA4IBoAAAAwAQCdASoQABAAA8BgJaQAA3AA/vOL/4uQAA==",
   "/home/work/basis/BS13.png": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAAAwAQCdASoQAAsAA8BgJaQAA3AA/vMV+CqmCES3Ml1z9RHGNAfU1bcNDkQAAA==",
@@ -114,9 +116,9 @@ export const IMAGE_BLUR: Record<string, string> = {
   "/home/work/firsttable/8_light.png": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoQAAgAA8BgJYgCdADR5fAa3YAA/iXODJwNf+0o7C1VGyElSl7Sg0fwV6D/vnLCEdemS5aabaoYZcZ0z/C5GxSWj6r2HgrxMn/yAAAA",
   "/home/work/firsttable/9.png": "data:image/webp;base64,UklGRrgAAABXRUJQVlA4WAoAAAAQAAAADwAABQAAQUxQSDIAAAABT6CgbRuGP+B2f6EREQEU6EkohGSFeggvhAxCCCGbEDKI+KcQ0f8JwEj/yaiBkZZjNVZQOCBgAAAA8AEAnQEqEAAGAAPAYCUAToAi1Ckn07LkAPlw7L0j7mRGYIdxty+qrWJIsGHlNc9LMy0X3qx9OvWHviZiZquLt/So4IcK4GquAE0awfOWQogADw4Gy46yiij8RihiAAAA",
   "/home/work/firsttable/9_dark.png": "data:image/webp;base64,UklGRowAAABXRUJQVlA4WAoAAAAQAAAADwAABQAAQUxQSDAAAAABR0AmbeNfb992sxER8Z/rgUJIVqiH8ELI4CFEE0IGmf8UIvo/ARipn40eGKkcqwFWUDggNgAAAHABAJ0BKhAABgADwGAljAJ0AXUAAP7w7r9j6AVNLoQ2Hmc8QkgbG4f7Dg2dR7/UhDo1coAAAA==",
-  "/home/work/firsttable/FT1.jpg": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQAgCdASoQAAsAA8BgJbACdH8AE63ITPaIAP7AYQDFz93eca3ndiJrQZEI2CZhHsr+GuMyaVbFvFJGAXISUo9KGKdRLGU1OrdHP8XXUciUh3XHCBjAI/YRXiCNg2Phrfiampwjg8lL/2NvmFz0yOXIP4UAAA==",
+  "/home/work/firsttable/FT1.jpg": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAwAgCdASoQAAsAA8BgJbACdH8AE685fM8kAAD+wGAU5u9Pecy+J5Vp8qeuEfZSptyDTusOxkSKvWxMxaZ+KerWXClkLmcfZE2BYOJEAFJUEjTwa3euA3XkRzwVPKjdMo1Mj5EylFZ4eYy0IzKXHwvPPLgAAA==",
   "/home/work/firsttable/FT2.jpg": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABwAgCdASoQAA8AA8BgJYgCdAYwdv2ZPDBxsA9oAP7sW4noLB5trvjM+odxUa2c1+k22pd9cD+ZsP2ugbVmmZwixkL4TAqHZURDeh+j4r/mvSzEgW/QXxavLwsOe/HY3xvepgSKDYYzbyFRnLA86SSCtgnZ8HmHlAid5AAA",
-  "/home/work/firsttable/FT3.jpg": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoQAAsAA8BgJbACdAELjf4AlogAAP7BAbt9NixF2IgAhvs/4JL8F5f0/OnrHimLZumDWUqzJ3b5ivDwWxaZhMGN9cJq1yyU0bnn3+jrScLGAaYRR+CG4AAA",
+  "/home/work/firsttable/FT3.jpg": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAQAgCdASoQAAsAA8BgJbACdAEfQIRQhqQAAP7BAbqFuYlF+HX4sKanjtlJsXLTov6vXkcNsa2xMgOXXquk5kU39C2kHrpM6Es6/I6mMUskjrSsqg4BphFH4+yIAA==",
   "/home/work/firsttable/FirstTable_08.jpg": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoQAAsAA8BgJQBOgCH8jl0UmsAA/uyMn3zrDFSKv3Y6ELnM0pROtU5kfeuSL5/p9tvd83YDve7waH0TJ85wR3plWVZ4bP/x4/3eb4AA",
 };
 

@@ -21,11 +21,18 @@ const experience = [
   { role: "Product Designer", org: "RUSH | Agency", project: "Google, Z energy, Frankie", year: "18’ – 20’" },
 ];
 
+// Newest first; within a year, highest honour first (Purple, Gold, Silver,
+// Finalist). The two Starship rows are the same project entered in two
+// categories — Interactive and Spatial — hence the two separate listings.
 const awards = [
+  { project: "First Table app", award: "Best Design Finalist", year: "26’", href: "https://bestawards.co.nz/digital/digital-products/first-table/first-table-app/" },
   { project: "Basis Smart Panel", award: "Best Design Gold", year: "25’", href: "https://bestawards.co.nz/industrial-design/consumer/basis/basis-smart-panel-1/" },
   { project: "NZ COVID Tracer app", award: "Best Design Gold", year: "21’", href: "https://bestawards.co.nz/digital/digital-products/rush-1/nz-covid-tracer-app/" },
+  { project: "Ignite Wellbeing Platform", award: "Best Design Finalist", year: "21’", href: "https://bestawards.co.nz/digital/user-experience/rush-1/ignite-wellbeing-platform-1/" },
   { project: "Z Energy Sharetank", award: "Best Design Gold", year: "20’", href: "https://bestawards.co.nz/digital/user-experience/z-energy-innovation-refinery/z-energy-sharetank/" },
   { project: "Starship Check-Up", award: "Best Design Purple", year: "18’", href: "https://bestawards.co.nz/user-experience-award/interactive/rush-1/starship-animal-check-ups-magical-forest/" },
+  { project: "Z Fastlane", award: "Best Design Gold", year: "18’", href: "https://bestawards.co.nz/user-experience-award/optimising/rush-1/z-fastlane-best-award-submission/" },
+  { project: "Starship Animal Check Ups & Magical Forest", award: "Best Design Silver", year: "18’", href: "https://bestawards.co.nz/user-experience-award/spatial/rush-1/starship-animal-check-ups-magical-forest-3/" },
 ];
 
 const artwork = ["ART1", "ART2", "ART3", "ART4", "ART5", "ART6", "ART7"];
