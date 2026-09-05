@@ -302,9 +302,10 @@ export default function About() {
 
       <Divider />
 
-      <Reveal delay={0.25} immediate className="w-full">
+      {/* No reveal: the footer arrives already there. */}
+      <div className="w-full">
         <SiteFooter />
-      </Reveal>
+      </div>
     </main>
   );
 }

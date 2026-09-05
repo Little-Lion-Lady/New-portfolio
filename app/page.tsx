@@ -169,9 +169,10 @@ export default function Home() {
 
       <Divider />
 
-      <Reveal className="w-full">
+      {/* No reveal: the footer arrives already there. */}
+      <div className="w-full">
         <SiteFooter />
-      </Reveal>
+      </div>
     </main>
   );
 }

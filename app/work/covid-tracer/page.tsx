@@ -343,9 +343,10 @@ export default function CovidTracer() {
 
       <Divider />
 
-      <Reveal delay={0.6} immediate className="relative z-10 w-full">
+      {/* No reveal: the footer arrives already there. */}
+      <div className="relative z-10 w-full">
         <SiteFooter />
-      </Reveal>
+      </div>
     </main>
   );
 }
