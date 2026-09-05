@@ -31,7 +31,7 @@ export function BioCollage() {
   return (
     <div className="relative flex h-[267.319px] w-full items-stretch gap-r-2xs md:h-[384px] lg:h-[496.967px]">
       <GlassImage
-        src="/home/about/ME1.JPG"
+        src="/home/about/ME1.jpg"
         alt="Maryna Babych"
         radiusClassName={CARD_RADIUS}
         sizes="(min-width: 1400px) 320px, (min-width: 768px) 200px, 50vw"

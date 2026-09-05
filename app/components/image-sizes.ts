@@ -20,7 +20,7 @@ export const IMAGE_SIZES: Record<string, string> = {
   "/home/about/ART5.jpg": "(min-width: 1024px) 425px, (min-width: 768px) 425px, 213px",
   "/home/about/ART6.jpg": "(min-width: 1024px) 425px, (min-width: 768px) 425px, 213px",
   "/home/about/ART7.jpg": "(min-width: 1024px) 425px, (min-width: 768px) 425px, 213px",
-  "/home/about/ME1.JPG": "(min-width: 1024px) 275px, (min-width: 768px) 175px, 178px",
+  "/home/about/ME1.jpg": "(min-width: 1024px) 275px, (min-width: 768px) 175px, 178px",
   "/home/work/basis/B0.jpg": "(min-width: 1024px) 709px, (min-width: 768px) 601px, 460px",
   "/home/work/basis/BasisConsumer.jpg": "(min-width: 1024px) 1374px, (min-width: 768px) 829px, 362px",
   "/home/work/basis/BS1.jpg": "(min-width: 1024px) 483px, (min-width: 768px) 411px, 315px",
