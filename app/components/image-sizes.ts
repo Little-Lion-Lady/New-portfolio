@@ -93,9 +93,9 @@ export const IMAGE_SIZES: Record<string, string> = {
   "/home/work/firsttable/7_dark.png": "(min-width: 1024px) 1374px, (min-width: 768px) 829px, 362px",
   "/home/work/firsttable/8_dark.png": "(min-width: 1024px) 1374px, (min-width: 768px) 829px, 362px",
   "/home/work/firsttable/9_dark.png": "(min-width: 1024px) 1374px, (min-width: 768px) 829px, 362px",
-  "/home/work/firsttable/FirstTable_08.jpg": "(min-width: 1024px) 570px, (min-width: 768px) 485px, 371px",
+  "/home/work/firsttable/FirstTable_08.jpg": "(min-width: 1024px) 570px, (min-width: 768px) 484px, 371px",
   "/home/work/firsttable/FT1.jpg": "(min-width: 1024px) 570px, (min-width: 768px) 484px, 371px",
-  "/home/work/firsttable/FT2.jpg": "(min-width: 1024px) 435px, (min-width: 768px) 369px, 282px",
+  "/home/work/firsttable/FT2.jpg": "(min-width: 1024px) 435px, (min-width: 768px) 370px, 283px",
   "/home/work/firsttable/FT3.jpg": "(min-width: 1024px) 570px, (min-width: 768px) 484px, 371px",
 };
 
