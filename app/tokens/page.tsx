@@ -334,7 +334,7 @@ export default function DesignSystem() {
               { src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" },
               { src: "/home/work/basis/BS2.jpg", alt: "Basis home app screen" },
               { src: "/home/work/basis/BS3.png", alt: "Basis home app screen" },
-              { src: "/home/work/basis/BS4.png", alt: "Basis home app screen", quality: 75 },
+              { src: "/home/work/basis/BS4.jpg", alt: "Basis home app screen", quality: 75 },
             ]}
           />
         </Demo>

@@ -229,7 +229,7 @@ export function ResearchMedia() {
           (matching lg's already-correct value) shows the whole photo
           instead of cropping to a fixed 227px. */}
       <GlassImage
-        src="/home/work/basis/BS7.jpg"
+        src="/home/work/basis/BS7.png"
         alt={BASIS_ALT}
         className="aspect-[931/601] w-full lg:aspect-[931/601] lg:h-auto lg:w-2/3 lg:flex-none"
       />
@@ -245,7 +245,7 @@ export function ProcessMedia() {
       {/* BS9's real ratio is 1600×1395 — aspect-[1600/1395] replaces the
           fixed heights (306/524px mobile/tablet, 1414px desktop) that were
           cropping it at every breakpoint. */}
-      <GlassImage src="/home/work/basis/BS9.jpg" alt={BASIS_ALT} className="aspect-[1600/1395] w-full" />
+      <GlassImage src="/home/work/basis/BS9.png" alt={BASIS_ALT} className="aspect-[1600/1395] w-full" />
     </div>
   );
 }
@@ -264,13 +264,13 @@ export function SolutionMedia() {
           that gap by giving both a shared height and proportional width. */}
       <div className="flex gap-r-2xs flex-col lg:flex-row lg:items-stretch">
         <GlassImage
-          src="/home/work/basis/BS12.jpg"
+          src="/home/work/basis/BS12.png"
           alt={BASIS_ALT}
           frameAspectRatio="1866/1812"
           className="w-full lg:w-auto lg:flex-[1.0298]"
         />
         <GlassImage
-          src="/home/work/basis/BS13.jpg"
+          src="/home/work/basis/BS13.png"
           alt={BASIS_ALT}
           frameAspectRatio="1600/1092"
           className="w-full lg:w-auto lg:flex-[1.4652]"
@@ -299,10 +299,10 @@ export function PrototypeMedia() {
           has no width source of its own (children are all flex-basis:0, so
           they can't contribute one), and collapses to 0. */}
       <div className="flex gap-r-2xs lg:flex-1">
-        <GlassImage src="/home/work/basis/BS14.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
-        <GlassImage src="/home/work/basis/BS15.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
+        <GlassImage src="/home/work/basis/BS14.png" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
+        <GlassImage src="/home/work/basis/BS15.png" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
         <GlassImage src="/home/work/basis/BS16.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
-        <GlassImage src="/home/work/basis/BS17.jpg" alt={BASIS_ALT} aspectRatio="219/477" className="flex-1" />
+        <GlassImage src="/home/work/basis/BS17.png" alt={BASIS_ALT} aspectRatio="219/477" className="flex-1" />
       </div>
       {/* max-w-[190px] on mobile/tablet caps each participant photo's width;
           lg's own layout (fixed 243px column, flex-none) needs it
@@ -347,7 +347,7 @@ const OUTCOME_STRIP_RATIO: Record<string, string> = {
 function OutcomeStripImage({ name }: { name: string }) {
   return (
     <GlassImage
-      src={`/home/work/basis/${name}.jpg`}
+      src={`/home/work/basis/${name}.png`}
       alt={BASIS_ALT}
       aspectRatio={OUTCOME_STRIP_RATIO[name]}
       className="w-[220px] shrink-0 md:w-[281px] lg:w-[332px]"
@@ -401,8 +401,8 @@ const FT = "/home/work/firsttable";
 export function FTProblemMedia() {
   return (
     <GlassImage
-      src={`${FT}/4.jpg`}
-      darkSrc={`${FT}/4_dark.jpg`}
+      src={`${FT}/4.png`}
+      darkSrc={`${FT}/4_dark.png`}
       alt={FT_ALT}
       sizes="100vw"
       className="w-full aspect-[361/134] md:aspect-[944/318] lg:aspect-[1584/514]"
@@ -415,14 +415,14 @@ export function FTResearchMedia() {
   return (
     <div className="flex gap-r-2xs flex-col lg:flex-row lg:items-start">
       <GlassImage
-        src={`${FT}/5.jpg`}
-        darkSrc={`${FT}/5_dark.jpg`}
+        src={`${FT}/5.png`}
+        darkSrc={`${FT}/5_dark.png`}
         alt="First Table diner segmentation analysis"
         sizes="(min-width: 1024px) 50vw, 100vw"
         className="w-full aspect-[361/255] md:aspect-[944/628] lg:aspect-[782/502] lg:flex-1"
       />
       <GlassImage
-        src={`${FT}/6.jpg`}
+        src={`${FT}/6.png`}
         alt="First Table survey research findings"
         sizes="(min-width: 1024px) 50vw, 100vw"
         className="w-full aspect-[361/231] md:aspect-[944/569] lg:aspect-[782/502] lg:flex-1"
@@ -439,15 +439,15 @@ export function FTDesignSystemMedia() {
   return (
     <div className="flex gap-r-2xs flex-col">
       <GlassImage
-        src={`${FT}/7.jpg`}
-        darkSrc={`${FT}/7_dark.jpg`}
+        src={`${FT}/7_light.png`}
+        darkSrc={`${FT}/7_dark.png`}
         alt="First Table design system component library"
         sizes="100vw"
         className="w-full aspect-[361/227] md:aspect-[944/553] lg:aspect-[1584/993]"
       />
       <GlassImage
-        src={`${FT}/8_light.jpg`}
-        darkSrc={`${FT}/8_dark.jpg`}
+        src={`${FT}/8_light.png`}
+        darkSrc={`${FT}/8_dark.png`}
         alt="First Table design tokens"
         sizes="100vw"
         className={tokenSheet}
@@ -531,8 +531,8 @@ export function FTRedesignMedia() {
   return (
     <div className="flex gap-r-2xs flex-col">
       <GlassImage
-        src={`${FT}/9.jpg`}
-        darkSrc={`${FT}/9_dark.jpg`}
+        src={`${FT}/9.png`}
+        darkSrc={`${FT}/9_dark.png`}
         alt="First Table single-step booking flow"
         sizes="100vw"
         className="w-full aspect-[361/148] md:aspect-[944/342] lg:aspect-[1584/609]"
@@ -562,17 +562,20 @@ export function FTRedesignMedia() {
 }
 
 // §05 Validation — six A/B test screens (1 col → 2 → 3) above a wider pair.
-const VALIDATION_TESTS = ["10", "11", "12", "13", "14", "15"];
+// Each shot was exported in whichever format came out smaller, and a light
+// export's format doesn't always match its dark twin — so the pairs carry
+// their own file names rather than a stem plus a fixed extension.
+const VALIDATION_TESTS = [{ light: "10.png", dark: "10_dark.png" }, { light: "11.png", dark: "11_dark.png" }, { light: "12.png", dark: "12_dark.png" }, { light: "13.jpg", dark: "13_dark.jpg" }, { light: "14.png", dark: "14_dark.png" }, { light: "15.png", dark: "15_dark.png" }];
 
 export function FTValidationMedia() {
   return (
     <div className="flex gap-r-2xs flex-col">
       <div className="grid gap-r-2xs grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {VALIDATION_TESTS.map((n) => (
+        {VALIDATION_TESTS.map((t) => (
           <GlassImage
-            key={n}
-            src={`${FT}/${n}.jpg`}
-            darkSrc={`${FT}/${n}_dark.jpg`}
+            key={t.light}
+            src={`${FT}/${t.light}`}
+            darkSrc={`${FT}/${t.dark}`}
             alt="First Table A/B test variant"
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
             className="w-full aspect-[361/270] md:aspect-[464/400] lg:aspect-[514/400]"
@@ -581,15 +584,15 @@ export function FTValidationMedia() {
       </div>
       <div className="flex gap-r-2xs flex-col lg:flex-row lg:items-start">
         <GlassImage
-          src={`${FT}/16.jpg`}
-          darkSrc={`${FT}/16_dark.jpg`}
+          src={`${FT}/16.png`}
+          darkSrc={`${FT}/16_dark.png`}
           alt="First Table usability research session"
           sizes="(min-width: 1024px) 50vw, 100vw"
           className="w-full aspect-[361/214] md:aspect-[944/473] lg:aspect-[782/473] lg:flex-1"
         />
         <GlassImage
-          src={`${FT}/17.jpg`}
-          darkSrc={`${FT}/17_dark.jpg`}
+          src={`${FT}/17.png`}
+          darkSrc={`${FT}/17_dark.png`}
           alt="First Table experiment results"
           sizes="(min-width: 1024px) 50vw, 100vw"
           className="w-full aspect-[361/210] md:aspect-[944/473] lg:aspect-[782/473] lg:flex-1"
@@ -604,14 +607,14 @@ export function FTValidationMedia() {
 // past both edges exactly as in Figma (<body> already clips overflow-x). On
 // mobile the two rows become one horizontal scroll strip, the same treatment
 // the Basis outcome screens get.
-const OUTCOME_ROW_1 = ["18", "19", "20", "21"];
-const OUTCOME_ROW_2 = ["22", "23", "24", "25", "26"];
+const OUTCOME_ROW_1 = [{ light: "18_light.jpg", dark: "18_dark.jpg" }, { light: "19_light.png", dark: "19_dark.jpg" }, { light: "20_light.png", dark: "20_dark.png" }, { light: "21_light.png", dark: "21_dark.png" }];
+const OUTCOME_ROW_2 = [{ light: "22_light.jpg", dark: "22_dark.jpg" }, { light: "23_light.jpg", dark: "23_dark.jpg" }, { light: "24_light.png", dark: "24_dark.png" }, { light: "25_light.png", dark: "25_dark.jpg" }, { light: "26_light.png", dark: "26_dark.png" }];
 
-function FTOutcomeScreen({ name }: { name: string }) {
+function FTOutcomeScreen({ shot }: { shot: { light: string; dark: string } }) {
   return (
     <GlassImage
-      src={`${FT}/${name}_light.jpg`}
-      darkSrc={`${FT}/${name}_dark.jpg`}
+      src={`${FT}/${shot.light}`}
+      darkSrc={`${FT}/${shot.dark}`}
       alt={FT_ALT}
       sizes="332px"
       className="w-[220px] shrink-0 aspect-[390/840] md:w-[281px] lg:w-[332px]"
@@ -632,16 +635,16 @@ export function FTOutcomeMedia() {
           top/bottom edge — py-sm gives the shadow's blur room inside the scroll
           box. Same treatment as BasisOutcomeMedia. */}
       <div className="-mx-md flex gap-r-2xs overflow-x-auto py-sm md:hidden">
-        {[...OUTCOME_ROW_1, ...OUTCOME_ROW_2].map((name) => (
-          <FTOutcomeScreen key={name} name={name} />
+        {[...OUTCOME_ROW_1, ...OUTCOME_ROW_2].map((shot) => (
+          <FTOutcomeScreen key={shot.light} shot={shot} />
         ))}
       </div>
       {/* Tablet/desktop — two centred rows, no horizontal scroll */}
       <div className="hidden flex-col items-center gap-r-2xs md:flex">
         {[OUTCOME_ROW_1, OUTCOME_ROW_2].map((row, i) => (
           <div key={i} className="flex justify-center gap-r-2xs">
-            {row.map((name) => (
-              <FTOutcomeScreen key={name} name={name} />
+            {row.map((shot) => (
+              <FTOutcomeScreen key={shot.light} shot={shot} />
             ))}
           </div>
         ))}
