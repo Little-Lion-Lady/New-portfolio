@@ -1,14 +1,6 @@
-"use client";
-
-import Image from "next/image";
-// Static imports — see site-footer.tsx: the content hash in the URL is what
-// makes a re-exported asset actually reach a browser that cached the old one.
-import oopsLight from "@/public/home/Oops_light.png";
-import oopsDark from "@/public/home/Oops_dark.png";
 import { SiteHeader } from "./components/site-header";
 import { Button } from "./components/button";
 import { Reveal } from "./components/reveal";
-import { useIsDark } from "./components/use-is-dark";
 
 // Figma 404 (1704:3993 desktop / 1704:4026 tablet / 1704:4009 mobile).
 // Page padding is a flat 16/40/40 on all four sides; the header overlays it.
@@ -29,8 +21,6 @@ import { useIsDark } from "./components/use-is-dark";
 // Below 700px of viewport the row is necessarily under the fold: the page is
 // 700px tall by request, so it scrolls.
 export default function NotFound() {
-  const dark = useIsDark();
-
   return (
     <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex min-h-[max(700px,100svh)] flex-col bg-bg-primary p-md text-text-primary md:p-3xl lg:h-[max(700px,100svh)]">
       <SiteHeader />
@@ -39,30 +29,21 @@ export default function NotFound() {
       <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-between lg:pb-[clamp(16px,4svh,72px)]">
         {/* Hero — title centred in its own padding. */}
         <div className="flex min-h-0 flex-1 flex-col justify-center gap-lg py-8xl md:pb-8xl md:pt-9xl lg:pb-[clamp(24px,6svh,160px)] lg:pt-[clamp(32px,12svh,260px)]">
-          {/* One exported wordmark now, where there were two live lines ("Oops"
-              over a red "404 error"). Same arrangement as the footer's: the
-              export carries its glow baked in, .notfound-oops sets the size,
-              and the image is written in ems of that so it and the offset
-              cancelling its 54px of left glow padding scale together — which
-              is what puts the "O" on the page gutter rather than the glow.
-              Measured off the exported pixels: 925 wide, ink starting at 54.
+          {/* Live text, not an exported asset — see .wordmark in globals.css.
+              .notfound-oops carries the size ramp Figma draws across its three
+              frames, and .wordmark-trim-oops pulls the line box down to the
+              letterforms so the hero measures from the type, not from the glow.
+              The -0.043em pull puts the "O" on the page gutter rather than the
+              "O"'s left bearing, measured off the rendered glyphs.
 
-              Still an <h1>: the page keeps its heading, and the alt carries the
-              word the image draws. */}
+              Still an <h1>: the page keeps its heading. */}
           <Reveal as="h1" className="notfound-oops">
-            <Image
-              src={dark ? oopsDark : oopsLight}
-              alt="Oops!"
-              priority
-              sizes="(min-width: 1024px) 60vw, 90vw"
-              style={{
-                width: "calc(925em / 320)",
-                maxWidth: "none",
-                height: "auto",
-                marginLeft: "calc(-54em / 320)",
-              }}
-              className="wordmark-hue"
-            />
+            <span
+              className="wordmark wordmark-trim-oops wordmark-hue block"
+              style={{ marginLeft: "-0.043em" }}
+            >
+              Oops!
+            </span>
           </Reveal>
         </div>
 

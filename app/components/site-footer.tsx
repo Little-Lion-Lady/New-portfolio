@@ -1,12 +1,5 @@
 "use client";
 
-import Image from "next/image";
-// Static imports rather than string paths: they put a content hash in the URL,
-// so a re-exported asset gets a new URL. With "/home/Gettouch_light.png" the
-// optimizer URL keys on path + width + quality only, so replacing the file
-// leaves every cached copy — browser, CDN — serving the previous artwork.
-import gettouchLight from "@/public/home/Gettouch_light.png";
-import gettouchDark from "@/public/home/Gettouch_dark.png";
 import { Button } from "./button";
 import { CyclingWord } from "./cycling-word";
 import { Star } from "./dynamic-visuals";
@@ -15,20 +8,15 @@ import { useNearViewport } from "./use-near-viewport";
 
 const CYCLING_WORDS = ["love", "hate", "AI", "coffee", "mischief", "claude", "care", "passion"];
 
-// Figma "Footer" (node 361:4884) — the wordmark now leads the block rather than
-// closing it, and everything else hangs beneath it:
-//   desktop 6-col/3-row: wordmark(c1-6,r1) · socials(c2-3,r2) · made-with-love(c5-6,r2,
-//                        bottom-aligned) · colophon(c5-6,r3)
-//   tablet  4-col/4-row: wordmark · socials(side by side) · made-with-love · colophon
-//   mobile  4-col/4-row: same stacking, socials stack vertically
-//
-// The wordmark is an exported PNG, not live text. Its glow is six coloured
-// shadows in the same palette as the CTA's halo, which no amount of text-shadow
-// tuning would keep identical between the two — baking it means one source of
-// truth for the artwork and one for the colour cycle (see .wordmark-hue in
-// globals.css, which rotates the export's hue exactly as the CTA rotates its
-// halo's). A fixed-ratio image also needs no measuring pass, which is what the
-// old live-text wordmark scaled itself with.
+// "get in touch" set in GeistSans SemiBold at -0.06em tracking, measured off
+// the rendered glyphs: the lettering is 4.94x the font size wide, and its left
+// edge sits 0.04em right of where the text starts. Sizing the type at
+// 100cqw/4.94 therefore makes the lettering exactly as wide as its cell, and
+// the -0.04em pull puts the "g" on the gutter rather than the "g"'s bearing.
+// Re-measure both if the display face or the tracking changes.
+const INK_WIDTH_PER_EM = 4.94;
+const INK_LEFT_BEARING_EM = 0.04;
+
 export function SiteFooter() {
   const dark = useIsDark();
   // Gates two things, both because the footer sits below every page's fold.
@@ -43,44 +31,48 @@ export function SiteFooter() {
 
   return (
     <div className="relative w-full">
-      <footer className="grid w-full grid-cols-4 gap-x-lg pt-4xl pb-4xs md:gap-y-xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-0 dt:pb-4xl">
-        {/* Wordmark — the lettering meets the page gutters, not the image box.
-            The export is 1683px wide but its glow occupies 80px of that on each
-            side, leaving the letterforms themselves spanning 1523px (measured
-            off the exported pixels; both the light and dark files carry
-            identical bounds). Sizing the image to the cell would therefore inset
-            the "g" and the "h" by the width of their own glow, so it is blown up
-            by 1683/1523 and pulled left by the 80px margin, both as ratios of
-            the cell so they hold at every breakpoint.
+      {/* Desktop gains top padding where it previously had none. It also gives
+          the star cluster somewhere to live: the stars hang off the wordmark
+          cell's top edge, so with pt-0 they broke out above the footer and into
+          the section before it. 7xl is just enough at this size: the cluster is
+          104px tall but sits 8px lower for its own nudge, so it lands inside
+          the 96px padding with nothing to spare. Reducing either this or the
+          nudge puts the stars back over the section above.
+          The padding belongs on the grid rather than the wordmark cell — inside
+          the cell it would push the stars away from the lettering they sit on. */}
+      <footer className="grid w-full grid-cols-4 gap-x-lg pt-4xl pb-4xs md:gap-y-xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-7xl dt:pb-4xl">
+        {/* Wordmark — live text rather than an exported asset, so it stays sharp
+            at any width and there is no export to keep the layout in step with.
+            The glow is .wordmark in globals.css, rebuilt from the Figma spec.
 
-            Re-derive all three numbers whenever the asset is re-exported — the
-            glow padding has changed between exports while the 1523px lettering
-            stayed put, and stale numbers here shift the wordmark off the gutter
-            rather than failing visibly.
+            The cell is a container so the type can be sized from its width:
+            100cqw/4.94 makes the lettering exactly fill it, and .wordmark-trim-*
+            pulls the line box down to the letterforms so the cell's top edge is
+            the cap line — which is what the stars hang off and what the socials
+            padding measures from.
 
-            The glow now spills past the page gutters. That is the point — it is
-            also why <footer> can no longer clip its overflow. Nothing scrolls:
-            html and body already clip horizontally (globals.css), so the bleed
-            is cut at the viewport rather than at the content edge. */}
+            The glow spills past the page gutters, which is the point and also
+            why <footer> cannot clip its overflow. Nothing scrolls: html and body
+            already clip horizontally. */}
         <div
           ref={wordmarkRef}
-          className="relative col-start-1 col-span-4 row-start-1 dt:col-span-6"
+          className="relative col-start-1 col-span-4 row-start-1 dt:col-span-6 [container-type:inline-size]"
         >
           {/* Stars — anchored to the wordmark's top edge rather than the
               footer's. Pinned to the footer they sat on the lettering at wide
               widths: the desktop footer has no top padding, so "top-0" put them
-              inside the type rather than above it, and the taller the wordmark
-              scaled the further in they reached. bottom-full lands the cluster's
-              base on the image's top edge, which is ~10px above the cap line at
-              every width, so they clear the letterforms without a per-breakpoint
-              offset to keep in step. It also matches Figma's mobile frame, where
-              the star box bottom sits exactly on the wordmark's box top.
+              inside the type rather than above it. bottom-full lands the
+              cluster's base on the cap line at every width.
 
               The box needs explicit dimensions for bottom-full to have a height
               to work from — the two stars inside are absolutely positioned, so
               it has no size of its own. Each size is the cluster's own extent:
-              the offset of the lower-left star plus a star's width. */}
-          <div className="pointer-events-none absolute bottom-full right-0 h-[54px] w-[54px] md:h-[78px] md:w-[94px] lg:h-[104px] lg:w-[114px]">
+              the offset of the lower-left star plus a star's width.
+
+              The nudge left and down is a percentage of that box rather than a
+              pixel value, so one pair of numbers holds at all three sizes
+              instead of three pairs drifting apart. */}
+          <div className="pointer-events-none absolute bottom-full right-0 h-[54px] w-[54px] -translate-x-[8%] translate-y-[8%] md:h-[78px] md:w-[94px] lg:h-[104px] lg:w-[114px]">
             <Star
               variant={4}
               className="absolute right-[26px] top-[6px] w-7 md:right-[46px] md:top-0 md:w-12 lg:!right-[50px] lg:!w-16"
@@ -90,22 +82,15 @@ export function SiteFooter() {
               className="absolute right-0 top-[26px] w-7 md:top-[30px] md:w-12 lg:!top-[40px] lg:!w-16"
             />
           </div>
-          <Image
-            src={dark ? gettouchDark : gettouchLight}
-            alt="Get in touch"
-            sizes="115vw"
-            loading={wordmarkNear ? "eager" : "lazy"}
-            // height and max-width belong here rather than in className: as
-            // Tailwind utilities they lost to next/image's own sizing and the
-            // element computed to 0×0, which silently collapsed the wordmark.
+          <p
+            className={`wordmark wordmark-trim-getintouch lowercase ${wordmarkNear ? "wordmark-hue" : ""}`}
             style={{
-              width: "calc(100% * 1683 / 1523)",
-              maxWidth: "none",
-              height: "auto",
-              marginLeft: "calc(-100% * 80 / 1523)",
+              fontSize: `calc(100cqw / ${INK_WIDTH_PER_EM})`,
+              marginLeft: `-${INK_LEFT_BEARING_EM}em`,
             }}
-            className={wordmarkNear ? "wordmark-hue" : undefined}
-          />
+          >
+            get in touch
+          </p>
         </div>
 
         {/* Socials — vertical on mobile, horizontal md+. Indents to column 2 on
@@ -115,14 +100,13 @@ export function SiteFooter() {
             token halved rather than a flat 112px, since there is no token at
             that step and the relationship to the spec is the point.
 
-            The mobile top padding is Figma's 72px minus the wordmark's own
-            bottom glow padding, which the image box carries as layout space and
-            Figma's live text does not: 150px of the 426px export sits under the
-            letterforms, which is 150/1523 of the cell once the image is scaled.
-            Subtracting it puts 72px between the lettering and the links rather
-            than 72px plus a variable gap. Re-derive the 150 on re-export, as
-            with the width and margin above. */}
-        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-[calc(var(--spacing-5xl)_-_100%*150/1523)] md:flex-row md:items-center md:gap-6xl md:pt-0 dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)/2)]">
+            Top padding steps 72 / 96 / 168 across the breakpoints. The desktop
+            value is three quarters of Figma's 224, arrived at by eye rather
+            than from the spec. It used to
+            subtract the wordmark's glow padding, which an exported image carried
+            as layout space; trimmed live text carries none, so these are the
+            spacing tokens as written. */}
+        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-5xl md:flex-row md:items-center md:gap-6xl md:pt-7xl dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)*0.75)]">
           <Button variant="link" label="LinkedIn" href="https://www.linkedin.com/in/marynababych/" target="_blank" rel="noopener noreferrer" />
           <Button variant="link" label="Email" href="mailto:maryna.babych@gmail.com" target="_blank" rel="noopener noreferrer" />
         </div>

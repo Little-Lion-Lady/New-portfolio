@@ -1847,19 +1847,20 @@ textarea,
    hue of the whole layer walks that fixed stack through the spectrum, so one
    button reads pink/orange, then green/yellow, then blue/purple as it sits
    under the cursor. Gated on hover so idle buttons don't animate a filter. */
-/* Sweeps 230deg to 380deg (i.e. round to 20deg) rather than the full circle,
-   because a full circle runs the baked palette through yellow-green and the
-   glow goes olive. Measured on the exported pixels: the share of the glow's
-   colour weight sitting in the 55-165 hue band is 0 up to 30deg, climbs to 1.0
-   at 130deg, and is back to 0 by 230deg — so 230->20 is the whole clean arc,
-   blue through violet, magenta and coral to amber.
+/* Sweeps 265deg to 370deg (i.e. round to 10deg) rather than the full circle,
+   because a full circle runs the palette through yellow-green and the glow goes
+   olive. Re-derived for the live-text wordmark by rotating the real rendered
+   shadows: 120deg is solidly green, 200-230 carries a cyan-green edge, 40deg a
+   yellow one, and 265 through 0 to about 15 is clean — violet, magenta, coral,
+   amber. The CTA halo draws the same six colours as the light wordmark, so this
+   one arc serves both.
 
    Paired with `alternate` on every rule below. The range is an arc, not a
    loop: running it one way and restarting would jump amber back to blue, so it
    reverses along the same arc instead and never crosses the band. */
 @keyframes button-glow-hue {
-  from { filter: hue-rotate(230deg); }
-  to   { filter: hue-rotate(380deg); }
+  from { filter: hue-rotate(265deg); }
+  to   { filter: hue-rotate(370deg); }
 }
 
 .button-glow-host:hover .button-glow,
@@ -1872,7 +1873,75 @@ textarea,
   .button-glow-host:focus-visible .button-glow { animation: none; }
 }
 
-/* Footer wordmark — the "get in touch" export already carries the CTA's six glow
+/* ── Glowing wordmark ("get in touch", "Oops!") ────────────────────────────
+   Live text, not an exported asset. Exports kept drifting — raster went soft
+   once the viewport outgrew it, and the SVGs did not come out 1:1 — so the
+   glow is rebuilt here from the Figma spec (nodes 1825:40915/40916/40917/40918).
+
+   Figma draws all four at 300px with -18px tracking, so every length below is
+   that value over 300 expressed in em. That is the point of the unit: the whole
+   stack scales with font-size, and one rule serves the footer's fluid wordmark
+   and the 404's stepped one.
+
+   Listed tightest first, which is the order the shadows are numbered in the
+   design. CSS paints the first shadow on top, so this puts the 5px/15px glow
+   over the 83px/110px wash rather than under it.
+
+   Light and dark are different palettes, not lighter/darker versions of one —
+   warm reds and ambers against blues and violets.
+   ────────────────────────────────────────────────────────────────────────── */
+.wordmark {
+  font-family: var(--font-family-body);
+  font-weight: 600;                 /* Figma: Geist SemiBold */
+  letter-spacing: -0.06em;          /* -18px at 300 */
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--colour-base-black);
+  text-shadow:
+    0 0.016667em 0.05em #ff8335,
+    0 0.04em 0.05em #d943ff,
+    0 0.066667em 0.05em #d8b8ff,
+    0 0.123333em 0.1em #ffbf3e,
+    0 0.136667em 0.133333em #ff0443,
+    0 0.276667em 0.366667em rgba(255, 0, 4, 0.8);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .wordmark {
+    color: var(--colour-base-white);
+    text-shadow:
+      0 0.016667em 0.05em #7ff6ff,
+      0 0.04em 0.05em #6678ff,
+      0 0.066667em 0.05em #cab8ff,
+      0 0.123333em 0.1em #36a8ff,
+      0 0.136667em 0.133333em #4700fb,
+      0 0.276667em 0.366667em rgba(114, 71, 255, 0.25);
+  }
+}
+
+:root[data-theme="dark"] .wordmark {
+  color: var(--colour-base-white);
+  text-shadow:
+    0 0.016667em 0.05em #7ff6ff,
+    0 0.04em 0.05em #6678ff,
+    0 0.066667em 0.05em #cab8ff,
+    0 0.123333em 0.1em #36a8ff,
+    0 0.136667em 0.133333em #4700fb,
+    0 0.276667em 0.366667em rgba(114, 71, 255, 0.25);
+}
+
+/* Trims the line box to the letterforms. With line-height 1 the box is 1em and
+   the baseline sits 0.855em down, so for "get in touch" (cap 0.72em, descender
+   0.157em) the ink runs 0.135em to 1.012em — it starts inside the box and ends
+   just past it. Pulling the top up and pushing the bottom down by those two
+   amounts makes the element's margin box equal its ink, which is what lets the
+   stars sit on the cap line and the socials padding be Figma's number rather
+   than Figma's number plus whatever the box was carrying.
+   Measured on GeistSans; re-measure if the display face changes. */
+.wordmark-trim-getintouch { margin-top: -0.135em; margin-bottom: 0.011667em; }
+.wordmark-trim-oops { margin-top: -0.128333em; margin-bottom: 0.001667em; }
+
+/* Footer wordmark — the "get in touch" export already carries the CTA's six glow/* Footer wordmark — the "get in touch" export already carries the CTA's six glow
    colours, baked into the PNG, so rotating the whole image's hue walks them
    round the wheel exactly as the button's halo does. Unlike the button there is
    nothing here to hover, so it runs continuously; site-footer.tsx only adds the
@@ -1886,18 +1955,15 @@ textarea,
   animation: button-glow-hue 4s linear infinite alternate;
 }
 
-/* The two wordmark exports do not share a base palette: light is warm, dark is
-   blue. Their yellow-green bands therefore sit in different places, and one arc
-   cannot clear both — the warm arc above runs straight through the dark
-   assets' green. Measured on the exports: Gettouch_dark is dirty 190-320 and
-   Oops_dark 170-310, so 330->520 (round through 0 to 160) is the arc that
-   clears both. Only the name is overridden; duration and direction stay.
-
-   Re-derive this whenever an asset is re-exported. If the dark exports are ever
-   re-made warm to match light, this whole block becomes unnecessary. */
+/* Light and dark are different palettes, not one palette lightened: warm reds
+   and ambers against blues and violets. Their yellow-green bands therefore sit
+   in different places and one arc cannot clear both — the warm arc above runs
+   the dark stack straight through green. Rotating the real rendered shadows:
+   300 and 330 carry cyan-green, 175 is green, and 345 through 0 to about 150 is
+   clean. Only the animation name is overridden; duration and direction stay. */
 @keyframes wordmark-hue-dark {
-  from { filter: hue-rotate(330deg); }
-  to   { filter: hue-rotate(520deg); }
+  from { filter: hue-rotate(345deg); }
+  to   { filter: hue-rotate(510deg); }
 }
 
 @media (prefers-color-scheme: dark) {
