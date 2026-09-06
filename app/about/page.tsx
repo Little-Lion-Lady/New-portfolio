@@ -11,6 +11,7 @@ import { ArrowUpRightSmall } from "../components/icons";
 import { BioCollage } from "../components/bio-collage";
 import { CaseStudyNav } from "../components/case-study-nav";
 import { ArtworkStrip } from "../components/artwork-strip";
+import { TitleStars } from "../components/title-stars";
 
 const experience = [
   { role: "Lead Product Designer", org: "First Table | Marketplace", project: "First Table app", year: "25’ – Now" },
@@ -53,7 +54,7 @@ export default function About() {
         {/* Hero. Figma pads the page itself by spacing-md/3xl/3xl and lets the
             (absolutely positioned) header overlay it, so the hero's own
             padding is what places the title: pt 64/96/128 on the section,
-            plus the Hero-text-container's own 0/24/32 on the title wrapper.
+            plus the Hero-text-container's own 0/24/32 on TitleStars.
 
             Well down the spacing scale from Figma's 80/128/160 top and
             80/72/128 bottom. Bottom is now 40/40/32 and top 64/80/72. The title shrank to match the case-study ramp
@@ -64,9 +65,9 @@ export default function About() {
             rather than looser. The top still clears the fixed header at every
             breakpoint. */}
         <section className="relative z-10 pb-3xl pt-4xl md:pb-3xl md:pt-6xl lg:pb-2xl lg:pt-5xl">
-          <div className="relative md:pt-xl lg:pt-2xl">
+          <TitleStars className="relative md:pt-xl lg:pt-2xl">
             <RevealWords immediate byLine as="h1" className="about-hero-title text-text-primary-highlight">Who am I?</RevealWords>
-          </div>
+          </TitleStars>
         </section>
       </div>
 

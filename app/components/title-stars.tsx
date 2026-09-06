@@ -22,20 +22,13 @@ const STAR_VARIANTS: Variants = {
   }),
 };
 
-// Star offsets relative to the anchor word's top-right corner. The home hero
-// runs at a much larger fluid font size than the case-study/About titles, so
-// each placement carries its own nudge; everything else about the cluster —
-// timing, anchoring, motion — is shared. The hero pair sits up and left of that
-// corner, by a step that grows with the breakpoint (8 / 10 / 12px).
-const PLACEMENTS = {
-  title: {
-    one: "absolute -top-[8px] left-[14px] w-9 md:-top-[4px] md:left-[28px] md:w-12 lg:-top-[4px] lg:left-[36px] lg:w-16",
-    two: "absolute -top-[22px] -left-[6px] w-9 md:-top-[32px] md:-left-[12px] md:w-12 lg:-top-[40px] lg:-left-[16px] lg:w-16",
-  },
-  hero: {
-    one: "absolute -top-[6px] left-[6px] w-9 md:-top-[6px] md:left-[8px] md:w-12 lg:-top-[6px] lg:left-[12px] lg:w-16",
-    two: "absolute -top-[26px] -left-[24px] w-9 md:-top-[34px] md:-left-[32px] md:w-12 lg:-top-[42px] lg:-left-[40px] lg:w-16",
-  },
+// Star offsets relative to the anchor word's top-right corner. Every caller now
+// runs at the case-study/About title size, so there is one set of offsets. The
+// home hero used its own, larger-font nudge — those values are recorded in
+// STARS-REMOVED.md rather than kept here as an unused branch.
+const STARS = {
+  one: "absolute -top-[8px] left-[14px] w-9 md:-top-[4px] md:left-[28px] md:w-12 lg:-top-[4px] lg:left-[36px] lg:w-16",
+  two: "absolute -top-[22px] -left-[6px] w-9 md:-top-[32px] md:-left-[12px] md:w-12 lg:-top-[40px] lg:-left-[16px] lg:w-16",
 } as const;
 
 /*
@@ -44,18 +37,16 @@ const PLACEMENTS = {
   rather than the wrapper's corner, so the cluster follows the text as it
   re-wraps across breakpoints (or as the home hero refits its font size).
 
-  Single source of truth for every header's stars — the home hero, the About
-  hero and both case-study titles.
+  Single source of truth for every header's stars — the About hero and the
+  case-study titles. The home hero deliberately has none: its cat Lottie
+  carries its own sparkles (see STARS-REMOVED.md).
 */
 export function TitleStars({
   children,
-  placement = "title",
   className = "relative",
   revealDelay = 0,
 }: {
   children: ReactNode;
-  /** Star offsets to use — "hero" for the fluid home headline, "title" otherwise. */
-  placement?: keyof typeof PLACEMENTS;
   className?: string;
   /** The wrapped heading's own reveal delay, so the stars share its timeline. */
   revealDelay?: number;
@@ -118,8 +109,6 @@ export function TitleStars({
     return () => ro.disconnect();
   }, [revealDelay]);
 
-  const stars = PLACEMENTS[placement];
-
   return (
     <div ref={boxRef} className={className}>
       {children}
@@ -132,8 +121,8 @@ export function TitleStars({
           custom={anchor.delay}
           variants={STAR_VARIANTS}
         >
-          <Star variant={1} className={stars.one} />
-          <Star variant={2} className={stars.two} />
+          <Star variant={1} className={STARS.one} />
+          <Star variant={2} className={STARS.two} />
         </m.div>
       )}
     </div>

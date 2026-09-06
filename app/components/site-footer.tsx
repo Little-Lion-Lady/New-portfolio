@@ -2,6 +2,7 @@
 
 import { Button } from "./button";
 import { CyclingWord } from "./cycling-word";
+import { Star } from "./dynamic-visuals";
 import { useIsDark } from "./use-is-dark";
 import { useNearViewport } from "./use-near-viewport";
 
@@ -30,11 +31,15 @@ export function SiteFooter() {
 
   return (
     <div className="relative w-full">
-      {/* Desktop gains top padding where it previously had none. The 7xl step
-          was sized around the twinkle-star cluster that used to hang off the
-          wordmark's top edge — see STARS-REMOVED.md. With the stars gone it is
-          pure breathing room, so it can be retuned freely; restoring them means
-          restoring at least 96px here. */}
+      {/* Desktop gains top padding where it previously had none. It also gives
+          the star cluster somewhere to live: the stars hang off the wordmark
+          cell's top edge, so with pt-0 they broke out above the footer and into
+          the section before it. 7xl is just enough at this size: the cluster is
+          104px tall but sits 8px lower for its own nudge, so it lands inside
+          the 96px padding with nothing to spare. Reducing either this or the
+          nudge puts the stars back over the section above.
+          The padding belongs on the grid rather than the wordmark cell — inside
+          the cell it would push the stars away from the lettering they sit on. */}
       <footer className="grid w-full grid-cols-4 gap-x-lg pt-4xl pb-4xs md:gap-y-xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-7xl dt:pb-4xl">
         {/* Wordmark — live text rather than an exported asset, so it stays sharp
             at any width and there is no export to keep the layout in step with.
@@ -43,7 +48,8 @@ export function SiteFooter() {
             The cell is a container so the type can be sized from its width:
             100cqw/4.94 makes the lettering exactly fill it, and .wordmark-trim-*
             pulls the line box down to the letterforms so the cell's top edge is
-            the cap line — which is what the socials padding measures from.
+            the cap line — which is what the stars hang off and what the socials
+            padding measures from.
 
             The glow spills past the page gutters, which is the point and also
             why <footer> cannot clip its overflow. Nothing scrolls: html and body
@@ -52,6 +58,44 @@ export function SiteFooter() {
           ref={wordmarkRef}
           className="relative col-start-1 col-span-4 row-start-1 dt:col-span-6 [container-type:inline-size]"
         >
+          {/* Stars — anchored to the wordmark's top edge rather than the
+              footer's. Pinned to the footer they sat on the lettering at wide
+              widths: the desktop footer has no top padding, so "top-0" put them
+              inside the type rather than above it. bottom-full lands the
+              cluster's base on the cap line at every width.
+
+              The box needs explicit dimensions for bottom-full to have a height
+              to work from — the two stars inside are absolutely positioned, so
+              it has no size of its own. Each size is the cluster's own extent:
+              the offset of the lower-left star plus a star's width.
+
+              The nudge left and down is a percentage of that box rather than a
+              pixel value, so one pair of numbers holds at all three sizes
+              instead of three pairs drifting apart.
+
+              Below 375px the box shrinks with the container instead of holding
+              its pixel size. The wordmark is fluid (100cqw/4.94) but the cluster
+              was not, so on a 320 the stars kept their bulk against smaller
+              letters and the pair spread left off the "h" they sit on. The
+              min() pins the switchover at the 343px cell of a 375 viewport —
+              15.7434cqw is 54px there — so every width at or above the
+              reference is untouched and only narrower ones scale.
+
+              Everything inside the box is now a percentage of it for the same
+              reason: the offsets have to shrink with the box or the cluster
+              would scale its stars and keep its old spacing. The per-breakpoint
+              percentages are the old pixel values over each box's own
+              dimensions, so md and lg render identically to before. */}
+          <div className="pointer-events-none absolute bottom-full right-0 h-[min(54px,15.7434cqw)] w-[min(54px,15.7434cqw)] -translate-x-[8%] translate-y-[8%] md:h-[78px] md:w-[94px] lg:h-[104px] lg:w-[114px]">
+            <Star
+              variant={4}
+              className="absolute right-[48.148%] top-[11.111%] w-[51.852%] md:right-[48.936%] md:top-0 md:w-[51.064%] lg:!right-[43.86%] lg:!w-[56.14%]"
+            />
+            <Star
+              variant={4}
+              className="absolute right-0 top-[48.148%] w-[51.852%] md:top-[38.462%] md:w-[51.064%] lg:!top-[38.462%] lg:!w-[56.14%]"
+            />
+          </div>
           <p
             className={`wordmark wordmark-trim-getintouch lowercase ${wordmarkNear ? "wordmark-hue" : ""}`}
             style={{
