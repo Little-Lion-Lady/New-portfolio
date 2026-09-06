@@ -6,7 +6,10 @@ import { Reveal } from "./reveal";
 //   tablet  D-xs  (display-xs 44 / 1.1)
 //   desktop D-sm  (display-sm 60 / 1.15)
 // Number = text-decorative (fixed 110px width); name = text-quaternary.
-// The two items stagger by 0.5 s — number first, name second.
+// The two items carry their own reveals — number first, name one STAGGER
+// (90ms) behind. Do NOT wrap this in another <Reveal>: nested reveals multiply
+// their opacity curves, and the heading then lags anything beside it that only
+// fades once.
 export function SectionHeader({ number, name }: { number: string; name: string }) {
   return (
     <div className="flex w-full items-center justify-between">

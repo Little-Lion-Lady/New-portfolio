@@ -11,6 +11,13 @@
     fire-once (disconnects after).
   - `delay` waits N ms after intersection; `notBefore` gates on an absolute
     Date.now() timestamp (for staggering sibling sections).
+  - `hold` suspends the trigger entirely: no observer, no activation, until it
+    goes false. It exists for `notBefore` values that have to be MEASURED
+    before they can be known — a section timed off the home hero cannot know
+    when the hero lands until the headline reports its wrap. Without it such a
+    section fires on its first in-view frame with no timestamp to wait for, and
+    `active` is one-way, so the gate it was given never applies. Mirrors
+    Reveal's prop of the same name.
   - `immediate`: skip the observer entirely and release children on mount, and
     tell child Reveals (via context) to ignore their own in-view gate. Used on
     pages that should reveal all content at once on load (About, case studies)
@@ -48,6 +55,7 @@ export function SectionReveal({
   children,
   delay = 0,
   notBefore,
+  hold = false,
   immediate = false,
   as = "section",
   className,
@@ -57,6 +65,7 @@ export function SectionReveal({
   children: ReactNode;
   delay?: number;
   notBefore?: number;
+  hold?: boolean;
   immediate?: boolean;
   as?: Tag;
   className?: string;
@@ -75,6 +84,12 @@ export function SectionReveal({
       timeoutId = window.setTimeout(() => setActive(true), 0);
       return () => clearTimeout(timeoutId);
     }
+
+    // Held: the caller is still working out the timestamp to gate on. Attach
+    // nothing and activate nothing — the effect re-runs when this goes false.
+    // Deliberately below the branch above: reduced motion still releases at
+    // once, since holding it would be a delay with no animation to justify it.
+    if (hold) return;
 
     const el = ref.current;
     if (!el) return;
@@ -97,7 +112,7 @@ export function SectionReveal({
       observer.disconnect();
       clearTimeout(timeoutId);
     };
-  }, [delay, notBefore, reducedMotion, immediate]);
+  }, [delay, notBefore, hold, reducedMotion, immediate]);
 
   const Tag = as;
   const contextValue = useMemo(() => ({ active, immediate }), [active, immediate]);

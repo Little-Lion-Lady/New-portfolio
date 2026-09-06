@@ -31,27 +31,36 @@ const FILL = 0.9;
 // entrance from that (see HeroClose), so the sequence re-times itself.
 const SCALE = 0.94;
 
-// Ceiling on the fitted size. The search fills the box, so on a very wide or
-// short viewport it keeps growing the type past the point where the headline
-// reads as a headline rather than a wall. Applied after SCALE, so it only
-// binds at the top end.
-const MAX_FONT_SIZE = 60;
-
-// Tablet gets its own, lower ceiling. The fit is driven by available height,
-// and a tablet has plenty of it against a narrow column, so the search happily
-// returns ~52px — at which point the copy wraps to eight lines of near
-// edge-to-edge type. 42 keeps it as a headline. Phones never reach either
-// ceiling (the fit lands around 35px), so only this band needs the override.
+// Ceilings on the fitted size. The search fills the box, so on a wide or short
+// viewport it keeps growing the type past the point where the headline reads
+// as a headline rather than a wall. Applied after SCALE, so they only bind at
+// the top end.
 //
-// 768/1024 are the md/lg boundaries the rest of the site is built on — see the
-// `sizes` attributes throughout media-block and image-carousel.
+// Each band gets its own ceiling because the fit is driven by available height
+// and every band has a different amount of it against its column width — left
+// uncapped, a tablet happily returns ~52px and wraps the copy to eight lines
+// of near edge-to-edge type. These are the sizes the headline is designed at,
+// so on most viewports the ceiling, not the fit, is what sets the size.
+//
+// The hero runs its tablet treatment from 500px rather than the site-wide md
+// boundary of 768 — the headline is the whole viewport here, and it reads as a
+// phone layout well past the width where it stops being one. The matching
+// utilities in page.tsx use `min-[500px]:` for the same reason. 1024 is still
+// the site's lg boundary — see the `sizes` attributes throughout media-block
+// and image-carousel.
+const MAX_FONT_SIZE = 42;
 const TABLET_MAX_FONT_SIZE = 42;
-const TABLET_QUERY = "(min-width: 768px) and (max-width: 1023px)";
+const MOBILE_MAX_FONT_SIZE = 24;
+
+const TABLET_QUERY = "(min-width: 500px) and (max-width: 1023px)";
+const MOBILE_QUERY = "(max-width: 499px)";
 
 // Read per fit() rather than cached: the ResizeObserver re-runs the fit on
 // every resize, so crossing a breakpoint re-caps without any extra listener.
 function maxFontSize() {
-  return window.matchMedia(TABLET_QUERY).matches ? TABLET_MAX_FONT_SIZE : MAX_FONT_SIZE;
+  if (window.matchMedia(MOBILE_QUERY).matches) return MOBILE_MAX_FONT_SIZE;
+  if (window.matchMedia(TABLET_QUERY).matches) return TABLET_MAX_FONT_SIZE;
+  return MAX_FONT_SIZE;
 }
 
 // Plain text for probe measurement — must match the visible content exactly

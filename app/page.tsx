@@ -1,6 +1,7 @@
 import { SiteHeader } from "./components/site-header";
 import { SiteFooter } from "./components/site-footer";
 import { SectionHeader } from "./components/section-header";
+import { AfterHeroReveal } from "./components/after-hero-reveal";
 import { WorkItem } from "./components/work-item";
 import { Button } from "./components/button";
 import { SectionReveal } from "./components/section-reveal-context";
@@ -34,39 +35,56 @@ export default function Home() {
         {/* Hero — fills the viewport (clamped 640px–1500px).
             Text vertically centered in the top 3/4. Image bottom-aligned in the remaining 1/4. */}
         {/* lg: subtract main's py-3xl (40px) so the section bottom aligns with the viewport fold */}
-        <section className="relative z-10 flex h-[clamp(640px,calc(100svh-var(--header-height)),1500px)] w-full flex-col">
+        <section className="relative z-10 flex h-[clamp(640px,calc(100svh-var(--header-height)),1500px)] min-[500px]:max-h-[600px] w-full flex-col">
         {/* Text — fits to its bounding box via JS binary search on font-size */}
-        <HeroText revealDelay={0} className="flex h-[calc(100%-100%/3)] w-full items-center pb-3xs md:pb-2xl lg:pb-4xl" />
+        <HeroText revealDelay={0} className="flex h-[calc(100%-100%/3)] w-full items-center max-[499px]:items-start max-[499px]:pt-3xl max-[499px]:max-h-[400px] pb-3xs lg:max-w-[1100px] min-[500px]:pb-2xl lg:pt-4xl lg:pb-0 lg:items-start" />
         {/* Image + divider — bottom 1/4.5.
             Divider is flex-1 so it stretches from the left page edge.
             Image pulls left with a negative margin to overlap the divider
             by exactly 10% of the image's max-width per breakpoint:
-              mobile  296px → -ml-[30px]
-              tablet  636px → -ml-[64px]
-              desktop 36vw  → -ml-[3.6vw] */}
+              mobile   296px → -ml-[30px]
+              tablet   400px → -ml-[40px]
+              desktop  450px → -ml-[45px]
+            The hero switches to its tablet treatment at 500px rather than the
+            site-wide md of 768 — see hero-text.tsx. Desktop is a fixed cap
+            rather than the old 36vw, so the cat stops growing with the
+            viewport. No min-height at any width: the caps and the art's own
+            aspect set the size. */}
         <div className="relative flex h-[calc(100%/3)] items-end">
           <HeroClose revealDelay={0} className="flex h-full w-full items-end">
-            <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
-            <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[30px] max-w-[296px] md:-ml-[64px] md:max-w-[636px] md:min-h-[200px] md:max-h-[280px] lg:-ml-[3.6vw] lg:max-w-[36vw] lg:min-h-[300px]" />
+            <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] min-[500px]:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md min-[500px]:rounded-tl-lg min-[500px]:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
+            <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[30px] max-w-[296px] min-[500px]:-ml-[40px] min-[500px]:max-w-[400px] min-[500px]:max-h-[280px] lg:-ml-[45px] lg:max-w-[450px]" />
           </HeroClose>
         </div>
         </section>
       </div>
 
-      {/* 01 — Selected works. gap = --xl, pb-3xl. Reveals on scroll, staggered. */}
-      <SectionReveal as="section" id="work" className="relative z-10 flex w-full scroll-mt-[var(--header-height)] flex-col gap-r-xl pb-3xl">
-        <Reveal index={0} className="w-full">
-          <SectionHeader number="01" name="Selected works" />
-        </Reveal>
+      {/* 01 — Selected works. gap = --xl, pb-3xl. Reveals on scroll, staggered,
+          and never before the hero has landed — see AfterHeroReveal. */}
+      <AfterHeroReveal as="section" id="work" className="relative z-10 flex w-full scroll-mt-[var(--header-height)] flex-col gap-r-xl pb-3xl">
+        {/* Deliberately NOT wrapped in a Reveal: SectionHeader carries its own
+            pair (number, then name). Nesting one inside another multiplies the
+            two opacity fades, so the heading crossed the visible threshold well
+            after the work item beside it — which read as the body copy
+            arriving before the heading. */}
+        <SectionHeader number="01" name="Selected works" />
         {/* Gap between work items — --3xl (80/128/160). Figma's standard-trim
             pass rebalanced the responsive 3xl step, so this is back on the
             token instead of the old fixed 96/128/224 override. */}
         <div className="flex w-full flex-col gap-r-3xl">
-          {/* SW/01 waits for the section heading to be most of the way through
-              its 600ms fade. index alone only buys 60ms, which reads as the two
-              arriving together. SW/02+ keep the plain index stagger — they sit
-              far enough down that each fires on its own in-view trigger. */}
-          <Reveal index={1} delay={0.3} className="w-full">
+          {/* index 1, matching the NAME half of the section heading — not 0.
+              SectionHeader is two reveals, number on 0 and name on 1, so a work
+              item on 0 ties with "01" and lands a stagger ahead of "Selected
+              works": measured 163ms against 245ms, which reads as the body copy
+              arriving before the heading it belongs under. On 1 the name and the
+              first work item arrive together.
+
+              This is not the old 0.3s wait — that queued SW/01 behind the
+              heading's whole fade, and is redundant now the section is held
+              until the hero lands (see AfterHeroReveal). SW/02+ keep the plain
+              index stagger; they sit far enough down to fire on their own
+              in-view trigger anyway. */}
+          <Reveal index={1} className="w-full">
             <WorkItem
               number="SW/01"
               imagePriority="high"
@@ -74,13 +92,13 @@ export default function Home() {
               description={
                 <>
                   A ground-up redesign of First Table, the app with{" "}
-                  <span className="text-text-highlight-dark">{firstTable.appUsers} users</span>,
+                  <span className="text-text-primary-highlight">{firstTable.appUsers} users</span>,
                   that gives diners 50% their food bill. In the six months since redesign,{" "}
-                  <span className="text-text-highlight-dark">
+                  <span className="text-text-primary-highlight">
                     sign-ups were up {firstTable.signupIncrease}
                   </span>{" "}
                   and{" "}
-                  <span className="text-text-highlight-dark">
+                  <span className="text-text-primary-highlight">
                     conversion up {firstTable.conversionIncrease}
                   </span>
                   .
@@ -108,12 +126,12 @@ export default function Home() {
               description={
                 <>
                   {covid.installs} New Zealanders downloaded the COVID Tracer app.{" "}
-                  <span className="text-text-highlight-dark">
+                  <span className="text-text-primary-highlight">
                     Only {covid.btActivationRateBefore} turned on Bluetooth Tracing
                   </span>{" "}
                   – a feature that anonymously and automatically mapped potential transmissions. I
                   redesigned the onboarding and{" "}
-                  <span className="text-text-highlight-dark">
+                  <span className="text-text-primary-highlight">
                     {covid.devicesAddedRounded} people switched it on
                   </span>
                   .
@@ -137,12 +155,12 @@ export default function Home() {
               description={
                 <>
                   The companion app for{" "}
-                  <span className="text-text-highlight-dark">
+                  <span className="text-text-primary-highlight">
                     New Zealand’s first smart electrical panel
                   </span>
                   , built with no product owner and no brief. I defined the strategy and led
                   delivery end to end. Result: a{" "}
-                  <span className="text-text-highlight-dark">
+                  <span className="text-text-primary-highlight">
                     {basis.billReductionActual} cut in energy bills
                   </span>{" "}
                   across a {basis.pilotLengthWord} pilot.
@@ -164,7 +182,7 @@ export default function Home() {
             />
           </Reveal>
         </div>
-      </SectionReveal>
+      </AfterHeroReveal>
 
       <Divider />
 
