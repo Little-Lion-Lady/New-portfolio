@@ -2030,7 +2030,19 @@ textarea,
   /* Half the CTA's pace. The button is read in a glance while the cursor is on
      it; this sits in the page and is looked at for longer, where the button's
      2s reads as restless. */
-  animation: button-glow-hue 4s linear infinite alternate;
+  /* steps(24), not linear, and this is the whole performance fix. Rotating the
+     hue of a glow this large is a full repaint of the wordmark's box, and at
+     `linear` Firefox pays it EVERY FRAME: measured in Firefox 155 with the
+     footer on screen, 30ms/frame against an 8ms floor — on both / and /about,
+     and identical whether or not anything else on the page was disabled.
+     Stepping it to 24 samples over the 4s cycle drops that to 6 repaints a
+     second and lands at 8.0ms, exactly level with deleting the animation
+     outright. 24 steps across the 105deg arc is 4.4deg apiece, which on a soft
+     glow reads as a drift rather than a stutter.
+     Raise the count if the stepping shows; each doubling doubles the repaints,
+     and steps(12) measured the same 8.0ms, so there is room. Do NOT put this
+     back to `linear` — that is the regression. */
+  animation: button-glow-hue 4s steps(24) infinite alternate;
 }
 
 /* Light and dark are different palettes, not one palette lightened: warm reds
@@ -2049,6 +2061,14 @@ textarea,
 }
 
 :root[data-theme="dark"] .wordmark-hue { animation-name: wordmark-hue-dark; }
+
+/* Off-screen: stop repainting the glow. Paused rather than removed so the hue
+   resumes where it stopped — dropping the animation restarts the cycle and the
+   colour visibly jumps when the footer comes back. Must stay AFTER .wordmark-hue:
+   the `animation` shorthand there resets animation-play-state to running, and
+   these two selectors have equal specificity, so source order decides.
+   See useInViewport in ./components/use-near-viewport.ts. */
+.wordmark-hue-paused { animation-play-state: paused; }
 
 @media (prefers-reduced-motion: reduce) {
   .wordmark-hue { animation: none; }
