@@ -3,7 +3,6 @@
 import { Button } from "./button";
 import { CyclingWord } from "./cycling-word";
 import { Star } from "./dynamic-visuals";
-import { useIsDark } from "./use-is-dark";
 import { useNearViewport } from "./use-near-viewport";
 
 const CYCLING_WORDS = ["love", "hate", "AI", "coffee", "mischief", "claude", "care", "passion"];
@@ -18,7 +17,6 @@ const INK_WIDTH_PER_EM = 4.94;
 const INK_LEFT_BEARING_EM = 0.04;
 
 export function SiteFooter() {
-  const dark = useIsDark();
   // Gates two things, both because the footer sits below every page's fold.
   // The hue animation, which repaints a large image every frame and has no
   // reason to run before the reader is near it — one-shot, so once started it

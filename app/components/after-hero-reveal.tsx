@@ -24,8 +24,12 @@
 
   - `notBefore` is an absolute timestamp, while the handoff is seconds from the
     start of the reveal timeline. Both this and the hero mount on the same
-    client pass, so this component's own mount is that origin. Captured in a
-    ref, not recomputed, or a re-render would push the deadline forward.
+    client pass, so this component's own mount is that origin. Captured once,
+    never recomputed, or a re-render would push the deadline forward. Held in
+    a lazy useState initializer rather than a ref: the value is read during
+    render to build `notBefore`, and render may neither call an impure
+    function like Date.now() nor depend on a ref's contents. The initializer
+    is the sanctioned place for a one-time capture like this.
 
   - The answer is null for the first frames, and SectionReveal's `active` is
     one-way. Releasing the section before the handoff resolves would be
@@ -40,7 +44,7 @@
 */
 
 import type { CSSProperties, ReactNode } from "react";
-import { useRef } from "react";
+import { useState } from "react";
 import { SectionReveal } from "./section-reveal-context";
 import { useHeadlineHandoff } from "./word-sync";
 import { HERO_CLOSE_DURATION } from "./motion-timing";
@@ -65,17 +69,17 @@ export function AfterHeroReveal({
   id?: string;
 }) {
   const handoff = useHeadlineHandoff({ revealDelay });
-  const mountedAt = useRef(Date.now());
+  const [mountedAt] = useState(() => Date.now());
 
   const notBefore =
-    handoff === null ? undefined : mountedAt.current + (handoff + HERO_CLOSE_DURATION) * 1000;
+    handoff === null ? undefined : mountedAt + (handoff + HERO_CLOSE_DURATION) * 1000;
 
   return (
     <SectionReveal
       as={as}
       delay={delay}
       notBefore={notBefore}
-      hold={handoff === null}
+      hold={notBefore === undefined}
       className={className}
       style={style}
       id={id}
