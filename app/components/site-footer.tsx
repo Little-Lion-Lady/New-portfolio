@@ -1,22 +1,23 @@
 "use client";
 
+import Image from "next/image";
 import { Button } from "./button";
 import { CyclingWord } from "./cycling-word";
 import { Star } from "./dynamic-visuals";
 import { useNearViewport } from "./use-near-viewport";
+import { useIsDark } from "./use-is-dark";
 
 const CYCLING_WORDS = ["love", "hate", "AI", "coffee", "mischief", "claude", "care", "passion"];
 
-// "get in touch" set in GeistSans SemiBold at -0.06em tracking, measured off
-// the rendered glyphs: the lettering is 4.94x the font size wide, and its left
-// edge sits 0.04em right of where the text starts. Sizing the type at
-// 100cqw/4.94 therefore makes the lettering exactly as wide as its cell, and
-// the -0.04em pull puts the "g" on the gutter rather than the "g"'s bearing.
-// Re-measure both if the display face or the tracking changes.
-const INK_WIDTH_PER_EM = 4.94;
-const INK_LEFT_BEARING_EM = 0.04;
+// The wordmark is an exported image rather than live text — see
+// .wordmark-figure in globals.css for the geometry and for why the six-layer
+// text-shadow it replaces had to go.
 
 export function SiteFooter() {
+  // Which export to show. The footer is below the fold on every page and the
+  // image is gated on approach, so the hydration correction lands long before
+  // the wordmark can be scrolled to — there is no theme flash to design around.
+  const dark = useIsDark();
   // Gates two things, both because the footer sits below every page's fold.
   // The hue animation, which repaints a large image every frame and has no
   // reason to run before the reader is near it — one-shot, so once started it
@@ -41,13 +42,16 @@ export function SiteFooter() {
       <footer className="grid w-full grid-cols-4 gap-x-lg pt-4xl pb-4xs md:gap-y-xl md:pb-2xl dt:grid-cols-6 dt:gap-y-0 dt:pt-7xl dt:pb-4xl">
         {/* Wordmark — live text rather than an exported asset, so it stays sharp
             at any width and there is no export to keep the layout in step with.
-            The glow is .wordmark in globals.css, rebuilt from the Figma spec.
+            The glow is baked into the export; see .wordmark-figure in
+            globals.css. It was live text with a six-layer text-shadow until
+            that stack turned out to be repainted on every scroll frame.
 
-            The cell is a container so the type can be sized from its width:
-            100cqw/4.94 makes the lettering exactly fill it, and .wordmark-trim-*
-            pulls the line box down to the letterforms so the cell's top edge is
-            the cap line — which is what the stars hang off and what the socials
-            padding measures from.
+            The cell is a container so the figure can be sized from its width:
+            the image is placed so its LETTERING spans the cell exactly, with
+            the baked glow spilling outside, and the box it sits in is only as
+            tall as that lettering — so the cell's top edge is still the cap
+            line, which is what the stars hang off and what the socials padding
+            measures from.
 
             The glow spills past the page gutters, which is the point and also
             why <footer> cannot clip its overflow. Nothing scrolls: html and body
@@ -94,15 +98,18 @@ export function SiteFooter() {
               className="absolute right-0 top-[48.148%] w-[51.852%] md:top-[38.462%] md:w-[51.064%] lg:!top-[38.462%] lg:!w-[56.14%]"
             />
           </div>
-          <p
-            className={`wordmark wordmark-trim-getintouch lowercase ${wordmarkNear ? "wordmark-hue" : ""}`}
-            style={{
-              fontSize: `calc(100cqw / ${INK_WIDTH_PER_EM})`,
-              marginLeft: `-${INK_LEFT_BEARING_EM}em`,
-            }}
-          >
-            get in touch
-          </p>
+          <div className="wordmark-figure">
+            <Image
+              src={dark ? "/home/Gettouch_dark.webp" : "/home/Gettouch_light.webp"}
+              width={2555}
+              height={727}
+              alt="get in touch"
+              // The figure is 114.9% of a cell that is itself the page shell,
+              // capped at 1440px. Below that it tracks the viewport.
+              sizes="(min-width: 1440px) 1600px, 115vw"
+              className={`wordmark-figure-img ${wordmarkNear ? "wordmark-hue" : ""}`}
+            />
+          </div>
         </div>
 
         {/* Socials — vertical on mobile, horizontal md+. Indents to column 2 on

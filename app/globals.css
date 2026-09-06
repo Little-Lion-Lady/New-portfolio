@@ -2016,7 +2016,93 @@ textarea,
    stars sit on the cap line and the socials padding be Figma's number rather
    than Figma's number plus whatever the box was carrying.
    Measured on GeistSans; re-measure if the display face changes. */
+/* ── Footer wordmark, as an exported image ────────────────────────────────
+   The footer wordmark WAS live text wearing .wordmark's six-layer text-shadow.
+   That stack was repainted on every scroll frame, and stripping it was the one
+   change that took the footer from ~29ms/frame to ~8ms in Firefox. The 404's
+   "Oops!" still uses .wordmark above — it is a short word on a page with
+   nothing to scroll, so it never showed the cost.
+
+   Geometry, measured off the export's alpha channel and identical in both
+   themes: the LETTERING occupies x 165-2389, y 41-436 of the 2555x727 export,
+   the rest being baked glow. Every number below is a ratio against the ink
+   width (2225px), because the cell's width IS the ink's width — the lettering has to
+   span the cell exactly as the live text did, with the glow spilling outside:
+
+     image width   2555/2225 = 114.8315%
+     left offset   -165/2225 =  -7.4157%
+     top offset     -41/2225 =  -1.8427%
+     box height     396/2225 =  17.7978%
+
+   The box is the INK's height, not the image's, so the socials below sit
+   exactly where the trimmed live text left them and the spacing tokens above
+   stay as written. Re-measure all four if the export is re-cut. */
+.wordmark-figure {
+  position: relative;
+  height: 17.7978cqw;
+}
+
+.wordmark-figure-img {
+  position: absolute;
+  left: -7.4157cqw;
+  top: -1.8427cqw;
+  width: 114.8315cqw;
+  /* Preflight caps images at 100% of their box; the glow has to reach past it. */
+  max-width: none;
+  height: auto;
+}
+
 .wordmark-trim-getintouch { margin-top: -0.135em; margin-bottom: 0.011667em; }
+/* ── 404 "Oops!", as an exported image ────────────────────────────────────
+   Same swap as .wordmark-figure, for the same reason, but themed in CSS rather
+   than from JS: not-found.tsx is a server component and this word is the hero,
+   above the fold, so a hydration-time src swap would be a visible flash. The
+   footer can afford JS theming because it sits below every fold; this cannot.
+   One fixed width is fine here — the export is 1430px, not 2555.
+
+   Geometry, measured off the export's alpha (identical in both themes): the
+   lettering occupies x 165-1263, y 41-434 of the 1430x725 export. Sizes are in `em`
+   so .notfound-oops's existing 124px -> 320px ramp still drives everything.
+
+   Anchored to the live text it replaces, measured from the rendered glyphs:
+   "Oops!" ink is 2.4432em wide and 0.876em tall, starting 0.042em right of the
+   text origin (which is what the old -0.043em pull cancelled). The export's ink
+   aspect is 2.7977 against the live text's 2.789 — 0.3% apart, so the export is
+   faithful and these numbers place it exactly where the type was.
+
+     image width  1430/1099 x 2.4432em = 3.17865em
+     left offset  -165/1099 x 2.4432em = -0.36681em
+     top offset    -41/1099 x 2.4432em = -0.09115em
+     box height    394/1099 x 2.4432em =  0.87591em  (ink only)
+   Re-measure if the export is re-cut. */
+.oops-figure {
+  position: relative;
+  display: block;
+  height: 0.87591em;
+}
+
+.oops-figure::after {
+  content: "";
+  position: absolute;
+  left: -0.36681em;
+  top: -0.09115em;
+  width: 3.17865em;
+  height: 1.61152em;                       /* 3.17865em x 725/1430 */
+  background-image: url("/home/Oops_light.webp");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .oops-figure::after {
+    background-image: url("/home/Oops_dark.webp");
+  }
+}
+
+:root[data-theme="dark"] .oops-figure::after {
+  background-image: url("/home/Oops_dark.webp");
+}
+
 .wordmark-trim-oops { margin-top: -0.128333em; margin-bottom: 0.001667em; }
 
 /* Footer wordmark — the "get in touch" export already carries the CTA's six glow/* Footer wordmark — the "get in touch" export already carries the CTA's six glow
