@@ -71,15 +71,29 @@ export function SiteFooter() {
 
               The nudge left and down is a percentage of that box rather than a
               pixel value, so one pair of numbers holds at all three sizes
-              instead of three pairs drifting apart. */}
-          <div className="pointer-events-none absolute bottom-full right-0 h-[54px] w-[54px] -translate-x-[8%] translate-y-[8%] md:h-[78px] md:w-[94px] lg:h-[104px] lg:w-[114px]">
+              instead of three pairs drifting apart.
+
+              Below 375px the box shrinks with the container instead of holding
+              its pixel size. The wordmark is fluid (100cqw/4.94) but the cluster
+              was not, so on a 320 the stars kept their bulk against smaller
+              letters and the pair spread left off the "h" they sit on. The
+              min() pins the switchover at the 343px cell of a 375 viewport —
+              15.7434cqw is 54px there — so every width at or above the
+              reference is untouched and only narrower ones scale.
+
+              Everything inside the box is now a percentage of it for the same
+              reason: the offsets have to shrink with the box or the cluster
+              would scale its stars and keep its old spacing. The per-breakpoint
+              percentages are the old pixel values over each box's own
+              dimensions, so md and lg render identically to before. */}
+          <div className="pointer-events-none absolute bottom-full right-0 h-[min(54px,15.7434cqw)] w-[min(54px,15.7434cqw)] -translate-x-[8%] translate-y-[8%] md:h-[78px] md:w-[94px] lg:h-[104px] lg:w-[114px]">
             <Star
               variant={4}
-              className="absolute right-[26px] top-[6px] w-7 md:right-[46px] md:top-0 md:w-12 lg:!right-[50px] lg:!w-16"
+              className="absolute right-[48.148%] top-[11.111%] w-[51.852%] md:right-[48.936%] md:top-0 md:w-[51.064%] lg:!right-[43.86%] lg:!w-[56.14%]"
             />
             <Star
               variant={4}
-              className="absolute right-0 top-[26px] w-7 md:top-[30px] md:w-12 lg:!top-[40px] lg:!w-16"
+              className="absolute right-0 top-[48.148%] w-[51.852%] md:top-[38.462%] md:w-[51.064%] lg:!top-[38.462%] lg:!w-[56.14%]"
             />
           </div>
           <p
@@ -121,9 +135,13 @@ export function SiteFooter() {
             the box and the text lands ~1em high (measured: 42px at the 44px
             desktop size). Translating rather than using a margin keeps that
             correction out of the row's height, and the space it moves into is
-            the padding's own, so nothing below it shifts. */}
+            the padding's own, so nothing below it shifts.
+
+            Mobile type matches the socials above it — b-md's 24/36, written out
+            rather than applied as the utility so it stays a size change and does
+            not carry b-md's family and weight up into the md/dt sizes. */}
         <div className="col-start-1 col-span-4 row-start-3 flex items-center dt:col-start-5 dt:col-span-2 dt:row-start-2 dt:self-end">
-          <p className="whitespace-nowrap text-[32px] leading-[48px] text-text-tertiary md:text-[44px] md:leading-[1.1] dt:translate-y-[1em]">
+          <p className="whitespace-nowrap text-[24px] leading-[36px] text-text-tertiary md:text-[44px] md:leading-[1.1] dt:translate-y-[1em]">
             Made with <CyclingWord words={CYCLING_WORDS} className="text-text-primary-highlight" />
           </p>
         </div>
