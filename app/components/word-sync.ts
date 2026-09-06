@@ -10,7 +10,11 @@
   The delay has to be derived rather than written down: it is a product of the
   word's index, WORD_STAGGER and the heading's own revealDelay, and every one
   of those has moved while tuning the hero. A literal goes stale silently — the
-  star still animates, just against the wrong word.
+  element still animates, just against the wrong word.
+
+  `useNearestWordDelay` currently has no callers: its only consumer was the
+  hero's loose twinkle star (see STARS-REMOVED.md). Kept so putting the stars
+  back is a one-file change; `useHeadlineHandoff` below is still in use.
 
   Re-measures on resize and after fonts load, because the nearest word changes
   when the text re-wraps (and the home hero also refits its font size).

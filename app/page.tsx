@@ -6,7 +6,6 @@ import { Button } from "./components/button";
 import { SectionReveal } from "./components/section-reveal-context";
 import { Reveal } from "./components/reveal";
 import { HeroCat, AboutCat } from "./components/dynamic-visuals";
-import { SyncedStar } from "./components/synced-star";
 import { HeroClose } from "./components/hero-close";
 import { HeroText } from "./components/hero-text";
 import { Divider } from "./components/divider";
@@ -46,17 +45,6 @@ export default function Home() {
               tablet  636px → -ml-[64px]
               desktop 36vw  → -ml-[3.6vw] */}
         <div className="relative flex h-[calc(100%/3)] items-end">
-          {/* Third twinkle star — sits underneath the hero text, lifted just above
-              the top of this row so it clears the last line of the headline.
-              It reveals with the headline word it sits under, so it sits OUTSIDE
-              the HeroClose below: a parent animating opacity multiplies its
-              children, and the cat's reveal now runs late enough that it would
-              hold this star back past the word it points at. */}
-          <SyncedStar
-            variant={3}
-            revealDelay={0}
-            className="pointer-events-none absolute left-[3%] -top-[28px] w-8 md:left-[2%] md:-top-[36px] md:w-11 lg:left-[2%] lg:-top-[44px] lg:w-14"
-          />
           <HeroClose revealDelay={0} className="flex h-full w-full items-end">
             <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] md:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md md:rounded-tl-lg md:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
             <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[30px] max-w-[296px] md:-ml-[64px] md:max-w-[636px] md:min-h-[200px] md:max-h-[280px] lg:-ml-[3.6vw] lg:max-w-[36vw] lg:min-h-[300px]" />

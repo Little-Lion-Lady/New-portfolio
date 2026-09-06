@@ -18,7 +18,6 @@ const INTRO_DURATION = DURATION * 1.3;
 const INTRO_DELAY = 0.3;
 import { ImageCarousel } from "./image-carousel";
 import type { WorkImageData } from "./work-image";
-import { TitleStars } from "./title-stars";
 import { ArrowUpRightSmall } from "./icons";
 
 // Figma "Hero" (393:15572 desktop / tablet / mobile).
@@ -135,7 +134,7 @@ export function CaseStudyHero({
             fires once scroll restoration settles, which on a client-side nav
             from the bottom of another page landed the title *after* everything
             else instead of first. */}
-        <TitleStars>
+        <div className="relative">
           <h1 className="case-hero-title flex flex-col whitespace-nowrap">
             <RevealWords immediate byLine as="span" className="block text-text-primary-highlight [margin-bottom:-0.0909em] md:[margin-bottom:-0.2em] lg:[margin-bottom:-0.2857em]">
               {titleTop}
@@ -146,7 +145,7 @@ export function CaseStudyHero({
               {titleBottom}
             </RevealWords>
           </h1>
-        </TitleStars>
+        </div>
 
         {/* Description — stacked on mobile/tablet, grid (meta | text) on desktop.
             Text, meta and images all reveal together 0.6s in — over the tail of
@@ -184,8 +183,8 @@ export function CaseStudyHero({
         </div>
       </div>
 
-      {/* Image carousel. Reveals with the description and meta — title+stars
-          first, then everything else together.
+      {/* Image carousel. Reveals with the description and meta — title first,
+          then everything else together.
           Loops like the home page's work rows; `items-center` on the wrapper is
           what lets the over-wide track bleed symmetrically past the page gutter
           (see ImageCarousel), and speedScale holds it at the home rows' px/s
