@@ -9,3 +9,4 @@ import dynamic from "next/dynamic";
 export const HeroCat = dynamic(() => import("./hero-cat").then((mod) => mod.HeroCat), { ssr: false });
 export const AboutCat = dynamic(() => import("./about-cat").then((mod) => mod.AboutCat), { ssr: false });
 export const MeCat = dynamic(() => import("./me-cat").then((mod) => mod.MeCat), { ssr: false });
+export const Star = dynamic(() => import("./star").then((mod) => mod.Star), { ssr: false });
