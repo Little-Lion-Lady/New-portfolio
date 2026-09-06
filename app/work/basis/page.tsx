@@ -234,7 +234,7 @@ export default function Basis() {
             size="md"
             believe="Showing energy usage in dollars rather than kilowatt-hours will make data more relatable and actionable for homeowners."
             because="It simplifies energy metrics into a format users can immediately act on."
-            metric={`Users who engage with insights 3x/month will show a ${basis.billReductionActual} bill reduction within 6 months.`}
+            metric={`Users who engage with insights 3x/month will show a ${basis.billReductionH1Target} bill reduction within 6 months.`}
           />
           <Divider />
           <Hypothesis

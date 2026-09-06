@@ -39,7 +39,11 @@ export const basis = {
   /** The stated product goal. Deliberately NOT lowered to match the result. */
   billReductionGoal: "15%",
   /** What the pilot actually delivered. */
-  billReductionActual: "10%",
+  billReductionActual: "12%",
+  /** H1's predicted success metric. Held separately from billReductionActual —
+   *  the two were the same figure until the result was restated, and a
+   *  hypothesis records what was predicted, so it must not track the outcome. */
+  billReductionH1Target: "10%",
   /** The band H3 predicted, written as one range so the % lands once. */
   billReductionRange: "10–15%",
   /** H3 target: share of users setting up one automation routine in month one. */

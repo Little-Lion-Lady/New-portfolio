@@ -83,7 +83,21 @@ export default function Home() {
               number="SW/01"
               imagePriority="high"
               name="First Table app"
-              description={`A ground-up redesign of First Table, the app with ${firstTable.appUsers} users, that gives diners 50% their food bill. In the six months since redesign, sign-ups were up ${firstTable.signupIncrease} and conversion up ${firstTable.conversionIncrease}.`}
+              description={
+                <>
+                  A ground-up redesign of First Table, the app with{" "}
+                  <span className="text-text-highlight-dark">{firstTable.appUsers} users</span>,
+                  that gives diners 50% their food bill. In the six months since redesign,{" "}
+                  <span className="text-text-highlight-dark">
+                    sign-ups were up {firstTable.signupIncrease}
+                  </span>{" "}
+                  and{" "}
+                  <span className="text-text-highlight-dark">
+                    conversion up {firstTable.conversionIncrease}
+                  </span>
+                  .
+                </>
+              }
               roles="Growth, Design system, Experimentation"
               href="/work/first-table"
               images={[
@@ -103,7 +117,20 @@ export default function Home() {
               // the same way.
               reverseMarquee
               name="NZ COVID Tracer app"
-              description={`${covid.installs} New Zealanders downloaded the COVID Tracer app. Only ${covid.btActivationRateBefore} turned on Bluetooth Tracing – a feature that anonymously and automatically mapped potential transmissions. I redesigned the onboarding and half a million more people switched it on.`}
+              description={
+                <>
+                  {covid.installs} New Zealanders downloaded the COVID Tracer app.{" "}
+                  <span className="text-text-highlight-dark">
+                    Only {covid.btActivationRateBefore} turned on Bluetooth Tracing
+                  </span>{" "}
+                  – a feature that anonymously and automatically mapped potential transmissions. I
+                  redesigned the onboarding and{" "}
+                  <span className="text-text-highlight-dark">
+                    {covid.devicesAddedRounded} people switched it on
+                  </span>
+                  .
+                </>
+              }
               roles="Onboarding, Research, Usability"
               href="/work/covid-tracer"
               images={[
@@ -119,7 +146,20 @@ export default function Home() {
               number="SW/03"
               imagePriority="low"
               name="Basis home app"
-              description={`The companion app for New Zealand’s first smart electrical panel, built with no product owner and no brief. I defined the strategy and led delivery end to end. Result: a ${basis.billReductionActual} cut in household energy bills across a ${basis.pilotLengthWord} pilot.`}
+              description={
+                <>
+                  The companion app for{" "}
+                  <span className="text-text-highlight-dark">
+                    New Zealand’s first smart electrical panel
+                  </span>
+                  , built with no product owner and no brief. I defined the strategy and led
+                  delivery end to end. Result: a{" "}
+                  <span className="text-text-highlight-dark">
+                    {basis.billReductionActual} cut in energy bills
+                  </span>{" "}
+                  across a {basis.pilotLengthWord} pilot.
+                </>
+              }
               roles="UX/UI, Research, Product strategy"
               href="/work/basis"
               images={[
@@ -157,9 +197,8 @@ export default function Home() {
               <span className="text-text-highlight-dark">0→1</span>{" "}
               and brought tired ones back to life. I do my best work in{" "}
               <span className="text-text-highlight-dark">close collaboration</span> with engineers,
-              designers and PMs, where{" "}
-              <span className="text-text-highlight-dark">ideas get challenged and sharpened</span>{" "}
-              before they ship. This approach allowed me to reach millions of users and won{" "}
+              designers and PMs, where ideas get challenged and sharpened before they ship. This
+              approach allowed me to reach millions of users and won{" "}
               <span className="text-text-highlight-dark">multiple design awards</span>.
             </p>
             <Button variant="primary" label="About me" href="/about" className="self-start" />

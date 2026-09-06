@@ -17,8 +17,8 @@
   The swing fires the frame the pointer stops, and it reads the gesture that
   just ended: it leads in the direction of travel, scales with how fast the
   pointer was going, and does not fire at all for a slow drift or for movement
-  that was mostly vertical. Moving again springs it back to 0 rather than
-  cutting.
+  with no sideways component to lead towards. Moving again springs it back to 0
+  rather than cutting.
 
   Two nested elements, deliberately. The outer one carries position, written
   straight to motion values from the pointermove listener with no smoothing —
@@ -29,7 +29,7 @@
 */
 
 import { useEffect, useRef, useState } from "react";
-import { m, useMotionValue, useReducedMotion } from "framer-motion";
+import { m, spring, useMotionValue, useReducedMotion } from "framer-motion";
 
 // Matches useWorkMenu's gate, and the `@media (hover: none)` reset in the CSS:
 // no cursor to replace where there is no cursor.
@@ -42,58 +42,105 @@ const HOVER_QUERY = "(hover: hover) and (pointer: fine)";
 const HOTSPOT_X = 7;
 const HOTSPOT_Y = 3;
 
-// One cycle: out the way the pointer was travelling, back through to the far
-// side, then home.
+// The swing is a real spring, released with velocity rather than pulled from a
+// displacement: a flick imparts angular momentum to the arrow, and the arrow
+// oscillates its way back. Sampled into keyframes rather than handed to framer
+// as a live spring transition, for one reason — the swing starts and ends at
+// rest, so a declarative `rotate: 0` target would be a no-op, and the motion
+// lives entirely in the initial velocity. Sampling at SWING_SAMPLE_MS is finer
+// than the display can show, so this IS the spring's motion, not a curve that
+// resembles it. The live spring stays where it belongs, on the interruption.
 //
-// The shape is a damped sine sampled into keyframes, not three eased legs. A
-// three-keyframe swing has to pick an easing per leg, and every choice was a
-// compromise: the curve that left 0 fast enough to be seen departed like a
-// flick, and the one that departed gently spent 45ms below the angle the eye
-// can resolve. A sine has neither problem — it leaves equilibrium at its
-// maximum speed and slows into each extreme on its own, because that is what
-// the motion actually is, and its velocity is continuous the whole way rather
-// than being pinned to zero at each keyframe.
+// This replaced a damped sine cut off after exactly one period. The sine had
+// to be tapered at the end to avoid a tick: one period lands on 0 while moving
+// at its fastest, so it was being cut off mid-swing. A spring has no such seam
+// — it decays until it is imperceptible and the last extreme is already below
+// the angle the eye can resolve, so the ending needs no correction at all.
 //
-// It also produces the return ratio for free. With envelope e^(-DECAY*u) over
-// one period, the second extreme is e^(-DECAY/2) of the first, so DECAY =
-// -2*ln(2.5/3) = 0.3646 reproduces the 2.5/3 that was tuned by hand.
-// Duration runs the other way to amplitude: fastest flicks keep the tight
-// 0.38s cycle, and slower ones stretch. A small arc played at the fast cycle's
-// pace reads as a twitch rather than a swing — the eye has less angle to
-// follow, so the same duration feels hurried. Stretching it back out keeps a
-// gentle flick gentle instead of merely small.
+// DAMPING_RATIO sets the character. 0.35 gives extremes of 1, -0.31, 0.095 —
+// out, a clear counter-swing, a trace of a third, done. The old sine's
+// hand-tuned 2.5/3 return is not reachable with a spring that also settles:
+// 0.83 per half cycle is a damping ratio of 0.06, which rings visibly for
+// eight cycles. Raise this to quieten the counter-swing, lower it to ring.
+const DAMPING_RATIO = 0.35;
+
+// Matches the interruption spring's mass, so the two behave like one hinge.
+const SWING_MASS = 0.6;
+
+// The visible cycle, which sets the spring's stiffness rather than the length
+// of the animation — a spring's own decay decides that. Period runs the other
+// way to amplitude: fastest flicks keep the tight 0.38s cycle, and slower ones
+// stretch. A small arc played at the fast cycle's pace reads as a twitch
+// rather than a swing — the eye has less angle to follow, so the same pace
+// feels hurried. Stretching it back out keeps a gentle flick gentle instead of
+// merely small.
 //
-// Interpolated on the raw speed fraction, not the squared one used for
+// Interpolated on the raw speed fraction, not the curved one used for
 // amplitude: the point here is a steady spread across the range rather than a
 // flat low end.
-const MIN_DURATION = 0.38;
-const MAX_DURATION = 0.58;
+const MIN_PERIOD = 0.38;
+const MAX_PERIOD = 0.58;
 
-const DECAY = -2 * Math.log(2.5 / 3);
+// Sample spacing. Under a frame at any refresh rate this cursor will meet, so
+// the linear interpolation between samples is finer than the display can show.
+const SWING_SAMPLE_MS = 12;
 
-// Samples per cycle. Sized against the LONGEST cycle, not the shortest: at 44
-// samples the spacing is 13ms at MAX_DURATION and 9ms at MIN_DURATION, both
-// comfortably under a frame, so the linear interpolation between them is finer
-// than the display can show and the result is the curve itself rather than an
-// approximation of it.
-const SWING_SAMPLES = 44;
+// Safety net on the sampled length, so a pathological period cannot generate
+// an unbounded keyframe array. Nothing in the tuned range comes near it: the
+// longest real swing is 0.86s.
+const MAX_SWING_SECONDS = 1.6;
 
-// The envelope has already decayed a little by the time the sine reaches its
-// first extreme at a quarter period, so divide it out — otherwise `amp` would
-// undershoot the amplitude the speed ramp asked for.
-const PEAK_NORM = Math.exp(-DECAY * 0.25);
+/**
+ * One swing, as keyframes plus the duration to play them over.
+ *
+ * The generator runs at an arbitrary velocity and the result is rescaled so
+ * its peak is exactly `amp`. That is not a shortcut around the closed form —
+ * it is more accurate than one. The peak of a spring released with velocity
+ * has a tidy analytical expression, but framer's solver lands a few percent
+ * off it (7.2 degrees where the algebra says 7.7), and MAX_AMP is a number the
+ * design asked for, not an approximation of one. Rescaling the sampled curve
+ * hits it exactly, whatever the solver does.
+ */
+function swingKeyframes(dir: number, amp: number, period: number) {
+  const dampedFreq = (2 * Math.PI) / period;
+  const naturalFreq = dampedFreq / Math.sqrt(1 - DAMPING_RATIO ** 2);
 
-function swingKeyframes(dir: number, amp: number) {
-  const frames: number[] = [];
-  for (let i = 0; i <= SWING_SAMPLES; i++) {
-    const u = i / SWING_SAMPLES;
-    frames.push(
-      (dir * amp * Math.exp(-DECAY * u) * Math.sin(2 * Math.PI * u)) / PEAK_NORM,
-    );
+  const generator = spring({
+    keyframes: [0, 0],
+    velocity: 1000,
+    stiffness: SWING_MASS * naturalFreq ** 2,
+    damping: 2 * DAMPING_RATIO * SWING_MASS * naturalFreq,
+    mass: SWING_MASS,
+    // Rest is decided here, by amplitude, not by framer's thresholds — the
+    // curve is generated at the wrong scale for those to mean anything.
+    restDelta: 0,
+    restSpeed: 0,
+  });
+
+  // Play until the envelope drops under the angle the eye can resolve, then
+  // round up to the next zero crossing. Without the rounding the last sample
+  // sits at a fifth of a degree and the forced landing on 0 is a step; on a
+  // crossing the curve is already there and the landing is exact.
+  const halfCycle = Math.PI / dampedFreq;
+  const decayTime = Math.log(amp / MIN_VISIBLE_AMP) / (DAMPING_RATIO * naturalFreq);
+  const duration = Math.min(
+    MAX_SWING_SECONDS,
+    Math.ceil(decayTime / halfCycle) * halfCycle,
+  );
+
+  const count = Math.ceil((duration * 1000) / SWING_SAMPLE_MS);
+  const raw: number[] = [];
+  let peak = 0;
+  for (let i = 0; i <= count; i++) {
+    const value = generator.next((i / count) * duration * 1000).value;
+    raw.push(value);
+    if (Math.abs(value) > Math.abs(peak)) peak = value;
   }
-  // sin(2*pi) is 0 to floating-point noise; land on exactly rest.
+
+  const scale = (dir * amp) / peak;
+  const frames = raw.map((value) => value * scale);
   frames[frames.length - 1] = 0;
-  return frames;
+  return { frames, duration };
 }
 
 // ─── Reading the gesture ─────────────────────────────────────────────────────
@@ -139,11 +186,18 @@ const VELOCITY_SPAN = 40;
 //
 // Amplitude leaves 0 at the floor, so the swing grows out of nothing rather
 // than appearing at a step; with MIN_VISIBLE_AMP the first swing you can
-// actually see starts near 850px/s.
+// actually see starts near 886px/s.
+//
+// MAX_SPEED is the sensitivity control, not just a clamp: it sets how much of
+// the band any given speed has covered, and the exponential ramp then bites on
+// that. Widening it to 2000 is what damps everything below 2000px/s — the same
+// gesture reaches a lower t, and the curve turns that into a much smaller arc
+// (1200px/s went 1.46 -> 0.72 degrees, 1700px/s went the full 10 -> 3.56).
+// Only a genuine throw past 2000px/s now gets MAX_AMP.
 const MIN_SPEED = 800;
-const MAX_SPEED = 1700;
+const MAX_SPEED = 2000;
 const MIN_AMP = 0;
-const MAX_AMP = 10;
+const MAX_AMP = 8;
 const RAMP_CURVE = 3;
 // e**RAMP_CURVE - 1, so the curve below lands exactly on MAX_AMP at t = 1.
 const RAMP_NORM = Math.exp(RAMP_CURVE) - 1;
@@ -154,12 +208,23 @@ const RAMP_NORM = Math.exp(RAMP_CURVE) - 1;
 // for motion no one can perceive.
 const MIN_VISIBLE_AMP = 0.1;
 
-// The swing leads horizontally, so a gesture with more vertical than
-// horizontal travel has no side to lead towards. Comparing the components of
-// the displacement is a 45-degree cone around straight up and straight down.
+// The swing leads horizontally, so a gesture with no horizontal component has
+// no side to lead towards — and that is now the only thing being excluded.
+//
+// This used to compare the components outright (|dx| <= |dy|), which is a
+// 45-degree cone around straight up and straight down, and it swallowed every
+// steep diagonal: a throw that was mostly vertical but had a real sideways
+// component read as "vertical" and did nothing at all. The cone is now
+// VERTICAL_CONE_DEG either side of the vertical, so anything with a lead
+// direction the gesture actually chose will swing.
+const VERTICAL_CONE_DEG = 1;
+const VERTICAL_CONE_TAN = Math.tan((VERTICAL_CONE_DEG * Math.PI) / 180);
+
 function leadFor(dx: number, dy: number, speed: number) {
   if (speed < MIN_SPEED) return null;
-  if (Math.abs(dx) <= Math.abs(dy)) return null;
+  // Straight up or down: no side at all, and Math.sign would hand back 0.
+  if (dx === 0) return null;
+  if (Math.abs(dx) < Math.abs(dy) * VERTICAL_CONE_TAN) return null;
   const t = Math.min(1, (speed - MIN_SPEED) / (MAX_SPEED - MIN_SPEED));
   const amp =
     MIN_AMP + ((MAX_AMP - MIN_AMP) * (Math.exp(RAMP_CURVE * t) - 1)) / RAMP_NORM;
@@ -167,7 +232,7 @@ function leadFor(dx: number, dy: number, speed: number) {
   return {
     dir: Math.sign(dx),
     amp,
-    duration: MAX_DURATION + (MIN_DURATION - MAX_DURATION) * t,
+    period: MAX_PERIOD + (MIN_PERIOD - MAX_PERIOD) * t,
   };
 }
 
@@ -188,7 +253,7 @@ function ownsCursor(el: Element) {
   return getComputedStyle(el).cursor === "none";
 }
 
-type Lead = { dir: number; amp: number; duration: number };
+type Lead = { dir: number; amp: number; period: number };
 
 export function CursorArrow() {
   const reducedMotion = useReducedMotion();
@@ -376,16 +441,18 @@ export function CursorArrow() {
 
   if (!enabled) return null;
 
+  const cycle = swing && swingKeyframes(swing.dir, swing.amp, swing.period);
+
   return (
     <m.div aria-hidden className="cursor-arrow-root" style={{ x, y, opacity: visible ? 1 : 0 }}>
       <m.div
         className="cursor-arrow"
         initial={{ rotate: 0 }}
         animate={
-          swing
+          cycle
             ? {
-                rotate: swingKeyframes(swing.dir, swing.amp),
-                transition: { duration: swing.duration, ease: "linear" },
+                rotate: cycle.frames,
+                transition: { duration: cycle.duration, ease: "linear" },
               }
             : { rotate: 0, transition: SPRING }
         }

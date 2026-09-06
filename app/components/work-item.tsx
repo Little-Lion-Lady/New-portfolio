@@ -25,7 +25,9 @@ export function WorkItem({
 }: {
   number: string;
   name: ReactNode;
-  description: string;
+  /** ReactNode rather than string so a call site can mark a phrase with
+   *  text-text-primary-highlight — see the home page's work cards. */
+  description: ReactNode;
   roles: string;
   href?: string;
   images: WorkImageData[];
