@@ -29,21 +29,17 @@ export default function NotFound() {
       <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-between lg:pb-[clamp(16px,4svh,72px)]">
         {/* Hero — title centred in its own padding. */}
         <div className="flex min-h-0 flex-1 flex-col justify-center gap-lg py-8xl md:pb-8xl md:pt-9xl lg:pb-[clamp(24px,6svh,160px)] lg:pt-[clamp(32px,12svh,260px)]">
-          {/* Live text, not an exported asset — see .wordmark in globals.css.
-              .notfound-oops carries the size ramp Figma draws across its three
-              frames, and .wordmark-trim-oops pulls the line box down to the
-              letterforms so the hero measures from the type, not from the glow.
-              The -0.043em pull puts the "O" on the page gutter rather than the
-              "O"'s left bearing, measured off the rendered glyphs.
+          {/* An exported image, not live text — see .oops-figure in globals.css
+              for the geometry and for why the six-layer text-shadow it replaces
+              had to go. .notfound-oops still carries the size ramp Figma draws
+              across its three frames; the figure is sized in `em` off it, and
+              its box is the LETTERING's height, so the hero still measures from
+              the type rather than from the glow.
 
-              Still an <h1>: the page keeps its heading. */}
+              Still an <h1>: role/aria-label give the heading its accessible
+              name now that the word is painted rather than typed. */}
           <Reveal as="h1" className="notfound-oops">
-            <span
-              className="wordmark wordmark-trim-oops wordmark-hue block"
-              style={{ marginLeft: "-0.043em" }}
-            >
-              Oops!
-            </span>
+            <span className="oops-figure wordmark-hue" role="img" aria-label="Oops!" />
           </Reveal>
         </div>
 
