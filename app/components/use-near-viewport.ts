@@ -54,3 +54,56 @@ export function useNearViewport<T extends HTMLElement>(rootMargin = "600px 0px")
 
   return [ref, near] as const;
 }
+
+/*
+  Two-way twin of the above: "is this box near the viewport RIGHT NOW?", plus a
+  latched "has it ever been?".
+
+  useNearViewport is one-shot on purpose — an image that has started loading
+  must not be un-loaded when it scrolls away. An expensive ANIMATION is the
+  opposite case: it has to stop again, or one visit to the footer leaves it
+  running for the rest of the session. Measured in Firefox 155, the footer
+  wordmark's infinite hue-rotate cost 28ms/frame on /about against 9ms with it
+  off — and because the observer disconnected on first sight, that cost stayed
+  on the page after scrolling back to the top.
+
+  Both values come from ONE observer: `visible` drives animation-play-state,
+  `everSeen` latches whatever should start once and not restart (eager image
+  loading, and applying the animation at all). Pausing rather than removing the
+  class keeps the hue where it stopped — dropping the animation and re-adding it
+  restarts the cycle, which reads as a colour jump. Same reason
+  .artwork-marquee-track pauses instead of toggling its animation.
+*/
+export function useInViewport<T extends HTMLElement>(rootMargin = "600px 0px") {
+  const ref = useRef<T | null>(null);
+  const [visible, setVisible] = useState(false);
+  const [everSeen, setEverSeen] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // No observer: fall back to "always on", matching useNearViewport's choice
+    // of a working page over a saved frame. Deferred by a frame for the same
+    // reason it is there — setting state in the effect body makes it a
+    // cascading render.
+    if (typeof IntersectionObserver === "undefined") {
+      const frame = requestAnimationFrame(() => {
+        setVisible(true);
+        setEverSeen(true);
+      });
+      return () => cancelAnimationFrame(frame);
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isIn = entries.some((entry) => entry.isIntersecting);
+        setVisible(isIn);
+        if (isIn) setEverSeen(true);
+      },
+      { rootMargin },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [rootMargin]);
+
+  return [ref, visible, everSeen] as const;
+}
