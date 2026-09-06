@@ -6,7 +6,7 @@ import { RevealWords } from "./reveal";
 const TEXT_STYLE = {
   fontFamily: "var(--font-family-body)",
   fontWeight: "var(--font-weight-book)",
-  lineHeight: 1.1,
+  lineHeight: 1.2,
   letterSpacing: "-0.02em",
 } as const;
 
@@ -48,8 +48,8 @@ const SCALE = 0.94;
 // utilities in page.tsx use `min-[500px]:` for the same reason. 1024 is still
 // the site's lg boundary — see the `sizes` attributes throughout media-block
 // and image-carousel.
-const MAX_FONT_SIZE = 42;
-const TABLET_MAX_FONT_SIZE = 42;
+const MAX_FONT_SIZE = 44;
+const TABLET_MAX_FONT_SIZE = 44;
 const MOBILE_MAX_FONT_SIZE = 24;
 
 const TABLET_QUERY = "(min-width: 500px) and (max-width: 1023px)";

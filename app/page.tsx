@@ -52,7 +52,7 @@ export default function Home() {
             aspect set the size. */}
         <div className="relative flex h-[calc(100%/3)] items-end">
           <HeroClose revealDelay={0} className="flex h-full w-full items-end">
-            <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] min-[500px]:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.3)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md min-[500px]:rounded-tl-lg min-[500px]:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
+            <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] min-[500px]:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.25)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md min-[500px]:rounded-tl-lg min-[500px]:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
             <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[30px] max-w-[296px] min-[500px]:-ml-[40px] min-[500px]:max-w-[400px] min-[500px]:max-h-[280px] lg:-ml-[45px] lg:max-w-[450px]" />
           </HeroClose>
         </div>
