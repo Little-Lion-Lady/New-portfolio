@@ -540,9 +540,9 @@ export function RevealWords({
   const tokenVariants = reducedMotion ? reducedVariants : byLine ? lineVariants : wordVariants;
 
   return (
-    // Published so <SyncedStar>/<TitleStars> can time themselves against the
-    // stagger this line actually used rather than the module default, which a
-    // fitted span overrides.
+    // Published so word-synced elements (see word-sync.ts) can time
+    // themselves against the stagger this line actually used rather than the
+    // module default, which a fitted span overrides.
     <Tag
       ref={ref as unknown as React.RefObject<never>}
       className={className}

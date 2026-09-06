@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { RevealWords } from "./reveal";
-import { TitleStars } from "./title-stars";
 
 const TEXT_STYLE = {
   fontFamily: "var(--font-family-body)",
@@ -140,10 +139,7 @@ export function HeroText({
         {PLAIN}
       </p>
 
-      {/* TitleStars' wrapper hugs the h1's own box (unlike wrapRef, which is
-          flex-centered and taller) so the twinkle stars anchor precisely to
-          the rendered text at every breakpoint. */}
-      <TitleStars placement="hero" revealDelay={revealDelay} className="relative w-full">
+      <div className="relative w-full">
         <RevealWords
           immediate
           byLine
@@ -163,7 +159,7 @@ export function HeroText({
           <span style={HL}>move the numbers</span>. Currently <span style={HL}>leading design</span>{" "}
           at First Table.
         </RevealWords>
-      </TitleStars>
+      </div>
     </div>
   );
 }
