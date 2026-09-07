@@ -32,7 +32,7 @@ export function HeroCat({ className }: { className?: string }) {
       loop
       autoplay={!reducedMotion}
       className={className}
-      style={{ aspectRatio: "1503/818", height: "auto" }}
+      style={{ aspectRatio: "1632/818", height: "auto" }}
     />
   );
 }

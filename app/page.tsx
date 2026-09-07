@@ -41,10 +41,11 @@ export default function Home() {
         {/* Image + divider — bottom 1/4.5.
             Divider is flex-1 so it stretches from the left page edge.
             Image pulls left with a negative margin to overlap the divider
-            by exactly 10% of the image's max-width per breakpoint:
-              mobile   296px → -ml-[30px]
-              tablet   400px → -ml-[40px]
-              desktop  450px → -ml-[45px]
+            by 20% of the image's max-width per breakpoint, so the line runs
+            under the art rather than stopping at the laptop's left edge:
+              mobile   296px → -ml-[60px]
+              tablet   400px → -ml-[80px]
+              desktop  450px → -ml-[90px]
             The hero switches to its tablet treatment at 500px rather than the
             site-wide md of 768 — see hero-text.tsx. Desktop is a fixed cap
             rather than the old 36vw, so the cat stops growing with the
@@ -53,7 +54,7 @@ export default function Home() {
         <div className="relative flex h-[calc(100%/3)] items-end">
           <HeroClose revealDelay={0} className="flex h-full w-full items-end">
             <Divider tone="primary" className="flex-1 self-end mb-[calc(100svh/3*0.15)] min-[500px]:mb-[calc(100svh/3*0.2)] lg:mb-[calc(100svh/3*0.25)] backdrop-blur-[20px] rounded-tl-md rounded-tr-md min-[500px]:rounded-tl-lg min-[500px]:rounded-tr-lg lg:rounded-tl-xl lg:rounded-tr-xl" />
-            <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[30px] max-w-[296px] min-[500px]:-ml-[40px] min-[500px]:max-w-[400px] min-[500px]:max-h-[280px] lg:-ml-[45px] lg:max-w-[450px]" />
+            <HeroCat className="relative z-10 max-h-full w-auto flex-shrink-0 object-contain object-bottom -ml-[60px] max-w-[296px] min-[500px]:-ml-[80px] min-[500px]:max-w-[400px] min-[500px]:max-h-[280px] lg:-ml-[90px] lg:max-w-[450px]" />
           </HeroClose>
         </div>
         </section>

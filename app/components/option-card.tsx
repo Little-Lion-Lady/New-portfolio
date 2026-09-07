@@ -5,8 +5,9 @@ import { HighlightPill } from "./tag";
 // 1144:11951 / desktop 1613:139357) + the "Chosen" tag.
 //
 // Each option is a label above a Figma "Key paragraph". The whole column runs
-// B-xs at every breakpoint — label included — and the title/body pair inside
-// the key paragraph stacks at gap 0, letting line height do the spacing.
+// B-xs — label included — and steps to B-sm on desktop, where the three columns
+// have the width to carry it; the title/body pair inside the key paragraph
+// stacks at gap 0, letting line height do the spacing.
 // Label → pair is spacing-xs (8) until desktop, where it closes to spacing-2xs
 // (6); desktop also pads the first two columns 20 on the right.
 //
@@ -27,14 +28,14 @@ export function OptionCard({
 }) {
   return (
     <div className={`flex flex-col gap-xs lg:gap-2xs ${className}`}>
-      <p className="b-xs flex items-center gap-sm text-text-tertiary">
+      <p className="b-xs lg:b-sm flex items-center gap-sm text-text-tertiary">
         {label}
         {chosen && <HighlightPill>Chosen</HighlightPill>}
       </p>
-      {/* Figma "Key paragraph" — gap 0, B-xs throughout. */}
+      {/* Figma "Key paragraph" — gap 0, B-xs stepping to B-sm on desktop. */}
       <div className="flex flex-col">
-        <p className="b-xs text-text-primary-highlight">{title}</p>
-        <p className="b-xs text-text-secondary">{children}</p>
+        <p className="b-xs lg:b-sm text-text-primary-highlight">{title}</p>
+        <p className="b-xs lg:b-sm text-text-secondary">{children}</p>
       </div>
     </div>
   );

@@ -5,11 +5,11 @@ import type { ReactNode } from "react";
 //   default  — body text, sentence case (problem constraints)
 //   deferred — same pill, plus a line-through (V2 backlog items). Basis asked
 //              for these to match §01's pills, so the type ramp is shared:
-//              B-xs through tablet, B-sm on desktop.
+//              B-2xs on mobile, B-xs from tablet up.
 // Padding per Figma "Content" (547:26283): px 16/24/24, py 4/6/8. Border is
 // border-primary, radius full (Figma 56px, taller than the pill). Default text
-// is text-secondary at B-xs through tablet, B-sm on desktop, deferred pills
-// included — Basis V2 reset them to the body face in sentence case, dropping
+// is text-secondary at B-2xs on mobile and B-xs from tablet up, deferred pills
+// included — a step down at each end from the B-xs/B-sm ramp Figma draws — Basis V2 reset them to the body face in sentence case, dropping
 // the old Geist Mono / uppercase / 16-28 treatment (Figma 1613:139376 desktop,
 // 1670:4388 tablet, 1670:4401 mobile).
 export function Tag({
@@ -22,7 +22,7 @@ export function Tag({
   return (
     <div className="flex items-center justify-center overflow-clip rounded-full border border-border-primary px-md py-3xs md:px-xl md:py-2xs lg:py-xs">
       <p
-        className={`b-xs whitespace-nowrap text-center text-text-secondary lg:b-sm ${
+        className={`b-2xs whitespace-nowrap text-center text-text-secondary md:b-xs ${
           deferred ? "line-through" : ""
         }`}
       >

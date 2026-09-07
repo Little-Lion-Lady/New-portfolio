@@ -219,9 +219,9 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
           <Stats className="md:grid-cols-3">
-            <Stat size="lg" tone="highlight-subtle" value="400k+" label="Transactions analysed" />
-            <Stat size="lg" tone="highlight-subtle" value="10k" label="User survey responses" />
-            <Stat size="lg" tone="highlight-subtle" value="5" label="User groups identified" />
+            <Stat size="sm" tone="highlight-subtle" value="400k+" label="Transactions analysed" />
+            <Stat size="sm" tone="highlight-subtle" value="10k" label="User survey responses" />
+            <Stat size="sm" tone="highlight-subtle" value="5" label="User groups identified" />
           </Stats>
         </Reveal>
         <Reveal index={3} delay={0.6} className="w-full">
@@ -294,7 +294,7 @@ export default function FirstTable() {
             findingLabel="Friction point"
             decisionLabel="Solution"
             mobileLabel="Friction point to design decision"
-            headerClassName="b-xs"
+            headerClassName="b-xs lg:b-sm"
           />
         </Reveal>
         <Reveal index={3} delay={0.6} className="w-full">
@@ -330,9 +330,9 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <Stats className="md:grid-cols-3">
-            <Stat size="outcome" value={`+${firstTable.signupIncrease}`} label="Sign-ups increase" />
-            <Stat size="outcome" value={`+${firstTable.onboardingCompletionIncrease}`} label="onboarding completion" />
-            <Stat size="outcome" value={`+${firstTable.conversionIncrease}`} label="Conversion rate increase" />
+            <Stat size="sm" value={`+${firstTable.signupIncrease}`} label="Sign-ups increase" />
+            <Stat size="sm" value={`+${firstTable.onboardingCompletionIncrease}`} label="onboarding completion" />
+            <Stat size="sm" value={`+${firstTable.conversionIncrease}`} label="Conversion rate increase" />
           </Stats>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
