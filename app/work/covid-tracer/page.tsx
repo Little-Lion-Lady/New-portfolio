@@ -167,10 +167,10 @@ export default function CovidTracer() {
         </Reveal>
         <Reveal index={2} delay={0.6} className="flex w-full flex-col gap-r-lg">
           <Stats className="md:grid-cols-2 lg:grid-cols-4">
-            <Stat size="lg" highlight value={covid.mislickBefore} label="Mislick rate on primary CTA" />
-            <Stat size="lg" highlight value={covid.taskSuccessBefore} label="Avg task success rate" />
-            <Stat size="lg" highlight value={covid.usabilityScoreBefore} label="Usability score" />
-            <Stat size="lg" highlight value={covid.dropoffBefore} label="Users dropped off at screen 1" />
+            <Stat size="sm" highlight value={covid.mislickBefore} label="Mislick rate on primary CTA" />
+            <Stat size="sm" highlight value={covid.taskSuccessBefore} label="Avg task success rate" />
+            <Stat size="sm" highlight value={covid.usabilityScoreBefore} label="Usability score" />
+            <Stat size="sm" highlight value={covid.dropoffBefore} label="Users dropped off at screen 1" />
           </Stats>
           <div className="flex flex-col gap-r-md">
             <Column label="Blocker 1" title="The app asked for trust before earning it">
