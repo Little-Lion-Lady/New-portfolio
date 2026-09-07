@@ -2050,6 +2050,13 @@ textarea,
   /* Preflight caps images at 100% of their box; the glow has to reach past it. */
   max-width: none;
   height: auto;
+  /* The glow is baked in, so the element is a good deal taller than the ink it
+     draws — 28.5cqw of image against a 17.8cqw box — and the overhang is fully
+     transparent. Left in the hit test it landed on the socials below, which
+     took the top ~36px of both 48px targets: LinkedIn and Email could not be
+     clicked at their centres, and the pointer that reached them resolved to
+     this image's inherited `cursor: none` rather than the links' own hand. */
+  pointer-events: none;
 }
 
 .wordmark-trim-getintouch { margin-top: -0.135em; margin-bottom: 0.011667em; }

@@ -312,6 +312,14 @@ export function CursorArrow() {
     let lastT = 0;
     let havePos = false;
 
+    // Where the pointer is, in client coordinates. Separate from lastX/lastY,
+    // which are gesture state and only maintained when motion is not reduced:
+    // this is the input to a hit test that has to run whether or not there is a
+    // swing to measure.
+    let hoverX = 0;
+    let hoverY = 0;
+    let hovering = false;
+
     // Raw positions over the last GESTURE_WINDOW. Nothing here is reset when a
     // stop is declared — a quiet frame is not evidence that the preceding
     // gesture never happened, and wiping the history on one was what stopped
@@ -330,6 +338,36 @@ export function CursorArrow() {
       if (!swingRef.current) return;
       swingRef.current = false;
       setSwing(null);
+    };
+
+    // A pointermove is not the only way the element under the pointer changes.
+    // A scroll moves the document past a cursor that never moved, and the
+    // browser silently re-resolves the native cursor for whatever arrives —
+    // but dispatches nothing, so `owns` kept whatever the last move decided.
+    // Scroll onto a link that way and both cursors are drawn at once: the
+    // native hand the browser painted, and this arrow still believing it owns
+    // the spot. Nothing corrected it until the pointer moved again, which is
+    // why it read as "the first hover" — the state was already wrong by then.
+    //
+    // Re-running the hit test from the last known position is the whole fix.
+    // elementFromPoint is the same test the browser just did, so it agrees with
+    // the cursor on screen by construction.
+    let resyncFrame = 0;
+    const resync = () => {
+      resyncFrame = 0;
+      if (!hovering) return;
+      const target = document.elementFromPoint(hoverX, hoverY);
+      if (target === lastTarget) return;
+      lastTarget = target;
+      owns = !!target && ownsCursor(target);
+      show(owns);
+    };
+
+    // Coalesced to one per frame. Scroll fires far more often than the page
+    // paints, and the resync ends in a getComputedStyle — the one call the
+    // target cache in onMove exists to keep off the hot path.
+    const onScroll = () => {
+      if (!resyncFrame) resyncFrame = requestAnimationFrame(resync);
     };
 
     // Both edges of the swing are gated on the same distance test, and that is
@@ -381,6 +419,10 @@ export function CursorArrow() {
       x.set(event.clientX - HOTSPOT_X);
       y.set(event.clientY - HOTSPOT_Y);
 
+      hoverX = event.clientX;
+      hoverY = event.clientY;
+      hovering = true;
+
       const target = event.target as Element | null;
       if (target !== lastTarget) {
         lastTarget = target;
@@ -420,6 +462,9 @@ export function CursorArrow() {
     const onLeave = () => {
       cancelAnimationFrame(frame);
       frame = 0;
+      cancelAnimationFrame(resyncFrame);
+      resyncFrame = 0;
+      hovering = false;
       lastTarget = null;
       havePos = false;
       samples.length = 0;
@@ -431,8 +476,13 @@ export function CursorArrow() {
     document.addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("pointerleave", onLeave);
     window.addEventListener("blur", onLeave);
+    // Capture, so a scroll inside any nested scroller counts — scroll does not
+    // bubble from an element, and only the document sees it otherwise.
+    document.addEventListener("scroll", onScroll, { passive: true, capture: true });
     return () => {
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(resyncFrame);
+      document.removeEventListener("scroll", onScroll, { capture: true });
       document.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("blur", onLeave);
