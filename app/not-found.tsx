@@ -56,7 +56,7 @@ export default function NotFound() {
               index={0}
               delay={0.5}
               as="p"
-              className="b-sm whitespace-nowrap text-text-secondary md:b-md md:col-start-1 md:col-span-3 lg:col-start-5 lg:col-span-3"
+              className="b-xs whitespace-nowrap text-text-secondary md:b-sm md:col-start-1 md:col-span-3 lg:b-md lg:col-start-5 lg:col-span-3"
             >
               Are you lost?
             </Reveal>
@@ -64,7 +64,7 @@ export default function NotFound() {
               index={1}
               delay={0.5}
               as="p"
-              className="b-sm whitespace-nowrap text-text-secondary md:b-md md:col-start-4 md:col-span-2 lg:col-start-8 lg:col-span-2"
+              className="b-xs whitespace-nowrap text-text-secondary md:b-sm md:col-start-4 md:col-span-2 lg:b-md lg:col-start-8 lg:col-span-2"
             >
               I can fix this
             </Reveal>
