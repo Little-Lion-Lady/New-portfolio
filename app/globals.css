@@ -1711,9 +1711,18 @@ h1.d-sm {
   --cursor-pointer: url("/home/Hand-dark.svg") 8 1, pointer;
 }
 
-/* `cursor` inherits, so this one declaration covers the whole document. */
+/* `cursor` inherits, so this one declaration covers the whole document.
+
+   `--cursor-kind` rides alongside it and names which SPRITE the drawn cursor
+   should show. It inherits exactly as `cursor` does, so a <span> inside a link
+   resolves to `pointer` without cursor-arrow.tsx re-listing the selectors below
+   — the stylesheet stays the single source of truth, which is the same reason
+   the component used to read the computed `cursor` itself. Anything declaring
+   neither resolves to the empty string, and the drawn cursor stands down so a
+   native one shows through. */
 body {
   cursor: var(--cursor-default);
+  --cursor-kind: default;
 }
 
 /* Everything that would otherwise show the system pointer. `.cursor-pointer`
@@ -1731,6 +1740,7 @@ input[type="radio"],
 input[type="submit"],
 input[type="button"] {
   cursor: var(--cursor-pointer);
+  --cursor-kind: pointer;
 }
 
 /* Text entry keeps the I-beam — the inherited arrow would otherwise sit over
@@ -1751,20 +1761,31 @@ textarea,
   }
 }
 
-/* ── The swinging arrow (see cursor-arrow.tsx) ──────────────────────────────
+/* ── The drawn cursor (see cursor-arrow.tsx) ────────────────────────────────
    A `cursor: url()` is composited by the OS and cannot be transformed, so the
-   default arrow — and only the default arrow — is redrawn as a DOM element
-   that can rotate. `.cursor-none` is added to <body> by the component on
-   mount, never here: a no-JS visit must keep the native arrow above rather
-   than end up with no cursor at all.
+   cursor is redrawn as a DOM element that can rotate. `.cursor-none` is added
+   to <body> by the component on mount, never here: a no-JS visit must keep the
+   native cursors above rather than end up with no cursor at all.
 
-   Only body is blanked. Every selector above still declares its own cursor, so
-   links keep the native hand and text fields the native I-beam, hotspots and
-   all. Since `cursor` inherits, "computed cursor is none" is exactly the set
-   of elements the DOM arrow is responsible for — which is the test the
-   component runs to decide when to hide itself. */
+   BOTH sprites are drawn here, and that is the point. The arrow alone used to
+   be a DOM element while the hand stayed native, which left the two halves to
+   swap in the same frame on their own. Chrome does; Firefox applies the
+   `cursor` property a frame or two late, so crossing a link showed a moment of
+   NO cursor going in (we dropped ours before it drew the hand) and a moment of
+   BOTH coming out (we restored ours before it dropped the hand). Nothing was
+   animating — they simply were not in step. One element that swaps its own
+   sprite cannot fall out of step with itself.
+
+   Blanking the two variables rather than re-listing the selectors above: they
+   inherit from body, so every element drawing its cursor from one — links
+   included — resolves to `none` in a single rule, and a selector added to that
+   list is covered without touching this one. Text entry declares `cursor: text`
+   literally rather than through a variable, so it keeps its native I-beam and
+   the component stands down over it. */
 @media (hover: hover) and (pointer: fine) {
   body.cursor-none {
+    --cursor-default: none;
+    --cursor-pointer: none;
     cursor: none;
   }
 }
@@ -1780,15 +1801,28 @@ textarea,
   will-change: transform;
 }
 
-.cursor-arrow {
+.cursor-arrow,
+.cursor-hand {
   width: 32px;
   height: 32px;
-  background-image: url("/home/Cursor.svg");
   background-size: 32px 32px;
   background-repeat: no-repeat;
-  /* The measured hotspot: the swing pivots on the arrow's tip, not its box. */
-  transform-origin: 7px 3px;
   will-change: transform;
+}
+
+.cursor-arrow {
+  background-image: url("/home/Cursor.svg");
+  /* The measured hotspot: the swing pivots on the arrow's tip, not its box.
+     The root is placed so this point sits on the pointer, so the pivot and the
+     pointer are the same pixel. */
+  transform-origin: 7px 3px;
+}
+
+/* The hand is held still — it carries no rotation, so it needs no pivot. It is
+   drawn here rather than left native purely so it changes in the same frame as
+   the arrow; being a DOM element now makes moving it possible, not required. */
+.cursor-hand {
+  background-image: url("/home/Hand.svg");
 }
 
 /* Themed by swapping the file, mirroring the native cursor above — same two
@@ -1797,10 +1831,18 @@ textarea,
   :root:not([data-theme="light"]):not([data-theme="dark"]) .cursor-arrow {
     background-image: url("/home/Cursor-dark.svg");
   }
+
+  :root:not([data-theme="light"]):not([data-theme="dark"]) .cursor-hand {
+    background-image: url("/home/Hand-dark.svg");
+  }
 }
 
 [data-theme="dark"] .cursor-arrow {
   background-image: url("/home/Cursor-dark.svg");
+}
+
+[data-theme="dark"] .cursor-hand {
+  background-image: url("/home/Hand-dark.svg");
 }
 
 /* ============================================================

@@ -5,14 +5,24 @@
   ───────────
   The default arrow, redrawn as a DOM element so it can rotate.
 
-  Why this exists at all: the rest of the cursor system is a native
-  `cursor: url()` (see CUSTOM CURSORS in globals.css). The browser rasterises
-  that and the OS composites it — nothing in the document can transform it, so
-  a swing is impossible without taking the arrow out of the OS's hands. Only
-  the DEFAULT arrow moves here. The hand and the I-beam stay native: body gets
-  `cursor: none`, and every element that already declares its own cursor keeps
-  it, so hover states are untouched and there is exactly one seam to manage —
-  hiding this element wherever the native cursor takes over.
+  Why this exists at all: a native `cursor: url()` (see CUSTOM CURSORS in
+  globals.css) is rasterised by the browser and composited by the OS — nothing
+  in the document can transform it, so a swing is impossible without taking the
+  cursor out of the OS's hands.
+
+  BOTH sprites are drawn here, and only the arrow moves. The hand was left
+  native at first, on the reasoning that it never animates so it may as well
+  stay composited. That put the two halves of one cursor in different hands and
+  required them to swap in the same frame: ours by JS on pointermove, the
+  browser's by applying `cursor`. Chrome does both at once. Firefox applies the
+  property a frame or two late, so crossing a link showed a moment of NO cursor
+  going in and a moment of BOTH coming out — read as an animation, but it was
+  just the two halves out of step. One element swapping its own sprite cannot
+  fall out of step with itself, in any browser.
+
+  Text entry is still native (`cursor: text` is declared literally rather than
+  through a variable), and this element stands down over it — the one remaining
+  seam, on elements that do not exist on the site today.
 
   The swing fires the frame the pointer stops, and it reads the gesture that
   just ended: it leads in the direction of travel, scales with how fast the
@@ -35,12 +45,32 @@ import { m, spring, useMotionValue, useReducedMotion } from "framer-motion";
 // no cursor to replace where there is no cursor.
 const HOVER_QUERY = "(hover: hover) and (pointer: fine)";
 
-// The hotspot the native cursor was mapped to — the furthest up-left opaque
-// pixel of the 32x32 raster, i.e. the arrow's tip. It does double duty here:
-// the offset that puts the tip on the pointer's true coordinate, and the pivot
-// the swing turns around.
-const HOTSPOT_X = 7;
-const HOTSPOT_Y = 3;
+// The hotspots the native cursors were mapped to, measured off each rasterised
+// sprite: the arrow's tip is its furthest up-left opaque pixel (7, 3), and the
+// hand's is the centre of its topmost row, the index fingertip (8, 1). They are
+// the offset that puts the drawn sprite's business end on the pointer's true
+// coordinate — and for the arrow, the pivot the swing turns around, which is
+// why .cursor-arrow's transform-origin repeats these two numbers.
+//
+// They differ, so the offset has to be re-applied when the SPRITE changes and
+// not only when the pointer moves; see place().
+const HOTSPOT = {
+  default: { x: 7, y: 3 },
+  pointer: { x: 8, y: 1 },
+} as const;
+
+// Which sprite an element asks for. `--cursor-kind` is declared in the
+// stylesheet beside the native cursors and inherits the same way `cursor` does,
+// so a <span> inside a link reports "pointer" without this file re-listing
+// those selectors — the CSS stays the single source of truth. Anything
+// declaring neither reports nothing, and the drawn cursor stands down so a
+// native cursor (text entry's I-beam) shows through.
+type CursorKind = keyof typeof HOTSPOT;
+
+function cursorKindOf(el: Element): CursorKind | null {
+  const kind = getComputedStyle(el).getPropertyValue("--cursor-kind").trim();
+  return kind === "default" || kind === "pointer" ? kind : null;
+}
 
 // The swing is a real spring, released with velocity rather than pulled from a
 // displacement: a flick imparts angular momentum to the arrow, and the arrow
@@ -243,22 +273,12 @@ function leadFor(dx: number, dy: number, speed: number) {
 // the spring overshooting.
 const SPRING = { type: "spring" as const, stiffness: 260, damping: 26, mass: 0.6 };
 
-// Whether this element is one the DOM arrow is responsible for. `cursor`
-// inherits, so with `cursor: none` on body every element resolves to "none"
-// except the ones the stylesheet gives a cursor of their own — links and
-// buttons (the hand), text fields (the I-beam). Reading the computed value
-// rather than re-listing those selectors keeps the CSS the single source of
-// truth: add a rule there and this follows it.
-function ownsCursor(el: Element) {
-  return getComputedStyle(el).cursor === "none";
-}
-
 type Lead = { dir: number; amp: number; period: number };
 
 export function CursorArrow() {
   const reducedMotion = useReducedMotion();
   const [enabled, setEnabled] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [kind, setKind] = useState<CursorKind | null>(null);
   const [swing, setSwing] = useState<Lead | null>(null);
 
   const x = useMotionValue(0);
@@ -266,7 +286,7 @@ export function CursorArrow() {
 
   // Mirrored in refs so the move handler can skip a setState that would not
   // change anything. pointermove fires per frame; React state must not.
-  const visibleRef = useRef(false);
+  const kindRef = useRef<CursorKind | null>(null);
   const swingRef = useRef(false);
 
   useEffect(() => {
@@ -291,7 +311,7 @@ export function CursorArrow() {
     // getComputedStyle forces a style recalc, so it runs only when the element
     // under the pointer actually changes — not on every frame of a sweep.
     let lastTarget: Element | null = null;
-    let owns = false;
+    let targetKind: CursorKind | null = null;
 
     // There is no delay to tune here, and deliberately no timer. A stop is the
     // absence of movement, and the soonest that absence can be observed is the
@@ -328,10 +348,21 @@ export function CursorArrow() {
     // nothing fast enough to swing about.
     const samples: { t: number; x: number; y: number }[] = [];
 
-    const show = (next: boolean) => {
-      if (visibleRef.current === next) return;
-      visibleRef.current = next;
-      setVisible(next);
+    const show = (next: CursorKind | null) => {
+      if (kindRef.current === next) return;
+      kindRef.current = next;
+      setKind(next);
+    };
+
+    // Put the current sprite's hotspot on the pointer's true coordinate. The
+    // two sprites were mapped to different hotspots, so this runs on a sprite
+    // change as well as on a move — a resync can swap the sprite with the
+    // pointer perfectly still, and the offset would otherwise stay 1-2px out
+    // until the next move.
+    const place = () => {
+      const hotspot = HOTSPOT[kindRef.current ?? "default"];
+      x.set(hoverX - hotspot.x);
+      y.set(hoverY - hotspot.y);
     };
 
     const stopSwing = () => {
@@ -359,8 +390,9 @@ export function CursorArrow() {
       const target = document.elementFromPoint(hoverX, hoverY);
       if (target === lastTarget) return;
       lastTarget = target;
-      owns = !!target && ownsCursor(target);
-      show(owns);
+      targetKind = target ? cursorKindOf(target) : null;
+      show(targetKind);
+      place();
     };
 
     // Coalesced to one per frame. Scroll fires far more often than the page
@@ -416,9 +448,6 @@ export function CursorArrow() {
     const onMove = (event: PointerEvent) => {
       if (event.pointerType === "touch") return;
 
-      x.set(event.clientX - HOTSPOT_X);
-      y.set(event.clientY - HOTSPOT_Y);
-
       hoverX = event.clientX;
       hoverY = event.clientY;
       hovering = true;
@@ -426,9 +455,10 @@ export function CursorArrow() {
       const target = event.target as Element | null;
       if (target !== lastTarget) {
         lastTarget = target;
-        owns = !!target && ownsCursor(target);
+        targetKind = target ? cursorKindOf(target) : null;
       }
-      show(owns);
+      show(targetKind);
+      place();
 
       if (reducedMotion) return;
 
@@ -469,8 +499,9 @@ export function CursorArrow() {
       havePos = false;
       samples.length = 0;
       movedSinceTick = 0;
+      targetKind = null;
       stopSwing();
-      show(false);
+      show(null);
     };
 
     document.addEventListener("pointermove", onMove, { passive: true });
@@ -491,20 +522,41 @@ export function CursorArrow() {
 
   if (!enabled) return null;
 
-  const cycle = swing && swingKeyframes(swing.dir, swing.amp, swing.period);
+  // Only the arrow swings, so the keyframes are not even generated while the
+  // hand is up — that is a 40-odd entry array per stop, for motion nothing
+  // would play.
+  const cycle =
+    kind === "default" && swing
+      ? swingKeyframes(swing.dir, swing.amp, swing.period)
+      : null;
 
   return (
-    <m.div aria-hidden className="cursor-arrow-root" style={{ x, y, opacity: visible ? 1 : 0 }}>
+    <m.div aria-hidden className="cursor-arrow-root" style={{ x, y, opacity: kind ? 1 : 0 }}>
       <m.div
-        className="cursor-arrow"
+        // Keyed on the sprite, so swapping one for the other mounts a fresh
+        // element rather than re-dressing the old one. Without it the new
+        // sprite inherits the outgoing one's transform for the frame before the
+        // animation engine writes the next value — one frame of a tilted hand
+        // on the way in. A remount starts from `initial` on its first paint,
+        // which is the only way "held still" is true from the very first frame.
+        key={kind === "pointer" ? "hand" : "arrow"}
+        className={kind === "pointer" ? "cursor-hand" : "cursor-arrow"}
         initial={{ rotate: 0 }}
         animate={
-          cycle
-            ? {
-                rotate: cycle.frames,
-                transition: { duration: cycle.duration, ease: "linear" },
-              }
-            : { rotate: 0, transition: SPRING }
+          // The hand is held still, and "still" has to mean the frame it
+          // appears. Crossing onto a link mid-swing used to hand the leftover
+          // angle to SPRING, which then unwound it over ~300ms — with the hand
+          // already drawn, so the hand was visibly rotating on the way in. It
+          // stands upright immediately instead; there is no swing of its own to
+          // settle, so there is nothing to ease.
+          kind === "pointer"
+            ? { rotate: 0, transition: { duration: 0 } }
+            : cycle
+              ? {
+                  rotate: cycle.frames,
+                  transition: { duration: cycle.duration, ease: "linear" },
+                }
+              : { rotate: 0, transition: SPRING }
         }
       />
     </m.div>
