@@ -92,17 +92,10 @@ export default function Home() {
               name="First Table app"
               description={
                 <>
-                  A ground-up redesign of First Table, the app with{" "}
-                  <span className="text-text-primary-highlight">{firstTable.appUsers} users</span>,
-                  that gives diners 50% their food bill. In the six months since redesign,{" "}
-                  <span className="text-text-primary-highlight">
-                    sign-ups were up {firstTable.signupIncrease}
-                  </span>{" "}
-                  and{" "}
-                  <span className="text-text-primary-highlight">
-                    conversion up {firstTable.conversionIncrease}
-                  </span>
-                  .
+                  A ground-up redesign of First Table, the app with {firstTable.appUsers} users,
+                  that gives diners 50% their food bill. In the six months since redesign, sign-ups
+                  were up {firstTable.signupIncrease} and conversion up{" "}
+                  {firstTable.conversionIncrease}.
                 </>
               }
               roles="Growth, Design system, Experimentation"
@@ -126,16 +119,10 @@ export default function Home() {
               name="NZ COVID Tracer app"
               description={
                 <>
-                  {covid.installs} New Zealanders downloaded the COVID Tracer app.{" "}
-                  <span className="text-text-primary-highlight">
-                    Only {covid.btActivationRateBefore} turned on Bluetooth Tracing
-                  </span>{" "}
-                  – a feature that anonymously and automatically mapped potential transmissions. I
-                  redesigned the onboarding and{" "}
-                  <span className="text-text-primary-highlight">
-                    {covid.devicesAddedRounded} people switched it on
-                  </span>
-                  .
+                  {covid.installs} New Zealanders downloaded the COVID Tracer app. Only{" "}
+                  {covid.btActivationRateBefore} turned on Bluetooth Tracing – a feature that
+                  anonymously and automatically mapped potential transmissions. I redesigned the
+                  onboarding and {covid.devicesAddedRounded} people switched it on.
                 </>
               }
               roles="Onboarding, Research, Usability"
@@ -155,16 +142,10 @@ export default function Home() {
               name="Basis home app"
               description={
                 <>
-                  The companion app for{" "}
-                  <span className="text-text-primary-highlight">
-                    New Zealand’s first smart electrical panel
-                  </span>
-                  , built with no product owner and no brief. I defined the strategy and led
-                  delivery end to end. Result: a{" "}
-                  <span className="text-text-primary-highlight">
-                    {basis.billReductionActual} cut in energy bills
-                  </span>{" "}
-                  across a {basis.pilotLengthWord} pilot.
+                  The companion app for New Zealand’s first smart electrical panel, built with no
+                  product owner and no brief. I defined the strategy and led delivery end to end.
+                  Result: a {basis.billReductionActual} cut in energy bills across a{" "}
+                  {basis.pilotLengthWord} pilot.
                 </>
               }
               roles="UX/UI, Research, Product strategy"
