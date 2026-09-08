@@ -29,19 +29,21 @@ const HL = { color: "var(--text-primary-highlight)" };
   against a 2.5s budget. Nothing about that was network: the page had painted
   at 684ms.
 
-  Fixed at the former ceilings, which is what the design was drawn at:
+  Three sizes, stepping up with the width available to them:
 
       < 500px          24px
-      500px - 1023px   44px
-      >= 1024px        32px
+      500px - 1023px   32px
+      >= 1024px        44px
 
-  Desktop is deliberately SMALLER than tablet. The fit's old ceilings had
-  tablet and desktop sharing 44 (see TABLET_MAX_FONT_SIZE), but at 44 on a
-  wide screen the headline wraps to eight lines of near edge-to-edge type and
-  reads as a wall rather than an opening line. 1024 is the site's lg boundary,
-  the same one the `sizes` attributes throughout media-block and
-  image-carousel key off.
-  The 500px boundary is the hero's own, not the site-wide md of 768: the
+  Tablet sits at 32 rather than joining desktop at 44. That pairing is what
+  the fit's old ceilings did (see TABLET_MAX_FONT_SIZE), and at 44 against a
+  tablet's column width the copy wraps to eight lines of near edge-to-edge
+  type — a wall rather than an opening line. A desktop has the width to carry
+  44; a tablet does not.
+
+  1024 is the site's lg boundary, the same one the `sizes` attributes
+  throughout media-block and image-carousel key off. The 500px boundary is
+  the hero's own, not the site-wide md of 768: the
   headline IS the viewport here and reads as a phone layout well past the
   width where the rest of the page stops being one. The utilities in page.tsx
   use `min-[500px]:` for the same reason.
@@ -72,7 +74,7 @@ export function HeroText({
           byLine
           delay={revealDelay}
           as="h1"
-          className="w-full text-[24px] min-[500px]:text-[44px] lg:text-[32px]"
+          className="w-full text-[24px] min-[500px]:text-[32px] lg:text-[44px]"
           style={{
             ...TEXT_STYLE,
             color: "var(--text-primary-overlay)",
