@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { PageCurtain } from "./components/page-curtain";
 import { CursorArrow } from "./components/cursor-arrow";
 import { SiteStructuredData } from "./components/structured-data";
+import { LINE_REVEAL_SCRIPT } from "./components/line-reveal";
 import { siteUrl } from "./site-url";
 import "./globals.css";
 
@@ -124,6 +125,18 @@ export default function RootLayout({
           {/* The default arrow, as a DOM element so it can swing at rest. */}
           <CursorArrow />
         </LazyMotion>
+        {/*
+          Groups every headline's tokens by the line they wrapped onto and
+          releases their CSS reveal. Last in <body> so every .line-reveal on
+          the page has been parsed, and still long before hydration — which is
+          the whole point; see RevealWords and ./components/line-reveal.
+
+          Here rather than beside each heading because RevealWords is a Client
+          Component, and a <script> rendered by one never executes on the
+          client. Server-rendered, as this and the theme script above are, it
+          runs at parse exactly as intended.
+        */}
+        <script dangerouslySetInnerHTML={{ __html: LINE_REVEAL_SCRIPT }} />
         <Analytics />
       </body>
     </html>

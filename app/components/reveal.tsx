@@ -22,9 +22,10 @@
     normally.
 */
 
-import React, { createContext, useContext, useEffect, useId, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { m, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
+import { groupLines } from "./line-reveal";
 import {
   EASE,
   DURATION,
@@ -451,22 +452,24 @@ export function RevealWords({
   // The measurement runs TWICE, and the first run is the point of the whole
   // arrangement:
   //
-  //   1. An inline <script> rendered directly after the heading, which the
-  //      parser executes the moment the heading's markup is complete — before
-  //      hydration, before the framework chunk, often before the page has
-  //      finished streaming. That is what moves the headline off the critical
-  //      path: measured on the deployed site, this reveal used to start at
-  //      3127ms on a throttled phone and LCP landed at 5328ms.
+  //   1. LINE_REVEAL_SCRIPT, rendered once by layout.tsx and executed by the
+  //      parser before hydration and before the framework chunk. That is what
+  //      moves the headline off the critical path: measured on the deployed
+  //      site, this reveal used to start at 3127ms on a throttled phone with
+  //      LCP landing at 5328ms.
   //
-  //   2. This effect, as the fallback. A client-side navigation re-renders the
-  //      tree without re-running injected scripts, so on a route reached
+  //      It is emitted from the LAYOUT rather than from here because this is a
+  //      Client Component, and a <script> rendered by one is inert on the
+  //      client — React says so, loudly, in the console. See ./line-reveal.
+  //
+  //   2. This effect, as the fallback. A client-side navigation renders the
+  //      tree without the layout's script re-running, so on a route reached
   //      through the page curtain step 1 never fires. It is a no-op when the
   //      script already did the work — `data-revealed` is the flag.
   //
   // Both write the same thing: `--line` per token, `data-lines` on the heading
   // for the handoff consumers (HeroClose, AfterHeroReveal — see word-sync.ts),
   // then `data-revealed` to release the animation.
-  const headingId = useId();
 
   useEffect(() => {
     if (!byLine) return;
@@ -479,7 +482,6 @@ export function RevealWords({
     return (
       <>
         <Tag
-          id={headingId}
           ref={ref as unknown as React.RefObject<never>}
           className={className ? `line-reveal ${className}` : "line-reveal"}
           style={
@@ -536,14 +538,6 @@ export function RevealWords({
             </span>
           ))}
         </Tag>
-        <script
-          // Runs during parse. Reading offsetTop forces layout on one heading,
-          // which is cheap, and the stylesheet is render-blocking so the type
-          // is already correct. The webfont may still be swapping, but Geist
-          // ships a metric-matched fallback (size-adjust), so the wrap it
-          // measures is the wrap the real face produces.
-          dangerouslySetInnerHTML={{ __html: groupLinesScript(headingId, startLine) }}
-        />
       </>
     );
   }
@@ -585,51 +579,4 @@ export function RevealWords({
   );
 }
 
-/*
-  The grouping itself, written once and used from both entry points above.
 
-  Tokens on one wrapped line share an offsetTop. The 2px tolerance absorbs
-  sub-pixel differences between tokens of different heights; a real line break
-  moves by a whole line-height.
-*/
-function groupLines(el: Element, startLine: number) {
-  const spans = el.children;
-  if (!spans.length) return;
-  const stamp = (node: HTMLElement, line: number) => {
-    node.style.setProperty("--line", String(line));
-    // TitleStars pins its cluster to a word and has to share that word's place
-    // in the cascade. Under a line-grouped reveal the offset comes from the
-    // measured line, not the token index, so it can only be published here.
-    node.setAttribute("data-reveal-delay", String((startLine + line) * LINE_STAGGER));
-  };
-  let lineTop = (spans[0] as HTMLElement).offsetTop;
-  let line = 0;
-  stamp(spans[0] as HTMLElement, 0);
-  for (let i = 1; i < spans.length; i++) {
-    const s = spans[i] as HTMLElement;
-    if (s.offsetTop - lineTop > 2) {
-      line += 1;
-      lineTop = s.offsetTop;
-    }
-    stamp(s, line);
-  }
-  el.setAttribute("data-lines", String(line + 1));
-  el.setAttribute("data-revealed", "");
-}
-
-/*
-  The same routine as a string, for the inline <script>. Deliberately a
-  duplicate rather than a serialised `groupLines.toString()`: this has to
-  survive minification, and a bundler is free to rename anything it can see.
-*/
-function groupLinesScript(id: string, startLine: number) {
-  return (
-    `(function(){var h=document.getElementById(${JSON.stringify(id)});if(!h)return;` +
-    `var s=h.children,n=s.length;if(!n)return;var b=${startLine},g=${LINE_STAGGER};` +
-    `function m(e,l){e.style.setProperty('--line',String(l));` +
-    `e.setAttribute('data-reveal-delay',String((b+l)*g));}` +
-    `var t=s[0].offsetTop,l=0;m(s[0],0);` +
-    `for(var i=1;i<n;i++){var o=s[i].offsetTop;if(o-t>2){l++;t=o;}m(s[i],l);}` +
-    `h.setAttribute('data-lines',String(l+1));h.setAttribute('data-revealed','');})();`
-  );
-}
