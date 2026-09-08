@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../page-metadata";
+import { CaseStudyStructuredData } from "../../components/structured-data";
 import { SiteHeader } from "../../components/site-header";
 import { SiteFooter } from "../../components/site-footer";
 import { SectionHeader } from "../../components/section-header";
@@ -71,15 +73,28 @@ const journeySteps = [
   },
 ];
 
-export const metadata: Metadata = {
+// One description, used by both the page metadata and the JSON-LD below, so
+// the two cannot drift apart.
+const description =
+  `Basis built smart electrical hardware for NZ homes. They knew they needed a companion app, but had no PO, no product brief, and no defined direction. I stepped in to own the strategy, run the research, and design an app that reduced household energy bills by ${basis.billReductionActual} in the first pilot.`;
+
+export const metadata: Metadata = pageMetadata({
+  path: "/work/basis",
   title: "Basis smart panel app — Maryna Babych",
-  description:
-    `Basis built smart electrical hardware for NZ homes. They knew they needed a companion app, but had no PO, no product brief, and no defined direction. I stepped in to own the strategy, run the research, and design an app that reduced household energy bills by ${basis.billReductionActual} in the first pilot.`,
-};
+  description,
+});
 
 export default function Basis() {
   return (
     <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[var(--header-clearance)] text-text-primary md:px-3xl lg:px-3xl lg:pb-0">
+      {/* CreativeWork, linked to the Person/WebSite declared in the root
+          layout. See components/structured-data.tsx. */}
+      <CaseStudyStructuredData
+        path="/work/basis"
+        name="Basis smart panel app"
+        description={description}
+        award="Best Design Award, Gold"
+      />
       {/* Gradient + header + hero grouped so gap-r-xl isn't inserted between them */}
       <div>
         <SiteHeader />
@@ -102,9 +117,9 @@ export default function Basis() {
               },
             ]}
             images={[
-              { src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" },
-              { src: "/home/work/basis/BS2.jpg", alt: "Basis home app screen" },
-              { src: "/home/work/basis/BS3.png", alt: "Basis home app screen" },
+              { src: "/home/work/basis/BS1.jpg", alt: "The Basis app on a phone beside the smart panel mounted on a wall" },
+              { src: "/home/work/basis/BS2.jpg", alt: "The Basis app open on a phone in a living room" },
+              { src: "/home/work/basis/BS3.png", alt: "Board of Basis app screens across the main journeys" },
             ]}
           />
         </section>
@@ -402,7 +417,7 @@ export default function Basis() {
         <CaseStudyNav
           title="First Table booking app"
           href="/work/first-table"
-          image={{ src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" }}
+          image={{ src: "/home/work/firsttable/FT1.jpg", alt: "The First Table app open on a phone above a shared table of food" }}
         />
       </Reveal>
 

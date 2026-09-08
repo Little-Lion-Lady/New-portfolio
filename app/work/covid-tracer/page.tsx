@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../page-metadata";
+import { CaseStudyStructuredData } from "../../components/structured-data";
 import { SiteHeader } from "../../components/site-header";
 import { SiteFooter } from "../../components/site-footer";
 import { SectionHeader } from "../../components/section-header";
@@ -82,15 +84,28 @@ function StatArrow() {
   );
 }
 
-export const metadata: Metadata = {
+// One description, used by both the page metadata and the JSON-LD below, so
+// the two cannot drift apart.
+const description =
+  `${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing – a feature that anonymously and automatically mapped potential transmissions. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAddedRounded} people switched it on.`;
+
+export const metadata: Metadata = pageMetadata({
+  path: "/work/covid-tracer",
   title: "NZ Covid Tracer app — Maryna Babych",
-  description:
-    `${covid.installs} New Zealanders downloaded the Covid Tracer app. Only ${covid.btDevicesBeforeRounded} turned on Bluetooth Tracing – a feature that anonymously and automatically mapped potential transmissions. People couldn’t tell what they were being asked to switch on, or whether it was working. I redesigned the onboarding, and ${covid.devicesAddedRounded} people switched it on.`,
-};
+  description,
+});
 
 export default function CovidTracer() {
   return (
     <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[var(--header-clearance)] text-text-primary md:px-3xl lg:px-3xl lg:pb-0">
+      {/* CreativeWork, linked to the Person/WebSite declared in the root
+          layout. See components/structured-data.tsx. */}
+      <CaseStudyStructuredData
+        path="/work/covid-tracer"
+        name="NZ Covid Tracer app"
+        description={description}
+        award="Best Design Award, Gold"
+      />
       {/* Gradient + header + hero grouped so gap-r-xl isn't inserted between them */}
       <div>
         <SiteHeader />
@@ -123,9 +138,9 @@ export default function CovidTracer() {
               },
             ]}
             images={[
-              { src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" },
-              { src: "/home/work/covid-tracer/MOH2.jpg", alt: "NZ COVID Tracer app screen" },
-              { src: "/home/work/covid-tracer/MOH3.jpg", alt: "NZ COVID Tracer app screen" },
+              { src: "/home/work/covid-tracer/MOH1.jpg", alt: "The NZ COVID Tracer QR scanner open on a phone" },
+              { src: "/home/work/covid-tracer/MOH2.jpg", alt: "Unite against COVID-19 campaign board, with the Ministry of Health briefing lectern" },
+              { src: "/home/work/covid-tracer/MOH3.jpg", alt: "Grid of NZ COVID Tracer app screens on the campaign's hazard-stripe background" },
             ]}
           />
         </section>
@@ -337,7 +352,7 @@ export default function CovidTracer() {
         <CaseStudyNav
           title="Basis Home app"
           href="/work/basis"
-          image={{ src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" }}
+          image={{ src: "/home/work/basis/BS1.jpg", alt: "The Basis app on a phone beside the smart panel mounted on a wall" }}
         />
       </Reveal>
 

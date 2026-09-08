@@ -5,7 +5,6 @@ import { LoopingVideo } from "./looping-video";
 // Figma image collages for §02 (100:6005), §04 (100:6193), §06 (495:3594).
 // Corner radius follows Figma: main image blocks are sharp; §06 phone frames are rounded.
 
-const COVID_ALT = "NZ COVID Tracer app screen";
 
 // §02 Approach — a phone screen beside a wide screenshot. Stacks on mobile.
 export function ApproachMedia() {
@@ -22,13 +21,13 @@ export function ApproachMedia() {
           the inner box already clips the few px of ratio skew. */}
       <GlassImage
         src="/home/work/covid-tracer/MOH4.jpg"
-        alt={COVID_ALT}
+        alt="Click heatmap over the original poster-scan sign-in screen, before the redesign"
         frameAspectRatio="260/460"
         className="mx-auto w-[165px] shrink-0 md:mx-0 md:w-auto md:min-w-0 md:shrink md:flex-[0.5652]"
       />
       <GlassImage
         src="/home/work/covid-tracer/MOH5.jpg"
-        alt={COVID_ALT}
+        alt="Drop-off funnel across the three sign-in screens, with the largest loss between the first and the second"
         frameAspectRatio="1256/460"
         className="w-full md:w-auto md:min-w-0 md:flex-[2.7304]"
       />
@@ -41,7 +40,7 @@ export function FlowDiagram() {
   return (
     <GlassImage
       src="/home/work/covid-tracer/MOH6.jpg"
-      alt={COVID_ALT}
+      alt="Onboarding flow diagram, from the app store listing through to Bluetooth Tracing switched on"
       aspectRatio="1560/513"
       className="w-full"
     />
@@ -73,7 +72,7 @@ export function DesignMedia() {
       </div>
       <GlassImage
         src="/home/work/covid-tracer/MOH10.jpg"
-        alt={COVID_ALT}
+        alt="Annotated design board working through variants of the Bluetooth Tracing page"
         aspectRatio="1560/768"
         className="w-full"
       />
@@ -213,7 +212,6 @@ export function OutcomeMedia() {
 
 /* ── BASIS case study media blocks ──────────────────────────────────────── */
 
-const BASIS_ALT = "Basis home app screen";
 
 // §03 Research — a stacked column of 3 result shots beside a wide detail image.
 // Column stacks above the detail image through tablet, sits beside it only from desktop up.
@@ -221,16 +219,16 @@ export function ResearchMedia() {
   return (
     <div className="flex gap-r-2xs flex-col lg:flex-row lg:items-stretch">
       <div className="flex gap-r-2xs flex-col lg:w-1/3">
-        <GlassImage src="/home/work/basis/BS4.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
-        <GlassImage src="/home/work/basis/BS5.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
-        <GlassImage src="/home/work/basis/BS6.jpg" alt={BASIS_ALT} className="h-[158px] w-full lg:h-auto lg:flex-1" />
+        <GlassImage src="/home/work/basis/BS4.jpg" alt="Research participant annotating printed concepts during a home energy interview" className="h-[158px] w-full lg:h-auto lg:flex-1" />
+        <GlassImage src="/home/work/basis/BS5.jpg" alt="Research participant mid-interview during home energy research" className="h-[158px] w-full lg:h-auto lg:flex-1" />
+        <GlassImage src="/home/work/basis/BS6.jpg" alt="Research participant reviewing printed screens beside a laptop" className="h-[158px] w-full lg:h-auto lg:flex-1" />
       </div>
       {/* 931×601 is BS7's real ratio — aspect-[931/601] through tablet
           (matching lg's already-correct value) shows the whole photo
           instead of cropping to a fixed 227px. */}
       <GlassImage
         src="/home/work/basis/BS7.png"
-        alt={BASIS_ALT}
+        alt="Desk research board of market findings, charts and competitor teardowns"
         className="aspect-[931/601] w-full lg:aspect-[931/601] lg:h-auto lg:w-2/3 lg:flex-none"
       />
     </div>
@@ -241,11 +239,11 @@ export function ResearchMedia() {
 export function ProcessMedia() {
   return (
     <div className="flex flex-col gap-2xs md:gap-sm lg:gap-md">
-      <GlassImage src="/home/work/basis/BS8.jpg" alt={BASIS_ALT} className="aspect-[3168/1235] w-full" />
+      <GlassImage src="/home/work/basis/BS8.jpg" alt="Colour-coded matrix comparing features across competitor products" className="aspect-[3168/1235] w-full" />
       {/* BS9's real ratio is 1600×1395 — aspect-[1600/1395] replaces the
           fixed heights (306/524px mobile/tablet, 1414px desktop) that were
           cropping it at every breakpoint. */}
-      <GlassImage src="/home/work/basis/BS9.png" alt={BASIS_ALT} className="aspect-[1600/1395] w-full" />
+      <GlassImage src="/home/work/basis/BS9.png" alt="Affinity map clustering research notes into themes on a workshop board" className="aspect-[1600/1395] w-full" />
     </div>
   );
 }
@@ -265,13 +263,13 @@ export function SolutionMedia() {
       <div className="flex gap-r-2xs flex-col lg:flex-row lg:items-stretch">
         <GlassImage
           src="/home/work/basis/BS12.png"
-          alt={BASIS_ALT}
+          alt="Full app flow diagram for the beta build"
           frameAspectRatio="1866/1812"
           className="w-full lg:w-auto lg:flex-[1.0298]"
         />
         <GlassImage
           src="/home/work/basis/BS13.png"
-          alt={BASIS_ALT}
+          alt="Low-fidelity wireframe flows for the main app journeys"
           frameAspectRatio="1600/1092"
           className="w-full lg:w-auto lg:flex-[1.4652]"
         />
@@ -299,10 +297,10 @@ export function PrototypeMedia() {
           has no width source of its own (children are all flex-basis:0, so
           they can't contribute one), and collapses to 0. */}
       <div className="flex gap-r-2xs lg:flex-1">
-        <GlassImage src="/home/work/basis/BS14.png" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
-        <GlassImage src="/home/work/basis/BS15.png" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
-        <GlassImage src="/home/work/basis/BS16.jpg" alt={BASIS_ALT} aspectRatio="219/478" className="flex-1" />
-        <GlassImage src="/home/work/basis/BS17.png" alt={BASIS_ALT} aspectRatio="219/477" className="flex-1" />
+        <GlassImage src="/home/work/basis/BS14.png" alt="Prototype screen: projected annual savings with a prompt to enable notifications" aspectRatio="219/478" className="flex-1" />
+        <GlassImage src="/home/work/basis/BS15.png" alt="Prototype screen: hot water circuit showing live usage and running cost" aspectRatio="219/478" className="flex-1" />
+        <GlassImage src="/home/work/basis/BS16.jpg" alt="Prototype screen: hold-to-confirm control for putting a circuit on standby" aspectRatio="219/478" className="flex-1" />
+        <GlassImage src="/home/work/basis/BS17.png" alt="Prototype screen: usage breakdown with monthly cost and a daily bar chart" aspectRatio="219/477" className="flex-1" />
       </div>
       {/* max-w-[190px] on mobile/tablet caps each participant photo's width;
           lg's own layout (fixed 243px column, flex-none) needs it
@@ -344,11 +342,25 @@ const OUTCOME_STRIP_RATIO: Record<string, string> = {
   BS29: "390/853",
 };
 
+// One description per shipped screen. A single shared string here meant a
+// screen reader announced the same nine words nine times in a row.
+const OUTCOME_STRIP_ALT: Record<string, string> = {
+  "BS21": "Shipped app: welcome screen inviting a new user to start setup",
+  "BS22": "Shipped app: instructions for activating the smart panel",
+  "BS23": "Shipped app: insights screen with estimated charges, total usage and energy sources",
+  "BS24": "Shipped app: monthly cost with a daily usage bar chart",
+  "BS25": "Shipped app: usage breakdown ring with cost split by circuit",
+  "BS26": "Shipped app: circuits list showing each appliance and whether it is on",
+  "BS27": "Shipped app: hot water cylinder detail with live status and a standby control",
+  "BS28": "Shipped app: routines screen with active and upcoming automations",
+  "BS29": "Shipped app: events log of circuit and panel activity",
+};
+
 function OutcomeStripImage({ name }: { name: string }) {
   return (
     <GlassImage
       src={`/home/work/basis/${name}.png`}
-      alt={BASIS_ALT}
+      alt={OUTCOME_STRIP_ALT[name]}
       aspectRatio={OUTCOME_STRIP_RATIO[name]}
       className="w-[220px] shrink-0 md:w-[281px] lg:w-[332px]"
     />
@@ -358,7 +370,7 @@ function OutcomeStripImage({ name }: { name: string }) {
 export function BasisOutcomeMedia() {
   return (
     <div className="flex flex-col gap-r-2xs">
-      <GlassImage src="/home/work/basis/BS20.jpg" alt={BASIS_ALT} className="h-[198px] w-full md:h-[331px] lg:h-[540px]" />
+      <GlassImage src="/home/work/basis/BS20.jpg" alt="Someone using the Basis app on a phone at home" className="h-[198px] w-full md:h-[331px] lg:h-[540px]" />
       {/* Mobile — single continuous scroll strip, bled full-bleed past
           <main>'s own px-md gutter (-mx-md) so cards aren't cropped at the
           page's edges and can scroll all the way to the true screen edge —
@@ -394,7 +406,6 @@ export function BasisOutcomeMedia() {
 // Figma "Case Study 3" (1394:101589). Every block below uses the Figma frame
 // ratio per breakpoint (mobile 393 / tablet 1024 / desktop 1728 artboards) via
 // aspect-* on the outer glass frame, so the photo crops exactly as designed.
-const FT_ALT = "First Table app screen";
 const FT = "/home/work/firsttable";
 
 // §01 Problem — one full-width screenshot below the stats + key paragraph.
@@ -403,7 +414,7 @@ export function FTProblemMedia() {
     <GlassImage
       src={`${FT}/4.png`}
       darkSrc={`${FT}/4_dark.png`}
-      alt={FT_ALT}
+      alt="Board of the legacy First Table app screens, before the rebuild"
       sizes="100vw"
       className="w-full aspect-[361/134] md:aspect-[944/318] lg:aspect-[1584/514]"
     />
@@ -572,6 +583,18 @@ export function FTRedesignMedia() {
 // their own file names rather than a stem plus a fixed extension.
 const VALIDATION_TESTS = [{ light: "10.png", dark: "10_dark.png" }, { light: "11.png", dark: "11_dark.png" }, { light: "12.png", dark: "12_dark.png" }, { light: "13.jpg", dark: "13_dark.jpg" }, { light: "14.png", dark: "14_dark.png" }, { light: "15.png", dark: "15_dark.png" }];
 
+// One description per pair, keyed on the light-mode filename. Each board shows
+// variant A beside variant B, so the alt names the screen under test rather
+// than repeating "A/B test variant" six times.
+const VALIDATION_ALT: Record<string, string> = {
+  "10.png": "A/B test pair: two versions of the booking confirmation and payment screen",
+  "11.png": "A/B test pair: two versions of the home screen offer and booking prompt",
+  "12.png": "A/B test pair: two versions of the map discovery screen",
+  "13.jpg": "A/B test pair: two versions of the Find a table time picker",
+  "14.png": "A/B test pair: two versions of the restaurant detail screen",
+  "15.png": "A/B test pair: two versions of the restaurant listing screen",
+};
+
 export function FTValidationMedia() {
   return (
     <div className="flex gap-r-2xs flex-col">
@@ -581,7 +604,7 @@ export function FTValidationMedia() {
             key={t.light}
             src={`${FT}/${t.light}`}
             darkSrc={`${FT}/${t.dark}`}
-            alt="First Table A/B test variant"
+            alt={VALIDATION_ALT[t.light]}
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
             className="w-full aspect-[361/270] md:aspect-[464/400] lg:aspect-[514/400]"
           />
@@ -615,12 +638,26 @@ export function FTValidationMedia() {
 const OUTCOME_ROW_1 = [{ light: "18_light.jpg", dark: "18_dark.jpg" }, { light: "19_light.png", dark: "19_dark.jpg" }, { light: "20_light.png", dark: "20_dark.png" }, { light: "21_light.png", dark: "21_dark.png" }];
 const OUTCOME_ROW_2 = [{ light: "22_light.jpg", dark: "22_dark.jpg" }, { light: "23_light.jpg", dark: "23_dark.jpg" }, { light: "24_light.png", dark: "24_dark.png" }, { light: "25_light.png", dark: "25_dark.jpg" }, { light: "26_light.png", dark: "26_dark.png" }];
 
+// Keyed on the light-mode filename, which is what identifies the screen; the
+// dark export is the same screen in the other theme.
+const FT_OUTCOME_ALT: Record<string, string> = {
+  "18_light.jpg": "Shipped app: welcome screen offering 50% off the food bill",
+  "19_light.png": "Shipped app: home screen with quick search and tonight's restaurants",
+  "20_light.png": "Shipped app: map of nearby restaurants with prices and available times",
+  "21_light.png": "Shipped app: filter sheet for cuisine, time and suburb",
+  "22_light.jpg": "Shipped app: bookings screen with upcoming, past and reviewable bookings",
+  "23_light.jpg": "Shipped app: booking detail with restaurant, time, party size and conditions",
+  "24_light.png": "Shipped app: Frequent Foodies loyalty screen with status points and activity",
+  "25_light.png": "Shipped app: wallet with dining credit, payment methods and vouchers",
+  "26_light.png": "Shipped app: location picker listing New Zealand regions",
+};
+
 function FTOutcomeScreen({ shot }: { shot: { light: string; dark: string } }) {
   return (
     <GlassImage
       src={`${FT}/${shot.light}`}
       darkSrc={`${FT}/${shot.dark}`}
-      alt={FT_ALT}
+      alt={FT_OUTCOME_ALT[shot.light]}
       sizes="332px"
       className="w-[220px] shrink-0 aspect-[390/840] md:w-[281px] lg:w-[332px]"
     />

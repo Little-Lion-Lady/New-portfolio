@@ -23,10 +23,17 @@ const CARD_MARGIN = "mr-xs md:mr-sm lg:mr-lg";
 function Card({
   name,
   margin = false,
+  decorative = false,
   loading,
 }: {
   name: string;
   margin?: boolean;
+  /*
+    The marquee renders the set twice so the loop has no seam. Only the first
+    set is real content; the second is the same artwork again, so it is hidden
+    from assistive tech rather than announced a second time.
+  */
+  decorative?: boolean;
   /*
     Set by the strip, not per card. Lazy loading cannot work card-by-card here
     (this is a translated marquee track, and the cards past the viewport's right
@@ -39,7 +46,8 @@ function Card({
   return (
     <GlassImage
       src={`/home/about/${name}.jpg`}
-      alt="Original artwork by Maryna Babych"
+      alt={ART_ALT[name] ?? "Original artwork by Maryna Babych"}
+      ariaHidden={decorative}
       loading={loading}
       /* Low priority: even once released, the strip sits below the bio collage
          and should not compete with it. */
@@ -53,6 +61,20 @@ function Card({
 // rather than to the page shell (see `.rail-bleed` in globals.css): a negative
 // margin matching the gutter stops at the shell's 1440px cap, which left the
 // strip cropped inboard with dead space either side on a wide screen.
+// One description per piece. A single shared string meant the strip announced
+// the same seven words fourteen times — once per card, twice per artwork,
+// because the marquee renders the set twice. The duplicate set is now hidden
+// from assistive tech (see `decorative` below), and each piece describes itself.
+const ART_ALT: Record<string, string> = {
+  ART1: "Original artwork: a pale textured figure against a flat red ground",
+  ART2: "Original artwork: a glowing figure at the centre of a dark storm",
+  ART3: "Original artwork: a black ink form unfurling across white paper",
+  ART4: "Original artwork: a framed pencil drawing of a cat, resting against a wall",
+  ART5: "Original artwork: a stylised portrait cut through with red brushstrokes",
+  ART6: "Original artwork: a black cat with red eyes against a red ground",
+  ART7: "Original artwork: a watercolour bouquet of purple and pink flowers",
+};
+
 const BLEED_CLASS = "rail-bleed";
 
 // Continuous right-to-left loop. Reduced-motion users get the original
@@ -85,7 +107,7 @@ export function ArtworkStrip({ names }: { names: string[] }) {
           <Card key={`${name}-a`} name={name} margin loading={loading} />
         ))}
         {names.map((name) => (
-          <Card key={`${name}-b`} name={name} margin loading={loading} />
+          <Card key={`${name}-b`} name={name} margin decorative loading={loading} />
         ))}
       </div>
     </div>
