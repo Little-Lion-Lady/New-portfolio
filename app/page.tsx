@@ -201,7 +201,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-r-xl lg:col-start-1 lg:col-span-7 lg:row-start-1">
             {/* Key paragraph — B-sm → B-md → B-lg */}
-            <p className="b-sm text-text-secondary md:b-md lg:b-md">
+            <p className="b-sm text-text-primary md:b-md lg:b-md">
               With 9+ years of experience, I&apos;ve taken products from{" "}
               <span className="text-text-highlight-dark">0→1</span>{" "}
               and brought tired ones back to life. I do my best work in{" "}
