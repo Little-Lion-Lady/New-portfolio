@@ -39,7 +39,13 @@ export function WorkItem({
    * Bandwidth hint for this item's carousel. The rails load eagerly by
    * necessity (see ImageCarousel), so on a page stacking several of them the
    * only way to keep the first row from queueing behind the third is to rank
-   * them: "high" on the item nearest the top, "low" on the ones below it.
+   * them relative to each other: "auto" on the item nearest the top, "low" on
+   * the ones below it.
+   *
+   * "high" is available but reach for it carefully. It ranks the row against
+   * the whole page rather than against its siblings, and these rails are
+   * decorative — on the homepage it put 738KB of photography ahead of the JS
+   * and the fonts the hero was waiting on.
    */
   imagePriority?: "high" | "low" | "auto";
 }) {

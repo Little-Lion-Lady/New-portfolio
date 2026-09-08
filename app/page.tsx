@@ -100,9 +100,16 @@ export default function Home() {
               index stagger; they sit far enough down to fire on their own
               in-view trigger anyway. */}
           <Reveal index={1} className="w-full">
+            {/* "auto", not "high". The rails still load eagerly — the ranking
+                below them is what stops row three queueing ahead of row one —
+                but a high-priority hint on this row put 738KB of marquee
+                photography (measured) in front of the JS and the fonts on the
+                homepage's critical path, for a decorative auto-scrolling strip
+                that sits below the hero. Letting the browser rank it against
+                everything else is what "auto" is for. */}
             <WorkItem
               number="SW/01"
-              imagePriority="high"
+              imagePriority="auto"
               name="First Table app"
               description={
                 <>
