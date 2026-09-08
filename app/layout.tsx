@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
 import { LazyMotion, domAnimation } from "framer-motion";
 import { Analytics } from "@vercel/analytics/next";
 import { PageCurtain } from "./components/page-curtain";
@@ -10,14 +9,17 @@ import { LINE_REVEAL_SCRIPT } from "./components/line-reveal";
 import { siteUrl } from "./site-url";
 import "./globals.css";
 
-// Both fonts come from the geist package (local woff2, no network request).
-// Each exposes a CSS variable applied via className on <html>:
+// GeistSans comes from the geist package (local woff2, no network request) and
+// exposes --font-geist-sans, applied via className on <html>. It is the body
+// AND display face; the refined token system uses Geist for headings, so there
+// is no separate display font in this system.
 //
-//   GeistSans → --font-geist-sans → body AND display text (per Instruction.md)
-//   GeistMono → --font-geist-mono → monospaced / labels
-//
-// Note: the refined token system uses Geist for display headings — there is no
-// separate pixel display font in this system.
+// GeistMono used to be loaded alongside it. Nothing ever used it: the chain ran
+// --font-geist-mono -> --font-family-mono -> --font-mono and stopped there, with
+// no `font-mono` utility and no rule consuming the token anywhere in the app.
+// next/font PRELOADS every face it is given, so the dead one was costing 70KB of
+// the highest-priority bandwidth on the page — ahead of the JS and ahead of the
+// face that is actually used — on every route.
 
 const title = "Maryna Babych — Lead Product Designer";
 const description =
@@ -73,11 +75,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={[
-        GeistSans.variable,
-        GeistMono.variable,
-        "h-full antialiased",
-      ].join(" ")}
+      className={[GeistSans.variable, "h-full antialiased"].join(" ")}
       suppressHydrationWarning
     >
       <head>

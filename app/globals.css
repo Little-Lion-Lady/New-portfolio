@@ -199,7 +199,6 @@
 
   /* Typography — families */
   --font-family-body: var(--font-geist-sans), "Geist", sans-serif;
-  --font-family-mono: var(--font-geist-mono), "Geist Mono", monospace;
 
   /* Typography — weights */
   --font-weight-regular: 400;
@@ -1001,7 +1000,6 @@
   /* Fonts */
   --font-sans: var(--font-family-body);
   --font-body: var(--font-family-body);
-  --font-mono: var(--font-family-mono);
 
   /* Spacing scale (named) */
   --spacing-none: var(--size-0);
