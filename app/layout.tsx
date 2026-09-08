@@ -98,7 +98,13 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();",
+              // data-js, not a class: React reconciles <html>'s className on
+              // hydration and would drop one added here, while an attribute it
+              // never set is left alone — which is why data-theme above has
+              // always been safe. Every headline's hidden state hangs off this,
+              // so a visitor without JavaScript is served the plain, fully
+              // visible heading instead of one waiting on a script to reveal it.
+              "(function(){var d=document.documentElement;d.setAttribute('data-js','');try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){d.setAttribute('data-theme',t);}}catch(e){}})();",
           }}
         />
 

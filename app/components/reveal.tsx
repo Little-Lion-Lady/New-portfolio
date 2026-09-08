@@ -22,7 +22,7 @@
     normally.
 */
 
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
+import React, { createContext, useContext, useEffect, useId, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { m, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
 import {
@@ -102,11 +102,6 @@ export const IN_VIEW = { once: true, amount: "some", margin: "0px 0px 10% 0px" }
 
 
 
-// How many frames the line grouping will wait for the layout to stop moving
-// before it measures anyway. A refit normally settles within one or two; this
-// only exists so a layout that never stops changing (an animating ancestor,
-// say) cannot hold the headline at opacity 0 indefinitely.
-const MAX_SETTLE_FRAMES = 30;
 
 type BlockCustom = {
   i?: number;
@@ -174,24 +169,6 @@ const wordVariants: Variants = {
   }),
 };
 
-// Line-level reveal: the same blur-in as a word, but every token on a wrapped
-// line shares one delay, so the line resolves as a single object. The line
-// index is measured from the laid-out DOM (see RevealWords' `byLine`) — the
-// copy is fluid and the browser decides where it breaks, so lines cannot be
-// authored.
-const lineVariants: Variants = {
-  hidden: { opacity: 0, filter: BLUR_TEXT },
-  visible: (custom: WordCustom = {}) => ({
-    opacity: 1,
-    filter: "blur(0px)",
-    transition: {
-      duration: custom.duration ?? LINE_DURATION,
-      ease: EASE,
-      delay: (custom.i ?? 0) * (custom.stagger ?? LINE_STAGGER) + (custom.delay ?? 0),
-    },
-    transitionEnd: { filter: "none" },
-  }),
-};
 
 // For prefers-reduced-motion — instant, no animation.
 const reducedVariants: Variants = {
@@ -287,6 +264,51 @@ export function Reveal({
     [shouldAnimate, index, delay],
   );
 
+  /*
+    An `immediate` reveal plays on mount and ignores the in-view gate — which
+    means there is nothing about it to decide at runtime. Its delay is
+    `index * STAGGER + delay`, all three of which are known while rendering, so
+    it does not need Framer, a measurement, or even a script: the element ships
+    with `data-play` already on it and the CSS in globals.css starts the
+    animation at first paint.
+
+    That is the whole fix for the case-study pages. Their LCP element is the
+    intro paragraph inside <Reveal immediate> in case-study-hero.tsx, and
+    "on mount" meant "after React has hydrated" — measured at 3.9-4.5s on a
+    throttled phone against a 2.5s budget, on pages that had painted by 800ms.
+
+    Scroll-triggered reveals keep the Framer path below. They are below the
+    fold by definition, so they cannot be the LCP element, and they genuinely
+    do need a runtime trigger.
+  */
+  if (isImmediate && !hold) {
+    const Plain = as as React.ElementType;
+    return (
+      <Plain
+        ref={ref as unknown as React.RefObject<HTMLDivElement>}
+        className={className ? `reveal-anim ${className}` : "reveal-anim"}
+        data-play=""
+        style={
+          {
+            ...style,
+            "--reveal-delay": `${index * STAGGER + delay}s`,
+            "--reveal-duration": `${duration ?? DURATION}s`,
+            "--reveal-ease": `cubic-bezier(${(ease ?? EASE).join(",")})`,
+            "--reveal-y": noY ? "0px" : `${Y}px`,
+            ...(blur || blurPx !== undefined
+              ? {
+                  "--reveal-name": "reveal-in-blur",
+                  "--reveal-blur": `blur(${blurPx ?? parseFloat(BLUR_BLOCK.slice(5))}px)`,
+                }
+              : null),
+          } as CSSProperties
+        }
+      >
+        <RevealTriggerContext.Provider value={trigger}>{children}</RevealTriggerContext.Provider>
+      </Plain>
+    );
+  }
+
   return (
     <Component
       ref={ref as unknown as React.RefObject<HTMLDivElement>}
@@ -317,7 +339,6 @@ export function RevealWords({
   immediate = false,
   byLine = false,
   startLine = 0,
-  ready = true,
 }: {
   children: ReactNode;
   as?: Tag;
@@ -347,16 +368,6 @@ export function RevealWords({
    * refit cannot re-group lines mid-animation.
    */
   byLine?: boolean;
-  /**
-   * Hold the line grouping until the caller says its layout is final. For a
-   * headline that sizes itself after mount: the fit lands in an effect, which
-   * is after the frames this would otherwise measure in, and the grouping is
-   * frozen as soon as the cascade starts — so a measurement taken before the
-   * fit is the one that sticks. Stability heuristics do not catch it (two
-   * frames before the fit look perfectly stable), so the caller has to say.
-   * `byLine` only; defaults to true for callers whose type is already final.
-   */
-  ready?: boolean;
   /**
    * Line index this element starts at, for a headline split across sibling
    * RevealWords (the case-study title, the 404). The `byLine` equivalent of
@@ -431,148 +442,115 @@ export function RevealWords({
     return { stagger, duration: WORD_DURATION };
   }, [span, count]);
 
-  // ─── Line grouping (byLine only) ───────────────────────────────────────────
-  const tokenRefs = useRef<(HTMLElement | null)[]>([]);
-  const [lineMap, setLineMap] = useState<number[] | null>(null);
-  // Set once the cascade is under way. A resize or a late refit after that
-  // point must not re-group the lines: the delays are already running, and a
-  // token moving to a different line would restart its transition mid-flight.
-  const frozen = useRef(false);
-  const tokenCount = tokens.length;
+  // ─── Line grouping ─────────────────────────────────────────────────────────
+  //
+  // byLine no longer animates through Framer. The cascade is CSS (see
+  // `.line-reveal` in globals.css) and this only supplies the one thing CSS
+  // cannot work out for itself: which wrapped line each token landed on.
+  //
+  // The measurement runs TWICE, and the first run is the point of the whole
+  // arrangement:
+  //
+  //   1. An inline <script> rendered directly after the heading, which the
+  //      parser executes the moment the heading's markup is complete — before
+  //      hydration, before the framework chunk, often before the page has
+  //      finished streaming. That is what moves the headline off the critical
+  //      path: measured on the deployed site, this reveal used to start at
+  //      3127ms on a throttled phone and LCP landed at 5328ms.
+  //
+  //   2. This effect, as the fallback. A client-side navigation re-renders the
+  //      tree without re-running injected scripts, so on a route reached
+  //      through the page curtain step 1 never fires. It is a no-op when the
+  //      script already did the work — `data-revealed` is the flag.
+  //
+  // Both write the same thing: `--line` per token, `data-lines` on the heading
+  // for the handoff consumers (HeroClose, AfterHeroReveal — see word-sync.ts),
+  // then `data-revealed` to release the animation.
+  const headingId = useId();
 
   useEffect(() => {
-    if (!byLine || !tokenCount || !ready) return;
-    let cancelled = false;
+    if (!byLine) return;
+    const el = ref.current;
+    if (!el || el.hasAttribute("data-revealed")) return;
+    groupLines(el, startLine);
+  }, [byLine, startLine]);
 
-    // Signature of everything that decides where the copy breaks. The grouping
-    // is only trustworthy once this stops changing between frames.
-    const signature = () => {
-      const el = ref.current;
-      if (!el) return "";
-      return `${getComputedStyle(el).fontSize}|${el.clientWidth}|${el.clientHeight}`;
-    };
-    let lastSignature: string | null = null;
-    let settleAttempts = 0;
+  if (byLine) {
+    return (
+      <>
+        <Tag
+          id={headingId}
+          ref={ref as unknown as React.RefObject<never>}
+          className={className ? `line-reveal ${className}` : "line-reveal"}
+          style={
+            {
+              ...style,
+              // Read by the animation shorthand in globals.css. The two
+              // timings come through as custom properties rather than being
+              // written into the stylesheet, so motion-timing.ts stays the one
+              // place either number is defined — the whole reason that module
+              // is a plain non-client module in the first place.
+              "--line-duration": `${LINE_DURATION}s`,
+              "--line-stagger": `${LINE_STAGGER}s`,
+              // Named rather than baked in so a headline split across sibling
+              // RevealWords (the case-study title) keeps one continuous cascade.
+              "--start-line": startLine,
+              "--reveal-delay": `${delay}s`,
+            } as CSSProperties
+          }
+          // Three states, and consumers need all three: absent means not
+          // line-grouped; 0 means grouped but not measured yet; a positive
+          // count means the delays are final. See useHeadlineHandoff.
+          data-lines={0}
+          // A fitted line overrides the module default, so consumers read what
+          // was used rather than assuming. byLine always paces by LINE_STAGGER.
+          data-word-stagger={LINE_STAGGER}
+        >
+          {tokens.map((token, i) => (
+            <span key={i} style={{ display: "inline-block", whiteSpace: "pre-wrap" }}>
+              {token}
+            </span>
+          ))}
+        </Tag>
+        <script
+          // Runs during parse. Reading offsetTop forces layout on one heading,
+          // which is cheap, and the stylesheet is render-blocking so the type
+          // is already correct. The webfont may still be swapping, but Geist
+          // ships a metric-matched fallback (size-adjust), so the wrap it
+          // measures is the wrap the real face produces.
+          dangerouslySetInnerHTML={{ __html: groupLinesScript(headingId, startLine) }}
+        />
+      </>
+    );
+  }
 
-    const measure = () => {
-      if (cancelled || frozen.current) return;
-      const els = tokenRefs.current.slice(0, tokenCount);
-      if (els.some((el) => !el)) return;
-
-      // Second line of defence: wait for the layout to hold still for a frame.
-      // `ready` is what actually rules out a pre-fit measurement — two frames
-      // taken before a fit look perfectly stable, so this cannot catch that on
-      // its own — but it does absorb a late webfont swap or a reflow arriving
-      // between the gate opening and this running.
-      const sig = signature();
-      if (sig !== lastSignature && settleAttempts < MAX_SETTLE_FRAMES) {
-        lastSignature = sig;
-        settleAttempts += 1;
-        raf = requestAnimationFrame(measure);
-        return;
-      }
-
-      const map: number[] = [];
-      let line = 0;
-      let lineTop = els[0]!.offsetTop;
-      els.forEach((el, i) => {
-        // Tokens on one wrapped line share an offsetTop. The 2px tolerance
-        // absorbs sub-pixel differences between tokens of different heights;
-        // a real line break moves by a whole line-height.
-        if (i > 0 && el!.offsetTop - lineTop > 2) {
-          line += 1;
-          lineTop = el!.offsetTop;
-        }
-        map.push(line);
-      });
-      setLineMap((prev) =>
-        prev && prev.length === map.length && prev.every((v, i) => v === map[i]) ? prev : map,
-      );
-    };
-
-    // Grouping has to wait for the type that will actually be on screen: the
-    // hero fits its font size after mount and the webfont can land later
-    // still, and both change where the copy breaks. Racing fonts.ready against
-    // a short timeout means a font that never resolves delays the headline by
-    // 600ms rather than holding it at opacity 0 until the CSS safety floor.
-    let raf = 0;
-    let fallback = 0;
-    const settled = Promise.race([
-      document.fonts.ready,
-      new Promise<void>((resolve) => setTimeout(resolve, 600)),
-    ]);
-    settled.then(() => {
-      if (cancelled) return;
-      // A frame is the right moment to measure — layout is settled and nothing
-      // is read back mid-write. But requestAnimationFrame does not fire in a
-      // background tab, and the cascade holds until the lines are known, so a
-      // timer backs it up: someone who opens the site in a background tab and
-      // comes back to it finds the headline ready to reveal rather than
-      // waiting on the CSS safety floor. Whichever lands first wins; the
-      // second is a no-op once the grouping stops changing.
-      raf = requestAnimationFrame(measure);
-      fallback = window.setTimeout(measure, 100);
-    });
-
-    const ro = new ResizeObserver(measure);
-    if (ref.current) ro.observe(ref.current);
-    return () => {
-      cancelled = true;
-      cancelAnimationFrame(raf);
-      window.clearTimeout(fallback);
-      ro.disconnect();
-    };
-  }, [byLine, tokenCount, ready]);
-
-  // A byLine cascade holds until its lines are known; every other reveal runs
-  // on its trigger alone.
-  const shouldAnimate = inputsReady && (!byLine || lineMap !== null);
-
-  useEffect(() => {
-    if (shouldAnimate) frozen.current = true;
-  }, [shouldAnimate]);
-
-  const cascade = (i: number) =>
-    byLine
-      ? { i: startLine + (lineMap?.[i] ?? 0), stagger: LINE_STAGGER, duration: LINE_DURATION }
-      : { i: startIndex + i, stagger: timing.stagger, duration: timing.duration };
-
-  const tokenVariants = reducedMotion ? reducedVariants : byLine ? lineVariants : wordVariants;
+  const cascade = (i: number) => ({
+    i: startIndex + i,
+    stagger: timing.stagger,
+    duration: timing.duration,
+  });
 
   return (
-    // Published so word-synced elements (see word-sync.ts) can time
-    // themselves against the stagger this line actually used rather than the
-    // module default, which a fitted span overrides.
     <Tag
       ref={ref as unknown as React.RefObject<never>}
       className={className}
       style={style}
-      data-word-stagger={byLine ? LINE_STAGGER : timing.stagger}
-      // The line count, for anything timing itself against this headline.
-      // Three states, and consumers need all three: absent means not
-      // line-grouped at all (time against token indices); 0 means grouped but
-      // not measured yet, so every token's published delay is still a
-      // placeholder 0 and timing against one would fire at 0s; a positive
-      // count means the delays are final.
-      data-lines={byLine ? (lineMap ? lineMap[lineMap.length - 1] + 1 : 0) : undefined}
+      data-word-stagger={timing.stagger}
     >
       {tokens.map((token, i) => {
         const c = cascade(i);
         return (
           <m.span
             key={i}
-            ref={(el: HTMLElement | null) => {
-              tokenRefs.current[i] = el;
-            }}
             className="reveal-safety"
             style={{ display: "inline-block", whiteSpace: "pre-wrap" }}
             custom={{ ...c, delay }}
             initial="hidden"
-            animate={shouldAnimate ? "visible" : "hidden"}
-            variants={tokenVariants}
+            animate={inputsReady ? "visible" : "hidden"}
+            variants={reducedMotion ? reducedVariants : wordVariants}
             // The resolved cascade offset for this token, excluding the
             // heading's own `delay`. Star sync reads it rather than
-            // recomputing index x stagger, which is wrong under byLine.
+            // recomputing index x stagger.
             data-reveal-delay={c.i * c.stagger}
           >
             {token}
@@ -580,5 +558,54 @@ export function RevealWords({
         );
       })}
     </Tag>
+  );
+}
+
+/*
+  The grouping itself, written once and used from both entry points above.
+
+  Tokens on one wrapped line share an offsetTop. The 2px tolerance absorbs
+  sub-pixel differences between tokens of different heights; a real line break
+  moves by a whole line-height.
+*/
+function groupLines(el: Element, startLine: number) {
+  const spans = el.children;
+  if (!spans.length) return;
+  const stamp = (node: HTMLElement, line: number) => {
+    node.style.setProperty("--line", String(line));
+    // TitleStars pins its cluster to a word and has to share that word's place
+    // in the cascade. Under a line-grouped reveal the offset comes from the
+    // measured line, not the token index, so it can only be published here.
+    node.setAttribute("data-reveal-delay", String((startLine + line) * LINE_STAGGER));
+  };
+  let lineTop = (spans[0] as HTMLElement).offsetTop;
+  let line = 0;
+  stamp(spans[0] as HTMLElement, 0);
+  for (let i = 1; i < spans.length; i++) {
+    const s = spans[i] as HTMLElement;
+    if (s.offsetTop - lineTop > 2) {
+      line += 1;
+      lineTop = s.offsetTop;
+    }
+    stamp(s, line);
+  }
+  el.setAttribute("data-lines", String(line + 1));
+  el.setAttribute("data-revealed", "");
+}
+
+/*
+  The same routine as a string, for the inline <script>. Deliberately a
+  duplicate rather than a serialised `groupLines.toString()`: this has to
+  survive minification, and a bundler is free to rename anything it can see.
+*/
+function groupLinesScript(id: string, startLine: number) {
+  return (
+    `(function(){var h=document.getElementById(${JSON.stringify(id)});if(!h)return;` +
+    `var s=h.children,n=s.length;if(!n)return;var b=${startLine},g=${LINE_STAGGER};` +
+    `function m(e,l){e.style.setProperty('--line',String(l));` +
+    `e.setAttribute('data-reveal-delay',String((b+l)*g));}` +
+    `var t=s[0].offsetTop,l=0;m(s[0],0);` +
+    `for(var i=1;i<n;i++){var o=s[i].offsetTop;if(o-t>2){l++;t=o;}m(s[i],l);}` +
+    `h.setAttribute('data-lines',String(l+1));h.setAttribute('data-revealed','');})();`
   );
 }

@@ -1846,6 +1846,141 @@ textarea,
 }
 
 /* ============================================================
+   HEADLINE LINE REVEAL  (byLine RevealWords — every <h1> on the site)
+
+   The same blur-in the Framer `lineVariants` ran, moved into CSS so it can
+   start during HTML PARSE instead of after hydration.
+
+   Why it moved. Measured on the deployed site, mobile profile: the homepage
+   painted at 684ms and recorded LCP at 5328ms. The headline was in the HTML
+   from the first byte the whole time — it was held at opacity 0 waiting for
+   hydration, then a JS font fit, then a line measurement, and only then did
+   1.6s of animation begin. 4.6s of a 5.3s LCP was the wait, not the network.
+   Every route failed the 2.5s threshold for the same reason.
+
+   Nothing about the motion changes: same curve, same 10px blur, same duration
+   and same per-line stagger. Only the starting gun moves. The two timings
+   arrive as --line-duration and --line-stagger, set from LINE_DURATION and
+   LINE_STAGGER in motion-timing.ts, so neither number is written down twice;
+   the fallbacks below are only there if a heading renders without them.
+
+   How a line index reaches CSS. Line breaks depend on the viewport and the
+   font, so they cannot be authored — they have to be measured from the laid
+   out DOM. A small inline script rendered directly after each heading does
+   that during parse (see RevealWords), writing `--line` onto each token and
+   `data-revealed` onto the heading. Until that attribute lands nothing
+   animates, and the tokens sit at the hidden state below.
+
+   `data-js` gates the hidden state. Without it, a visitor with no JavaScript —
+   or one whose bundle never arrives — got a blank page for the full ten
+   seconds of the safety floor below. Now the hidden state only exists once
+   the head script has confirmed JS is running, so the no-JS render is the
+   plain, fully visible headline.
+   ============================================================ */
+/* ── Block reveals that play on mount ──────────────────────────────────────
+   The <Reveal immediate> path. Unlike the headline above there is nothing to
+   measure — index, delay, duration and easing are all known while rendering —
+   so the element ships with data-play already set and this starts at first
+   paint, with no script involved at all.
+
+   Two keyframe sets rather than one with a filter that is usually a no-op: a
+   resting `filter` keeps an element on its own compositing layer, and most
+   reveals on the site do not want a blur. `--reveal-name` picks. */
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 16px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes reveal-in-blur {
+  from {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 16px));
+    filter: var(--reveal-blur, blur(8px));
+  }
+  /* Same trick as the headline: land on `none` so the finished element is not
+     left holding a layer for a blur of zero. */
+  99% {
+    opacity: 1;
+    transform: none;
+    filter: blur(0.1px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+[data-js] .reveal-anim {
+  opacity: 0;
+}
+
+[data-js] .reveal-anim[data-play] {
+  animation: var(--reveal-name, reveal-in) var(--reveal-duration, 0.91s)
+    var(--reveal-ease, cubic-bezier(0.32, 0.72, 0, 1)) var(--reveal-delay, 0s) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-js] .reveal-anim[data-play] {
+    animation-duration: 1ms;
+    animation-delay: 0s;
+  }
+}
+
+@keyframes line-reveal-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+  }
+  /* Land on `none`, not blur(0px): a resting filter keeps the element on its
+     own compositing layer, and a headline is 40+ tokens. The last 1% is
+     imperceptible and it lets the finished state cost nothing. */
+  99% {
+    opacity: 1;
+    filter: blur(0.1px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+/* Hidden state, plus its own safety floor. Far shorter than the generic 10s
+   one below: this reveal no longer waits on hydration, so the only thing that
+   can stop it is the measuring script failing outright — which is decided
+   within a frame or two of parse, not several seconds in. */
+[data-js] .line-reveal > span {
+  opacity: 0;
+  filter: blur(10px);
+  animation: line-reveal-in 300ms linear 2s both;
+}
+
+[data-js] .line-reveal[data-revealed] > span {
+  /* `both` is load-bearing: it holds the `from` state through the delay, so a
+     line that has not started yet stays hidden rather than flashing in. */
+  animation: line-reveal-in var(--line-duration, 1.6s) cubic-bezier(0.32, 0.72, 0, 1)
+    calc(
+      (var(--start-line, 0) + var(--line, 0)) * var(--line-stagger, 0.15s) +
+        var(--reveal-delay, 0s)
+    )
+    both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-js] .line-reveal > span,
+  [data-js] .line-reveal[data-revealed] > span {
+    animation-duration: 1ms;
+    animation-delay: 0s;
+  }
+}
+
+/* ============================================================
    REVEAL SAFETY FLOOR
 
    Every <Reveal> and every RevealWords token starts at opacity 0 (plus a
