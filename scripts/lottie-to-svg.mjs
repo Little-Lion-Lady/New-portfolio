@@ -32,7 +32,7 @@
   whole class of bug: no easing conversion to get subtly wrong.
 
   ── Usage ──────────────────────────────────────────────────────────────────
-      node scripts/lottie-to-svg.mjs public/home/hero-cat.json [out.svg]
+      node scripts/lottie-to-svg.mjs scripts/lottie-src/hero-cat.json [out.svg]
 
   Colours are emitted as CSS custom properties (--c0, --c1, ...) with the
   original value as the fallback, so a theme can re-map any of them from a
@@ -193,13 +193,23 @@ export function convert(doc, { name = "lottie" } = {}) {
   const steppedIds = [];
   let uid = 0;
 
+  /*
+    Named for the colour itself, not its position: `--lc-000000` rather than
+    `--c0`. The theme override lives in globals.css and has to be readable and
+    stable — a positional name would silently re-point at a different part of
+    the drawing the moment a layer is added or reordered upstream.
+
+    Only opaque colours get a custom property. A semi-transparent one carries
+    its alpha in the value, so re-mapping it from a stylesheet would need the
+    alpha restating too; none of these drawings theme one, so it stays literal.
+  */
   const cssColour = (value) => {
+    if (!/^#[0-9a-f]{6}$/i.test(value)) return value;
     if (!colourIndex.has(value)) {
       colourIndex.set(value, colours.length);
       colours.push(value);
     }
-    const i = colourIndex.get(value);
-    return `var(--c${i},${value})`;
+    return `var(--lc-${value.slice(1).toLowerCase()},${value})`;
   };
 
   /*

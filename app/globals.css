@@ -1846,6 +1846,79 @@ textarea,
 }
 
 /* ============================================================
+   GENERATED ANIMATIONS  (the cats and the stars)
+
+   These were Lottie mounts: a 170KB player, a client component apiece, and
+   `dynamic({ ssr: false })` so none of them existed until React had hydrated.
+   They are now static SVGs that animate themselves in CSS, generated from the
+   same After Effects exports by scripts/lottie-to-svg.mjs and inlined as
+   Server Components. Each carries its own @keyframes; the only things needed
+   from out here are sizing and the dark palette.
+
+   The DARK PALETTE is the interesting half. hero-cat.tsx used to walk the
+   parsed animation JSON on every theme change, swapping four colours by
+   numeric comparison with a tolerance, and hand the rewritten object back to
+   the player. The converter exposes every colour as --lc-RRGGBB instead, so
+   the same swap is three declarations of CSS that cost nothing at runtime and
+   are visible where the rest of the theme lives.
+
+   Named for the source colour rather than a position: --lc-000000 says which
+   ink it re-paints, and stays correct if a layer is added or reordered
+   upstream. The values below are the maps that used to live in each
+   component; entries that matched nothing in the artwork (#19161C, #1A171C)
+   are not carried over.
+   ============================================================ */
+.animated-svg > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* One place to state each drawing's dark palette; the two selectors below
+   apply it for the media query and for an explicit choice. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hero-cat {
+    --lc-000000: #ffffff;
+    --lc-565656: #8aa7ff;
+    --lc-ffffff: #3744ff;
+    --lc-bb9aff: #a473ff;
+  }
+  :root:not([data-theme="light"]) .about-cat,
+  :root:not([data-theme="light"]) .me-cat {
+    --lc-000000: #ffffff;
+    --lc-ffffff: #3744ff;
+    --lc-bb9aff: #a473ff;
+  }
+  :root:not([data-theme="light"]) .star1,
+  :root:not([data-theme="light"]) .star2,
+  :root:not([data-theme="light"]) .star3,
+  :root:not([data-theme="light"]) .star4 {
+    --lc-000000: #ffffff;
+  }
+}
+
+:root[data-theme="dark"] .hero-cat {
+  --lc-000000: #ffffff;
+  --lc-565656: #8aa7ff;
+  --lc-ffffff: #3744ff;
+  --lc-bb9aff: #a473ff;
+}
+
+:root[data-theme="dark"] .about-cat,
+:root[data-theme="dark"] .me-cat {
+  --lc-000000: #ffffff;
+  --lc-ffffff: #3744ff;
+  --lc-bb9aff: #a473ff;
+}
+
+:root[data-theme="dark"] .star1,
+:root[data-theme="dark"] .star2,
+:root[data-theme="dark"] .star3,
+:root[data-theme="dark"] .star4 {
+  --lc-000000: #ffffff;
+}
+
+/* ============================================================
    HEADLINE LINE REVEAL  (byLine RevealWords — every <h1> on the site)
 
    The same blur-in the Framer `lineVariants` ran, moved into CSS so it can

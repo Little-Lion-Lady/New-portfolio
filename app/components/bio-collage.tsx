@@ -1,6 +1,6 @@
 import { GlassFrame, GlassImage } from "./work-image";
 import { HighlightPill } from "./tag";
-import { MeCat } from "./dynamic-visuals";
+import { MeCat } from "./me-cat";
 
 // Figma "02 Biography" image container — 1144:18610 (mobile), 1523:63351
 // (tablet), 1144:9241 (desktop).

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { m, useReducedMotion, type Variants } from "framer-motion";
-import { Star } from "./dynamic-visuals";
+import { Star } from "./star";
 import { WORD_STAGGER, EASE } from "./motion-timing";
 
 // Matches RevealWords' own blur-in look and curve, timed via `custom` so each
