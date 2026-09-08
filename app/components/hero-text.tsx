@@ -31,10 +31,16 @@ const HL = { color: "var(--text-primary-highlight)" };
 
   Fixed at the former ceilings, which is what the design was drawn at:
 
-      < 500px    24px
-      >= 500px   44px
+      < 500px          24px
+      500px - 1023px   44px
+      >= 1024px        32px
 
-  (Tablet and desktop already shared 44 — see the old TABLET_MAX_FONT_SIZE.)
+  Desktop is deliberately SMALLER than tablet. The fit's old ceilings had
+  tablet and desktop sharing 44 (see TABLET_MAX_FONT_SIZE), but at 44 on a
+  wide screen the headline wraps to eight lines of near edge-to-edge type and
+  reads as a wall rather than an opening line. 1024 is the site's lg boundary,
+  the same one the `sizes` attributes throughout media-block and
+  image-carousel key off.
   The 500px boundary is the hero's own, not the site-wide md of 768: the
   headline IS the viewport here and reads as a phone layout well past the
   width where the rest of the page stops being one. The utilities in page.tsx
@@ -66,7 +72,7 @@ export function HeroText({
           byLine
           delay={revealDelay}
           as="h1"
-          className="w-full text-[24px] min-[500px]:text-[44px]"
+          className="w-full text-[24px] min-[500px]:text-[44px] lg:text-[32px]"
           style={{
             ...TEXT_STYLE,
             color: "var(--text-primary-overlay)",
