@@ -505,9 +505,33 @@ export function RevealWords({
           // A fitted line overrides the module default, so consumers read what
           // was used rather than assuming. byLine always paces by LINE_STAGGER.
           data-word-stagger={LINE_STAGGER}
+          /*
+            The whole point of this component is that something OTHER than
+            React writes to these elements before React ever sees them: the
+            inline script below runs during parse and stamps `--line`,
+            `data-reveal-delay`, `data-lines` and `data-revealed`. By the time
+            hydration compares the DOM against what the server rendered, none
+            of it matches, and React logs a mismatch on every heading on the
+            site.
+
+            The style attribute mismatches even where the script only added a
+            custom property: calling setProperty re-serialises the whole
+            declaration, and the browser expands `white-space: pre-wrap` into
+            its longhands, so the string React kept no longer matches the one
+            in the DOM.
+
+            suppressHydrationWarning is exactly the escape hatch for this —
+            "this element is written to outside React, do not reconcile it".
+            It only reaches one level down, so the tokens need their own.
+          */
+          suppressHydrationWarning
         >
           {tokens.map((token, i) => (
-            <span key={i} style={{ display: "inline-block", whiteSpace: "pre-wrap" }}>
+            <span
+              key={i}
+              style={{ display: "inline-block", whiteSpace: "pre-wrap" }}
+              suppressHydrationWarning
+            >
               {token}
             </span>
           ))}
