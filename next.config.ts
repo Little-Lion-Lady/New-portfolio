@@ -59,6 +59,48 @@ const nextConfig: NextConfig = {
     // the URL carries the path, so there is nothing to invalidate.
     minimumCacheTTL: 31536000,
   },
+
+  /*
+    Baseline response headers.
+
+    Deliberately NOT including a Content-Security-Policy. A meaningful CSP here
+    needs `script-src` to cover both the inline theme script in layout.tsx and
+    the inline bootstrap scripts Next emits for the RSC payload. Hashes change
+    every build, so the only maintainable option is a nonce — and a nonce has to
+    be generated per request, which forces every route out of static generation.
+    That is precisely the trade layout.tsx already refused once, for the same
+    reason: this site should be static HTML cached at the edge. A CSP is worth
+    revisiting if the site ever renders dynamically; bolting one on now would
+    cost the thing it was built for.
+
+    The four below are all static-safe and cost nothing.
+  */
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          // Stop a browser second-guessing a declared Content-Type — the
+          // mechanism behind a "harmless" upload being executed as script.
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          // Send the full URL within the site, origin-only to other origins.
+          // The default in modern browsers, stated explicitly so it does not
+          // depend on the browser's own default.
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          // SAMEORIGIN rather than DENY: nothing embeds the site today, but
+          // DENY would also break an embed in an application portal or a
+          // prototype, and the clickjacking risk that matters is cross-origin.
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // The site asks for none of these; say so, so an injected script
+          // cannot either.
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
