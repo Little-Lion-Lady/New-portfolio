@@ -20,16 +20,31 @@ import type { Metadata } from "next";
   keeps only what is genuinely site-wide and page-independent (metadataBase, and
   the fallback title/description a route would want if it forgot to set any).
 
+  The image has to be named explicitly, and that is the opposite of what this
+  file first assumed. app/opengraph-image.tsx reaches a route through metadata
+  INHERITANCE, so it only survives on a route that does not define `openGraph`
+  itself — the moment this helper started setting one, every route except the
+  homepage shipped with no og:image and no twitter:image at all. Worse than the
+  generic card they had before, and invisible until the built HTML was checked.
+  Naming it here restores it everywhere; a route wanting a bespoke card still
+  gets one by dropping an opengraph-image.tsx into its own folder, which takes
+  precedence over this path.
+
   Deliberately NOT set here:
 
-  - `openGraph.images` / `twitter.images`. Next wires app/opengraph-image.tsx in
-    by file convention on every route that has no closer one, and naming an
-    image here would override that. Drop an opengraph-image.tsx into a route's
-    own folder to give it a bespoke card.
   - `openGraph.type: "article"` on the case studies. Defensible, but it invites
     the article:* properties (published_time, author) that would then need to be
     real and maintained. "website" is honest for all five routes as they stand.
 */
+
+// Kept in step with the exports in app/opengraph-image.tsx.
+const OG_IMAGE = {
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
+  alt: "Maryna Babych — Lead Product Designer, Auckland New Zealand",
+};
+
 export function pageMetadata({
   path,
   title,
@@ -51,7 +66,8 @@ export function pageMetadata({
       url: path,
       title,
       description,
+      images: [OG_IMAGE],
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
   };
 }
