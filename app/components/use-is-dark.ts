@@ -1,7 +1,19 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
-import { isDarkTheme } from "./lottie-utils";
+
+/*
+  Was in lottie-utils.ts, alongside the colour-remapping helpers that fed the
+  Lottie player. The player is gone — the drawings now theme themselves through
+  --lc-* custom properties in globals.css — so the only survivor of that module
+  moved here, next to its one caller.
+*/
+export function isDarkTheme(): boolean {
+  if (typeof window === "undefined") return false;
+  const theme = document.documentElement.getAttribute("data-theme");
+  if (theme) return theme === "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
 
 /*
   useIsDark

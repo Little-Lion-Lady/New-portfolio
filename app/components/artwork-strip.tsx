@@ -3,6 +3,7 @@
 import { useReducedMotion } from "framer-motion";
 import { GlassImage } from "./work-image";
 import { useNearViewport } from "./use-near-viewport";
+import { useHasMounted } from "./reveal";
 
 // Figma "Image wrapper" sizes for the §03 strip: 210×340 mobile, 420×600 from tablet up.
 const CARD_CLASS = "h-[340px] w-[210px] shrink-0 md:h-[600px] md:w-[420px] lg:h-[600px] lg:w-[420px]";
@@ -23,10 +24,17 @@ const CARD_MARGIN = "mr-xs md:mr-sm lg:mr-lg";
 function Card({
   name,
   margin = false,
+  decorative = false,
   loading,
 }: {
   name: string;
   margin?: boolean;
+  /*
+    The marquee renders the set twice so the loop has no seam. Only the first
+    set is real content; the second is the same artwork again, so it is hidden
+    from assistive tech rather than announced a second time.
+  */
+  decorative?: boolean;
   /*
     Set by the strip, not per card. Lazy loading cannot work card-by-card here
     (this is a translated marquee track, and the cards past the viewport's right
@@ -39,7 +47,8 @@ function Card({
   return (
     <GlassImage
       src={`/home/about/${name}.jpg`}
-      alt="Original artwork by Maryna Babych"
+      alt={ART_ALT[name] ?? "Original artwork by Maryna Babych"}
+      ariaHidden={decorative}
       loading={loading}
       /* Low priority: even once released, the strip sits below the bio collage
          and should not compete with it. */
@@ -53,18 +62,49 @@ function Card({
 // rather than to the page shell (see `.rail-bleed` in globals.css): a negative
 // margin matching the gutter stops at the shell's 1440px cap, which left the
 // strip cropped inboard with dead space either side on a wide screen.
+// One description per piece. A single shared string meant the strip announced
+// the same seven words fourteen times — once per card, twice per artwork,
+// because the marquee renders the set twice. The duplicate set is now hidden
+// from assistive tech (see `decorative` below), and each piece describes itself.
+const ART_ALT: Record<string, string> = {
+  ART1: "Original artwork: a pale textured figure against a flat red ground",
+  ART2: "Original artwork: a glowing figure at the centre of a dark storm",
+  ART3: "Original artwork: a black ink form unfurling across white paper",
+  ART4: "Original artwork: a framed pencil drawing of a cat, resting against a wall",
+  ART5: "Original artwork: a stylised portrait cut through with red brushstrokes",
+  ART6: "Original artwork: a black cat with red eyes against a red ground",
+  ART7: "Original artwork: a watercolour bouquet of purple and pink flowers",
+};
+
 const BLEED_CLASS = "rail-bleed";
 
-// Continuous right-to-left loop. Reduced-motion users get the original
-// manually-scrollable single-set strip back instead — freezing the animated
-// (duplicated, overflow-hidden) track would otherwise make artwork 2-7
-// unreachable for them, since there'd be no scroll and no motion to reveal it.
+/*
+  Continuous right-to-left loop. Reduced-motion users get the original
+  manually-scrollable single-set strip back instead — freezing the animated
+  (duplicated, overflow-hidden) track would otherwise make artwork 2-7
+  unreachable for them, since there'd be no scroll and no motion to reveal it.
+
+  The SCROLLABLE version is what the server renders, and it is what the first
+  client render produces too. Only once mounted, and only if motion is allowed,
+  does this upgrade to the marquee.
+
+  That ordering is load-bearing in two ways. useReducedMotion() cannot know the
+  preference during SSR and reports false, so branching on it directly made the
+  server send the doubled marquee and the client immediately want the single
+  set — a structural mismatch React cannot patch, which it reported as error
+  #418 and recovered from by throwing the subtree away and re-rendering it on
+  the client. And of the two possible orderings this is the only kind one: the
+  reverse would flash a moving marquee at someone who asked for no motion, and
+  would leave the no-JS render as a clipped track with six artworks unreachable
+  behind it.
+*/
 export function ArtworkStrip({ names }: { names: string[] }) {
   const reducedMotion = useReducedMotion();
+  const mounted = useHasMounted();
   const [stripRef, stripNear] = useNearViewport<HTMLDivElement>();
   const loading = stripNear ? "eager" : "lazy";
 
-  if (reducedMotion) {
+  if (!mounted || reducedMotion) {
     // A single, non-translated set — no seam to hold, so plain flex `gap` is
     // correct here and avoids a stray trailing margin at the scroll end.
     return (
@@ -85,7 +125,7 @@ export function ArtworkStrip({ names }: { names: string[] }) {
           <Card key={`${name}-a`} name={name} margin loading={loading} />
         ))}
         {names.map((name) => (
-          <Card key={`${name}-b`} name={name} margin loading={loading} />
+          <Card key={`${name}-b`} name={name} margin decorative loading={loading} />
         ))}
       </div>
     </div>

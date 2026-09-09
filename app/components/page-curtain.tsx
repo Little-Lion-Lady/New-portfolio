@@ -11,10 +11,10 @@
 
   Sequencing
   ──────────
-    covering  → panel y -100% → 0%, opacity 0 → 1 (450ms)
+    covering  → panel y -100% → 0%, opacity 0 → 1 (300ms)
     covered   → router.push(), wait for usePathname() to land, two rAFs so the
                 new tree has painted
-    revealing → panel y 0% → 100%, opacity 1 → 0 (600ms)
+    revealing → panel y 0% → 100%, opacity 1 → 0 (400ms)
     idle      → panel unmounts (so it never animates back UP through frame)
 
   Cover is the quicker half and reveal the slower one, per the open/close
@@ -36,17 +36,23 @@ import { EASE } from "./motion-timing";
 
 type Phase = "idle" | "covering" | "covered" | "revealing";
 
-// Longer and gentler than the old 350/400ms on ease-out-quint. Quint leaves
-// rest at its maximum velocity, which on a full-bleed panel reads as a snap
-// rather than a sweep; EASE (shared with every reveal on the site, see
-// motion-timing.ts) starts at less than half that velocity and spends most of
-// its time decelerating. The extra duration is what lets the softened edge
-// actually be seen travelling.
+// The curve is what keeps this from snapping, not the duration. An earlier
+// version ran 350/400ms on ease-out-quint and read as a snap because quint
+// leaves rest at its maximum velocity; EASE (shared with every reveal on the
+// site, see motion-timing.ts) starts at less than half that and spends most of
+// its time decelerating. Length was added on top of that to let the softened
+// edge be seen travelling, which took the pair to 450/600.
+//
+// Back down to 300/400 now that there is less to cover for. The curtain's job
+// is hiding layout shift — the scroll reset, image decode — and it still does
+// that; what it is no longer covering is a slow hero. The homepage LCP was
+// 5.3s when 450/600 was chosen and is 804ms now, so most of a second of panel
+// had turned into imposed delay rather than polish.
 //
 // Cover stays the quicker half and reveal the slower one, per the open/close
 // asymmetry in the transitions-polish motion scale.
-const COVER_S = 0.45;
-const REVEAL_S = 0.6;
+const COVER_S = 0.3;
+const REVEAL_S = 0.4;
 
 // If the route never lands (offline, a hard error), lift the curtain anyway
 // rather than leaving the viewer staring at a blank panel.
@@ -269,10 +275,8 @@ export function PageCurtain() {
 //   colour — bg-primary fading to --bg-transparency (bg-primary at zero alpha,
 //            NOT the `transparent` keyword, which interpolates through
 //            transparent BLACK and greys the ramp in light mode)
-//   blur   — stacked backdrop-filters under gradient masks, the same cumulative
-//            model SiteHeader uses: every layer is opaque at the panel edge and
-//            differs only in how far out it fades, so the blurs compound to a
-//            smooth decay rather than visible bands
+//   blur   — ONE backdrop-filter under a gradient mask, opaque at the panel
+//            edge and fading out across the strip
 //
 // The strip is deliberately taller than its visible reach and slides back UNDER
 // the panel by OVERLAP. A backdrop-filter paints a hard boundary where its
@@ -288,12 +292,37 @@ export function PageCurtain() {
 const FEATHER_PX = { bottom: 200, top: 340 };
 const OVERLAP = 0.2; // fraction of the strip hidden beneath the panel
 
-// reach = how far into the EXPOSED part of the strip each layer survives.
-const BLUR_LAYERS = [
-  { blur: 6, reach: 1 },
-  { blur: 16, reach: 0.65 },
-  { blur: 34, reach: 0.35 },
-];
+/*
+  reach = how far into the EXPOSED part of the strip the layer survives.
+
+  This was three stacked layers — 6px at full reach, 16px at 0.65, 34px at 0.35
+  — compounding to a smooth decay. It was also, measured, the most expensive
+  thing on the site.
+
+  A backdrop-filter re-samples and blurs everything behind its element every
+  frame. Three of them, under masks, on an element sweeping the full height of
+  the viewport, is that cost times three on every frame of every route change.
+  Profiled at 4x CPU on a 2.2s window around one transition, counting frames the
+  page actually produced:
+
+      layers   frames   p95 frame   frames >33ms
+        3       128-134   43-50ms       14-16
+        2       170       25ms           6
+        1       211-212   17ms           1
+        0       231       9ms            1
+
+  Three layers roughly HALVED the frame rate for the length of the transition.
+  One layer recovers almost all of it and still blurs: the two that were dropped
+  are the narrow, intense ones that stack near the panel edge, and the survivor
+  is the wide gentle one that spans the whole feather. Compared frame-for-frame
+  mid-sweep, the edge is indistinguishable — the colour lane below was always
+  doing most of the visible work.
+
+  Going to zero buys a further 20 frames and loses the blur entirely. Not worth
+  it: at one layer only a single frame in the window exceeds 33ms, which is the
+  same as at zero.
+*/
+const BLUR_LAYERS = [{ blur: 6, reach: 1 }];
 
 // Map a position in the exposed strip to a stop on the full strip.
 const stop = (reach: number) => `${(OVERLAP + reach * (1 - OVERLAP)) * 100}%`;

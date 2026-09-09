@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import type { Metadata } from "next";
+import { pageMetadata } from "../page-metadata";
 import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
 import { SectionHeader } from "../components/section-header";
@@ -38,11 +39,12 @@ const awards = [
 
 const artwork = ["ART1", "ART2", "ART3", "ART4", "ART5", "ART6", "ART7"];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/about",
   title: "About — Maryna Babych",
   description:
     "I've been designing products since 2018: agency work including the NZ COVID Tracer app, then a startup, and now a marketplace. I spend as much time on understanding the people I'm designing for as on design craft, and I hold both to the same standard. Maryna Babych, Lead Product Designer in Auckland, New Zealand.",
-};
+});
 
 export default function About() {
   return (
@@ -297,7 +299,7 @@ export default function About() {
         <CaseStudyNav
           title="NZ COVID Tracer app"
           href="/work/covid-tracer"
-          image={{ src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" }}
+          image={{ src: "/home/work/covid-tracer/MOH1.jpg", alt: "The NZ COVID Tracer QR scanner open on a phone" }}
         />
       </Reveal>
 

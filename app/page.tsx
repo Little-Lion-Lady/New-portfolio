@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "./page-metadata";
 import { SiteHeader } from "./components/site-header";
 import { SiteFooter } from "./components/site-footer";
 import { SectionHeader } from "./components/section-header";
@@ -6,11 +8,23 @@ import { WorkItem } from "./components/work-item";
 import { Button } from "./components/button";
 import { SectionReveal } from "./components/section-reveal-context";
 import { Reveal } from "./components/reveal";
-import { HeroCat, AboutCat } from "./components/dynamic-visuals";
+import { HeroCat } from "./components/hero-cat";
+import { AboutCat } from "./components/about-cat";
 import { HeroClose } from "./components/hero-close";
 import { HeroText } from "./components/hero-text";
 import { Divider } from "./components/divider";
 import { basis, covid, firstTable } from "@/content/stats";
+
+// The homepage's own copy of what used to be the root layout's site-level
+// block. It reads the same as before — this route IS the site — but it is now
+// declared here rather than inherited, so /about and the case studies no longer
+// inherit it too. See app/page-metadata.ts.
+export const metadata: Metadata = pageMetadata({
+  path: "/",
+  title: "Maryna Babych — Lead Product Designer",
+  description:
+    "Portfolio of Maryna Babych, Lead Product Designer based in Auckland, New Zealand. 9 years crafting award-winning digital experiences.",
+});
 
 export default function Home() {
   return (
@@ -86,9 +100,16 @@ export default function Home() {
               index stagger; they sit far enough down to fire on their own
               in-view trigger anyway. */}
           <Reveal index={1} className="w-full">
+            {/* "auto", not "high". The rails still load eagerly — the ranking
+                below them is what stops row three queueing ahead of row one —
+                but a high-priority hint on this row put 738KB of marquee
+                photography (measured) in front of the JS and the fonts on the
+                homepage's critical path, for a decorative auto-scrolling strip
+                that sits below the hero. Letting the browser rank it against
+                everything else is what "auto" is for. */}
             <WorkItem
               number="SW/01"
-              imagePriority="high"
+              imagePriority="auto"
               name="First Table app"
               description={
                 <>
@@ -101,11 +122,11 @@ export default function Home() {
               roles="Growth, Design system, Experimentation"
               href="/work/first-table"
               images={[
-                { src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" },
-                { src: "/home/work/firsttable/FT2.jpg", alt: "First Table app screen" },
-                { src: "/home/work/firsttable/3.jpg", alt: "First Table app screen" },
-                { src: "/home/work/firsttable/FT3.jpg", alt: "First Table app screen" },
-                { src: "/home/work/firsttable/FirstTable_08.jpg", alt: "First Table app screen" },
+                { src: "/home/work/firsttable/FT1.jpg", alt: "The First Table app open on a phone above a shared table of food" },
+                { src: "/home/work/firsttable/FT2.jpg", alt: "First Table campaign artwork promoting 50% off the food bill, beside app screens" },
+                { src: "/home/work/firsttable/3.jpg", alt: "First Table brand board setting diner value against restaurant value" },
+                { src: "/home/work/firsttable/FT3.jpg", alt: "First Table results board pairing growth figures with partner testimonials" },
+                { src: "/home/work/firsttable/FirstTable_08.jpg", alt: "First Table brand board showing campaign messaging across app screens" },
               ]}
             />
           </Reveal>
@@ -128,10 +149,10 @@ export default function Home() {
               roles="Onboarding, Research, Usability"
               href="/work/covid-tracer"
               images={[
-                { src: "/home/work/covid-tracer/MOH0.jpg", alt: "NZ COVID Tracer app screen" },
-                { src: "/home/work/covid-tracer/MOH1.5.jpg", alt: "NZ COVID Tracer app screen" },
-                { src: "/home/work/covid-tracer/MOH2.jpg", alt: "NZ COVID Tracer app screen" },
-                { src: "/home/work/covid-tracer/MOH3.jpg", alt: "NZ COVID Tracer app screen" },
+                { src: "/home/work/covid-tracer/MOH0.jpg", alt: "NZ COVID Tracer title card, with the app's QR scanner open on a phone" },
+                { src: "/home/work/covid-tracer/MOH1.5.jpg", alt: "Someone scanning a poster with the NZ COVID Tracer app" },
+                { src: "/home/work/covid-tracer/MOH2.jpg", alt: "Unite against COVID-19 campaign board, with the Ministry of Health briefing lectern" },
+                { src: "/home/work/covid-tracer/MOH3.jpg", alt: "Grid of NZ COVID Tracer app screens on the campaign's hazard-stripe background" },
               ]}
             />
           </Reveal>
@@ -153,13 +174,13 @@ export default function Home() {
               images={[
                 {
                   src: "/home/work/basis/BS1.jpg",
-                  alt: "Basis home app screen",
+                  alt: "The Basis app on a phone beside the smart panel mounted on a wall",
                   // Narrower than the row's other cards by request.
                   lgWidth: { class: "lg:w-[350px]", px: 350 },
                 },
-                { src: "/home/work/basis/BS2.jpg", alt: "Basis home app screen" },
-                { src: "/home/work/basis/BS3.png", alt: "Basis home app screen" },
-                { src: "/home/work/basis/B0.jpg", alt: "Basis home app screen", quality: 75 },
+                { src: "/home/work/basis/BS2.jpg", alt: "The Basis app open on a phone in a living room" },
+                { src: "/home/work/basis/BS3.png", alt: "Board of Basis app screens across the main journeys" },
+                { src: "/home/work/basis/B0.jpg", alt: "An electrician showing a homeowner the installed Basis smart panel", quality: 75 },
               ]}
             />
           </Reveal>
@@ -180,7 +201,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-r-xl lg:col-start-1 lg:col-span-7 lg:row-start-1">
             {/* Key paragraph — B-sm → B-md → B-lg */}
-            <p className="b-sm text-text-secondary md:b-md lg:b-md">
+            <p className="b-sm text-text-primary md:b-md lg:b-md">
               With 9+ years of experience, I&apos;ve taken products from{" "}
               <span className="text-text-highlight-dark">0→1</span>{" "}
               and brought tired ones back to life. I do my best work in{" "}

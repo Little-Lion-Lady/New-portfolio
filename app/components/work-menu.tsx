@@ -44,19 +44,19 @@ export const CASE_STUDIES = [
     href: "/work/first-table",
     label: "First Table app",
     src: "/home/work/firsttable/FT1.jpg",
-    alt: "First Table app screen",
+    alt: "The First Table app open on a phone above a shared table of food",
   },
   {
     href: "/work/covid-tracer",
     label: "NZ COVID Tracer app",
     src: "/home/work/covid-tracer/MOH0.jpg",
-    alt: "NZ COVID Tracer app screen",
+    alt: "NZ COVID Tracer title card, with the app's QR scanner open on a phone",
   },
   {
     href: "/work/basis",
     label: "Basis Home app",
     src: "/home/work/basis/BS1.jpg",
-    alt: "Basis home app screen",
+    alt: "The Basis app on a phone beside the smart panel mounted on a wall",
   },
 ] as const;
 

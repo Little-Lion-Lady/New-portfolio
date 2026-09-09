@@ -11,13 +11,13 @@
     "start": "next start",
     "lint": "eslint",
     "images:blur": "node scripts/generate-image-blur.mjs",
-    "images:sizes": "node scripts/measure-image-boxes.mjs > /tmp/image-boxes.json && node scripts/generate-image-sizes.mjs /tmp/image-boxes.json"
+    "images:sizes": "node scripts/measure-image-boxes.mjs > /tmp/image-boxes.json && node scripts/generate-image-sizes.mjs /tmp/image-boxes.json",
+    "animations": "node scripts/generate-animations.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.38.0",
     "geist": "^1.7.0",
-    "lottie-react": "^2.4.1",
     "next": "16.3.4",
     "react": "19.2.4",
     "react-dom": "19.2.4"

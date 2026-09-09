@@ -319,7 +319,7 @@ export default function DesignSystem() {
           <CaseStudyNav
             title="Basis Home app"
             href="#"
-            image={{ src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" }}
+            image={{ src: "/home/work/basis/BS1.jpg", alt: "The Basis app on a phone beside the smart panel mounted on a wall" }}
           />
         </Demo>
 
@@ -331,10 +331,10 @@ export default function DesignSystem() {
             roles="UX/UI, Research, Product strategy"
             href="#"
             images={[
-              { src: "/home/work/basis/BS1.jpg", alt: "Basis home app screen" },
-              { src: "/home/work/basis/BS2.jpg", alt: "Basis home app screen" },
-              { src: "/home/work/basis/BS3.png", alt: "Basis home app screen" },
-              { src: "/home/work/basis/BS4.jpg", alt: "Basis home app screen", quality: 75 },
+              { src: "/home/work/basis/BS1.jpg", alt: "The Basis app on a phone beside the smart panel mounted on a wall" },
+              { src: "/home/work/basis/BS2.jpg", alt: "The Basis app open on a phone in a living room" },
+              { src: "/home/work/basis/BS3.png", alt: "Board of Basis app screens across the main journeys" },
+              { src: "/home/work/basis/BS4.jpg", alt: "Research participant annotating printed concepts during a home energy interview", quality: 75 },
             ]}
           />
         </Demo>
@@ -363,9 +363,9 @@ export default function DesignSystem() {
               { label: "Recognition_", value: "Best Design Award, Gold" },
             ]}
             images={[
-              { src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" },
-              { src: "/home/work/covid-tracer/MOH2.jpg", alt: "NZ COVID Tracer app screen" },
-              { src: "/home/work/covid-tracer/MOH3.jpg", alt: "NZ COVID Tracer app screen" },
+              { src: "/home/work/covid-tracer/MOH1.jpg", alt: "The NZ COVID Tracer QR scanner open on a phone" },
+              { src: "/home/work/covid-tracer/MOH2.jpg", alt: "Unite against COVID-19 campaign board, with the Ministry of Health briefing lectern" },
+              { src: "/home/work/covid-tracer/MOH3.jpg", alt: "Grid of NZ COVID Tracer app screens on the campaign's hazard-stripe background" },
             ]}
           />
         </Demo>

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Button } from "./button";
 import { CyclingWord } from "./cycling-word";
-import { Star } from "./dynamic-visuals";
+import { Star } from "./star";
 import { useNearViewport } from "./use-near-viewport";
 import { useIsDark } from "./use-is-dark";
 

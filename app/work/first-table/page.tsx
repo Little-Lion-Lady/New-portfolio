@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "../../page-metadata";
+import { CaseStudyStructuredData } from "../../components/structured-data";
 import { SiteHeader } from "../../components/site-header";
 import { SiteFooter } from "../../components/site-footer";
 import { SectionHeader } from "../../components/section-header";
@@ -127,15 +129,28 @@ const journeySteps = [
   },
 ];
 
-export const metadata: Metadata = {
+// One description, used by both the page metadata and the JSON-LD below, so
+// the two cannot drift apart.
+const description =
+  `First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months later the onboarding completion was up ${firstTable.onboardingCompletionIncrease} and conversion up ${firstTable.conversionIncrease}.`;
+
+export const metadata: Metadata = pageMetadata({
+  path: "/work/first-table",
   title: "First Table booking app — Maryna Babych",
-  description:
-    `First Table had a product people loved and an app that got in their way. The dev team and I rebuilt the design system and the native app. Six months later the onboarding completion was up ${firstTable.onboardingCompletionIncrease} and conversion up ${firstTable.conversionIncrease}.`,
-};
+  description,
+});
 
 export default function FirstTable() {
   return (
     <main className="[--page-gutter:var(--spacing-md)] md:[--page-gutter:var(--spacing-3xl)] lg:[--page-gutter:var(--spacing-3xl)] page-shell relative flex flex-col gap-r-xl bg-bg-primary px-md pb-0 pt-[var(--header-clearance)] text-text-primary md:px-3xl lg:px-3xl lg:pb-0">
+      {/* CreativeWork, linked to the Person/WebSite declared in the root
+          layout. See components/structured-data.tsx. */}
+      <CaseStudyStructuredData
+        path="/work/first-table"
+        name="First Table booking app"
+        description={description}
+        award="Best Design Award, Finalist"
+      />
       {/* Gradient + header + hero grouped so gap-r-xl isn't inserted between them */}
       <div>
         <SiteHeader />
@@ -161,9 +176,9 @@ export default function FirstTable() {
               },
             ]}
             images={[
-              { src: "/home/work/firsttable/FT1.jpg", alt: "First Table app screen" },
-              { src: "/home/work/firsttable/FT2.jpg", alt: "First Table app screen" },
-              { src: "/home/work/firsttable/3.jpg", alt: "First Table app screen" },
+              { src: "/home/work/firsttable/FT1.jpg", alt: "The First Table app open on a phone above a shared table of food" },
+              { src: "/home/work/firsttable/FT2.jpg", alt: "First Table campaign artwork promoting 50% off the food bill, beside app screens" },
+              { src: "/home/work/firsttable/3.jpg", alt: "First Table brand board setting diner value against restaurant value" },
             ]}
           />
         </section>
@@ -368,7 +383,7 @@ export default function FirstTable() {
         <CaseStudyNav
           title="NZ COVID Tracer app"
           href="/work/covid-tracer"
-          image={{ src: "/home/work/covid-tracer/MOH1.jpg", alt: "NZ COVID Tracer app screen" }}
+          image={{ src: "/home/work/covid-tracer/MOH1.jpg", alt: "The NZ COVID Tracer QR scanner open on a phone" }}
         />
       </Reveal>
 

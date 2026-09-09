@@ -1,36 +1,23 @@
-"use client";
+import { AnimatedSvg } from "./animated-svg";
+import { heroCat } from "./animations";
 
-import { useMemo } from "react";
-import Lottie from "lottie-react";
-import { useReducedMotion } from "framer-motion";
-import heroCatRaw from "@/public/home/hero-cat.json";
-import { hex, remapColors, type ColorMap } from "./lottie-utils";
-import { useIsDark } from "./use-is-dark";
+/*
+  The home hero's cat.
 
-const DARK_MAP: ColorMap = [
-  [hex("#000000"), hex("#FFFFFF")],
-  [hex("#565656"), hex("#8AA7FF")],
-  [hex("#FFFFFF"), hex("#3744FF")],
-  [hex("#BB9AFF"), hex("#A473FF")],
-];
+  Was a Lottie mount that remapped four colours in JavaScript on every theme
+  change, behind `dynamic({ ssr: false })` so it could not render until React
+  had hydrated. It is now a static SVG that animates itself in CSS: no player,
+  no client component, no theme pass at runtime — the dark palette is a
+  handful of custom properties in globals.css.
 
+  Aspect ratio and height:auto are kept from the Lottie wrapper so the
+  utilities the caller passes (max-h-full, w-auto, the negative margins that
+  overlap the divider) go on behaving exactly as they did.
+*/
 export function HeroCat({ className }: { className?: string }) {
-  const dark = useIsDark();
-  const reducedMotion = useReducedMotion();
-
-
-  // Bundled at build time (content-hashed by Next automatically) instead of
-  // fetched at runtime with a hand-maintained ?v=N cache-busting param.
-  const animationData = useMemo(
-    () => (dark ? (remapColors(heroCatRaw, DARK_MAP) as object) : heroCatRaw),
-    [dark],
-  );
-
   return (
-    <Lottie
-      animationData={animationData}
-      loop
-      autoplay={!reducedMotion}
+    <AnimatedSvg
+      markup={heroCat}
       className={className}
       style={{ aspectRatio: "1632/818", height: "auto" }}
     />

@@ -1,46 +1,24 @@
-"use client";
+import { AnimatedSvg } from "./animated-svg";
+import { aboutCat } from "./animations";
 
-import { useMemo } from "react";
-import Lottie from "lottie-react";
-import { useReducedMotion } from "framer-motion";
-import aboutCatRaw from "@/public/home/about-cat.json";
-import { hex, remapColors, type ColorMap } from "./lottie-utils";
-import { useIsDark } from "./use-is-dark";
-import { useSectionReveal } from "./section-reveal-context";
+/*
+  The Backstory cat.
 
-const DARK_MAP: ColorMap = [
-  [hex("#000000"), hex("#FFFFFF")],
-  [hex("#19161C"), hex("#FFFFFF")],
-  [hex("#FFFFFF"), hex("#3744FF")],
-  [hex("#BB9AFF"), hex("#A473FF")],
-];
+  This used to hold its Lottie mount back until the section scrolled into
+  view, to avoid paying the player's init cost on initial page load. There is
+  no player and no init cost any more, so the gate is gone and this renders as
+  static HTML like the others.
 
+  What the gate also did, incidentally, was keep the animation from running
+  while off screen. A CSS animation on a 38KB drawing is far cheaper than a
+  Lottie rAF loop, and browsers throttle off-screen composited animations, so
+  that is not being paid for in the same way — but it is a real change, and
+  the same question the marquees raise (they animate off screen too).
+*/
 export function AboutCat({ className }: { className?: string }) {
-  const dark = useIsDark();
-  const reducedMotion = useReducedMotion();
-  // Backstory is a scroll-gated (non-immediate) SectionReveal on the homepage,
-  // so this defers the Lottie mount until the section actually scrolls into
-  // view instead of paying its init cost on initial page load.
-  const { active } = useSectionReveal();
-
-
-  // Bundled at build time (content-hashed by Next automatically) instead of
-  // fetched at runtime with a hand-maintained ?v=N cache-busting param.
-  const animationData = useMemo(
-    () => (dark ? (remapColors(aboutCatRaw, DARK_MAP) as object) : aboutCatRaw),
-    [dark],
-  );
-
   return (
     <div className={className}>
-      {active && (
-        <Lottie
-          animationData={animationData}
-          loop
-          autoplay={!reducedMotion}
-          style={{ width: "100%", height: "100%" }}
-        />
-      )}
+      <AnimatedSvg markup={aboutCat} style={{ width: "100%", height: "100%" }} />
     </div>
   );
 }
