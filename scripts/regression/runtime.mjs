@@ -3,7 +3,7 @@ import { tmpdir } from "node:os"; import path from "node:path"; import fs from "
 import { launchChrome } from "/Users/marynababych/CC/New Portfolio/scripts/lib/cdp.mjs";
 const BASE="http://localhost:3010";
 let pass=0, fail=0;
-const t=(n,ok,d="")=>{ (ok?pass++:fail++); console.log(`  ${ok?"PASS":"FAIL"}  ${n}${d?"  — "+d:""}`); };
+const t=(n,ok,d="")=>{ if (ok) pass++; else fail++; console.log(`  ${ok?"PASS":"FAIL"}  ${n}${d?"  — "+d:""}`); };
 const { client, kill } = await launchChrome({ port: 9702, userDataDir: path.join(tmpdir(),"retest-"+Date.now()) });
 const send=(m,p)=>client.send(m,p);
 await send("Page.enable"); await send("Runtime.enable"); await send("DOM.enable");

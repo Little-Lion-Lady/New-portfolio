@@ -1,6 +1,6 @@
 import fs from "node:fs";
 let pass=0, fail=0;
-const t=(n,ok,d="")=>{ (ok?pass++:fail++); console.log(`  ${ok?"PASS":"FAIL"}  ${n}${d?"  — "+d:""}`); };
+const t=(n,ok,d="")=>{ if (ok) pass++; else fail++; console.log(`  ${ok?"PASS":"FAIL"}  ${n}${d?"  — "+d:""}`); };
 const routes={ "index":"/", "about":"/about", "work/first-table":"/work/first-table",
                "work/basis":"/work/basis", "work/covid-tracer":"/work/covid-tracer" };
 const read=f=>fs.readFileSync(`.next/server/app/${f}.html`,"utf8");
