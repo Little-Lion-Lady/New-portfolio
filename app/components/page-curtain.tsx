@@ -11,10 +11,10 @@
 
   Sequencing
   ──────────
-    covering  → panel y -100% → 0%, opacity 0 → 1 (450ms)
+    covering  → panel y -100% → 0%, opacity 0 → 1 (300ms)
     covered   → router.push(), wait for usePathname() to land, two rAFs so the
                 new tree has painted
-    revealing → panel y 0% → 100%, opacity 1 → 0 (600ms)
+    revealing → panel y 0% → 100%, opacity 1 → 0 (400ms)
     idle      → panel unmounts (so it never animates back UP through frame)
 
   Cover is the quicker half and reveal the slower one, per the open/close
@@ -36,17 +36,23 @@ import { EASE } from "./motion-timing";
 
 type Phase = "idle" | "covering" | "covered" | "revealing";
 
-// Longer and gentler than the old 350/400ms on ease-out-quint. Quint leaves
-// rest at its maximum velocity, which on a full-bleed panel reads as a snap
-// rather than a sweep; EASE (shared with every reveal on the site, see
-// motion-timing.ts) starts at less than half that velocity and spends most of
-// its time decelerating. The extra duration is what lets the softened edge
-// actually be seen travelling.
+// The curve is what keeps this from snapping, not the duration. An earlier
+// version ran 350/400ms on ease-out-quint and read as a snap because quint
+// leaves rest at its maximum velocity; EASE (shared with every reveal on the
+// site, see motion-timing.ts) starts at less than half that and spends most of
+// its time decelerating. Length was added on top of that to let the softened
+// edge be seen travelling, which took the pair to 450/600.
+//
+// Back down to 300/400 now that there is less to cover for. The curtain's job
+// is hiding layout shift — the scroll reset, image decode — and it still does
+// that; what it is no longer covering is a slow hero. The homepage LCP was
+// 5.3s when 450/600 was chosen and is 804ms now, so most of a second of panel
+// had turned into imposed delay rather than polish.
 //
 // Cover stays the quicker half and reveal the slower one, per the open/close
 // asymmetry in the transitions-polish motion scale.
-const COVER_S = 0.45;
-const REVEAL_S = 0.6;
+const COVER_S = 0.3;
+const REVEAL_S = 0.4;
 
 // If the route never lands (offline, a hard error), lift the curtain anyway
 // rather than leaving the viewer staring at a blank panel.
