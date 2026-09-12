@@ -345,9 +345,9 @@ export default function FirstTable() {
         </Reveal>
         <Reveal index={1} delay={0.6} className="w-full">
           <Stats className="md:grid-cols-3">
-            <Stat size="sm" value={`+${firstTable.signupIncrease}`} label="Sign-ups increase" />
-            <Stat size="sm" value={`+${firstTable.onboardingCompletionIncrease}`} label="onboarding completion" />
-            <Stat size="sm" value={`+${firstTable.conversionIncrease}`} label="Conversion rate increase" />
+            <Stat size="sm" tone="highlight-dark" value={`+${firstTable.signupIncrease}`} label="Sign-ups increase" />
+            <Stat size="sm" tone="highlight-dark" value={`+${firstTable.onboardingCompletionIncrease}`} label="onboarding completion" />
+            <Stat size="sm" tone="highlight-dark" value={`+${firstTable.conversionIncrease}`} label="Conversion rate increase" />
           </Stats>
         </Reveal>
         <Reveal index={2} delay={0.6} className="w-full">
