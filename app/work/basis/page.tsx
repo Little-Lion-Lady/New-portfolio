@@ -366,6 +366,7 @@ export default function Basis() {
           <div className="flex w-full flex-col gap-3xl md:grid md:grid-cols-8 md:gap-lg lg:grid-cols-12">
             <Stat
               size="outcome"
+              tone="highlight-dark"
               className="md:col-span-4 lg:col-start-1"
               value={basis.billReductionActual}
               label="Reduction in household energy bills"
@@ -373,6 +374,7 @@ export default function Basis() {
             />
             <Stat
               size="outcome"
+              tone="highlight-dark"
               className="md:col-span-4 lg:col-start-5"
               value={basis.routineAdoptionActual}
               label="Users created a routine within 1 week"
