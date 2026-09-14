@@ -112,8 +112,8 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* Socials — vertical on mobile, horizontal md+. Indents to column 2 on
-            desktop, where the design sets them in from the wordmark's edge.
+        {/* Socials — vertical on mobile, horizontal md+. Flush with the
+            wordmark's left edge at every breakpoint.
 
             Desktop top padding is half Figma's 10xl (224px). Written as the
             token halved rather than a flat 112px, since there is no token at
@@ -125,7 +125,7 @@ export function SiteFooter() {
             subtract the wordmark's glow padding, which an exported image carried
             as layout space; trimmed live text carries none, so these are the
             spacing tokens as written. */}
-        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-5xl md:flex-row md:items-center md:gap-6xl md:pt-7xl dt:col-start-2 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)*0.75)]">
+        <div className="col-start-1 col-span-4 row-start-2 flex flex-col items-start gap-xl pt-5xl md:flex-row md:items-center md:gap-6xl md:pt-7xl dt:col-start-1 dt:col-span-2 dt:self-start dt:pt-[calc(var(--spacing-10xl)*0.75)]">
           <Button variant="link" label="LinkedIn" href="https://www.linkedin.com/in/marynababych/" target="_blank" rel="noopener noreferrer" />
           <Button variant="link" label="Email" href="mailto:maryna.babych@gmail.com" target="_blank" rel="noopener noreferrer" />
         </div>
