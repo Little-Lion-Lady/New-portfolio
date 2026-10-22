@@ -2510,6 +2510,19 @@ html[data-intro-out] .intro {
   .intro-dot { animation: none; }
 }
 
+/* Firefox only (-moz-appearance is the standard Gecko feature test): no glow
+   and no hue cycle. Firefox repaints the six-layer shadow under an animating
+   filter on every frame — the same cost that moved the footer wordmark to an
+   image — and the bouncing dots inside it re-trigger that each frame too.
+   Specificity has to beat the dark-mode .wordmark rules (0,3,0). Setting the
+   property here also clears the dots, which inherit it. */
+@supports (-moz-appearance: none) {
+  :root .intro .intro-word.wordmark {
+    --wordmark-glow: none;
+    animation: none;
+  }
+}
+
 /* While the loader is up, everything underneath it waits. Paused CSS
    animations hold their delay too, and every reveal on the site fills
    `both`, so each one sits in its hidden first frame and plays its full
