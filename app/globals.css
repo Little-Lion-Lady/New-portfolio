@@ -2395,7 +2395,7 @@ textarea,
   .wordmark-hue { animation: none; }
 }
 
-/* ── Intro loader ("Honing...") ────────────────────────────────────────────
+/* ── Intro loader ("crafting...") ──────────────────────────────────────────
    Figma 1932:3898. Hidden unless the <head> script set data-intro (first page
    of a session); see components/intro-loader.tsx and intro-script.ts.
 
@@ -2468,7 +2468,7 @@ html[data-intro-out] .intro {
 }
 
 /* The word's -0.06em tracking left the dots almost touching, which hid the
-   wave. This opens the gap between dots only, not the one after "Honing". */
+   wave. This opens the gap between dots only, not the one after the word. */
 .intro-dot + .intro-dot { margin-left: 0.08em; }
 
 .intro-dot:nth-of-type(2) { animation-delay: 0.1s; }
