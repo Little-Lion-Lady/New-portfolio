@@ -2467,6 +2467,10 @@ html[data-intro-out] .intro {
   animation: intro-dot-bounce 1.05s infinite;
 }
 
+/* The word's -0.06em tracking left the dots almost touching, which hid the
+   wave. This opens the gap between dots only, not the one after "Honing". */
+.intro-dot + .intro-dot { margin-left: 0.08em; }
+
 .intro-dot:nth-of-type(2) { animation-delay: 0.1s; }
 .intro-dot:nth-of-type(3) { animation-delay: 0.2s; }
 
