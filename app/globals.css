@@ -2471,6 +2471,9 @@ html[data-intro-out] .intro {
    wave. This opens the gap between dots only, not the one after the word. */
 .intro-dot + .intro-dot { margin-left: 0.08em; }
 
+/* A smaller step between the word's last letter and the first dot. */
+.intro-dot:first-of-type { margin-left: 0.04em; }
+
 .intro-dot:nth-of-type(2) { animation-delay: 0.1s; }
 .intro-dot:nth-of-type(3) { animation-delay: 0.2s; }
 
