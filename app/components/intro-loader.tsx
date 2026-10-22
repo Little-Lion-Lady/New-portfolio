@@ -12,7 +12,7 @@ declare global {
 /*
   IntroLoader
   ───────────
-  "hi there" (Figma 1932:3898), shown on the first page of a browsing session
+  "Honing..." (Figma 1932:3898, which drew it as "hi there"), shown on the first page of a browsing session
   while the first screen's photos and fonts land, so the page underneath opens
   with nothing left to blur up or stutter.
 
@@ -95,7 +95,7 @@ export function IntroLoader() {
         </div>
       </div>
       <div className="intro-hero">
-        <p className="wordmark wordmark-hue intro-word">hi there</p>
+        <p className="wordmark wordmark-hue intro-word">Honing...</p>
       </div>
     </div>
   );

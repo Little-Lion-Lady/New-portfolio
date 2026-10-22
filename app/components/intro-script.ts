@@ -12,7 +12,7 @@
   never hydrates.
 */
 
-/** Shortest time the loader stays up, so "hi there" reads rather than flashes. */
+/** Shortest time the loader stays up, so the word reads rather than flashes. */
 export const INTRO_MIN_MS = 1200;
 /** Longest the loader waits on assets before lifting anyway. */
 export const INTRO_MAX_MS = 4000;

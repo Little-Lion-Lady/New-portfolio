@@ -2395,7 +2395,7 @@ textarea,
   .wordmark-hue { animation: none; }
 }
 
-/* ── Intro loader ("hi there") ─────────────────────────────────────────────
+/* ── Intro loader ("Honing...") ────────────────────────────────────────────
    Figma 1932:3898. Hidden unless the <head> script set data-intro (first page
    of a session); see components/intro-loader.tsx and intro-script.ts.
 
