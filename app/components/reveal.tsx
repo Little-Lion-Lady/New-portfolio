@@ -25,6 +25,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { m, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
+import { useIntroLiftedAt } from "./use-intro";
 import { groupLines } from "./line-reveal";
 import {
   EASE,
@@ -254,7 +255,8 @@ export function Reveal({
   // mount and ignores the in-view gate, so all content appears at once on load.
   const isImmediate = immediate || ctxImmediate;
   const mounted = useHasMounted();
-  const shouldAnimate = !hold && (isImmediate ? mounted : active && inView);
+  const introDone = useIntroLiftedAt() !== null;
+  const shouldAnimate = !hold && introDone && (isImmediate ? mounted : active && inView);
 
   const Component = m[as] as typeof m.div;
 
@@ -382,7 +384,8 @@ export function RevealWords({
   const { active, immediate: ctxImmediate } = useSectionReveal();
   const isImmediate = immediate || ctxImmediate;
   const mounted = useHasMounted();
-  const inputsReady = isImmediate ? mounted : active && inView;
+  const introDone = useIntroLiftedAt() !== null;
+  const inputsReady = introDone && (isImmediate ? mounted : active && inView);
 
   // Tokenise: string nodes → individual words (trailing space preserved so
   // the rendered text reflowing works naturally). Element nodes stay whole.

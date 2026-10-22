@@ -6,6 +6,8 @@ import { PageCurtain } from "./components/page-curtain";
 import { CursorArrow } from "./components/cursor-arrow";
 import { SiteStructuredData } from "./components/structured-data";
 import { LINE_REVEAL_SCRIPT } from "./components/line-reveal";
+import { INTRO_SCRIPT } from "./components/intro-script";
+import { IntroLoader } from "./components/intro-loader";
 import { siteUrl } from "./site-url";
 import "./globals.css";
 
@@ -105,12 +107,16 @@ export default function RootLayout({
               "(function(){var d=document.documentElement;d.setAttribute('data-js','');try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light'){d.setAttribute('data-theme',t);}}catch(e){}})();",
           }}
         />
+        {/* Decides before first paint whether the intro loader shows — first
+            page of a session only. See components/intro-script.ts. */}
+        <script dangerouslySetInnerHTML={{ __html: INTRO_SCRIPT }} />
 
         {/* Person + WebSite, declared once with stable @ids that the case
             studies reference. See components/structured-data.tsx. */}
         <SiteStructuredData />
       </head>
       <body className="min-h-full flex flex-col">
+        <IntroLoader />
         {/* domAnimation covers everything the site uses (hover/tap/animate/
             AnimatePresence) without drag/layout — smaller than importing the
             full `motion` feature set on every page. `m.*` components below

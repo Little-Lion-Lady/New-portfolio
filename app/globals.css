@@ -2223,19 +2223,22 @@ textarea,
   line-height: 1;
   white-space: nowrap;
   color: var(--colour-base-black);
-  text-shadow:
+  /* A custom property so non-text marks inside a wordmark (the loader's round
+     dots) can wear the same stack as a box-shadow. */
+  --wordmark-glow:
     0 0.016667em 0.05em #ff8335,
     0 0.04em 0.05em #d943ff,
     0 0.066667em 0.05em #d8b8ff,
     0 0.123333em 0.1em #ffbf3e,
     0 0.136667em 0.133333em #ff0443,
     0 0.276667em 0.366667em rgba(255, 0, 4, 0.8);
+  text-shadow: var(--wordmark-glow);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .wordmark {
     color: var(--colour-base-white);
-    text-shadow:
+    --wordmark-glow:
       0 0.016667em 0.05em #7ff6ff,
       0 0.04em 0.05em #6678ff,
       0 0.066667em 0.05em #f0ffb8,
@@ -2247,7 +2250,7 @@ textarea,
 
 :root[data-theme="dark"] .wordmark {
   color: var(--colour-base-white);
-  text-shadow:
+  --wordmark-glow:
     0 0.016667em 0.05em #7ff6ff,
     0 0.04em 0.05em #6678ff,
     0 0.066667em 0.05em #f0ffb8,
@@ -2393,5 +2396,141 @@ textarea,
 
 @media (prefers-reduced-motion: reduce) {
   .wordmark-hue { animation: none; }
+}
+
+/* ── Intro loader ("crafting...") ──────────────────────────────────────────
+   Figma 1932:3898. Hidden unless the <head> script set data-intro (first page
+   of a session); see components/intro-loader.tsx and intro-script.ts.
+
+   Above the page curtain (100) and below the cursor (200).
+
+   The word is 320px on a 1728 frame and 190px on a 1024 one — both 18.5vw —
+   so one fluid size serves every width. Figma sets it in Geist Medium, a step
+   lighter than the 404's SemiBold; the glow is .wordmark's em-based stack, so
+   it scales with the type. */
+.intro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  background: var(--bg-primary);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .intro { padding: var(--spacing-3xl); }
+}
+
+html[data-intro] .intro,
+html[data-intro-out] .intro {
+  display: flex;
+}
+
+/* Matches the curtain's reveal curve (EASE in motion-timing.ts). */
+html[data-intro-out] .intro {
+  animation: intro-out 600ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes intro-out {
+  to { opacity: 0; }
+}
+
+.intro-hero {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+  align-items: center;
+}
+
+/* Desktop pins the word to the bottom of the viewport, on the same 40px
+   margin as the other edges. The bottom edge switches from the baseline to
+   the font's descent so the "g" descender sits on that margin instead of
+   hanging past it. */
+.intro-word {
+  font-weight: 500;
+  font-size: clamp(56px, 18.5vw, 320px);
+  text-box: trim-both cap alphabetic;
+}
+
+@media (min-width: 1024px) {
+  .intro-hero { align-items: flex-end; }
+  .intro-word { text-box: trim-both cap text; }
+}
+
+/* The ellipsis bounces, after magecdn's "3 dots bounce" loader: each dot rises
+   one dot-height over 0.3s (easing out) and falls over 0.3s (easing in), the
+   three 0.1s apart, then all rest 0.25s — a 1.05s cycle. 0.3 / 1.05 = 28.571%.
+   Each dot carries its own share of the glow, so the shadow travels with it.
+
+   Round, not Geist's square period: an empty circle the size of the period's
+   ink (0.13em, sitting on the baseline) wearing the wordmark glow as a
+   box-shadow. The margins rebuild the period's spacing — 0.0416em of side
+   bearing each side, less the word's -0.06em tracking, which an empty box
+   does not receive — plus the extra air added on top of it: 0.04em before
+   the first dot and 0.08em between dots. */
+.intro-dot {
+  display: inline-block;
+  width: 0.13em;
+  height: 0.13em;
+  margin: 0 -0.0184em 0 0.0816em;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: var(--wordmark-glow);
+  animation: intro-dot-bounce 1.05s infinite;
+}
+
+.intro-dot + .intro-dot { margin-left: 0.1216em; }
+
+.intro-dot:nth-of-type(2) { animation-delay: 0.1s; }
+.intro-dot:nth-of-type(3) { animation-delay: 0.2s; }
+
+@keyframes intro-dot-bounce {
+  0% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0.33, 0.66, 0.66, 1);
+  }
+  28.571% {
+    transform: translateY(-0.1em);
+    animation-timing-function: cubic-bezier(0.33, 0, 0.66, 0.33);
+  }
+  57.143%,
+  100% {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-intro-out] .intro { animation-duration: 1ms; }
+  .intro-dot { animation: none; }
+}
+
+/* Firefox only (-moz-appearance is the standard Gecko feature test): no glow
+   and no hue cycle. Firefox repaints the six-layer shadow under an animating
+   filter on every frame — the same cost that moved the footer wordmark to an
+   image — and the bouncing dots inside it re-trigger that each frame too.
+   Specificity has to beat the dark-mode .wordmark rules (0,3,0). Setting the
+   property here also clears the dots, which inherit it. */
+@supports (-moz-appearance: none) {
+  :root .intro .intro-word.wordmark {
+    --wordmark-glow: none;
+    animation: none;
+  }
+}
+
+/* While the loader is up, everything underneath it waits. Paused CSS
+   animations hold their delay too, and every reveal on the site fills
+   `both`, so each one sits in its hidden first frame and plays its full
+   timeline from the moment the loader lifts. JS-timed reveals gate on
+   useIntroLiftedAt instead. */
+html[data-intro] {
+  overflow: hidden;
+}
+
+html[data-intro] body > :not(.intro),
+html[data-intro] body > :not(.intro) * {
+  animation-play-state: paused !important;
 }
 
