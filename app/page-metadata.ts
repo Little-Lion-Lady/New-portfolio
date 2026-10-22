@@ -21,13 +21,13 @@ import type { Metadata } from "next";
   the fallback title/description a route would want if it forgot to set any).
 
   The image has to be named explicitly, and that is the opposite of what this
-  file first assumed. app/opengraph-image.tsx reaches a route through metadata
+  file first assumed. app/opengraph-image.png reaches a route through metadata
   INHERITANCE, so it only survives on a route that does not define `openGraph`
   itself — the moment this helper started setting one, every route except the
   homepage shipped with no og:image and no twitter:image at all. Worse than the
   generic card they had before, and invisible until the built HTML was checked.
   Naming it here restores it everywhere; a route wanting a bespoke card still
-  gets one by dropping an opengraph-image.tsx into its own folder, which takes
+  gets one by dropping an opengraph-image.png into its own folder, which takes
   precedence over this path.
 
   Deliberately NOT set here:
@@ -37,12 +37,12 @@ import type { Metadata } from "next";
     real and maintained. "website" is honest for all five routes as they stand.
 */
 
-// Kept in step with the exports in app/opengraph-image.tsx.
+// Kept in step with app/opengraph-image.png (source: scripts/og-card.html).
 const OG_IMAGE = {
-  url: "/opengraph-image",
+  url: "/opengraph-image.png",
   width: 1200,
   height: 630,
-  alt: "Maryna Babych — Lead Product Designer, Auckland New Zealand",
+  alt: "Maryna Babych — Lead Product Designer, Melbourne, Australia",
 };
 
 export function pageMetadata({
