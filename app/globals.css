@@ -2457,10 +2457,7 @@ html[data-intro-out] .intro {
 
 @media (min-width: 1024px) {
   .intro-hero { align-items: flex-end; }
-  .intro-word {
-    text-box: trim-both cap text;
-    padding-bottom: var(--spacing-3xl);
-  }
+  .intro-word { text-box: trim-both cap text; }
 }
 
 /* The ellipsis bounces, after magecdn's "3 dots bounce" loader: each dot rises
