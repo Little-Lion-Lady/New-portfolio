@@ -488,7 +488,10 @@ export function CursorArrow() {
     };
 
     // Pointer off the document, or the window losing focus: the OS is drawing
-    // a cursor somewhere else now, so stop drawing one here.
+    // a cursor somewhere else now, so stop drawing one here. Re-entry needs no
+    // handler of its own — the first pointermove back resets the hit test and
+    // places the sprite in the same call that shows it, so it appears where
+    // the pointer came in rather than where it left.
     const onLeave = () => {
       cancelAnimationFrame(frame);
       frame = 0;
@@ -505,7 +508,24 @@ export function CursorArrow() {
     };
 
     document.addEventListener("pointermove", onMove, { passive: true });
-    document.addEventListener("pointerleave", onLeave);
+    // Leaving the window is read off pointerout, not pointerleave. pointerleave
+    // is dispatched to elements, and whether the document itself receives one
+    // when the pointer exits the viewport varies by browser — where it does
+    // not, nothing hid the arrow and it stayed frozen at the edge it crossed.
+    // pointerout bubbles to the document from whatever element the pointer was
+    // last over, and a null relatedTarget means it went to nothing in this
+    // document: browser chrome, devtools, another window, or a cross-origin
+    // frame, which draws its own cursor anyway. Moving between elements always
+    // names the element entered, so this never fires mid-page.
+    const onOut = (event: PointerEvent) => {
+      if (!event.relatedTarget) onLeave();
+    };
+
+    document.addEventListener("pointerout", onOut);
+    // A tab switch can hide the page without a blur reaching it first (a
+    // keyboard shortcut while the pointer sits still), and nothing else would
+    // clear the arrow before the tab is shown again.
+    document.addEventListener("visibilitychange", onLeave);
     window.addEventListener("blur", onLeave);
     // Capture, so a scroll inside any nested scroller counts — scroll does not
     // bubble from an element, and only the document sees it otherwise.
@@ -515,7 +535,8 @@ export function CursorArrow() {
       cancelAnimationFrame(resyncFrame);
       document.removeEventListener("scroll", onScroll, { capture: true });
       document.removeEventListener("pointermove", onMove);
-      document.removeEventListener("pointerleave", onLeave);
+      document.removeEventListener("pointerout", onOut);
+      document.removeEventListener("visibilitychange", onLeave);
       window.removeEventListener("blur", onLeave);
     };
   }, [enabled, reducedMotion, x, y]);
