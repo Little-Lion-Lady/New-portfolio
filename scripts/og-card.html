@@ -1,0 +1,46 @@
+<!doctype html>
+<!--
+  Source for app/opengraph-image.png, the link-preview card (Figma 1934:3913).
+  Every number is the Figma value x 1200/1728. The glow is the site's
+  .wordmark stack; next/og's renderer could not draw six stacked text-shadows
+  (it piled them into a solid block), so the card is a screenshot of this page.
+
+  Regenerate after editing, from the repo root:
+    /Applications/Firefox.app/Contents/MacOS/firefox --headless --window-size=1200,630 \
+      --screenshot "$PWD/app/opengraph-image.png" "file://$PWD/scripts/og-card.html"
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: "Geist";
+    src: url("../node_modules/geist/dist/fonts/geist-sans/Geist-Medium.ttf");
+    font-weight: 500;
+  }
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #fafafa; }
+  body { position: relative; font-family: "Geist"; font-weight: 500; }
+  .lines { position: absolute; left: 27.8px; top: 44.4px; font-size: 41.7px; line-height: 1.15; }
+  .lines p { margin: 0; }
+  .name {
+    position: absolute; margin: 0; white-space: nowrap;
+    font-size: 155.6px; line-height: 0.95; letter-spacing: -4.67px; color: #000;
+    text-shadow:
+      0 3.5px 10.4px #ff8335,
+      0 8.3px 10.4px #d943ff,
+      0 13.9px 10.4px #d8b8ff,
+      0 25.7px 20.8px #ffbf3e,
+      0 28.5px 27.8px #ff0443,
+      0 57.6px 76.5px rgba(255, 0, 4, 0.8);
+  }
+</style>
+</head>
+<body>
+  <div class="lines">
+    <p style="color:#0f0f0f">Lead Product Designer</p>
+    <p style="color:#a6a6a6">Melbourne, Australia</p>
+  </div>
+  <p class="name" style="left:488.9px; bottom:227px">Maryna</p>
+  <p class="name" style="left:652.1px; bottom:79.2px">Babych</p>
+</body>
+</html>
