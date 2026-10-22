@@ -2442,20 +2442,19 @@ html[data-intro-out] .intro {
   align-items: center;
 }
 
-/* Desktop sits the word below centre, as Figma's 260 / 160 hero padding does
-   on a 1080-tall frame. Viewport-relative so a short window keeps it on
-   screen — the same treatment as the 404 hero. */
-@media (min-width: 1024px) {
-  .intro-hero {
-    padding-top: clamp(32px, 24svh, 260px);
-    padding-bottom: clamp(24px, 15svh, 160px);
-  }
-}
-
+/* Desktop pins the word to the bottom of the viewport, on the same 40px
+   margin as the other edges. The bottom edge switches from the baseline to
+   the font's descent so the "g" descender sits on that margin instead of
+   hanging past it. */
 .intro-word {
   font-weight: 500;
   font-size: clamp(56px, 18.5vw, 320px);
   text-box: trim-both cap alphabetic;
+}
+
+@media (min-width: 1024px) {
+  .intro-hero { align-items: flex-end; }
+  .intro-word { text-box: trim-both cap text; }
 }
 
 /* The ellipsis bounces, after magecdn's "3 dots bounce" loader: each dot rises
