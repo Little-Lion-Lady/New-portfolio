@@ -2395,3 +2395,84 @@ textarea,
   .wordmark-hue { animation: none; }
 }
 
+/* ── Intro loader ("hi there") ─────────────────────────────────────────────
+   Figma 1932:3898. Hidden unless the <head> script set data-intro (first page
+   of a session); see components/intro-loader.tsx and intro-script.ts.
+
+   Above the page curtain (100) and below the cursor (200).
+
+   The word is 320px on a 1728 frame and 190px on a 1024 one — both 18.5vw —
+   so one fluid size serves every width. Figma sets it in Geist Medium, a step
+   lighter than the 404's SemiBold; the glow is .wordmark's em-based stack, so
+   it scales with the type. */
+.intro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  background: var(--bg-primary);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .intro { padding: var(--spacing-3xl); }
+}
+
+html[data-intro] .intro,
+html[data-intro-out] .intro {
+  display: flex;
+}
+
+/* Matches the curtain's reveal curve (EASE in motion-timing.ts). */
+html[data-intro-out] .intro {
+  animation: intro-out 600ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes intro-out {
+  to { opacity: 0; }
+}
+
+.intro-hero {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+  align-items: center;
+}
+
+/* Desktop sits the word below centre, as Figma's 260 / 160 hero padding does
+   on a 1080-tall frame. Viewport-relative so a short window keeps it on
+   screen — the same treatment as the 404 hero. */
+@media (min-width: 1024px) {
+  .intro-hero {
+    padding-top: clamp(32px, 24svh, 260px);
+    padding-bottom: clamp(24px, 15svh, 160px);
+  }
+}
+
+.intro-word {
+  font-weight: 500;
+  font-size: clamp(56px, 18.5vw, 320px);
+  text-box: trim-both cap alphabetic;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-intro-out] .intro { animation-duration: 1ms; }
+}
+
+/* While the loader is up, everything underneath it waits. Paused CSS
+   animations hold their delay too, and every reveal on the site fills
+   `both`, so each one sits in its hidden first frame and plays its full
+   timeline from the moment the loader lifts. JS-timed reveals gate on
+   useIntroLiftedAt instead. */
+html[data-intro] {
+  overflow: hidden;
+}
+
+html[data-intro] body > :not(.intro),
+html[data-intro] body > :not(.intro) * {
+  animation-play-state: paused !important;
+}
+

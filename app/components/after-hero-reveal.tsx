@@ -47,6 +47,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { useState } from "react";
 import { SectionReveal } from "./section-reveal-context";
 import { useHeadlineHandoff } from "./word-sync";
+import { useIntroLiftedAt } from "./use-intro";
 import { HERO_CLOSE_DURATION } from "./motion-timing";
 
 export function AfterHeroReveal({
@@ -70,9 +71,14 @@ export function AfterHeroReveal({
 }) {
   const handoff = useHeadlineHandoff({ revealDelay });
   const [mountedAt] = useState(() => Date.now());
+  // The hero's timeline starts when the intro loader lifts, if there was one.
+  const liftedAt = useIntroLiftedAt();
+  const origin = liftedAt === null ? null : Math.max(mountedAt, liftedAt);
 
   const notBefore =
-    handoff === null ? undefined : mountedAt + (handoff + HERO_CLOSE_DURATION) * 1000;
+    handoff === null || origin === null
+      ? undefined
+      : origin + (handoff + HERO_CLOSE_DURATION) * 1000;
 
   return (
     <SectionReveal

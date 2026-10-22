@@ -19,6 +19,7 @@
 import { useRef, type ReactNode } from "react";
 import { m, useInView, useReducedMotion } from "framer-motion";
 import { useSectionReveal } from "./section-reveal-context";
+import { useIntroLiftedAt } from "./use-intro";
 import { useHasMounted, useRevealTrigger, DURATION, EASE, IN_VIEW } from "./reveal";
 
 export function TiltIn({
@@ -44,7 +45,8 @@ export function TiltIn({
   const mounted = useHasMounted();
   // Inside a Reveal: same trigger, same delay as the fade. Otherwise fall back
   // to this element's own in-view gate.
-  const shouldAnimate = parent ? parent.active : isImmediate ? mounted : active && inView;
+  const introDone = useIntroLiftedAt() !== null;
+  const shouldAnimate = parent ? parent.active : introDone && (isImmediate ? mounted : active && inView);
   const startDelay = parent ? parent.delay : delay;
 
   if (reducedMotion) {
