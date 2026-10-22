@@ -2458,8 +2458,36 @@ html[data-intro-out] .intro {
   text-box: trim-both cap alphabetic;
 }
 
+/* The ellipsis bounces, after magecdn's "3 dots bounce" loader: each dot rises
+   one dot-height over 0.3s (easing out) and falls over 0.3s (easing in), the
+   three 0.1s apart, then all rest 0.25s — a 1.05s cycle. 0.3 / 1.05 = 28.571%.
+   Each dot carries its own share of the glow, so the shadow travels with it. */
+.intro-dot {
+  display: inline-block;
+  animation: intro-dot-bounce 1.05s infinite;
+}
+
+.intro-dot:nth-of-type(2) { animation-delay: 0.1s; }
+.intro-dot:nth-of-type(3) { animation-delay: 0.2s; }
+
+@keyframes intro-dot-bounce {
+  0% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0.33, 0.66, 0.66, 1);
+  }
+  28.571% {
+    transform: translateY(-0.1em);
+    animation-timing-function: cubic-bezier(0.33, 0, 0.66, 0.33);
+  }
+  57.143%,
+  100% {
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html[data-intro-out] .intro { animation-duration: 1ms; }
+  .intro-dot { animation: none; }
 }
 
 /* While the loader is up, everything underneath it waits. Paused CSS

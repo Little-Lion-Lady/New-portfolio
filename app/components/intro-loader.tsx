@@ -95,7 +95,12 @@ export function IntroLoader() {
         </div>
       </div>
       <div className="intro-hero">
-        <p className="wordmark wordmark-hue intro-word">Honing...</p>
+        <p className="wordmark wordmark-hue intro-word">
+          Honing
+          <span className="intro-dot">.</span>
+          <span className="intro-dot">.</span>
+          <span className="intro-dot">.</span>
+        </p>
       </div>
     </div>
   );
