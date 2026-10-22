@@ -2223,19 +2223,22 @@ textarea,
   line-height: 1;
   white-space: nowrap;
   color: var(--colour-base-black);
-  text-shadow:
+  /* A custom property so non-text marks inside a wordmark (the loader's round
+     dots) can wear the same stack as a box-shadow. */
+  --wordmark-glow:
     0 0.016667em 0.05em #ff8335,
     0 0.04em 0.05em #d943ff,
     0 0.066667em 0.05em #d8b8ff,
     0 0.123333em 0.1em #ffbf3e,
     0 0.136667em 0.133333em #ff0443,
     0 0.276667em 0.366667em rgba(255, 0, 4, 0.8);
+  text-shadow: var(--wordmark-glow);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .wordmark {
     color: var(--colour-base-white);
-    text-shadow:
+    --wordmark-glow:
       0 0.016667em 0.05em #7ff6ff,
       0 0.04em 0.05em #6678ff,
       0 0.066667em 0.05em #f0ffb8,
@@ -2247,7 +2250,7 @@ textarea,
 
 :root[data-theme="dark"] .wordmark {
   color: var(--colour-base-white);
-  text-shadow:
+  --wordmark-glow:
     0 0.016667em 0.05em #7ff6ff,
     0 0.04em 0.05em #6678ff,
     0 0.066667em 0.05em #f0ffb8,
@@ -2454,24 +2457,35 @@ html[data-intro-out] .intro {
 
 @media (min-width: 1024px) {
   .intro-hero { align-items: flex-end; }
-  .intro-word { text-box: trim-both cap text; }
+  .intro-word {
+    text-box: trim-both cap text;
+    padding-bottom: var(--spacing-3xl);
+  }
 }
 
 /* The ellipsis bounces, after magecdn's "3 dots bounce" loader: each dot rises
    one dot-height over 0.3s (easing out) and falls over 0.3s (easing in), the
    three 0.1s apart, then all rest 0.25s — a 1.05s cycle. 0.3 / 1.05 = 28.571%.
-   Each dot carries its own share of the glow, so the shadow travels with it. */
+   Each dot carries its own share of the glow, so the shadow travels with it.
+
+   Round, not Geist's square period: an empty circle the size of the period's
+   ink (0.13em, sitting on the baseline) wearing the wordmark glow as a
+   box-shadow. The margins rebuild the period's spacing — 0.0416em of side
+   bearing each side, less the word's -0.06em tracking, which an empty box
+   does not receive — plus the extra air added on top of it: 0.04em before
+   the first dot and 0.08em between dots. */
 .intro-dot {
   display: inline-block;
+  width: 0.13em;
+  height: 0.13em;
+  margin: 0 -0.0184em 0 0.0816em;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: var(--wordmark-glow);
   animation: intro-dot-bounce 1.05s infinite;
 }
 
-/* The word's -0.06em tracking left the dots almost touching, which hid the
-   wave. This opens the gap between dots only, not the one after the word. */
-.intro-dot + .intro-dot { margin-left: 0.08em; }
-
-/* A smaller step between the word's last letter and the first dot. */
-.intro-dot:first-of-type { margin-left: 0.04em; }
+.intro-dot + .intro-dot { margin-left: 0.1216em; }
 
 .intro-dot:nth-of-type(2) { animation-delay: 0.1s; }
 .intro-dot:nth-of-type(3) { animation-delay: 0.2s; }

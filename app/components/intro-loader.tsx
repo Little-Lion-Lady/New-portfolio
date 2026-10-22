@@ -97,9 +97,9 @@ export function IntroLoader() {
       <div className="intro-hero">
         <p className="wordmark wordmark-hue intro-word">
           crafting
-          <span className="intro-dot">.</span>
-          <span className="intro-dot">.</span>
-          <span className="intro-dot">.</span>
+          <span className="intro-dot" />
+          <span className="intro-dot" />
+          <span className="intro-dot" />
         </p>
       </div>
     </div>
