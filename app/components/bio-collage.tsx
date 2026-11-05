@@ -11,9 +11,9 @@ import { MeCat } from "./me-cat";
 // is Figma's own: 267.319 / 384 / 496.967.
 //
 // The right-hand card is not a photo — it's a flat gradient with the cat drawn
-// over it, so it's built from the tokens rather than the baked
-// ABOUT2.jpg/ABOUT2_Dark.jpg pair. Each mode gets its own stops, sampled from
-// those two exports: blue-200 → red-light-200 in light, blue-600 →
+// over it, so it's built from the tokens rather than the light and dark
+// gradient exports it replaced (since deleted). Each mode gets its own stops,
+// sampled from those exports: blue-200 → red-light-200 in light, blue-600 →
 // red-light-950 in dark.
 //
 // Tablet is the only step where the two cards don't share a height: both are
@@ -31,7 +31,7 @@ export function BioCollage() {
   return (
     <div className="relative flex h-[267.319px] w-full items-stretch gap-r-2xs md:h-[384px] lg:h-[496.967px]">
       <GlassImage
-        src="/home/about/ME1.jpg"
+        src="/home/about/about-maryna-portrait.jpg"
         alt="Maryna Babych"
         radiusClassName={CARD_RADIUS}
         sizes="(min-width: 1400px) 320px, (min-width: 768px) 200px, 50vw"

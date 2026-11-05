@@ -1,0 +1,51 @@
+name: Images and Lighthouse
+
+# Guards the image work in docs/images.md: source budgets, lint rules, and
+# Lighthouse on the home page plus one case study.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Fails if an image in public/ breaks its size budget
+      # (scripts/image-budgets.json).
+      - run: npm run images:check
+
+      # Includes @next/next/no-img-element and jsx-a11y/alt-text as errors.
+      - run: npm run lint
+
+      - run: npm run build
+
+      # Config in lighthouserc.json. Pages load with ?nointro so the run
+      # measures the page rather than the first-visit loader, and with real
+      # (devtools) throttling: under simulated throttling the reveal
+      # animations hide every above-the-fold element at first paint and
+      # Chrome records no LCP at all. The case study is held to every
+      # assertion; the home page reports as warnings for that same reason
+      # (its headline starts at opacity 0), see docs/images.md.
+      - name: Lighthouse CI
+        run: npx --yes @lhci/cli@0.15.1 autorun
+        env:
+          LHCI_BUILD_CONTEXT__CURRENT_BRANCH: ${{ github.head_ref || github.ref_name }}
+
+      - name: Keep the Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/reports
+          if-no-files-found: ignore

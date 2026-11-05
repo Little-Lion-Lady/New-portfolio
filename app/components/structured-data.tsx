@@ -1,4 +1,5 @@
 import { siteUrl } from "../site-url";
+import { ROUTE_IMAGES } from "../route-images";
 
 /*
   JSON-LD structured data.
@@ -59,8 +60,8 @@ export function SiteStructuredData() {
             url: siteUrl,
             address: {
               "@type": "PostalAddress",
-              addressLocality: "Auckland",
-              addressCountry: "NZ",
+              addressLocality: "Melbourne",
+              addressCountry: "AU",
             },
             worksFor: { "@type": "Organization", name: "First Table" },
             sameAs: ["https://www.linkedin.com/in/marynababych/"],
@@ -71,8 +72,8 @@ export function SiteStructuredData() {
             url: siteUrl,
             name: "Maryna Babych",
             description:
-              "Portfolio of Maryna Babych, Lead Product Designer based in Auckland, New Zealand.",
-            inLanguage: "en-NZ",
+              "Portfolio of Maryna Babych, Lead Product Designer based in Melbourne, Australia.",
+            inLanguage: "en-AU",
             publisher: { "@id": PERSON_ID },
           },
         ],
@@ -104,11 +105,12 @@ export function CaseStudyStructuredData({
         url: `${siteUrl}${path}`,
         name,
         description,
-        inLanguage: "en-NZ",
+        inLanguage: "en-AU",
         author: { "@id": PERSON_ID },
         creator: { "@id": PERSON_ID },
         isPartOf: { "@id": WEBSITE_ID },
         ...(award ? { award } : {}),
+        ...(ROUTE_IMAGES[path] ? { image: `${siteUrl}${ROUTE_IMAGES[path][0]}` } : {}),
       }}
     />
   );

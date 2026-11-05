@@ -25,7 +25,7 @@ import "./globals.css";
 
 const title = "Maryna Babych — Lead Product Designer";
 const description =
-  "Portfolio of Maryna Babych, Lead Product Designer based in Auckland, New Zealand. 9 years crafting award-winning digital experiences.";
+  "Portfolio of Maryna Babych, Lead Product Designer based in Melbourne, Australia. 9 years crafting award-winning digital experiences.";
 
 /*
   metadataBase is what lets Next resolve the relative OG image URL. Without it

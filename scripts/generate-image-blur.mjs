@@ -33,6 +33,8 @@ function walk(dir) {
 
 const files = walk(ROOT)
   .filter((f) => EXT.has(path.extname(f).toLowerCase()))
+  // Video poster frames are plain <video poster> URLs, never a next/image.
+  .filter((f) => !f.endsWith("-poster.jpg"))
   .sort();
 
 const entries = [];

@@ -2346,19 +2346,19 @@ textarea,
   top: -0.09115em;
   width: 3.17865em;
   height: 1.61152em;                       /* 3.17865em x 725/1430 */
-  background-image: url("/home/Oops_light.webp");
+  background-image: url("/home/not-found-oops-wordmark-light.webp");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .oops-figure::after {
-    background-image: url("/home/Oops_dark.webp");
+    background-image: url("/home/not-found-oops-wordmark-dark.webp");
   }
 }
 
 :root[data-theme="dark"] .oops-figure::after {
-  background-image: url("/home/Oops_dark.webp");
+  background-image: url("/home/not-found-oops-wordmark-dark.webp");
 }
 
 .wordmark-trim-oops { margin-top: -0.128333em; margin-bottom: 0.001667em; }

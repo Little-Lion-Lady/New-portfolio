@@ -67,13 +67,13 @@ function Card({
 // because the marquee renders the set twice. The duplicate set is now hidden
 // from assistive tech (see `decorative` below), and each piece describes itself.
 const ART_ALT: Record<string, string> = {
-  ART1: "Original artwork: a pale textured figure against a flat red ground",
-  ART2: "Original artwork: a glowing figure at the centre of a dark storm",
-  ART3: "Original artwork: a black ink form unfurling across white paper",
-  ART4: "Original artwork: a framed pencil drawing of a cat, resting against a wall",
-  ART5: "Original artwork: a stylised portrait cut through with red brushstrokes",
-  ART6: "Original artwork: a black cat with red eyes against a red ground",
-  ART7: "Original artwork: a watercolour bouquet of purple and pink flowers",
+  "about-artwork-pale-figure-red-ground": "Original artwork: a pale textured figure against a flat red ground",
+  "about-artwork-figure-in-storm": "Original artwork: a glowing figure at the centre of a dark storm",
+  "about-artwork-black-ink-form": "Original artwork: a black ink form unfurling across white paper",
+  "about-artwork-cat-pencil-drawing": "Original artwork: a framed pencil drawing of a cat, resting against a wall",
+  "about-artwork-portrait-red-brushstrokes": "Original artwork: a stylised portrait cut through with red brushstrokes",
+  "about-artwork-black-cat-red-ground": "Original artwork: a black cat with red eyes against a red ground",
+  "about-artwork-watercolour-bouquet": "Original artwork: a watercolour bouquet of purple and pink flowers",
 };
 
 const BLEED_CLASS = "rail-bleed";

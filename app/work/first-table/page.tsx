@@ -136,6 +136,7 @@ const description =
 
 export const metadata: Metadata = pageMetadata({
   path: "/work/first-table",
+  ownOgImage: true,
   title: "First Table booking app — Maryna Babych",
   description,
 });
@@ -176,9 +177,9 @@ export default function FirstTable() {
               },
             ]}
             images={[
-              { src: "/home/work/firsttable/FT1.jpg", alt: "The First Table app open on a phone above a shared table of food" },
-              { src: "/home/work/firsttable/FT2.jpg", alt: "First Table campaign artwork promoting 50% off the food bill, beside app screens" },
-              { src: "/home/work/firsttable/3.jpg", alt: "First Table brand board setting diner value against restaurant value" },
+              { src: "/home/work/first-table/first-table-app-phone-dining-table.jpg", alt: "The First Table app open on a phone above a shared table of food" },
+              { src: "/home/work/first-table/first-table-campaign-half-price-app-screens.jpg", alt: "First Table campaign artwork promoting 50% off the food bill, beside app screens" },
+              { src: "/home/work/first-table/first-table-brand-board-diner-restaurant-value.jpg", alt: "First Table brand board setting diner value against restaurant value" },
             ]}
           />
         </section>
@@ -383,7 +384,7 @@ export default function FirstTable() {
         <CaseStudyNav
           title="NZ COVID Tracer app"
           href="/work/covid-tracer"
-          image={{ src: "/home/work/covid-tracer/MOH1.jpg", alt: "The NZ COVID Tracer QR scanner open on a phone" }}
+          image={{ src: "/home/work/covid-tracer/covid-tracer-qr-scanner-phone.jpg", alt: "The NZ COVID Tracer QR scanner open on a phone" }}
         />
       </Reveal>
 

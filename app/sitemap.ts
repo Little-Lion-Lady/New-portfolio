@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteUrl } from "./site-url";
+import { ROUTE_IMAGES } from "./route-images";
 
 /*
   Every public page, in the order they matter. /tokens is deliberately absent:
@@ -33,5 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified,
     changeFrequency: "monthly",
     priority: path === "" ? 1 : 0.8,
+    // Lead and key case-study images, so they can surface in image search.
+    ...(ROUTE_IMAGES[path] ? { images: ROUTE_IMAGES[path].map((src) => `${siteUrl}${src}`) } : {}),
   }));
 }
