@@ -67,7 +67,7 @@ export function pageMetadata({
     openGraph: {
       type: "website",
       siteName: "Maryna Babych",
-      locale: "en_NZ",
+      locale: "en_AU",
       url: path,
       title,
       description,

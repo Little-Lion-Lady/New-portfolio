@@ -44,7 +44,7 @@ export const metadata: Metadata = pageMetadata({
   ownOgImage: true,
   title: "About — Maryna Babych",
   description:
-    "I've been designing products since 2018: agency work including the NZ COVID Tracer app, then a startup, and now a marketplace. I spend as much time on understanding the people I'm designing for as on design craft, and I hold both to the same standard. Maryna Babych, Lead Product Designer in Auckland, New Zealand.",
+    "I've been designing products since 2018: agency work including the NZ COVID Tracer app, then a startup, and now a marketplace. I spend as much time on understanding the people I'm designing for as on design craft, and I hold both to the same standard. Maryna Babych, Lead Product Designer in Melbourne, Australia.",
 });
 
 export default function About() {

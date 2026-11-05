@@ -10,8 +10,6 @@
   sitting empty until the full image decodes.
 */
 export const IMAGE_BLUR: Record<string, string> = {
-  "/home/about/ABOUT2.jpg": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAABQAQCdASoMABAAA8BgJQBOgDEIAP7vGtjjDWw9j9n10r6vRgAAAA==",
-  "/home/about/ABOUT2_Dark.jpg": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADQAQCdASoMABAAA8BgJagCdAEO/gPIAAD+zIZPGjQf/4Js//p0hvR6QdddLR3J/wAAAA==",
   "/home/about/about-artwork-black-cat-red-ground.jpg": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoNABAAA8BgJbACdAEO9uPGNAAA/uv4c+ocOXhOAMs4ZB4r46QLTZ5Cg//GM19R4fXMX9KyOpY63th/+J1iwtt6IAA=",
   "/home/about/about-artwork-black-ink-form.jpg": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAACwAQCdASoJABAAA8BgJaQAAua8XcuwAM4+sML2/Zl3p3LCjVaXDuWnHR7r4n7s97r6x47M7cXYGFy4PQ2LJUdw4noGvtJt96t5/AAA",
   "/home/about/about-artwork-cat-pencil-drawing.jpg": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAADwAQCdASoPABAAA8BgJZwAAo9OwkJADAAA/vF7hxtnQ5hrxz0/IOJ+ooVVOvVhk1yA1iA5Z8KqlQ8ECOcvHV4pTUSCmPiPDu2Uuu6jXcFikKaj4+PP8u9nbRKPOLu0XwAAAA==",
@@ -32,8 +30,8 @@ export const IMAGE_BLUR: Record<string, string> = {
   "/home/work/basis/basis-prototype-hot-water-circuit.png": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4WAoAAAAQAAAABgAADwAAQUxQSA4AAAABD/D7/4iIMH8R/Y8AAFZQOCA0AAAAsAEAnQEqBwAQAAPAYCWMAuwBDq5yCAD+8hXbgoQErlzjBnlC2ZPnr9QYdEF27ffvne/gAA==",
   "/home/work/basis/basis-prototype-savings-notifications.png": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADQAQCdASoHABAAA8BgJaQAApzp6Z8YAAD+86xjcLR6E7C7w+XEgbityoq8HpaTWBJsFPL0AAA=",
   "/home/work/basis/basis-prototype-standby-confirm.jpg": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACQAQCdASoHABAAA8BgJZQAAuZndKAA3lfGcg0NsvibaqRFzsy3VMm7GXCnoYzce3Jf5yzHlM0QD1zgnyn7B4AAAAA=",
-  "/home/work/basis/basis-prototype-testing-participant.jpg": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADQAQCdASoQAAsAA8BgJYwCdACRKJJvAAD8yIEjv76uvJxSBVfsUMwuGaWxbEWOVVMOceCImJclVTDAjxJSGwiBrPughB/BgAA=",
   "/home/work/basis/basis-prototype-testing-facilitator.jpg": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoQAAsAA8BgJQBOgB6KHN7wyAgA/slX9Wi7dFZ8T96ZUcXMpRAxanXBoyKXuzNcIM7xUA63I7jGLYzKiw03yuONVWzZ8uFFpGPp9PkES3iNAAAA",
+  "/home/work/basis/basis-prototype-testing-participant.jpg": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADQAQCdASoQAAsAA8BgJYwCdACRKJJvAAD8yIEjv76uvJxSBVfsUMwuGaWxbEWOVVMOceCImJclVTDAjxJSGwiBrPughB/BgAA=",
   "/home/work/basis/basis-prototype-usage-breakdown.png": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoHABAAA8BgJaQAAveILSeoWAAA/vUjDRRcCL5JNqMVpgipAmK0niODDNoUyvIreqgtHIoXXCAAAA==",
   "/home/work/basis/basis-research-interview-annotating-concepts.jpg": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoQAAcAA8BgJbACdADcr0XJRsgA/sEk19tmZhMGdeyA6lLqj1JU105tqSweVoVcRrpIlQ2ZgBvZ4vAwWSr1ga5Pjd+DBy7jt0t0WAAA",
   "/home/work/basis/basis-research-interview-participant.jpg": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAQAgCdASoQAAcAA8BgJbACdAD5i4OGSs8AAP6s/6OlT0RZFyyqPn7aKpwECKo0FaFdaibKUN4XvgPbyo28abavjFuPTE07djSCxP4XPdVIc52YgAA=",
@@ -87,10 +85,10 @@ export const IMAGE_BLUR: Record<string, string> = {
   "/home/work/first-table/first-table-brand-board-campaign-messaging.jpg": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoQAAsAA8BgJQBOgCH8jl0UmsAA/uyMn3zrDFSKv3Y6ELnM0pROtU5kfeuSL5/p9tvd83YDve7waH0TJ85wR3plWVZ4bP/x4/3eb4AA",
   "/home/work/first-table/first-table-brand-board-diner-restaurant-value.jpg": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAABwAgCdASoQAAsAA8BgJYgCdAYwTuNpFTduKBgAAP7a1xNmM6HLNp9Jb+RkYEQOgKdlt+EeSN793LIsKGH1gQTjAlHgufURoJW/bAL9RsbB7hUez+YQVeB3T1RgKeSVVoSgwY4mPPgQDSjzlkkNFxqvwCbAAA==",
   "/home/work/first-table/first-table-campaign-half-price-app-screens.jpg": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABwAgCdASoQAA8AA8BgJYgCdAYwdv2ZPDBxsA9oAP7sW4noLB5trvjM+odxUa2c1+k22pd9cD+ZsP2ugbVmmZwixkL4TAqHZURDeh+j4r/mvSzEgW/QXxavLwsOe/HY3xvepgSKDYYzbyFRnLA86SSCtgnZ8HmHlAid5AAA",
-  "/home/work/first-table/first-table-design-tokens-dark.png": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4WAoAAAAQAAAADwAACQAAQUxQSCcAAAABN6AgbQPGv+Tu2oiI+NsXEAlAmOCLCQ7Y4P8MzYGI/k8AJvOn6QIAVlA4IDgAAADwAQCdASoQAAoAA8BgJZQCdAD0j/yEZ8AA/vRKzE2kMufsJPSuXcwXj1nlovI+h/4DpNZT4LfAAA==",
-  "/home/work/first-table/first-table-design-tokens-light.png": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4WAoAAAAQAAAADwAACQAAQUxQSCcAAAABN6AgbQPGv+Tu2oiI+NsXEAlAmOCLCQ7Y4P8MzYGI/k8AJvOn6QIAVlA4IDYAAAAQAgCdASoQAAoAA8BgJZQC7AEUpDAeQEeAAP7wfF0U/5k+9Wh326SNG1zigxntqPwT+rdo/AA=",
   "/home/work/first-table/first-table-component-library-dark.png": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADQAQCdASoQAAgAA8BgJQBOgCHh1g+0+AD+8s2mRDGSjJKuHK31YEeKJWCTmYYJS4dSxw3x9p7yCAAA",
   "/home/work/first-table/first-table-component-library-light.png": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoQAAgAA8BgJYgCdADR5fAa3YAA/iXODJwNf+0o7C1VGyElSl7Sg0fwV6D/vnLCEdemS5aabaoYZcZ0z/C5GxSWj6r2HgrxMn/yAAAA",
+  "/home/work/first-table/first-table-design-tokens-dark.png": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4WAoAAAAQAAAADwAACQAAQUxQSCcAAAABN6AgbQPGv+Tu2oiI+NsXEAlAmOCLCQ7Y4P8MzYGI/k8AJvOn6QIAVlA4IDgAAADwAQCdASoQAAoAA8BgJZQCdAD0j/yEZ8AA/vRKzE2kMufsJPSuXcwXj1nlovI+h/4DpNZT4LfAAA==",
+  "/home/work/first-table/first-table-design-tokens-light.png": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4WAoAAAAQAAAADwAACQAAQUxQSCcAAAABN6AgbQPGv+Tu2oiI+NsXEAlAmOCLCQ7Y4P8MzYGI/k8AJvOn6QIAVlA4IDYAAAAQAgCdASoQAAoAA8BgJZQC7AEUpDAeQEeAAP7wfF0U/5k+9Wh326SNG1zigxntqPwT+rdo/AA=",
   "/home/work/first-table/first-table-diner-segmentation-dark.png": "data:image/webp;base64,UklGRi4AAABXRUJQVlA4ICIAAAAwAQCdASoQAAwAA8BgJZwAA3AA/vIqZ5+XnJwDaIxnqOAA",
   "/home/work/first-table/first-table-diner-segmentation-light.png": "data:image/webp;base64,UklGRjAAAABXRUJQVlA4ICQAAAAwAQCdASoQAAwAA8BgJaQAA3AA/vJIKbyH3Dlj0Pi6LEGwAAA=",
   "/home/work/first-table/first-table-experiment-results-dark.png": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4WAoAAAAQAAAADwAACAAAQUxQSBIAAAABD9D/iAiIBZP8pXemENH/bAFWUDggRgAAAPABAJ0BKhAACQADwGAlkAJ0AQ3lWz9r0AD+70/9X6zj66qukA9WSJHYoGGylEJ1kgtrNcbf7KwkVRt+OOaUxUjGEpqEQAA=",
