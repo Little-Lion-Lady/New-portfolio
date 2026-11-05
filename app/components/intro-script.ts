@@ -20,7 +20,11 @@ export const INTRO_MAX_MS = 4000;
 export const INTRO_OUT_MS = 600;
 
 export const INTRO_SCRIPT =
+  // `?nointro` skips the loader for that one load without marking it seen.
+  // Lighthouse CI starts every run with empty storage, so without this it
+  // would only ever measure the loader. See .github/workflows/lighthouse.yml.
   `(function(){var d=document.documentElement;` +
+  `if(/[?&]nointro(=|&|$)/.test(location.search))return;` +
   `try{if(sessionStorage.getItem("intro-seen"))return;sessionStorage.setItem("intro-seen","1");}catch(e){return;}` +
   `d.setAttribute("data-intro","");d.setAttribute("data-intro-start",String(Date.now()));` +
   `window.__introLift=function(){if(!d.hasAttribute("data-intro"))return;` +

@@ -60,3 +60,6 @@ graphify-out/
 # Figma exports and screen-recording originals kept out of the deployed bundle.
 # The site serves the derived .webp / .mp4 under public/home.
 design-sources/
+
+# Lighthouse CI output
+/.lighthouseci/
