@@ -23,10 +23,11 @@ import { useNearViewport } from "./use-near-viewport";
 // attribute appears once the box is within useNearViewport's screen-ahead
 // margin, and the recording loads and starts then.
 //
-// There are no poster frames, so a recording that has not loaded yet shows the
-// frame's own background rather than its first frame. The near-viewport margin
-// is a screen ahead, so in practice it has usually arrived; posters would close
-// the gap on a slow connection and are worth adding if it shows.
+// Each recording ships three files beside the MP4 named in `src`: a WebM
+// (VP9, 5 to 7x smaller, listed first so browsers that play it take it), and a
+// `-poster.jpg` of the first frame, shown until playback starts so a slow
+// connection sees the screen rather than an empty card. Generate both with
+// the ffmpeg commands in docs/images.md.
 export function LoopingVideo({
   src,
   label,
@@ -47,12 +48,16 @@ export function LoopingVideo({
   className?: string;
 }) {
   const reducedMotion = useReducedMotion();
+  const base = src.replace(/\.mp4$/, "");
   const ref = useRef<HTMLVideoElement>(null);
   const [boxRef, near] = useNearViewport<HTMLDivElement>();
 
   useEffect(() => {
     const video = ref.current;
     if (!video || !near) return;
+    // The <source> children only appear once `near` flips, and a <video> does
+    // not re-run source selection on its own when they do.
+    if (video.networkState === video.NETWORK_EMPTY) video.load();
     if (reducedMotion) {
       video.pause();
     } else {
@@ -67,8 +72,9 @@ export function LoopingVideo({
     <div ref={boxRef} className={`relative overflow-hidden ${className}`} style={{ aspectRatio }}>
       <video
         ref={ref}
-        // Undefined renders no attribute at all, so nothing is fetched. See above.
-        src={near ? src : undefined}
+        // Nothing is fetched until the box is a screen away: undefined renders
+        // no poster attribute, and the <source>s below are not rendered yet.
+        poster={near ? `${base}-poster.jpg` : undefined}
         autoPlay
         muted
         loop
@@ -78,7 +84,10 @@ export function LoopingVideo({
         aria-label={label}
         className="absolute inset-0 h-full w-full object-cover"
         style={objectPosition ? { objectPosition } : undefined}
-      />
+      >
+        {near && <source src={`${base}.webm`} type="video/webm" />}
+        {near && <source src={src} type="video/mp4" />}
+      </video>
     </div>
   );
 }
