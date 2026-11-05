@@ -115,8 +115,9 @@ export function ImageCarousel({
   marquee = false,
   reverse = false,
   speedScale,
-  fetchPriority,
+  fetchPriority: railPriority,
   eager = false,
+  priorityFirstOnly = false,
   hoverScale = false,
   className = "",
 }: {
@@ -161,6 +162,14 @@ export function ImageCarousel({
    */
   eager?: boolean;
   /**
+   * Rank the rail for an LCP slot: only the first card gets `fetchPriority`
+   * as passed (normally "high"), the rest of the visible set fall back to
+   * "auto", and the aria-hidden duplicate set to "low". The duplicates only
+   * come on screen once the loop has run a full set, so they should never
+   * compete with the card the page is waiting on. Pair with `eager`.
+   */
+  priorityFirstOnly?: boolean;
+  /**
    * Zoom each photo on hover — see <GlassImage>. Set by the home page's work
    * rows only; the case-study hero rails leave it off, so the effect stays
    * where it was asked for.
@@ -179,11 +188,18 @@ export function ImageCarousel({
   const [railRef, railNear] = useNearViewport<HTMLDivElement>();
   const loading = eager || railNear ? "eager" : "lazy";
 
-  const card = (image: WorkImageData, key: string, gap: boolean, hidden = false) => {
+  const card = (image: WorkImageData, key: string, gap: boolean, hidden = false, index = 0) => {
     // A known intrinsic ratio switches the card from a fixed
     // box to a fixed height. The per-image lgWidth override existed to undo a
     // bad crop, so it is skipped when the real ratio is available.
     const ratio = IMAGE_RATIOS[image.src];
+    const fetchPriority = !priorityFirstOnly
+      ? railPriority
+      : hidden
+        ? "low"
+        : index === 0
+          ? railPriority
+          : "auto";
     const margin = gap ? " mr-xs md:mr-sm lg:mr-lg" : "";
     if (ratio) {
       return (
@@ -247,7 +263,7 @@ export function ImageCarousel({
   if (!marquee) {
     return (
       <div ref={railRef} className={`flex items-center justify-center gap-xs md:gap-sm lg:gap-lg ${className}`}>
-        {images.map((image) => card(image, image.src, false))}
+        {images.map((image, i) => card(image, image.src, false, false, i))}
       </div>
     );
   }
@@ -269,13 +285,13 @@ export function ImageCarousel({
         className={`image-marquee-track flex w-max items-center${reverse ? " image-marquee-track--reverse" : ""}`}
         style={scale ? ({ "--image-marquee-scale": scale } as CSSProperties) : undefined}
       >
-        {images.map((image) => card(image, `a-${image.src}`, true))}
+        {images.map((image, i) => card(image, `a-${image.src}`, true, false, i))}
         {/* Duplicate set — decorative, so each card is aria-hidden individually
             rather than sharing one hidden wrapper. The wrapper would break the
             sibling selectors that shift neighbours aside on hover: a card in
             one set is not a sibling of a card in the other, so a hover in the
             duplicate could not push the originals. Flat, they all are. */}
-        {images.map((image) => card(image, `b-${image.src}`, true, true))}
+        {images.map((image, i) => card(image, `b-${image.src}`, true, true, i))}
       </div>
     </div>
   );

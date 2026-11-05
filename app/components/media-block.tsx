@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { GlassFrame, GlassImage, DEFAULT_QUALITY } from "./work-image";
 import { LoopingVideo } from "./looping-video";
+import { blurFor } from "./image-blur";
+import { sizesFor } from "./image-sizes";
 
 // Figma image collages for §02 (100:6005), §04 (100:6193), §06 (495:3594).
 // Corner radius follows Figma: main image blocks are sharp; §06 phone frames are rounded.
@@ -310,10 +312,10 @@ export function PrototypeMedia() {
           ordering conflict. */}
       <div className="flex justify-center gap-r-2xs lg:w-[243px] lg:shrink-0 lg:flex-col">
         <div className="relative max-w-[190px] flex-1 aspect-[243/160] overflow-hidden rounded-lg lg:aspect-auto lg:h-[160px] lg:max-w-[400px] lg:flex-none">
-          <Image src="/home/work/basis/BS18.jpg" alt="Basis prototype testing participant" fill quality={DEFAULT_QUALITY} sizes="243px" className="object-cover" />
+          <Image src="/home/work/basis/BS18.jpg" alt="Basis prototype testing participant" fill quality={DEFAULT_QUALITY} sizes={sizesFor("/home/work/basis/BS18.jpg")} placeholder="blur" blurDataURL={blurFor("/home/work/basis/BS18.jpg")} className="object-cover" />
         </div>
         <div className="relative max-w-[190px] flex-1 aspect-[243/160] overflow-hidden rounded-lg lg:aspect-auto lg:h-[160px] lg:max-w-[400px] lg:flex-none">
-          <Image src="/home/work/basis/BS19.jpg" alt="Basis prototype testing participant" fill quality={DEFAULT_QUALITY} sizes="243px" className="object-cover" />
+          <Image src="/home/work/basis/BS19.jpg" alt="Basis prototype testing participant" fill quality={DEFAULT_QUALITY} sizes={sizesFor("/home/work/basis/BS19.jpg")} placeholder="blur" blurDataURL={blurFor("/home/work/basis/BS19.jpg")} className="object-cover" />
         </div>
       </div>
     </div>
@@ -415,7 +417,6 @@ export function FTProblemMedia() {
       src={`${FT}/4.png`}
       darkSrc={`${FT}/4_dark.png`}
       alt="Board of the legacy First Table app screens, before the rebuild"
-      sizes="100vw"
       className="w-full aspect-[361/134] md:aspect-[944/318] lg:aspect-[1584/514]"
     />
   );
@@ -429,13 +430,11 @@ export function FTResearchMedia() {
         src={`${FT}/5.png`}
         darkSrc={`${FT}/5_dark.png`}
         alt="First Table diner segmentation analysis"
-        sizes="(min-width: 1024px) 50vw, 100vw"
         className="w-full aspect-[361/255] md:aspect-[944/628] lg:aspect-[782/502] lg:flex-1"
       />
       <GlassImage
         src={`${FT}/6.png`}
         alt="First Table survey research findings"
-        sizes="(min-width: 1024px) 50vw, 100vw"
         className="w-full aspect-[361/231] md:aspect-[944/569] lg:aspect-[782/502] lg:flex-1"
       />
     </div>
@@ -453,14 +452,12 @@ export function FTDesignSystemMedia() {
         src={`${FT}/7_light.png`}
         darkSrc={`${FT}/7_dark.png`}
         alt="First Table design system component library"
-        sizes="100vw"
         className="w-full aspect-[361/227] md:aspect-[944/553] lg:aspect-[1584/993]"
       />
       <GlassImage
         src={`${FT}/8_light.png`}
         darkSrc={`${FT}/8_dark.png`}
         alt="First Table design tokens"
-        sizes="100vw"
         className={tokenSheet}
       />
     </div>
@@ -545,7 +542,6 @@ export function FTRedesignMedia() {
         src={`${FT}/9.png`}
         darkSrc={`${FT}/9_dark.png`}
         alt="First Table single-step booking flow"
-        sizes="100vw"
         /* The export is one wide strip of screens; the old per-breakpoint frame
            ratios were all narrower than the file, so object-cover shaved the
            outer screens off at every size. Sizing the inner box to the photo's
@@ -605,7 +601,6 @@ export function FTValidationMedia() {
             src={`${FT}/${t.light}`}
             darkSrc={`${FT}/${t.dark}`}
             alt={VALIDATION_ALT[t.light]}
-            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
             className="w-full aspect-[361/270] md:aspect-[464/400] lg:aspect-[514/400]"
           />
         ))}
@@ -615,14 +610,12 @@ export function FTValidationMedia() {
           src={`${FT}/16.png`}
           darkSrc={`${FT}/16_dark.png`}
           alt="First Table usability research session"
-          sizes="(min-width: 1024px) 50vw, 100vw"
           className="w-full aspect-[361/214] md:aspect-[944/473] lg:aspect-[782/473] lg:flex-1"
         />
         <GlassImage
           src={`${FT}/17.png`}
           darkSrc={`${FT}/17_dark.png`}
           alt="First Table experiment results"
-          sizes="(min-width: 1024px) 50vw, 100vw"
           className="w-full aspect-[361/210] md:aspect-[944/473] lg:aspect-[782/473] lg:flex-1"
         />
       </div>
@@ -658,7 +651,6 @@ function FTOutcomeScreen({ shot }: { shot: { light: string; dark: string } }) {
       src={`${FT}/${shot.light}`}
       darkSrc={`${FT}/${shot.dark}`}
       alt={FT_OUTCOME_ALT[shot.light]}
-      sizes="332px"
       className="w-[220px] shrink-0 aspect-[390/840] md:w-[281px] lg:w-[332px]"
     />
   );

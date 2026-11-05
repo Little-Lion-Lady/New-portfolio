@@ -153,7 +153,6 @@ export default function Basis() {
           <GlassImage
             src="/home/work/basis/BasisConsumer.jpg"
             alt="The Basis smart electrical panel, shown closed, open and with its cover removed"
-            sizes="(min-width: 1400px) 1648px, (min-width: 768px) 944px, 100vw"
             objectPosition="top"
             className="mt-r-md h-[260px] w-full md:h-[500px] lg:mt-r-lg lg:h-[700px]"
           />

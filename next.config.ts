@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
     // The sources are content-stable: a replaced photo gets a new filename, and
     // the URL carries the path, so there is nothing to invalidate.
     minimumCacheTTL: 31536000,
+    // Widths next/image may generate. The default list jumps from 2048 to
+    // 3840, so a full-column image (about 1374px) on a 2x screen asked for
+    // 3840. 1440, 2560 and 2880 give it a bucket close to what it shows, and
+    // nothing on the site is wide enough to need 3840 (sources are capped at
+    // 2560px by scripts/optimize-images.mjs).
+    deviceSizes: [640, 750, 828, 1080, 1200, 1440, 1920, 2048, 2560, 2880],
   },
 
   /*

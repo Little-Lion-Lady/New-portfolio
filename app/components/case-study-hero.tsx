@@ -203,6 +203,9 @@ export function CaseStudyHero({
              "high" then ranks it above the collages further down the page. */
           eager
           fetchPriority="high"
+          /* Only the first card ranks high: it is the one the LCP waits on,
+             and on a phone the only one on screen. */
+          priorityFirstOnly
         />
       </Reveal>
     </div>
