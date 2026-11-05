@@ -80,6 +80,7 @@ const description =
 
 export const metadata: Metadata = pageMetadata({
   path: "/work/basis",
+  ownOgImage: true,
   title: "Basis smart panel app — Maryna Babych",
   description,
 });
@@ -117,9 +118,9 @@ export default function Basis() {
               },
             ]}
             images={[
-              { src: "/home/work/basis/BS1.jpg", alt: "The Basis app on a phone beside the smart panel mounted on a wall" },
-              { src: "/home/work/basis/BS2.jpg", alt: "The Basis app open on a phone in a living room" },
-              { src: "/home/work/basis/BS3.png", alt: "Board of Basis app screens across the main journeys" },
+              { src: "/home/work/basis/basis-app-phone-smart-panel.jpg", alt: "The Basis app on a phone beside the smart panel mounted on a wall" },
+              { src: "/home/work/basis/basis-app-phone-living-room.jpg", alt: "The Basis app open on a phone in a living room" },
+              { src: "/home/work/basis/basis-app-screens-main-journeys.png", alt: "Board of Basis app screens across the main journeys" },
             ]}
           />
         </section>
@@ -151,7 +152,7 @@ export default function Basis() {
               two-column block on desktop. Heights follow Figma's crop at tablet
               and desktop — 944×500 / 1648×700 — with mobile pulled in to 260. */}
           <GlassImage
-            src="/home/work/basis/BasisConsumer.jpg"
+            src="/home/work/basis/basis-smart-panel-closed-open-uncovered.jpg"
             alt="The Basis smart electrical panel, shown closed, open and with its cover removed"
             objectPosition="top"
             className="mt-r-md h-[260px] w-full md:h-[500px] lg:mt-r-lg lg:h-[700px]"
@@ -418,7 +419,7 @@ export default function Basis() {
         <CaseStudyNav
           title="First Table booking app"
           href="/work/first-table"
-          image={{ src: "/home/work/firsttable/FT1.jpg", alt: "The First Table app open on a phone above a shared table of food" }}
+          image={{ src: "/home/work/first-table/first-table-app-phone-dining-table.jpg", alt: "The First Table app open on a phone above a shared table of food" }}
         />
       </Reveal>
 

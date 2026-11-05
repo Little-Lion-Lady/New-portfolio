@@ -100,7 +100,7 @@ export function SiteFooter() {
           </div>
           <div className="wordmark-figure">
             <Image
-              src={dark ? "/home/Gettouch_dark.webp" : "/home/Gettouch_light.webp"}
+              src={dark ? "/home/footer-get-in-touch-wordmark-dark.webp" : "/home/footer-get-in-touch-wordmark-light.webp"}
               width={2555}
               height={727}
               alt="get in touch"

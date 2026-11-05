@@ -59,7 +59,7 @@ for (const [, src, value] of sizesSource.matchAll(/^\s*"([^"]+)":\s*"([^"]+)"/gm
 // A dark export renders exactly where its light twin does, but the measuring
 // run only sees the light one.
 function rendered(key) {
-  for (const k of [key, key.replace("_dark", "_light"), key.replace("_dark", "")]) {
+  for (const k of [key, key.replace(/-dark(\.\w+)$/, "-light$1"), key.replace(/-dark(\.\w+)$/, "-light.png"), key.replace(/-dark(\.\w+)$/, "-light.jpg")]) {
     if (renderedMax.has(k)) return renderedMax.get(k);
   }
   return undefined;

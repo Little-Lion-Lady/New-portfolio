@@ -91,6 +91,7 @@ const description =
 
 export const metadata: Metadata = pageMetadata({
   path: "/work/covid-tracer",
+  ownOgImage: true,
   title: "NZ Covid Tracer app — Maryna Babych",
   description,
 });
@@ -138,9 +139,9 @@ export default function CovidTracer() {
               },
             ]}
             images={[
-              { src: "/home/work/covid-tracer/MOH1.jpg", alt: "The NZ COVID Tracer QR scanner open on a phone" },
-              { src: "/home/work/covid-tracer/MOH2.jpg", alt: "Unite against COVID-19 campaign board, with the Ministry of Health briefing lectern" },
-              { src: "/home/work/covid-tracer/MOH3.jpg", alt: "Grid of NZ COVID Tracer app screens on the campaign's hazard-stripe background" },
+              { src: "/home/work/covid-tracer/covid-tracer-qr-scanner-phone.jpg", alt: "The NZ COVID Tracer QR scanner open on a phone" },
+              { src: "/home/work/covid-tracer/covid-tracer-campaign-board-briefing.jpg", alt: "Unite against COVID-19 campaign board, with the Ministry of Health briefing lectern" },
+              { src: "/home/work/covid-tracer/covid-tracer-app-screens-grid.jpg", alt: "Grid of NZ COVID Tracer app screens on the campaign's hazard-stripe background" },
             ]}
           />
         </section>
@@ -352,7 +353,7 @@ export default function CovidTracer() {
         <CaseStudyNav
           title="Basis Home app"
           href="/work/basis"
-          image={{ src: "/home/work/basis/BS1.jpg", alt: "The Basis app on a phone beside the smart panel mounted on a wall" }}
+          image={{ src: "/home/work/basis/basis-app-phone-smart-panel.jpg", alt: "The Basis app on a phone beside the smart panel mounted on a wall" }}
         />
       </Reveal>
 

@@ -26,9 +26,10 @@ import type { Metadata } from "next";
   itself — the moment this helper started setting one, every route except the
   homepage shipped with no og:image and no twitter:image at all. Worse than the
   generic card they had before, and invisible until the built HTML was checked.
-  Naming it here restores it everywhere; a route wanting a bespoke card still
-  gets one by dropping an opengraph-image.png into its own folder, which takes
-  precedence over this path.
+  Naming it here restores it everywhere. A route with a bespoke card (an
+  opengraph-image.png in its own folder, rendered by scripts/generate-og-cards.mjs)
+  passes `ownOgImage`: an image named here would otherwise WIN over the file,
+  so the helper leaves `images` out and lets the file convention fill it in.
 
   Deliberately NOT set here:
 
@@ -49,12 +50,16 @@ export function pageMetadata({
   path,
   title,
   description,
+  ownOgImage = false,
 }: {
   /** Route path, leading slash, no origin — resolved against metadataBase. */
   path: string;
   title: string;
   description: string;
+  /** The route has its own opengraph-image.png; do not name the site card. */
+  ownOgImage?: boolean;
 }): Metadata {
+  const images = ownOgImage ? {} : { images: [OG_IMAGE] };
   return {
     title,
     description,
@@ -66,8 +71,8 @@ export function pageMetadata({
       url: path,
       title,
       description,
-      images: [OG_IMAGE],
+      ...images,
     },
-    twitter: { card: "summary_large_image", title, description, images: [OG_IMAGE] },
+    twitter: { card: "summary_large_image", title, description, ...images },
   };
 }

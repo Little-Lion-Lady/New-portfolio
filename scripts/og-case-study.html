@@ -1,0 +1,47 @@
+<!doctype html>
+<!--
+  Source for the per-route link-preview cards (app/work/*/opengraph-image.png
+  and app/about/opengraph-image.png). Same canvas, type and top-left lines as
+  scripts/og-card.html, with the page's lead photo in place of the name.
+
+  Filled in from the query string by scripts/generate-og-cards.mjs:
+    ?line1=...&line2=...&image=/home/work/...&fit=cover|contain&pos=center
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: "Geist";
+    src: url("../node_modules/geist/dist/fonts/geist-sans/Geist-Medium.ttf");
+    font-weight: 500;
+  }
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #fafafa; }
+  body { position: relative; font-family: "Geist"; font-weight: 500; }
+  .lines { position: absolute; left: 27.8px; top: 44.4px; font-size: 41.7px; line-height: 1.15; max-width: 420px; }
+  .lines p { margin: 0; }
+  .photo {
+    position: absolute; right: 27.8px; bottom: 27.8px; top: 44.4px; width: 680px;
+    border-radius: 24px; overflow: hidden; background: #ececec;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  }
+  .photo img { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+  <div class="lines">
+    <p id="line1" style="color:#0f0f0f"></p>
+    <p id="line2" style="color:#a6a6a6"></p>
+  </div>
+  <div class="photo"><img id="photo" alt=""></div>
+  <script>
+    const q = new URLSearchParams(location.search);
+    document.getElementById("line1").textContent = q.get("line1") || "";
+    document.getElementById("line2").textContent = q.get("line2") || "";
+    const img = document.getElementById("photo");
+    img.style.objectFit = q.get("fit") || "cover";
+    img.style.objectPosition = q.get("pos") || "center";
+    img.src = "../public" + q.get("image");
+  </script>
+</body>
+</html>

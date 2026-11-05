@@ -14,6 +14,7 @@
     "images:sizes": "node scripts/measure-image-boxes.mjs > /tmp/image-boxes.json && node scripts/generate-image-sizes.mjs /tmp/image-boxes.json",
     "images:optimize": "node scripts/optimize-images.mjs",
     "images:check": "node scripts/optimize-images.mjs --check",
+    "og:cards": "node scripts/generate-og-cards.mjs",
     "animations": "node scripts/generate-animations.mjs"
   },
   "dependencies": {

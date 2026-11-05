@@ -122,11 +122,11 @@ export default function Home() {
               roles="Growth, Design system, Experimentation"
               href="/work/first-table"
               images={[
-                { src: "/home/work/firsttable/FT1.jpg", alt: "The First Table app open on a phone above a shared table of food" },
-                { src: "/home/work/firsttable/FT2.jpg", alt: "First Table campaign artwork promoting 50% off the food bill, beside app screens" },
-                { src: "/home/work/firsttable/3.jpg", alt: "First Table brand board setting diner value against restaurant value" },
-                { src: "/home/work/firsttable/FT3.jpg", alt: "First Table results board pairing growth figures with partner testimonials" },
-                { src: "/home/work/firsttable/FirstTable_08.jpg", alt: "First Table brand board showing campaign messaging across app screens" },
+                { src: "/home/work/first-table/first-table-app-phone-dining-table.jpg", alt: "The First Table app open on a phone above a shared table of food" },
+                { src: "/home/work/first-table/first-table-campaign-half-price-app-screens.jpg", alt: "First Table campaign artwork promoting 50% off the food bill, beside app screens" },
+                { src: "/home/work/first-table/first-table-brand-board-diner-restaurant-value.jpg", alt: "First Table brand board setting diner value against restaurant value" },
+                { src: "/home/work/first-table/first-table-results-board-growth-testimonials.jpg", alt: "First Table results board pairing growth figures with partner testimonials" },
+                { src: "/home/work/first-table/first-table-brand-board-campaign-messaging.jpg", alt: "First Table brand board showing campaign messaging across app screens" },
               ]}
             />
           </Reveal>
@@ -149,10 +149,10 @@ export default function Home() {
               roles="Onboarding, Research, Usability"
               href="/work/covid-tracer"
               images={[
-                { src: "/home/work/covid-tracer/MOH0.jpg", alt: "NZ COVID Tracer title card, with the app's QR scanner open on a phone" },
-                { src: "/home/work/covid-tracer/MOH1.5.jpg", alt: "Someone scanning a poster with the NZ COVID Tracer app" },
-                { src: "/home/work/covid-tracer/MOH2.jpg", alt: "Unite against COVID-19 campaign board, with the Ministry of Health briefing lectern" },
-                { src: "/home/work/covid-tracer/MOH3.jpg", alt: "Grid of NZ COVID Tracer app screens on the campaign's hazard-stripe background" },
+                { src: "/home/work/covid-tracer/covid-tracer-title-card-qr-scanner.jpg", alt: "NZ COVID Tracer title card, with the app's QR scanner open on a phone" },
+                { src: "/home/work/covid-tracer/covid-tracer-poster-scan-in-use.jpg", alt: "Someone scanning a poster with the NZ COVID Tracer app" },
+                { src: "/home/work/covid-tracer/covid-tracer-campaign-board-briefing.jpg", alt: "Unite against COVID-19 campaign board, with the Ministry of Health briefing lectern" },
+                { src: "/home/work/covid-tracer/covid-tracer-app-screens-grid.jpg", alt: "Grid of NZ COVID Tracer app screens on the campaign's hazard-stripe background" },
               ]}
             />
           </Reveal>
@@ -173,14 +173,14 @@ export default function Home() {
               href="/work/basis"
               images={[
                 {
-                  src: "/home/work/basis/BS1.jpg",
+                  src: "/home/work/basis/basis-app-phone-smart-panel.jpg",
                   alt: "The Basis app on a phone beside the smart panel mounted on a wall",
                   // Narrower than the row's other cards by request.
                   lgWidth: { class: "lg:w-[350px]", px: 350 },
                 },
-                { src: "/home/work/basis/BS2.jpg", alt: "The Basis app open on a phone in a living room" },
-                { src: "/home/work/basis/BS3.png", alt: "Board of Basis app screens across the main journeys" },
-                { src: "/home/work/basis/B0.jpg", alt: "An electrician showing a homeowner the installed Basis smart panel", quality: 75 },
+                { src: "/home/work/basis/basis-app-phone-living-room.jpg", alt: "The Basis app open on a phone in a living room" },
+                { src: "/home/work/basis/basis-app-screens-main-journeys.png", alt: "Board of Basis app screens across the main journeys" },
+                { src: "/home/work/basis/basis-electrician-panel-handover.jpg", alt: "An electrician showing a homeowner the installed Basis smart panel", quality: 75 },
               ]}
             />
           </Reveal>

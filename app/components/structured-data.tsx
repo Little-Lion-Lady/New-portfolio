@@ -1,4 +1,5 @@
 import { siteUrl } from "../site-url";
+import { ROUTE_IMAGES } from "../route-images";
 
 /*
   JSON-LD structured data.
@@ -109,6 +110,7 @@ export function CaseStudyStructuredData({
         creator: { "@id": PERSON_ID },
         isPartOf: { "@id": WEBSITE_ID },
         ...(award ? { award } : {}),
+        ...(ROUTE_IMAGES[path] ? { image: `${siteUrl}${ROUTE_IMAGES[path][0]}` } : {}),
       }}
     />
   );
